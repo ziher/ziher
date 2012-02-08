@@ -1,4 +1,6 @@
 Ziher::Application.routes.draw do
+  resources :cash_entries
+
   resources :units
 
   get "home/index"
