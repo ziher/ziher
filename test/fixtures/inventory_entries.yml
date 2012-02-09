@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  date: 2012-02-09
+  name: MyString
+  document_number: MyString
+  comment: MyString
+  amount: 1
+  unit_price: 9.99
+  source: MyString
+  stock_number: MyString
+
+two:
+  date: 2012-02-09
+  name: MyString
+  document_number: MyString
+  comment: MyString
+  amount: 1
+  unit_price: 9.99
+  source: MyString
+  stock_number: MyString

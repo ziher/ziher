@@ -1,0 +1,2 @@
+module InventoryEntriesHelper
+end

@@ -1,4 +1,6 @@
 Ziher::Application.routes.draw do
+  resources :inventory_entries
+
   resources :cash_entries
 
   resources :units

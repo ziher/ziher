@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Date:</b>
+  <%= @inventory_entry.date %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @inventory_entry.name %>
+</p>
+
+<p>
+  <b>Document number:</b>
+  <%= @inventory_entry.document_number %>
+</p>
+
+<p>
+  <b>Comment:</b>
+  <%= @inventory_entry.comment %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @inventory_entry.amount %>
+</p>
+
+<p>
+  <b>Unit price:</b>
+  <%= @inventory_entry.unit_price %>
+</p>
+
+<p>
+  <b>Source:</b>
+  <%= @inventory_entry.source %>
+</p>
+
+<p>
+  <b>Stock number:</b>
+  <%= @inventory_entry.stock_number %>
+</p>
+
+
+<%= link_to 'Edit', edit_inventory_entry_path(@inventory_entry) %> |
+<%= link_to 'Back', inventory_entries_path %>
