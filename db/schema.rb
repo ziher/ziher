@@ -13,15 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20120219171442) do
 
-  create_table "cash_entries", :force => true do |t|
-    t.date     "date"
-    t.string   "name"
-    t.string   "document_number"
-    t.string   "comment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "expense_cash_entries", :force => true do |t|
     t.date     "date"
     t.string   "name"
