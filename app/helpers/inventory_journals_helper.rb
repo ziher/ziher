@@ -1,0 +1,2 @@
+module InventoryJournalsHelper
+end

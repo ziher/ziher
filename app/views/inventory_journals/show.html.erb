@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Year:</b>
+  <%= @inventory_journal.year %>
+</p>
+
+<p>
+  <b>Unit:</b>
+  <%= @inventory_journal.unit %>
+</p>
+
+<p>
+  <b>Open:</b>
+  <%= @inventory_journal.open %>
+</p>
+
+
+<%= link_to 'Edit', edit_inventory_journal_path(@inventory_journal) %> |
+<%= link_to 'Back', inventory_journals_path %>

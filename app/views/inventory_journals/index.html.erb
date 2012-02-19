@@ -1,0 +1,27 @@
+<h1>Listing inventory_journals</h1>
+
+<table>
+  <tr>
+    <th>Year</th>
+    <th>Unit</th>
+    <th>Open</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @inventory_journals.each do |inventory_journal| %>
+  <tr>
+    <td><%= inventory_journal.year %></td>
+    <td><%= inventory_journal.unit %></td>
+    <td><%= inventory_journal.open %></td>
+    <td><%= link_to 'Show', inventory_journal %></td>
+    <td><%= link_to 'Edit', edit_inventory_journal_path(inventory_journal) %></td>
+    <td><%= link_to 'Destroy', inventory_journal, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Inventory journal', new_inventory_journal_path %>
