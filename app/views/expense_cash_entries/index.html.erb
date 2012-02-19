@@ -1,0 +1,73 @@
+<h1>Listing expense_cash_entries</h1>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Name</th>
+    <th>Document number</th>
+    <th>Comment</th>
+    <th>Razem</th>
+    <th>Razem jeden procent</th>
+    <th>Wyposazenie</th>
+    <th>Wyposazenie jeden procent</th>
+    <th>Materialy</th>
+    <th>Materialy jeden procent</th>
+    <th>Wyzywienie</th>
+    <th>Wyzywienie jeden procent</th>
+    <th>Uslugi</th>
+    <th>Uslugi jeden procent</th>
+    <th>Transport</th>
+    <th>Transport jeden procent</th>
+    <th>Czynsz</th>
+    <th>Czynsz jeden procent</th>
+    <th>Ubezpieczenie</th>
+    <th>Ubezpieczenie jeden procent</th>
+    <th>Inne</th>
+    <th>Inne jeden procent</th>
+    <th>Wynagrodzenie</th>
+    <th>Wynagrodzenie jeden procent</th>
+    <th>Skladki</th>
+    <th>Skladki jeden procent</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @expense_cash_entries.each do |expense_cash_entry| %>
+  <tr>
+    <td><%= expense_cash_entry.date %></td>
+    <td><%= expense_cash_entry.name %></td>
+    <td><%= expense_cash_entry.document_number %></td>
+    <td><%= expense_cash_entry.comment %></td>
+    <td><%= expense_cash_entry.razem %></td>
+    <td><%= expense_cash_entry.razem_jeden_procent %></td>
+    <td><%= expense_cash_entry.wyposazenie %></td>
+    <td><%= expense_cash_entry.wyposazenie_jeden_procent %></td>
+    <td><%= expense_cash_entry.materialy %></td>
+    <td><%= expense_cash_entry.materialy_jeden_procent %></td>
+    <td><%= expense_cash_entry.wyzywienie %></td>
+    <td><%= expense_cash_entry.wyzywienie_jeden_procent %></td>
+    <td><%= expense_cash_entry.uslugi %></td>
+    <td><%= expense_cash_entry.uslugi_jeden_procent %></td>
+    <td><%= expense_cash_entry.transport %></td>
+    <td><%= expense_cash_entry.transport_jeden_procent %></td>
+    <td><%= expense_cash_entry.czynsz %></td>
+    <td><%= expense_cash_entry.czynsz_jeden_procent %></td>
+    <td><%= expense_cash_entry.ubezpieczenie %></td>
+    <td><%= expense_cash_entry.ubezpieczenie_jeden_procent %></td>
+    <td><%= expense_cash_entry.inne %></td>
+    <td><%= expense_cash_entry.inne_jeden_procent %></td>
+    <td><%= expense_cash_entry.wynagrodzenie %></td>
+    <td><%= expense_cash_entry.wynagrodzenie_jeden_procent %></td>
+    <td><%= expense_cash_entry.skladki %></td>
+    <td><%= expense_cash_entry.skladki_jeden_procent %></td>
+    <td><%= link_to 'Show', expense_cash_entry %></td>
+    <td><%= link_to 'Edit', edit_expense_cash_entry_path(expense_cash_entry) %></td>
+    <td><%= link_to 'Destroy', expense_cash_entry, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Expense cash entry', new_expense_cash_entry_path %>

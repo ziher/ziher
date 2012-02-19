@@ -11,13 +11,44 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120209182807) do
+ActiveRecord::Schema.define(:version => 20120219171442) do
 
   create_table "cash_entries", :force => true do |t|
     t.date     "date"
     t.string   "name"
     t.string   "document_number"
     t.string   "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "expense_cash_entries", :force => true do |t|
+    t.date     "date"
+    t.string   "name"
+    t.string   "document_number"
+    t.string   "comment"
+    t.decimal  "razem"
+    t.decimal  "razem_jeden_procent"
+    t.decimal  "wyposazenie"
+    t.decimal  "wyposazenie_jeden_procent"
+    t.decimal  "materialy"
+    t.decimal  "materialy_jeden_procent"
+    t.decimal  "wyzywienie"
+    t.decimal  "wyzywienie_jeden_procent"
+    t.decimal  "uslugi"
+    t.decimal  "uslugi_jeden_procent"
+    t.decimal  "transport"
+    t.decimal  "transport_jeden_procent"
+    t.decimal  "czynsz"
+    t.decimal  "czynsz_jeden_procent"
+    t.decimal  "ubezpieczenie"
+    t.decimal  "ubezpieczenie_jeden_procent"
+    t.decimal  "inne"
+    t.decimal  "inne_jeden_procent"
+    t.decimal  "wynagrodzenie"
+    t.decimal  "wynagrodzenie_jeden_procent"
+    t.decimal  "skladki"
+    t.decimal  "skladki_jeden_procent"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -31,6 +62,21 @@ ActiveRecord::Schema.define(:version => 20120209182807) do
     t.decimal  "unit_price"
     t.string   "source"
     t.string   "stock_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "revenue_cash_entries", :force => true do |t|
+    t.date     "date"
+    t.string   "name"
+    t.string   "document_number"
+    t.string   "comment"
+    t.decimal  "razem"
+    t.decimal  "darowizny"
+    t.decimal  "akcje_zarobkowe"
+    t.decimal  "jeden_procent"
+    t.decimal  "inne"
+    t.decimal  "skladki"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

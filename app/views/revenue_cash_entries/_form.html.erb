@@ -1,0 +1,57 @@
+<%= form_for(@revenue_cash_entry) do |f| %>
+  <% if @revenue_cash_entry.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@revenue_cash_entry.errors.count, "error") %> prohibited this revenue_cash_entry from being saved:</h2>
+
+      <ul>
+      <% @revenue_cash_entry.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :date %><br />
+    <%= f.date_select :date %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :document_number %><br />
+    <%= f.text_field :document_number %>
+  </div>
+  <div class="field">
+    <%= f.label :comment %><br />
+    <%= f.text_field :comment %>
+  </div>
+  <div class="field">
+    <%= f.label :razem %><br />
+    <%= f.text_field :razem %>
+  </div>
+  <div class="field">
+    <%= f.label :darowizny %><br />
+    <%= f.text_field :darowizny %>
+  </div>
+  <div class="field">
+    <%= f.label :akcje_zarobkowe %><br />
+    <%= f.text_field :akcje_zarobkowe %>
+  </div>
+  <div class="field">
+    <%= f.label :jeden_procent %><br />
+    <%= f.text_field :jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :inne %><br />
+    <%= f.text_field :inne %>
+  </div>
+  <div class="field">
+    <%= f.label :skladki %><br />
+    <%= f.text_field :skladki %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

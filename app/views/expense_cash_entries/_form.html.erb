@@ -1,0 +1,121 @@
+<%= form_for(@expense_cash_entry) do |f| %>
+  <% if @expense_cash_entry.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@expense_cash_entry.errors.count, "error") %> prohibited this expense_cash_entry from being saved:</h2>
+
+      <ul>
+      <% @expense_cash_entry.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :date %><br />
+    <%= f.date_select :date %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :document_number %><br />
+    <%= f.text_field :document_number %>
+  </div>
+  <div class="field">
+    <%= f.label :comment %><br />
+    <%= f.text_field :comment %>
+  </div>
+  <div class="field">
+    <%= f.label :razem %><br />
+    <%= f.text_field :razem %>
+  </div>
+  <div class="field">
+    <%= f.label :razem_jeden_procent %><br />
+    <%= f.text_field :razem_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :wyposazenie %><br />
+    <%= f.text_field :wyposazenie %>
+  </div>
+  <div class="field">
+    <%= f.label :wyposazenie_jeden_procent %><br />
+    <%= f.text_field :wyposazenie_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :materialy %><br />
+    <%= f.text_field :materialy %>
+  </div>
+  <div class="field">
+    <%= f.label :materialy_jeden_procent %><br />
+    <%= f.text_field :materialy_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :wyzywienie %><br />
+    <%= f.text_field :wyzywienie %>
+  </div>
+  <div class="field">
+    <%= f.label :wyzywienie_jeden_procent %><br />
+    <%= f.text_field :wyzywienie_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :uslugi %><br />
+    <%= f.text_field :uslugi %>
+  </div>
+  <div class="field">
+    <%= f.label :uslugi_jeden_procent %><br />
+    <%= f.text_field :uslugi_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :transport %><br />
+    <%= f.text_field :transport %>
+  </div>
+  <div class="field">
+    <%= f.label :transport_jeden_procent %><br />
+    <%= f.text_field :transport_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :czynsz %><br />
+    <%= f.text_field :czynsz %>
+  </div>
+  <div class="field">
+    <%= f.label :czynsz_jeden_procent %><br />
+    <%= f.text_field :czynsz_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :ubezpieczenie %><br />
+    <%= f.text_field :ubezpieczenie %>
+  </div>
+  <div class="field">
+    <%= f.label :ubezpieczenie_jeden_procent %><br />
+    <%= f.text_field :ubezpieczenie_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :inne %><br />
+    <%= f.text_field :inne %>
+  </div>
+  <div class="field">
+    <%= f.label :inne_jeden_procent %><br />
+    <%= f.text_field :inne_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :wynagrodzenie %><br />
+    <%= f.text_field :wynagrodzenie %>
+  </div>
+  <div class="field">
+    <%= f.label :wynagrodzenie_jeden_procent %><br />
+    <%= f.text_field :wynagrodzenie_jeden_procent %>
+  </div>
+  <div class="field">
+    <%= f.label :skladki %><br />
+    <%= f.text_field :skladki %>
+  </div>
+  <div class="field">
+    <%= f.label :skladki_jeden_procent %><br />
+    <%= f.text_field :skladki_jeden_procent %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

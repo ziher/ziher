@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  date: 2012-02-19
+  name: MyString
+  document_number: MyString
+  comment: MyString
+  razem: 9.99
+  darowizny: 9.99
+  akcje_zarobkowe: 9.99
+  jeden_procent: 9.99
+  inne: 9.99
+  skladki: 9.99
+
+two:
+  date: 2012-02-19
+  name: MyString
+  document_number: MyString
+  comment: MyString
+  razem: 9.99
+  darowizny: 9.99
+  akcje_zarobkowe: 9.99
+  jeden_procent: 9.99
+  inne: 9.99
+  skladki: 9.99
