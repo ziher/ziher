@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Id:</b>
+  <%= @cash_entry.id %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%= @cash_entry.date %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @cash_entry.name %>
+</p>
+
+<p>
+  <b>Document number:</b>
+  <%= @cash_entry.document_number %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @cash_entry.amount %>
+</p>
+
+
+<%= link_to 'Edit', edit_cash_entry_path(@cash_entry) %> |
+<%= link_to 'Back', cash_entries_path %>

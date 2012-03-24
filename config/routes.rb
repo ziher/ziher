@@ -1,4 +1,8 @@
 Ziher::Application.routes.draw do
+  resources :cash_entries
+
+  resources :journals
+
   resources :categories
 
   resources :inventory_journals

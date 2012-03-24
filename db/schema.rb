@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120324105533) do
+ActiveRecord::Schema.define(:version => 20120324120318) do
+
+  create_table "cash_entries", :force => true do |t|
+    t.date     "date"
+    t.string   "name"
+    t.string   "document_number"
+    t.decimal  "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -42,6 +51,13 @@ ActiveRecord::Schema.define(:version => 20120324105533) do
   end
 
   add_index "inventory_journals", ["unit_id"], :name => "index_inventory_journals_on_unit_id"
+
+  create_table "journals", :force => true do |t|
+    t.integer  "year"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "units", :force => true do |t|
     t.string   "name"

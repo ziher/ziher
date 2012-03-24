@@ -1,0 +1,2 @@
+module CashEntriesHelper
+end
