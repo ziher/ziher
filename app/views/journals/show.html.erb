@@ -1,15 +1,15 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Year:</b>
+  <b>Rok:</b>
   <%= @journal.year %>
 </p>
 
 <p>
-  <b>Type:</b>
+  <b>Rodzaj:</b>
   <%= @journal.journal_type.name %>
 </p>
 
 
-<%= link_to 'Edit', edit_journal_path(@journal) %> |
-<%= link_to 'Back', journals_path %>
+<%= link_to 'Edycja', edit_journal_path(@journal) %> |
+<%= link_to 'Powrót', journals_path %>

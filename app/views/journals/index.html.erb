@@ -1,9 +1,9 @@
-<h1>Listing journals</h1>
+<h1>Książki</h1>
 
 <table>
   <tr>
-    <th>Year</th>
-    <th>Type</th>
+    <th>Rok</th>
+    <th>Rodzaj</th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,13 +13,13 @@
   <tr>
     <td><%= journal.year %></td>
     <td><%= journal.journal_type.name %></td>
-    <td><%= link_to 'Show', journal %></td>
-    <td><%= link_to 'Edit', edit_journal_path(journal) %></td>
-    <td><%= link_to 'Destroy', journal, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to 'Pokaż', journal %></td>
+    <td><%= link_to 'Edytuj', edit_journal_path(journal) %></td>
+    <td><%= link_to 'Usuń', journal, confirm: 'Na pewno?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Journal', new_journal_path %>
+<%= link_to 'Nowa książka', new_journal_path %>
