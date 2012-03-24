@@ -3,7 +3,7 @@ class CreateJournals < ActiveRecord::Migration
     create_table :journals do |t|
       t.integer :year
 	  t.references :unit
-      t.string :journal_type
+      t.references :journal_type
 
       t.timestamps
     end

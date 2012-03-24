@@ -3,6 +3,8 @@ Ziher::Application.routes.draw do
 
   resources :journals
 
+  resources :journal_types
+
   resources :categories
 
   resources :inventory_journals

@@ -17,7 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :journal_type %><br />
-    <%= f.text_field :journal_type %>
+    <%= f.collection_select :journal_type_id, JournalType.all, :id, :name %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -12,7 +12,7 @@
 <% @journals.each do |journal| %>
   <tr>
     <td><%= journal.year %></td>
-    <td><%= journal.journal_type %></td>
+    <td><%= journal.journal_type.name %></td>
     <td><%= link_to 'Show', journal %></td>
     <td><%= link_to 'Edit', edit_journal_path(journal) %></td>
     <td><%= link_to 'Destroy', journal, confirm: 'Are you sure?', method: :delete %></td>
