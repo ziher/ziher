@@ -1,2 +1,2 @@
 ZiHeR 2.0 pre-alfa
-!https://secure.travis-ci.org/travis-ci/travis-ci.png?branch=master(Build Status)!:http://travis-ci.org/travis-ci/travis-ci
+!https://secure.travis-ci.org/zhr/ziher.png?branch=master(Build Status)!:http://travis-ci.org/zhr/ziher
