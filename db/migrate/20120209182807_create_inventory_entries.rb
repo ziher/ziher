@@ -4,7 +4,6 @@ class CreateInventoryEntries < ActiveRecord::Migration
       t.date :date
       t.string :name
       t.string :document_number
-      t.string :comment
       t.integer :amount
       t.decimal :unit_price
       t.string :source

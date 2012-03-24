@@ -1,11 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  id: 1
   year: 1
-  type: 
+  journal_type: one
 
 two:
-  id: 1
   year: 1
-  type: 
+  journal_type: two

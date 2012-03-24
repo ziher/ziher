@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20120324182837) do
     t.date     "date"
     t.string   "name"
     t.string   "document_number"
-    t.string   "comment"
     t.integer  "amount"
     t.decimal  "unit_price"
     t.string   "source"
