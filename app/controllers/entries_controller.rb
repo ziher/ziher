@@ -3,6 +3,7 @@ class EntriesController < ApplicationController
   # GET /entries.json
   def index
     @entries = Entry.all
+    @categories = Category.all
 
     respond_to do |format|
       format.html # index.html.erb
