@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(:version => 20120324120318) do
     t.string   "name"
     t.string   "document_number"
     t.decimal  "amount"
+    t.integer  "category_id"
+    t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -54,7 +56,8 @@ ActiveRecord::Schema.define(:version => 20120324120318) do
 
   create_table "journals", :force => true do |t|
     t.integer  "year"
-    t.string   "type"
+    t.integer  "unit_id"
+    t.string   "journal_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

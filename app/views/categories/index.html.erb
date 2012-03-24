@@ -2,7 +2,6 @@
 
 <table>
   <tr>
-    <th>Id</th>
     <th>Name</th>
     <th>Isexpense</th>
     <th></th>
@@ -12,7 +11,6 @@
 
 <% @categories.each do |category| %>
   <tr>
-    <td><%= category.id %></td>
     <td><%= category.name %></td>
     <td><%= category.isExpense %></td>
     <td><%= link_to 'Show', category %></td>
