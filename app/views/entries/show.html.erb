@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Date:</b>
+  <%= @entry.date %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @entry.name %>
+</p>
+
+<p>
+  <b>Document number:</b>
+  <%= @entry.document_number %>
+</p>
+
+
+<%= link_to 'Edit', edit_entry_path(@entry) %> |
+<%= link_to 'Back', entries_path %>

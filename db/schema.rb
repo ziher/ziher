@@ -11,22 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120324162141) do
-
-  create_table "cash_entries", :force => true do |t|
-    t.date     "date"
-    t.string   "name"
-    t.string   "document_number"
-    t.decimal  "amount"
-    t.integer  "category_id"
-    t.integer  "journal_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(:version => 20120324182837) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.boolean  "isExpense"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entries", :force => true do |t|
+    t.date     "date"
+    t.string   "name"
+    t.string   "document_number"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -53,6 +50,13 @@ ActiveRecord::Schema.define(:version => 20120324162141) do
   end
 
   add_index "inventory_journals", ["unit_id"], :name => "index_inventory_journals_on_unit_id"
+
+  create_table "items", :force => true do |t|
+    t.decimal  "amount"
+    t.decimal  "amount_one_percent"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "journal_types", :force => true do |t|
     t.string   "name"

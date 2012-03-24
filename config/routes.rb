@@ -1,4 +1,18 @@
 Ziher::Application.routes.draw do
+  resources :entries
+
+  get "entry/index"
+
+  get "entry/new"
+
+  get "entry/create"
+
+  get "entry/edit"
+
+  get "entry/update"
+
+  get "entry/destroy"
+
   resources :cash_entries
 
   resources :journals
