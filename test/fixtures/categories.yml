@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: 1
+  name: MyString
+  isExpense: false
+
+two:
+  id: 1
+  name: MyString
+  isExpense: false
