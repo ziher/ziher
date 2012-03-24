@@ -1,8 +1,8 @@
 language: ruby
 rvm:
-- 1.9.2
-- 1.9.3
+ - 1.9.2
+ - 1.9.3
 
-before-install:
-- rake db:migrate
+before_script:
+ - rake db:migrate
 
