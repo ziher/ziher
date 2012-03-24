@@ -4,7 +4,6 @@ one:
   date: 2012-02-09
   name: MyString
   document_number: MyString
-  comment: MyString
   amount: 1
   unit_price: 9.99
   source: MyString
@@ -14,7 +13,6 @@ two:
   date: 2012-02-09
   name: MyString
   document_number: MyString
-  comment: MyString
   amount: 1
   unit_price: 9.99
   source: MyString
