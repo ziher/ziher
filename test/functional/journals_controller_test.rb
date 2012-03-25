@@ -2,6 +2,7 @@ require 'test_helper'
 
 class JournalsControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:user1)
     @journal = journals(:one)
   end
 
