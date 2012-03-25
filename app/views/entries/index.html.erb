@@ -1,10 +1,13 @@
-<h1>Listing entries</h1>
+<h1>Wpływy / wydatki</h1>
 
 <table>
   <tr>
-    <th>Date</th>
-    <th>Name</th>
-    <th>Document number</th>
+    <th>Data</th>
+    <th>Nazwa</th>
+    <th>Numer dokumentu</th>
+    <% @categories.each do |category| %>
+      <th><%= category.name %></th>
+    <% end %>
     <th></th>
     <th></th>
     <th></th>
@@ -15,6 +18,9 @@
     <td><%= entry.date %></td>
     <td><%= entry.name %></td>
     <td><%= entry.document_number %></td>
+    <% @categories.each do |category| %>
+      <td><%= category.name %></td>
+    <% end %>
     <td><%= link_to 'Show', entry %></td>
     <td><%= link_to 'Edit', edit_entry_path(entry) %></td>
     <td><%= link_to 'Destroy', entry, confirm: 'Are you sure?', method: :delete %></td>

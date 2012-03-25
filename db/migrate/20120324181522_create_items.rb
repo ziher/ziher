@@ -3,6 +3,8 @@ class CreateItems < ActiveRecord::Migration
     create_table :items do |t|
       t.decimal :amount
       t.decimal :amount_one_percent
+      t.references :entry
+      t.references :category
 
       t.timestamps
     end
