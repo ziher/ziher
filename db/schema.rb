@@ -53,8 +53,6 @@ ActiveRecord::Schema.define(:version => 20120324222812) do
   create_table "items", :force => true do |t|
     t.decimal  "amount"
     t.decimal  "amount_one_percent"
-    t.integer  "entry_id"
-    t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
