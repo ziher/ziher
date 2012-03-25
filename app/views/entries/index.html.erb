@@ -19,7 +19,7 @@
     <td><%= entry.name %></td>
     <td><%= entry.document_number %></td>
     <% @categories.each do |category| %>
-      <td><%= category.name %></td>
+      <td><%= entry.get_amount_for_category(category.id) %></td>
     <% end %>
     <td><%= link_to 'Show', entry %></td>
     <td><%= link_to 'Edit', edit_entry_path(entry) %></td>
