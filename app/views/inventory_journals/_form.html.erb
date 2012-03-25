@@ -16,8 +16,8 @@
     <%= f.number_field :year %>
   </div>
   <div class="field">
-    <%= f.label :unit %><br />
-    <%= f.text_field :unit %>
+    <%= f.label :jednostka %><br />
+    <%= f.collection_select :unit_id, Unit.all, :id, :name %>
   </div>
   <div class="field">
     <%= f.label :open %><br />

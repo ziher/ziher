@@ -1,4 +1,4 @@
-<h1>Listing inventory_journals</h1>
+<h1>Książki inwentarzowe</h1>
 
 <table>
   <tr>
@@ -13,7 +13,7 @@
 <% @inventory_journals.each do |inventory_journal| %>
   <tr>
     <td><%= inventory_journal.year %></td>
-    <td><%= inventory_journal.unit %></td>
+    <td><%= inventory_journal.unit.name %></td>
     <td><%= inventory_journal.open %></td>
     <td><%= link_to 'Show', inventory_journal %></td>
     <td><%= link_to 'Edit', edit_inventory_journal_path(inventory_journal) %></td>
