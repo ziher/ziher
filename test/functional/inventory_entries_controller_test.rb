@@ -2,6 +2,7 @@ require 'test_helper'
 
 class InventoryEntriesControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:user1)
     @inventory_entry = inventory_entries(:one)
   end
 

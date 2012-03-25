@@ -1,4 +1,6 @@
 Ziher::Application.routes.draw do
+  devise_for :users
+
   resources :entries
 
   get "entry/index"

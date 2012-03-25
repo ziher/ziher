@@ -2,6 +2,7 @@ require 'test_helper'
 
 class EntriesControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:user1)
     @entry = entries(:one)
   end
 
