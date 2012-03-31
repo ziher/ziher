@@ -3,7 +3,11 @@
 one:
   amount: 9.99
   amount_one_percent: 9.99
+  entry: one
+  category: one
 
 two:
   amount: 9.99
   amount_one_percent: 9.99
+  entry: one
+  category: two

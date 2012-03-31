@@ -40,11 +40,18 @@ class EntriesController < ApplicationController
 
   # POST /entries
   # POST /entries.json
+  # creates Entry and related Items
   def create
+
     @entry = Entry.new(params[:entry])
 
+	parsed_items = ActiveSupport::JSON.decode(params[:items])
+	parsed_items.each do |item|
+		@entry.items << Item.create!(item)
+	end
+
     respond_to do |format|
-      if @entry.save
+      if @entry.save!
         format.html { redirect_to @entry, notice: 'Entry was successfully created.' }
         format.json { render json: @entry, status: :created, location: @entry }
       else

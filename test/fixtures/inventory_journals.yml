@@ -2,10 +2,10 @@
 
 one:
   year: 1
-  unit: 
+  unit: one
   open: false
 
 two:
   year: 1
-  unit: 
+  unit: two
   open: false
