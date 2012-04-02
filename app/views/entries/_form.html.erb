@@ -23,6 +23,14 @@
     <%= f.label :document_number %><br />
     <%= f.text_field :document_number %>
   </div>
+
+<% @categories.each do |category| %>
+  <div class="field">
+  <%= category.name %>: <%= @entry.get_amount_for_category(category.id) %><br/>
+
+  </div>
+<% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>

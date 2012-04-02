@@ -16,5 +16,13 @@
 </p>
 
 
+<% @categories.each do |category| %>
+  <p>
+    <b><%= category.name %></b>
+    <%= @entry.get_amount_for_category(category.id) %>
+  </p>
+<% end %>
+
+
 <%= link_to 'Edit', edit_entry_path(@entry) %> |
 <%= link_to 'Back', entries_path %>

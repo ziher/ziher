@@ -15,6 +15,7 @@ class EntriesController < ApplicationController
   # GET /entries/1.json
   def show
     @entry = Entry.find(params[:id])
+    @categories = Category.all
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,6 +27,7 @@ class EntriesController < ApplicationController
   # GET /entries/new.json
   def new
     @entry = Entry.new
+    @categories = Category.all
 
     respond_to do |format|
       format.html # new.html.erb
@@ -36,6 +38,7 @@ class EntriesController < ApplicationController
   # GET /entries/1/edit
   def edit
     @entry = Entry.find(params[:id])
+    @categories = Category.all
   end
 
   # POST /entries
@@ -45,10 +48,10 @@ class EntriesController < ApplicationController
 
     @entry = Entry.new(params[:entry])
 
-	parsed_items = ActiveSupport::JSON.decode(params[:items])
-	parsed_items.each do |item|
-		@entry.items << Item.create!(item)
-	end
+    parsed_items = ActiveSupport::JSON.decode(params[:items])
+    parsed_items.each do |item|
+      @entry.items << Item.create!(item)
+    end
 
     respond_to do |format|
       if @entry.save!
