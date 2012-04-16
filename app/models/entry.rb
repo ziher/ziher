@@ -3,6 +3,8 @@ class Entry < ActiveRecord::Base
 
 	has_many :items
 
+	accepts_nested_attributes_for :items
+
 	validates :items, :presence => true, :allow_blank => false
 	validate :cannot_have_multiple_items_in_one_category, :on => :create
 
@@ -22,7 +24,9 @@ class Entry < ActiveRecord::Base
 		end
 		categories = []
 		items.each do |item|
-			categories << item.category.id
+			if item.category != nil
+				categories << item.category.id
+			end
 		end
 
 		if categories.length != categories.uniq.length

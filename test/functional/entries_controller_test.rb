@@ -19,7 +19,19 @@ class EntriesControllerTest < ActionController::TestCase
 
   test "should create entry" do
     assert_difference('Entry.count') do
-      post :create, entry: @entry.attributes, items: @entry.items.to_json
+
+		new_hash = @entry.attributes
+		items_hash = Hash.new
+		i = 0
+		@entry.items.each do |item|
+			items_hash[i.to_s] = item.attributes
+			items_hash[i.to_s]["id"] = nil
+			i += 1
+		end
+		new_hash["items_attributes"] = items_hash
+		new_hash["id"] = nil
+
+      post :create, entry: new_hash
     end
 
     assert_redirected_to entry_path(assigns(:entry))
@@ -33,6 +45,11 @@ class EntriesControllerTest < ActionController::TestCase
   test "should get edit" do
     get :edit, id: @entry.to_param
     assert_response :success
+  end
+
+  test "should edit items when editing entry" do
+    get :edit, id: @entry.to_param
+	assert_select "input.category"
   end
 
   test "should update entry" do

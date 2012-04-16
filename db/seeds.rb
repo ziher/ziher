@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or create!d alongside the db with db:setup).
 #
@@ -28,3 +30,6 @@ e1.items << item1
 e2.items << item2
 e1.save!
 e2.save!
+
+JournalType.create!(name: "Książka finansowa")
+JournalType.create!(name: "Książka bankowa")
