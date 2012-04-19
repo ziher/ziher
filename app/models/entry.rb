@@ -3,7 +3,7 @@ class Entry < ActiveRecord::Base
 
 	has_many :items
 
-	accepts_nested_attributes_for :items
+	accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
 
 	validates :items, :presence => true, :allow_blank => false
 	validate :cannot_have_multiple_items_in_one_category, :on => :create
@@ -33,6 +33,10 @@ class Entry < ActiveRecord::Base
 			errors[:items] << 'Wpis nie moze miec kilku sum z tej samej kategorii'
 		end
 	
+	end
+
+	def reject_empty_items(attributed)
+    return attributed['amount'].to_i == 0
 	end
 end
 

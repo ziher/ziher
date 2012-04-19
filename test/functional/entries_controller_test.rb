@@ -20,16 +20,16 @@ class EntriesControllerTest < ActionController::TestCase
   test "should create entry" do
     assert_difference('Entry.count') do
 
-		new_hash = @entry.attributes
-		items_hash = Hash.new
-		i = 0
-		@entry.items.each do |item|
-			items_hash[i.to_s] = item.attributes
-			items_hash[i.to_s]["id"] = nil
-			i += 1
-		end
-		new_hash["items_attributes"] = items_hash
-		new_hash["id"] = nil
+			new_hash = @entry.attributes
+			items_hash = Hash.new
+			i = 0
+			@entry.items.each do |item|
+				items_hash[i.to_s] = item.attributes
+				items_hash[i.to_s]["id"] = nil
+				i += 1
+			end
+			new_hash["items_attributes"] = items_hash
+			new_hash["id"] = nil
 
       post :create, entry: new_hash
     end
@@ -63,5 +63,24 @@ class EntriesControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to entries_path
+  end
+
+  test "should not save empty items" do
+    # remove amount from one of the items
+    assert_difference('Item.count') do
+			@entry.items[0].amount = 0
+			new_hash = @entry.attributes
+			items_hash = Hash.new
+			i = 0
+			@entry.items.each do |item|
+				items_hash[i.to_s] = item.attributes
+				items_hash[i.to_s]["id"] = nil
+				i += 1
+			end
+			new_hash["items_attributes"] = items_hash
+			new_hash["id"] = nil
+
+			post :create, entry: new_hash
+		end
   end
 end
