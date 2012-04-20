@@ -15,7 +15,7 @@ Category.create!(name: 'Materialy', isExpense: false)
 Category.create!(name: 'Transport', isExpense: false)
 Category.create!(name: 'Wynagrodzenia', isExpense: false)
 
-user = User.create!(email: 'ziher2@example.com', password: 'ziherszmicher', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09')
+user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09')
 user.confirm!
 
 e1 = Entry.new(name: 'jakies entry', document_number: 'ey1')
