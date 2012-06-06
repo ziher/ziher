@@ -83,4 +83,11 @@ class EntriesControllerTest < ActionController::TestCase
 			post :create, entry: new_hash
 		end
   end
+
+  test "should delete items associated with entry" do
+    items_count = @entry.items.count
+    assert_difference('Item.count', items_count * -1) do
+      delete :destroy, id: @entry.to_param
+    end
+  end
 end
