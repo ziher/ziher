@@ -8,11 +8,13 @@
 </head>
 <body>
 
-| <%= link_to "dom", root_path %>
-| <%= link_to "ksiazka inwentarzowa", inventory_entries_path %>
-| <%= link_to "druzyny", units_path %>
-| <%= link_to "wplywy/wydatki", entries_path %>
-| <%= link_to "kategorie", categories_path %>
+| <%= link_to "ZiHeR 2.0", root_path %>
+| <%= link_to "Książka finansowa", entries_path %>
+| <%= link_to "Ksiażka inwentarzowa", inventory_entries_path %>
+| <%= link_to "Drużyny", units_path %>
+| <%= link_to "Kategorie", categories_path %>
+| <%= link_to "Książki", journals_path %> 
+| <%= link_to "Rodzaje książek", journal_types_path %>
 <% if user_signed_in? %>
 | <%= current_user.email %> <%= link_to "Wyloguj się", destroy_user_session_path, :method => :delete %>
 <% end %>
