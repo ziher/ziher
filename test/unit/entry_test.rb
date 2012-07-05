@@ -45,5 +45,30 @@ class EntryTest < ActiveSupport::TestCase
 
 		assert entry.save!
 	end
+
+  test "get amount for category should return 0 when there is no item for this category" do
+    entry = Entry.create
+    category = Category.create
+
+    assert_equal(0, entry.get_amount_for_category(category.id))
+  end
+
+  test "get amount for category should return 0 when item for this category has nil amount" do
+    entry = Entry.create
+    category = Category.create
+    item = Item.create(:category=>category, :amount=>nil)
+    entry.items << item
+
+    assert_equal(0, entry.get_amount_for_category(category.id))
+  end
+
+  test "get amount for category should return nonzero value when such item exists" do
+    entry = Entry.create
+    category = Category.create
+    item = Item.create(:category=>category, :amount=>5)
+    entry.items << item
+
+    assert_equal(5, entry.get_amount_for_category(category.id))
+  end
 end
 

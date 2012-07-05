@@ -8,15 +8,19 @@ class Entry < ActiveRecord::Base
 	validates :items, :presence => true, :allow_blank => false
 	validate :cannot_have_multiple_items_in_one_category, :on => :create
 
-	def get_amount_for_category(categoryID)
-		result = self.items.find(:first, :conditions=>{:category_id=>categoryID})
+	def get_amount_for_category(category_id)
+		result = self.items.find(:first, :conditions=>{:category_id=>category_id})
 
-		if result != nil
+		if result != nil && result.amount != nil
 			return result.amount
 		else
 			return 0
 		end
 	end
+
+  def has_category(category_id)
+    return get_amount_for_category(category_id) != 0
+  end
 
 	def cannot_have_multiple_items_in_one_category
 		if items.blank?
@@ -36,7 +40,7 @@ class Entry < ActiveRecord::Base
 	end
 
 	def reject_empty_items(attributed)
-    return attributed['amount'].to_i == 0
+    return attributed['amount'] == nil || attributed['amount'].to_i == 0
 	end
 end
 

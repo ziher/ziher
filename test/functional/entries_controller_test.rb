@@ -12,6 +12,11 @@ class EntriesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:entries)
   end
 
+  test "should show zeros for empty items when showing all entries" do
+    get :index
+    assert_select "td", "0" 
+  end
+
   test "should get new" do
     get :new
     assert_response :success
@@ -20,21 +25,26 @@ class EntriesControllerTest < ActionController::TestCase
   test "should create entry" do
     assert_difference('Entry.count') do
 
-			new_hash = @entry.attributes
-			items_hash = Hash.new
-			i = 0
-			@entry.items.each do |item|
-				items_hash[i.to_s] = item.attributes
-				items_hash[i.to_s]["id"] = nil
-				i += 1
-			end
-			new_hash["items_attributes"] = items_hash
-			new_hash["id"] = nil
+      new_hash = @entry.attributes
+      items_hash = Hash.new
+      i = 0
+      @entry.items.each do |item|
+        items_hash[i.to_s] = item.attributes
+        items_hash[i.to_s]["id"] = nil
+        i += 1
+      end
+      new_hash["items_attributes"] = items_hash
+      new_hash["id"] = nil
 
       post :create, entry: new_hash
     end
 
     assert_redirected_to entry_path(assigns(:entry))
+  end
+
+  test "should show all possible categories when editing existing entry" do
+    get :edit, id: @entry.to_param
+    assert_select "label", "CategoryThree"
   end
 
   test "should show entry" do
@@ -49,7 +59,7 @@ class EntriesControllerTest < ActionController::TestCase
 
   test "should edit items when editing entry" do
     get :edit, id: @entry.to_param
-	assert_select "input.category"
+    assert_select "input.category"
   end
 
   test "should update entry" do
@@ -68,20 +78,20 @@ class EntriesControllerTest < ActionController::TestCase
   test "should not save empty items" do
     # remove amount from one of the items
     assert_difference('Item.count') do
-			@entry.items[0].amount = 0
-			new_hash = @entry.attributes
-			items_hash = Hash.new
-			i = 0
-			@entry.items.each do |item|
-				items_hash[i.to_s] = item.attributes
-				items_hash[i.to_s]["id"] = nil
-				i += 1
-			end
-			new_hash["items_attributes"] = items_hash
-			new_hash["id"] = nil
+      @entry.items[0].amount = 0
+      new_hash = @entry.attributes
+      items_hash = Hash.new
+      i = 0
+      @entry.items.each do |item|
+        items_hash[i.to_s] = item.attributes
+        items_hash[i.to_s]["id"] = nil
+        i += 1
+      end
+      new_hash["items_attributes"] = items_hash
+      new_hash["id"] = nil
 
-			post :create, entry: new_hash
-		end
+      post :create, entry: new_hash
+    end
   end
 
   test "should delete items associated with entry" do

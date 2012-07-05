@@ -27,11 +27,11 @@ class EntriesController < ApplicationController
   # GET /entries/new.json
   def new
     @entry = Entry.new
-	@entry.items = Array.new
+    @entry.items = Array.new
     Category.all.each do |category|
-		@item = Item.new(:category_id => category.id)
-		@entry.items << @item
-	end
+      @item = Item.new(:category_id => category.id)
+      @entry.items << @item
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,6 +43,12 @@ class EntriesController < ApplicationController
   def edit
     @entry = Entry.find(params[:id])
     @categories = Category.all
+    Category.all.each do |category|
+      if not @entry.has_category(category.id)
+        @item = Item.new(:category_id => category.id)
+        @entry.items << @item
+      end
+    end
   end
 
   # POST /entries
