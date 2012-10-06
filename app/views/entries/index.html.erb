@@ -14,7 +14,7 @@
   </tr>
 
 <% @entries.each do |entry| %>
-  <tr>
+  <tr class="node <%= cycle("even", "odd") -%>">
     <td><%= entry.date %></td>
     <td><%= entry.name %></td>
     <td><%= entry.document_number %></td>
