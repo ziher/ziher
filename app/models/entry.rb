@@ -6,7 +6,7 @@ class Entry < ActiveRecord::Base
 	accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
 
 	validates :items, :presence => true, :allow_blank => false
-	validate :cannot_have_multiple_items_in_one_category, :on => :create
+	validate :cannot_have_multiple_items_in_one_category
 
 	def get_amount_for_category(category_id)
 		result = self.items.find(:first, :conditions=>{:category_id=>category_id})
@@ -19,7 +19,8 @@ class Entry < ActiveRecord::Base
 	end
 
   def has_category(category_id)
-    return get_amount_for_category(category_id) != 0
+		existing_item = self.items.find(:first, :conditions=>{:category_id=>category_id})
+    return (existing_item != nil)
   end
 
 	def cannot_have_multiple_items_in_one_category

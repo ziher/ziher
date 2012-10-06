@@ -47,6 +47,13 @@ class EntriesControllerTest < ActionController::TestCase
     assert_select "label", "CategoryThree"
   end
 
+  test "should not show duplicate categories when editing existing entry" do
+    get :edit, id: @entry.to_param
+    put :update, id: @entry.to_param, entry: @entry.attributes
+    get :edit, id: @entry.to_param
+    assert_select "input.category", Category.all.count
+  end
+
   test "should show entry" do
     get :show, id: @entry.to_param
     assert_response :success
