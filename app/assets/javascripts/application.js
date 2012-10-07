@@ -13,6 +13,10 @@
 $(function() {
     $.datepicker.setDefaults( $.datepicker.regional[ "pl" ] );
     $.datepicker.setDefaults({ dateFormat: "yy-mm-dd" });
+    $.datepicker.setDefaults({ numberOfMonths: 3 });
+    $.datepicker.setDefaults({ showCurrentAtPos: 2 }); //show current and 2 previous months
+    $.datepicker.setDefaults({ showOtherMonths: true });
+    //$.datepicker.setDefaults({ selectOtherMonths: true }); //we show multiple months so this doesn't have much sense
     $("#entry_date").datepicker();
 });
 
