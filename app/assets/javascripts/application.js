@@ -6,4 +6,13 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.datepicker
+//= require jquery.ui.datepicker-pl
 //= require_tree .
+
+$(function() {
+    $.datepicker.setDefaults( $.datepicker.regional[ "pl" ] );
+    $.datepicker.setDefaults({ dateFormat: "yy-mm-dd" });
+    $("#entry_date").datepicker();
+});
+
