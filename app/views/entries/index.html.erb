@@ -1,26 +1,55 @@
 <h1>Książka finansowa: wpływy / wydatki</h1>
 
 <table>
-  <tr>
-    <th>Data</th>
-    <th>Nazwa</th>
-    <th>Numer dokumentu</th>
-    <% @categories.each do |category| %>
-      <th><%= category.name %></th>
-    <% end %>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <thead>
+
+    <tr>
+      <th rowspan="2">Lp.</th>
+      <th rowspan="2">Data</th>
+      <th rowspan="2">Treść</th>
+      <th colspan="<%= Category.all.select{ |c| !c.isExpense}.count %>">Wpływy szczegółowo</th>
+      <th rowspan="2">Wpływy razem</th>
+      <th rowspan="2">Wydatki razem</th>
+      <th colspan="<%= Category.all.select{ |c| c.isExpense}.count %>">Wydatki szczegółowo</th>
+      <th rowspan="3" colspan="3">Akcja</th>
+    </tr>
+
+    <tr>
+      <% @categories.each do |category| %>
+        <% if category.isExpense == false %>
+          <th><%= category.name %></th>
+        <% end %>
+      <% end %>
+      <% @categories.each do |category| %>
+        <% if category.isExpense == true %>
+          <th><%= category.name %></th>
+        <% end %>
+      <% end %>
+    </tr>
+  </thead>
+
 
 <% @entries.each do |entry| %>
   <tr class="node <%= cycle("even", "odd") -%>">
+    <td>lp</td>
     <td><%= entry.date %></td>
-    <td><%= entry.name %></td>
-    <td><%= entry.document_number %></td>
+    <td><%= entry.name %><br/><%= entry.document_number %></td>
+
     <% @categories.each do |category| %>
-      <td><%= entry.get_amount_for_category(category.id) %></td>
+      <% if category.isExpense == false %>
+        <td><%= entry.get_amount_for_category(category.id) %></td>
+      <% end %>
     <% end %>
+
+    <td><%= entry.incomeSum %></td>
+    <td><%= entry.expenseSum %></td>
+
+    <% @categories.each do |category| %>
+      <% if category.isExpense == true %>
+        <td><%= entry.get_amount_for_category(category.id) %></td>
+      <% end %>
+    <% end %>
+
     <td><%= link_to 'Pokaż', entry %></td>
     <td><%= link_to 'Edytuj', edit_entry_path(entry) %></td>
     <td><%= link_to 'Usuń', entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>

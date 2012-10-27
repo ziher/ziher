@@ -43,5 +43,26 @@ class Entry < ActiveRecord::Base
 	def reject_empty_items(attributed)
     return attributed['amount'] == nil || attributed['amount'].to_i == 0
 	end
-end
 
+  def incomeSum
+    result = 0
+    items.each do |item|
+      if item.category.isExpense == false && item.amount != nil
+        result += item.amount
+      end
+    end
+
+    return result
+  end
+
+  def expenseSum
+    result = 0
+    items.each do |item|
+      if item.category.isExpense == true && item.amount != nil
+        result += item.amount
+      end
+    end
+
+    return result
+  end
+end

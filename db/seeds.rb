@@ -8,12 +8,12 @@
 #   cities = City.create!([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create!(name: 'Emanuel', city: cities.first)
 
-c1 = Category.create!(name: 'Darowizny', isExpense: true)
-c2 = Category.create!(name: 'Akcje zarobkowe', isExpense: true)
-c3 = Category.create!(name: 'Transport', isExpense: false)
-c4 = Category.create!(name: 'Wyposazenie', isExpense: false)
-c5 = Category.create!(name: 'Materialy', isExpense: false)
-Category.create!(name: 'Wynagrodzenia', isExpense: false)
+c1 = Category.create!(name: 'Darowizny', isExpense: false)
+c2 = Category.create!(name: 'Akcje zarobkowe', isExpense: false)
+c3 = Category.create!(name: 'Transport', isExpense: true)
+c4 = Category.create!(name: 'Wyposazenie', isExpense: true)
+c5 = Category.create!(name: 'Materialy', isExpense: true)
+Category.create!(name: 'Wynagrodzenia', isExpense: true)
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09')
 user.confirm!
