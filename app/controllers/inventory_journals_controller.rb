@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 class InventoryJournalsController < ApplicationController
   # GET /inventory_journals
   # GET /inventory_journals.json
