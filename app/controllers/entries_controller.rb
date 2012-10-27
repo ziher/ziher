@@ -59,7 +59,7 @@ class EntriesController < ApplicationController
 
     respond_to do |format|
       if @entry.save!
-        format.html { redirect_to @entry, notice: 'Entry was successfully created.' }
+        format.html { redirect_to @entry, notice: 'Wpis utworzony' }
         format.json { render json: @entry, status: :created, location: @entry }
       else
         format.html { render action: "new" }
@@ -75,7 +75,7 @@ class EntriesController < ApplicationController
 
     respond_to do |format|
       if @entry.update_attributes(params[:entry])
-        format.html { redirect_to @entry, notice: 'Entry was successfully updated.' }
+        format.html { redirect_to @entry, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

@@ -44,7 +44,7 @@ class InventoryJournalsController < ApplicationController
 
     respond_to do |format|
       if @inventory_journal.save
-        format.html { redirect_to @inventory_journal, notice: 'Inventory journal was successfully created.' }
+        format.html { redirect_to @inventory_journal, notice: 'Książka utworzona.' }
         format.json { render json: @inventory_journal, status: :created, location: @inventory_journal }
       else
         format.html { render action: "new" }
@@ -60,7 +60,7 @@ class InventoryJournalsController < ApplicationController
 
     respond_to do |format|
       if @inventory_journal.update_attributes(params[:inventory_journal])
-        format.html { redirect_to @inventory_journal, notice: 'Inventory journal was successfully updated.' }
+        format.html { redirect_to @inventory_journal, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

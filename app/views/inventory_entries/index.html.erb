@@ -2,13 +2,13 @@
 
 <table>
   <tr>
-    <th>Date</th>
-    <th>Name</th>
-    <th>Document number</th>
-    <th>Amount</th>
-    <th>Unit price</th>
-    <th>Source</th>
-    <th>Stock number</th>
+    <th>Data</th>
+    <th>Nazwa</th>
+    <th>Numer dokumentu</th>
+    <th>Wartość</th>
+    <th>Cena jednostkowa</th>
+    <th>Źródło</th>
+    <th>Numer inwentarzowy</th>
     <th></th>
     <th></th>
     <th></th>
@@ -23,13 +23,12 @@
     <td><%= inventory_entry.unit_price %></td>
     <td><%= inventory_entry.source %></td>
     <td><%= inventory_entry.stock_number %></td>
-    <td><%= link_to 'Show', inventory_entry %></td>
-    <td><%= link_to 'Edit', edit_inventory_entry_path(inventory_entry) %></td>
-    <td><%= link_to 'Destroy', inventory_entry, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to 'Edytuj', edit_inventory_entry_path(inventory_entry) %></td>
+    <td><%= link_to 'Usuń', inventory_entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Inventory entry', new_inventory_entry_path %>
+<%= link_to 'Nowy wpis', new_inventory_entry_path %>

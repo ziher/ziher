@@ -11,13 +11,13 @@
 <% @journal_types.each do |journal_type| %>
   <tr>
     <td><%= journal_type.name %></td>
-    <td><%= link_to 'Show', journal_type %></td>
-    <td><%= link_to 'Edit', edit_journal_type_path(journal_type) %></td>
-    <td><%= link_to 'Destroy', journal_type, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to 'Pokaż', journal_type %></td>
+    <td><%= link_to 'Edytuj', edit_journal_type_path(journal_type) %></td>
+    <td><%= link_to 'Usuń', journal_type, confirm: 'Na pewno usunąć rodzaj książki?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Journal type', new_journal_type_path %>
+<%= link_to 'Nowy rodzaj książki', new_journal_type_path %>

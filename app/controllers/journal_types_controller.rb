@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 class JournalTypesController < ApplicationController
   # GET /journal_types
   # GET /journal_types.json
@@ -44,7 +46,7 @@ class JournalTypesController < ApplicationController
 
     respond_to do |format|
       if @journal_type.save
-        format.html { redirect_to @journal_type, notice: 'Journal type was successfully created.' }
+        format.html { redirect_to @journal_type, notice: 'Rodzaj książki utworzony.' }
         format.json { render json: @journal_type, status: :created, location: @journal_type }
       else
         format.html { render action: "new" }
@@ -60,7 +62,7 @@ class JournalTypesController < ApplicationController
 
     respond_to do |format|
       if @journal_type.update_attributes(params[:journal_type])
-        format.html { redirect_to @journal_type, notice: 'Journal type was successfully updated.' }
+        format.html { redirect_to @journal_type, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
