@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class EntryTest < ActiveSupport::TestCase
-  fixtures :entries
+  fixtures :categories
 
   test "should not save entry without items" do
     entry = Entry.new
@@ -37,8 +37,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should save entry with items of different categories" do
     entry = Entry.new
-    category1 = Category.create
-    category2 = Category.create
+    category1 = categories(:one)
+    category2 = categories(:two)
     item1 = Item.new(:category => category1)
     item2 = Item.new(:category => category2)
     entry.items << item1 << item2
@@ -48,8 +48,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should add items to existing entry" do
     entry = Entry.create
-    category1 = Category.create
-    category2 = Category.create
+    category1 = categories(:one)
+    category2 = categories(:two)
     item1 = Item.new(:category => category1)
     entry.items << item1
     entry.save!

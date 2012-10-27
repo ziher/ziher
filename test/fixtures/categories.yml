@@ -3,11 +3,14 @@
 one:
   name: CategoryOne
   isExpense: false
+  order: 1
 
 two:
   name: CategoryTwo
   isExpense: false
+  order: 2
 
 three:
   name: CategoryThree
   isExpense: false
+  order: 3
