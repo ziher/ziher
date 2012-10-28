@@ -1,5 +1,9 @@
 Ziher::Application.routes.draw do
+  get "users/new"
+  post "users" => "users#create"
+
   devise_for :users
+  resources :users
 
   resources :entries
 

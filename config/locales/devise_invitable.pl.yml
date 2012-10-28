@@ -1,0 +1,16 @@
+xx:
+  devise:
+    invitations:
+      send_instructions: 'Zaprosznie zostało wysłane na adres %{email}.'
+      invitation_token_invalid: 'Podany kod zaproszenia jest nieprawidłowy!'
+      updated: 'Hasło zostało zapisane. Jesteś teraz zalogowana(-ny).'
+      no_invitations_remaining: "No invitations remaining" # TODO: Przetłumaczyć na polski
+      new:
+        header: "Nowy użytkownik"
+        submit_button: "Wyślij zaproszenie"
+      edit:
+        header: "Ustaw swoje hasło"
+        submit_button: "Ustaw hasło"
+    mailer:
+      invitation_instructions:
+        subject: 'Zaproszenie do ZiHeR'

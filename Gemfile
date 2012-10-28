@@ -36,4 +36,8 @@ group :test do
   gem 'turn', '0.8.2'#, :require => false
 end
 
+gem 'rails-i18n'
+
 gem 'devise'
+gem 'devise-i18n'
+gem 'devise_invitable'

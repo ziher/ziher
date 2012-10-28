@@ -1,0 +1,9 @@
+pl:
+  helpers:
+    label:
+      user:
+        email: "E-mail"
+        password: "Hasło"
+        remember_me: "Zapamiętaj sobie"
+  active: "aktywny"
+  invited: "zaproszony"

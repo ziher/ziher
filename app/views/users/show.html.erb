@@ -1,0 +1,4 @@
+<h1>Użytkownik <%= @user.email %></h1>
+<p>Adres e-mail: <%= @user.email if @user.email %></p>
+<!--%= debug @user %-->
+<p><%= link_to "Powrót", users_path %></p>
