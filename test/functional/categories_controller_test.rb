@@ -12,6 +12,30 @@ class CategoriesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:categories)
   end
 
+  test "index should have selecting years" do
+    get :index
+    years = Category.get_all_years()
+    years.each do |year|
+      assert_select "select option[value=#{year}]"
+    end
+  end
+
+  test "index should have selecting expense or income" do
+    get :index
+    assert_select "select[name='isExpense'] option[value=true]"
+    assert_select "select[name='isExpense'] option[value=false]"
+  end
+
+  test "index should have search button" do
+    get :index
+    assert_select "input[type=submit][value=#{I18n.t('search')}]"
+  end
+
+  test "should search" do
+    get :index, year: 2012, isExpense: true
+    assert_select "tr", 2
+  end
+
   test "should get new" do
     get :new
     assert_response :success

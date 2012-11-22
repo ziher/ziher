@@ -5,5 +5,13 @@ pl:
         email: "E-mail"
         password: "Hasło"
         remember_me: "Zapamiętaj sobie"
+      category:
+        name: "Nazwa"
+        isExpense: "Wydatek"
+  category:
+    isExpense: "Wydatek"
+    isIncome: "Przychód"
   active: "aktywny"
   invited: "zaproszony"
+  save: "Zapisz"
+  search: "Szukaj"

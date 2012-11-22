@@ -1,18 +1,37 @@
 <h1>Kategorie</h1>
 
+<form method="GET">
+  <select name="year">
+    <% @years.each do |year| %>
+      <option value="<%=year%>"><%=year%></option>
+    <% end %>
+  </select>
+  <select name="isExpense">
+    <% isExpense = I18n.t('category.isExpense') %>
+    <% isIncome = I18n.t('category.isIncome') %>
+    <option value="true"><%=isExpense%></option>
+    <option value="false"><%=isIncome%></option>
+  </select>
+  <input type="submit" value="<%=I18n.t('search')%>"/>
+</form>
+
+<% if @year and @isExpense %>
 <table>
   <tr>
     <th>Nazwa</th>
     <th>Wydatek?</th>
+    <th>Rok</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
 
-<% @categories.each do |category| %>
+<% filtered_categories = Category.find_by_year_and_type(@year, @isExpense == "true") %>
+<% filtered_categories.each do |category| %>
   <tr>
     <td><%= category.name %></td>
     <td><%= category.isExpense %></td>
+    <td><%= category.year %></td>
     <td><%= link_to 'Pokaż', category %></td>
     <td><%= link_to 'Edytuj', edit_category_path(category) %></td>
     <td><%= link_to 'Usuń', category, confirm: 'Na pewno usunąć kategorię?', method: :delete %></td>
@@ -23,3 +42,5 @@
 <br />
 
 <%= link_to 'Nowa kategoria', new_category_path %>
+
+<% end %>

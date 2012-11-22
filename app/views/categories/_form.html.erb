@@ -12,14 +12,14 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :nazwa %><br />
+    <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :wydatek %><br />
+    <%= f.label :isExpense %><br />
     <%= f.check_box :isExpense %>
   </div>
   <div class="actions">
-    <%= f.submit "Zapisz"%>
+    <%= f.submit I18n.t(:save)%>
   </div>
 <% end %>

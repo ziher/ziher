@@ -44,7 +44,7 @@ class Entry < ActiveRecord::Base
     return attributed['amount'] == nil || attributed['amount'].to_i == 0
 	end
 
-  def incomeSum
+  def income_sum
     result = 0
     items.each do |item|
       if item.category.isExpense == false && item.amount != nil
@@ -55,7 +55,7 @@ class Entry < ActiveRecord::Base
     return result
   end
 
-  def expenseSum
+  def expense_sum
     result = 0
     items.each do |item|
       if item.category.isExpense == true && item.amount != nil

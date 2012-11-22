@@ -3,14 +3,32 @@
 one:
   name: CategoryOne
   isExpense: false
-  order: 1
+  year: 2014
 
 two:
   name: CategoryTwo
   isExpense: false
   order: 2
+  year: 2012
 
 three:
   name: CategoryThree
   isExpense: false
+  year: 2013
+
+four:
+  name: CategoryFour
+  isExpense: false
+  year: 2013
+
+five:
+  name: CategoryFive
+  isExpense: true
   order: 3
+  year: 2012
+
+six:
+  name: CategorySix
+  isExpense: true
+  order: 1
+  year: 2012
