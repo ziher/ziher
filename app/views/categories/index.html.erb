@@ -1,18 +1,11 @@
 <h1>Kategorie</h1>
 
 <form method="GET">
-  <select name="year">
-    <% @years.each do |year| %>
-      <option value="<%=year%>"><%=year%></option>
-    <% end %>
-  </select>
-  <select name="isExpense">
-    <% isExpense = I18n.t('category.isExpense') %>
-    <% isIncome = I18n.t('category.isIncome') %>
-    <option value="true"><%=isExpense%></option>
-    <option value="false"><%=isIncome%></option>
-  </select>
-  <input type="submit" value="<%=I18n.t('search')%>"/>
+  <%= select_tag "year", options_for_select(@years, @year) %>
+  <% isExpense = I18n.t('category.isExpense') %>
+  <% isIncome = I18n.t('category.isIncome') %>
+  <%= select_tag "isExpense", options_for_select([[isExpense, true], [isIncome, false]], @isExpense) %>
+  <%= submit_tag I18n.t('search') %>
 </form>
 
 <% if @year and @isExpense %>

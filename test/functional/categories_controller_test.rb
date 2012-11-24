@@ -31,9 +31,15 @@ class CategoriesControllerTest < ActionController::TestCase
     assert_select "input[type=submit][value=#{I18n.t('search')}]"
   end
 
-  test "should search" do
+  test "should search by selected criteria" do
     get :index, year: 2012, isExpense: true
     assert_select "tr", 2
+  end
+
+  test "selected criteria should stay selected" do
+    get :index, year: 2012, isExpense: true
+    assert_select "select[name='year'] option[selected][value='2012']"
+    assert_select "select[name='isExpense'] option[selected][value='true']"
   end
 
   test "should get new" do
