@@ -15,7 +15,9 @@
 | <%= link_to "Kategorie", categories_path %>
 | <%= link_to "Książki", journals_path %> 
 | <%= link_to "Rodzaje książek", journal_types_path %>
+<% if user_signed_in? && current_user.is_superadmin %>
 | <%= link_to "Użytkownicy", users_path %>
+<% end %>
 <% if user_signed_in? %>
 | <%= current_user.email %> <%= link_to "Wyloguj się", destroy_user_session_path, :method => :delete %>
 <% end %>

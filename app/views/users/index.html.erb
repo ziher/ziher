@@ -7,22 +7,26 @@ table.users tr.invited td { color: #aaa; }
   <tr>
     <th>E-mail</th>
     <th>Status</th>
-    <th></th>
-<!--    <th></th>
-    <th></th>-->
+    <th>Superadmin</th>
+    <th colspan="3">Akcja</th>
   </tr>
 
 <% @users.each do |user| %>
   <tr class="<%= user.status %>">
     <td><%= user.email %></td>
     <td><%= I18n.t(user.status) %></td>
+    <td><%= user.is_superadmin ? "TAK" : "nie" %></td>
     <td><%= link_to 'Pokaż', user %></td>
-<!--    <td><%= link_to 'Edytuj', edit_user_path(user) %></td>
-    <td><%= link_to 'Usuń', user, confirm: 'Na pewno usunąć użytkownika?', method: :delete %></td>-->
+    <% if current_user.is_superadmin %>
+      <!--<td><%= link_to 'Edytuj', edit_user_path(user) %></td>-->
+      <td><%= link_to 'Usuń', user, confirm: 'Na pewno usunąć użytkownika?', method: :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
 
 <br />
 
+<% if current_user.is_superadmin %>
 <%= link_to "Nowy użytkownik", new_user_invitation_path, :accesskey => 'N' %>
+<% end %>

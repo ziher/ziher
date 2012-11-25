@@ -1,7 +1,7 @@
 # Additional translations at https://github.com/plataformatec/devise/wiki/I18n
 # TODO: Przetłumaczyć poniższe teksty na polski
 
-xx:
+pl:
   errors:
     messages:
       expired: "has expired, please request a new one"
