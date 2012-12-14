@@ -16,6 +16,9 @@ class JournalsController < ApplicationController
   # GET /journals/1.json
   def show
     @journal = Journal.find(params[:id])
+    @categories_expense = Category.find_by_year_and_type(@journal.year, true)
+    @categories_income = Category.find_by_year_and_type(@journal.year, false)
+    @entries = @journal.entries
 
     respond_to do |format|
       format.html # show.html.erb

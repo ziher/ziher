@@ -2,6 +2,7 @@ class Entry < ActiveRecord::Base
 	include ActiveModel::Validations
 
 	has_many :items, dependent: :destroy
+  belongs_to :journal
 
 	accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
 

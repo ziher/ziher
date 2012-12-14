@@ -1,15 +1,54 @@
-<p id="notice"><%= notice %></p>
+<h1><%=@journal.name%>, <%=@journal.year%></h1>
 
-<p>
-  <b>Rok:</b>
-  <%= @journal.year %>
-</p>
+<table>
+  <thead>
 
-<p>
-  <b>Rodzaj:</b>
-  <%= @journal.journal_type.name %>
-</p>
+    <tr>
+      <th rowspan="2">Lp.</th>
+      <th rowspan="2">Data</th>
+      <th rowspan="2">Treść</th>
+      <th colspan="<%= @categories_income.count %>">Wpływy szczegółowo</th>
+      <th rowspan="2">Wpływy razem</th>
+      <th rowspan="2">Wydatki razem</th>
+      <th colspan="<%= @categories_expense.count %>">Wydatki szczegółowo</th>
+      <th rowspan="3" colspan="3">Akcja</th>
+    </tr>
+
+    <tr>
+      <% @categories_income.each do |category| %>
+        <th><%= category.name %></th>
+      <% end %>
+      <% @categories_expense.each do |category| %>
+        <th><%= category.name %></th>
+      <% end %>
+    </tr>
+  </thead>
 
 
-<%= link_to 'Edycja', edit_journal_path(@journal) %> |
-<%= link_to 'Wstecz', journals_path %>
+<% @entries.each do |entry| %>
+  <tr class="node <%= cycle("even", "odd") -%>">
+    <td>lp</td>
+    <td><%= entry.date %></td>
+    <td><%= entry.name %><br/><%= entry.document_number %></td>
+
+    <% @categories_income.each do |category| %>
+      <td><%= entry.get_amount_for_category(category.id) %></td>
+    <% end %>
+
+    <td><%= entry.income_sum %></td>
+    <td><%= entry.expense_sum %></td>
+
+    <% @categories_expense.each do |category| %>
+        <td><%= entry.get_amount_for_category(category.id) %></td>
+    <% end %>
+
+    <td><%= link_to 'Pokaż', entry %></td>
+    <td><%= link_to 'Edytuj', edit_entry_path(entry) %></td>
+    <td><%= link_to 'Usuń', entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nowy wpis', new_entry_path %>

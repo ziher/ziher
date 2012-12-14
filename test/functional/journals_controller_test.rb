@@ -12,6 +12,11 @@ class JournalsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:journals)
   end
 
+  test "should show zeros for empty items when showing all entries" do
+    get :show, id: @journal.to_param
+    assert_select "td", "0" 
+  end
+
   test "should get new" do
     get :new
     assert_response :success

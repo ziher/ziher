@@ -2,8 +2,9 @@
 
 <table>
   <tr>
-    <th>Rok</th>
-    <th>Rodzaj</th>
+    <th><%=t("journal.name")%></th>
+    <th><%=t("journal.year")%></th>
+    <th><%=t("journal.journal_type")%></th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,9 +12,10 @@
 
 <% @journals.each do |journal| %>
   <tr>
+    <td><%= journal.name %></td>
     <td><%= journal.year %></td>
     <td><%= journal.journal_type.name %></td>
-    <td><%= link_to 'Pokaż', journal %></td>
+    <td><%= link_to 'Pokaż wpisy', journal %></td>
     <td><%= link_to 'Edytuj', edit_journal_path(journal) %></td>
     <td><%= link_to 'Usuń', journal, confirm: 'Na pewno?', method: :delete %></td>
   </tr>

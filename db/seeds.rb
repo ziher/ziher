@@ -53,5 +53,12 @@ e3.save!
 e4.save!
 e5.save!
 
-JournalType.create!(name: "Książka finansowa")
+type1 = JournalType.create!(name: "Książka finansowa")
 JournalType.create!(name: "Książka bankowa")
+
+journal1 = Journal.create!(name: "Ksiazka finansowa gotówkowa", year: 2012, journal_type: type1)
+journal2 = Journal.create!(name: "Ksiazka finansowa jakiegoś innego typu", year: 2012, journal_type: type1)
+journal1.entries = [e1, e2, e3]
+journal2.entries = [e4, e5]
+journal1.save!
+journal2.save!

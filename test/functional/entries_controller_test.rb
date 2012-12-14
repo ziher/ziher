@@ -12,11 +12,6 @@ class EntriesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:entries)
   end
 
-  test "should show zeros for empty items when showing all entries" do
-    get :index
-    assert_select "td", "0" 
-  end
-
   test "should get new" do
     get :new
     assert_response :success

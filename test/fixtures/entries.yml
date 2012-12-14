@@ -4,8 +4,10 @@ one:
   date: 2012-03-24
   name: EntryOne
   document_number: MyString
+  journal: one
 
 two:
   date: 2012-03-24
   name: EntryTwo
   document_number: MyString
+  journal: one
