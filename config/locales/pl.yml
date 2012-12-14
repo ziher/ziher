@@ -8,6 +8,10 @@ pl:
       category:
         name: "Nazwa"
         is_expense: "Wydatek"
+      journal:
+        name: "Nazwa"
+        year: "Rok"
+        journal_type: "Rodzaj"
   category:
     is_expense: "Wydatek"
     is_income: "Przychód"

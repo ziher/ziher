@@ -12,14 +12,18 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :rok %><br />
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :year %><br />
     <%= f.number_field :year %>
   </div>
   <div class="field">
-    <%= f.label :rodzaj %><br />
+    <%= f.label :journal_type %><br />
     <%= f.collection_select :journal_type_id, JournalType.all, :id, :name %>
   </div>
   <div class="actions">
-    <%= f.submit "Zapisz" %>
+    <%= f.submit I18n.t(:save) %>
   </div>
 <% end %>
