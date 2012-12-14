@@ -21,7 +21,7 @@ unit1 = Unit.create!(name: 'Jedrkowa')
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
 user.confirm!
-user2 = User.create!(email: 'jedrek@localhost.localdomain', password: 'jedrek', confirmted_at: '2012-11-24 23:14:00', confirmation_sent_at: '2012-11-24 23:13:00', is_superadmin: true)
+user2 = User.create!(email: 'jedrek@localhost.localdomain', password: 'jedrek', confirmed_at: '2012-11-24 23:14:00', confirmation_sent_at: '2012-11-24 23:13:00', is_superadmin: true)
 user2.confirm!
 
 user2.units = [unit1]
