@@ -47,7 +47,7 @@ class Entry < ActiveRecord::Base
   def income_sum
     result = 0
     items.each do |item|
-      if item.category.isExpense == false && item.amount != nil
+      if item.category.is_expense == false && item.amount != nil
         result += item.amount
       end
     end
@@ -58,7 +58,7 @@ class Entry < ActiveRecord::Base
   def expense_sum
     result = 0
     items.each do |item|
-      if item.category.isExpense == true && item.amount != nil
+      if item.category.is_expense == true && item.amount != nil
         result += item.amount
       end
     end

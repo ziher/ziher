@@ -10,7 +10,7 @@ class Category < ActiveRecord::Base
     return years.uniq.sort
   end
 
-  def Category.find_by_year_and_type(year, isExpense)
-    Category.find(:all, :conditions => {:year => year, :isExpense => isExpense}, :order => "'order' ASC")
+  def Category.find_by_year_and_type(year, is_expense)
+    Category.find(:all, :conditions => {:year => year, :is_expense => is_expense}, :order => "'order' ASC")
   end
 end

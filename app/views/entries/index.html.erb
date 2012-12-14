@@ -7,21 +7,21 @@
       <th rowspan="2">Lp.</th>
       <th rowspan="2">Data</th>
       <th rowspan="2">Treść</th>
-      <th colspan="<%= Category.all.select{ |c| !c.isExpense}.count %>">Wpływy szczegółowo</th>
+      <th colspan="<%= Category.all.select{ |c| !c.is_expense}.count %>">Wpływy szczegółowo</th>
       <th rowspan="2">Wpływy razem</th>
       <th rowspan="2">Wydatki razem</th>
-      <th colspan="<%= Category.all.select{ |c| c.isExpense}.count %>">Wydatki szczegółowo</th>
+      <th colspan="<%= Category.all.select{ |c| c.is_expense}.count %>">Wydatki szczegółowo</th>
       <th rowspan="3" colspan="3">Akcja</th>
     </tr>
 
     <tr>
       <% @categories.each do |category| %>
-        <% if category.isExpense == false %>
+        <% if category.is_expense == false %>
           <th><%= category.name %></th>
         <% end %>
       <% end %>
       <% @categories.each do |category| %>
-        <% if category.isExpense == true %>
+        <% if category.is_expense == true %>
           <th><%= category.name %></th>
         <% end %>
       <% end %>
@@ -36,7 +36,7 @@
     <td><%= entry.name %><br/><%= entry.document_number %></td>
 
     <% @categories.each do |category| %>
-      <% if category.isExpense == false %>
+      <% if category.is_expense == false %>
         <td><%= entry.get_amount_for_category(category.id) %></td>
       <% end %>
     <% end %>
@@ -45,7 +45,7 @@
     <td><%= entry.expense_sum %></td>
 
     <% @categories.each do |category| %>
-      <% if category.isExpense == true %>
+      <% if category.is_expense == true %>
         <td><%= entry.get_amount_for_category(category.id) %></td>
       <% end %>
     <% end %>

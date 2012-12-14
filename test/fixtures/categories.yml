@@ -2,33 +2,33 @@
 
 one:
   name: CategoryOne
-  isExpense: false
+  is_expense: false
   year: 2014
 
 two:
   name: CategoryTwo
-  isExpense: false
+  is_expense: false
   order: 2
   year: 2012
 
 three:
   name: CategoryThree
-  isExpense: false
+  is_expense: false
   year: 2013
 
 four:
   name: CategoryFour
-  isExpense: false
+  is_expense: false
   year: 2013
 
 five:
   name: CategoryFive
-  isExpense: true
+  is_expense: true
   order: 3
   year: 2012
 
 six:
   name: CategorySix
-  isExpense: true
+  is_expense: true
   order: 1
   year: 2012

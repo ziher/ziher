@@ -22,8 +22,8 @@ class CategoriesControllerTest < ActionController::TestCase
 
   test "index should have selecting expense or income" do
     get :index
-    assert_select "select[name='isExpense'] option[value=true]"
-    assert_select "select[name='isExpense'] option[value=false]"
+    assert_select "select[name='is_expense'] option[value=true]"
+    assert_select "select[name='is_expense'] option[value=false]"
   end
 
   test "index should have search button" do
@@ -32,14 +32,14 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   test "should search by selected criteria" do
-    get :index, year: 2012, isExpense: true
+    get :index, year: 2012, is_expense: true
     assert_select "tr", 2
   end
 
   test "selected criteria should stay selected" do
-    get :index, year: 2012, isExpense: true
+    get :index, year: 2012, is_expense: true
     assert_select "select[name='year'] option[selected][value='2012']"
-    assert_select "select[name='isExpense'] option[selected][value='true']"
+    assert_select "select[name='is_expense'] option[selected][value='true']"
   end
 
   test "should get new" do

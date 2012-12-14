@@ -8,14 +8,14 @@
 #   cities = City.create!([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create!(name: 'Emanuel', city: cities.first)
 
-c1 = Category.create!(name: 'Darowizny', isExpense: false, year: 2012)
-c2 = Category.create!(name: 'Akcje zarobkowe', isExpense: false, year: 2012)
-c3 = Category.create!(name: 'Transport', isExpense: true, year: 2012)
-c4 = Category.create!(name: 'Wyposazenie', isExpense: true, year: 2012)
-c5 = Category.create!(name: 'Materialy', isExpense: true, year: 2012)
-Category.create!(name: 'Wynagrodzenia', isExpense: true, year: 2012)
-Category.create!(name: 'Wynagrodzenia', isExpense: true, year: 2011)
-Category.create!(name: 'Wyposazenie', isExpense: true, year: 2011)
+c1 = Category.create!(name: 'Darowizny', is_expense: false, year: 2012)
+c2 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2012)
+c3 = Category.create!(name: 'Transport', is_expense: true, year: 2012)
+c4 = Category.create!(name: 'Wyposazenie', is_expense: true, year: 2012)
+c5 = Category.create!(name: 'Materialy', is_expense: true, year: 2012)
+Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2012)
+Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2011)
+Category.create!(name: 'Wyposazenie', is_expense: true, year: 2011)
 
 unit1 = Unit.create!(name: 'Jedrkowa')
 

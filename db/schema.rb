@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 20121125210735) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
-    t.boolean  "isExpense"
+    t.boolean  "is_expense"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "order"

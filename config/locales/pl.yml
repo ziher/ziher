@@ -7,10 +7,10 @@ pl:
         remember_me: "Zapamiętaj sobie"
       category:
         name: "Nazwa"
-        isExpense: "Wydatek"
+        is_expense: "Wydatek"
   category:
-    isExpense: "Wydatek"
-    isIncome: "Przychód"
+    is_expense: "Wydatek"
+    is_income: "Przychód"
   active: "aktywny"
   invited: "zaproszony"
   save: "Zapisz"

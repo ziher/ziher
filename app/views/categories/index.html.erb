@@ -2,13 +2,13 @@
 
 <form method="GET">
   <%= select_tag "year", options_for_select(@years, @year) %>
-  <% isExpense = I18n.t('category.isExpense') %>
-  <% isIncome = I18n.t('category.isIncome') %>
-  <%= select_tag "isExpense", options_for_select([[isExpense, true], [isIncome, false]], @isExpense) %>
+  <% is_expense = I18n.t('category.is_expense') %>
+  <% is_income = I18n.t('category.is_income') %>
+  <%= select_tag "is_expense", options_for_select([[is_expense, true], [is_income, false]], @is_expense) %>
   <%= submit_tag I18n.t('search') %>
 </form>
 
-<% if @year and @isExpense %>
+<% if @year and @is_expense %>
 <table>
   <tr>
     <th>Nazwa</th>
@@ -19,11 +19,11 @@
     <th></th>
   </tr>
 
-<% filtered_categories = Category.find_by_year_and_type(@year, @isExpense == "true") %>
+<% filtered_categories = Category.find_by_year_and_type(@year, @is_expense == "true") %>
 <% filtered_categories.each do |category| %>
   <tr>
     <td><%= category.name %></td>
-    <td><%= category.isExpense %></td>
+    <td><%= category.is_expense %></td>
     <td><%= category.year %></td>
     <td><%= link_to 'Pokaż', category %></td>
     <td><%= link_to 'Edytuj', edit_category_path(category) %></td>

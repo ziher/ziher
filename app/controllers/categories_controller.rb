@@ -5,7 +5,7 @@ class CategoriesController < ApplicationController
     @categories = Category.all
     @years = Category.get_all_years()
     @year = params[:year]
-    @isExpense = params[:isExpense]
+    @is_expense = params[:is_expense]
 
     respond_to do |format|
       format.html # index.html.erb
