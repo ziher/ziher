@@ -4,6 +4,7 @@ class JournalsControllerTest < ActionController::TestCase
   setup do
     sign_in users(:user1)
     @journal = journals(:one)
+    @new_journal = Journal.new(:journal_type => journal_types(:one), :year => 2014)
   end
 
   test "should get index" do
@@ -24,7 +25,7 @@ class JournalsControllerTest < ActionController::TestCase
 
   test "should create journal" do
     assert_difference('Journal.count') do
-      post :create, journal: @journal.attributes
+      post :create, journal: @new_journal.attributes
     end
 
     assert_redirected_to journal_path(assigns(:journal))
@@ -38,11 +39,6 @@ class JournalsControllerTest < ActionController::TestCase
   test "should get edit" do
     get :edit, id: @journal.to_param
     assert_response :success
-  end
-
-  test "should update journal" do
-    put :update, id: @journal.to_param, journal: @journal.attributes
-    assert_redirected_to journal_path(assigns(:journal))
   end
 
   test "should destroy journal" do

@@ -20,6 +20,7 @@ pl:
     name: "Nazwa"
     year: "Rok"
     journal_type: "Rodzaj"
+    journal_for_this_year_and_type_already_exists: "Książka typu '%{type}' na rok %{year} już istnieje"
   active: "aktywny"
   invited: "zaproszony"
   save: "Zapisz"
