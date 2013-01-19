@@ -2,8 +2,8 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:user1)
-    @user = users(:user1)
+    sign_in users(:admin)
+    @user = users(:admin)
   end
 
   test "should get index" do
