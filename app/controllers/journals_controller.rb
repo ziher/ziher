@@ -26,6 +26,13 @@ class JournalsController < ApplicationController
     end
   end
 
+  def default
+    # get default journal
+    @journal = Journal.get_default
+    # redirect to it
+    redirect_to journal_path(@journal)
+  end
+
   # GET /journals/new
   # GET /journals/new.json
   def new

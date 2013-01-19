@@ -3,8 +3,8 @@ require 'test_helper'
 class JournalsControllerTest < ActionController::TestCase
   setup do
     sign_in users(:user1)
-    @journal = journals(:one)
-    @new_journal = Journal.new(:journal_type => journal_types(:one), :year => 2014)
+    @journal = journals(:finance_2012)
+    @new_journal = Journal.new(:journal_type => journal_types(:finance), :year => 2014)
   end
 
   test "should get index" do

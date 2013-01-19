@@ -7,6 +7,7 @@ gem 'rails', '3.1.10'
 
 group :development, :test do
   gem 'sqlite3'
+  gem 'time-warp'
 end
 
 # production is set on Heroku right now which needs PostgreSQL

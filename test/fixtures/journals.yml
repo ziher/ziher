@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
+finance_2012:
   year: 2012
-  journal_type: one
+  journal_type: finance
 
-two:
+bank_2012:
   year: 2012
-  journal_type: two
+  journal_type: bank
+
+finance_2015:
+  year: 2015
+  journal_type: finance

@@ -22,6 +22,16 @@ class Journal < ActiveRecord::Base
     end
   end
 
+  # Returns journal for current (or latest) year, of default journal type,
+  # or first found journal if default journal type is not specified
+  def Journal.get_default
+    default_type = JournalType.where(:is_default => true).first
+    if not default_type
+      return Journal.first
+    end
+    journal = Journal.where("journal_type_id = ? AND year <= ?", default_type.id, Time.now.year).order("year DESC").first
+  end
+
   private
   def add_error_for_duplicated_type
     errors[:journal_type] = I18n.t :journal_for_this_year_and_type_already_exists, :year => self.year, :type => self.journal_type.name, :scope => :journal

@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(:version => 20130119231751) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_default", :default => false
   end
 
   create_table "journals", :force => true do |t|
