@@ -25,12 +25,14 @@
   </div>
 
   <%= f.fields_for :items do |item_fields| %>
-	<% category_name = item_fields.object.category.name %>
-	<%= item_fields.label :amount, category_name %>
+    <% category_name = item_fields.object.category.name %>
+    <%= item_fields.label :amount, category_name %>
     <%= item_fields.text_field :amount, :class=>"category" %>
     <%= item_fields.hidden_field :category_id %>
     <br/>
   <% end %>
+
+  <%= f.hidden_field :journal_id, :value => @journal.id %>
 
   <div class="actions">
     <%= f.submit "Zapisz"%>

@@ -33,6 +33,7 @@ GEM
     arel (2.2.3)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
+    cancan (1.6.8)
     coffee-rails (3.1.1)
       coffee-script (>= 2.2.0)
       railties (~> 3.1.0)
@@ -40,13 +41,13 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
-    devise (2.2.1)
+    devise (2.1.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
       warden (~> 1.2.1)
     devise-i18n (0.5.12)
-    devise_invitable (1.1.4)
+    devise_invitable (1.1.2)
       actionmailer (~> 3.0)
       devise (>= 2.1.0)
       railties (~> 3.0)
@@ -129,10 +130,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cancan
   coffee-rails (~> 3.1.1)
-  devise
+  devise (= 2.1.2)
   devise-i18n
-  devise_invitable
+  devise_invitable (= 1.1.2)
   jquery-rails
   jquery-ui-rails
   pg

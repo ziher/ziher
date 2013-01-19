@@ -13,7 +13,7 @@ class EntriesControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
-    get :new
+    get :new, journal_id: @entry.journal_id
     assert_response :success
   end
 

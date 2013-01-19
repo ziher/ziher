@@ -26,6 +26,7 @@ class EntriesController < ApplicationController
   # GET /entries/new
   # GET /entries/new.json
   def new
+    @journal = Journal.find(params[:journal_id])
     @entry = Entry.new
     @entry.items = Array.new
     Category.all.each do |category|
@@ -42,6 +43,7 @@ class EntriesController < ApplicationController
   # GET /entries/1/edit
   def edit
     @entry = Entry.find(params[:id])
+    @journal = @entry.journal
     @categories = Category.all
     Category.all.each do |category|
       if not @entry.has_category(category.id)
