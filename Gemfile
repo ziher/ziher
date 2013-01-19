@@ -44,8 +44,8 @@ end
 
 gem 'rails-i18n'
 
-gem 'devise'
+gem 'devise', '2.1.2'
 gem 'devise-i18n'
-gem 'devise_invitable'
+gem 'devise_invitable', '1.1.2'
 
 gem 'cancan'
