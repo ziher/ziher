@@ -1,4 +1,6 @@
 Ziher::Application.routes.draw do
+  resources :groups
+
   get "users/new"
   post "users" => "users#create"
 

@@ -5,10 +5,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
 	 :confirmable
 
+  has_and_belongs_to_many :groups
   has_and_belongs_to_many :units
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_superadmin, :confirmed_at, :confirmation_sent_at
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_superadmin, :confirmed_at, :confirmation_sent_at, :units, :unit_ids, :groups, :group_ids
 
   def status
     if self.confirmed_at == nil

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Nazwa:</b>
+  <%= @group.name %>
+</p>
+
+<p>
+  <b>Drużyny:</b><br/>
+  <% if @group.units.each do |u| %>
+    <%= u.name %><br />
+  <% end.empty? %>
+    (Brak przypisanych drużyn)
+  <% end %>
+</p>
+
+<p>
+  <b>Użytkownicy:</b><br/>
+  <% if @group.users.each do |u| %>
+    <%= u.email %><br />
+  <% end.empty? %>
+    (Brak przypisanych użytkowników)
+  <% end %>
+</p>
+
+<%= link_to 'Edytuj', edit_group_path(@group) %> |
+<%= link_to 'Lista', groups_path %>

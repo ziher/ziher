@@ -1,0 +1,23 @@
+<h1>Grupy drużyn</h1>
+
+<table>
+  <tr>
+    <th>Nazwa</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @groups.each do |group| %>
+  <tr>
+    <td><%= group.name %></td>
+    <td><%= link_to 'Pokaż', group %></td>
+    <td><%= link_to 'Edytuj', edit_group_path(group) %></td>
+    <td><%= link_to 'Usuń', group, confirm: 'Na pewno usunąć grupę?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nowa grupa', new_group_path %>

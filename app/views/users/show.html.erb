@@ -1,5 +1,34 @@
 <h1>Użytkownik <%= @user.email %></h1>
-<p>Adres e-mail: <%= @user.email if @user.email %></p>
-<p>Superadmin: <%= @user.is_superadmin %>
+
+<p>
+  <b>Adres e-mail:</b>
+  <%= @user.email if @user.email %>
+</p>
+
+<p>
+  <b>Superadmin:</b>
+  <%= @user.is_superadmin ? "Tak" : "Nie" %>
+</p>
+
+<p>
+  <b>Przypisane drużyny:</b><br/>
+  <% if @user.units.each do |u| %>
+    <%= u.name %><br />
+  <% end.empty? %>
+    Brak przypisanych drużyn
+  <% end %>
+</p>
+
+<p>
+  <b>Przypisane grupy:</b><br/>
+  <% if @user.groups.each do |g| %>
+    <%= g.name %><br />
+  <% end.empty? %>
+    Brak przypisanych grup
+  <% end %>
+</p>
 <!--%= debug @user %-->
-<p><%= link_to "Powrót", users_path %></p>
+<p>
+  <%= link_to 'Edytuj', edit_user_path(@user) %> |
+  <%= link_to 'Lista', users_path %>
+</p>

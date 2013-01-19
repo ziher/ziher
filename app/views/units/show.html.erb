@@ -5,6 +5,24 @@
   <%= @unit.name %>
 </p>
 
+<p>
+  <b>Przynależność do grup:</b><br/>
+  <% if @unit.groups.each do |g| %>
+    <%= g.name %><br />
+  <% end.empty? %>
+    Brak przypisanych grup
+  <% end %>
+</p>
+
+<p>
+  <b>Użytkownicy:</b><br/>
+  <% if @unit.users.each do |u| %>
+    <%= u.email %><br />
+  <% end.empty? %>
+    Brak przypisanych użytkowników
+  <% end %>
+</p>
+
 
 <%= link_to 'Edytuj', edit_unit_path(@unit) %> |
-<%= link_to 'Wstecz', units_path %>
+<%= link_to 'Lista', units_path %>
