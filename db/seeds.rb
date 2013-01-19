@@ -26,11 +26,19 @@ user2.confirm!
 
 user2.units = [unit1]
 
-e1 = Entry.new(name: 'entry 1: darowizna', document_number: 'ey1')
-e2 = Entry.new(name: 'entry 2: akcja, material', document_number: 'ntr2')
-e3 = Entry.new(name: 'entry 3: wyposazenie', document_number: 'fv4')
-e4 = Entry.new(name: 'entry 4: transport', document_number: 'trnsprtdrwn')
-e5 = Entry.new(name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34')
+type1 = JournalType.create!(name: "Książka finansowa")
+type2 = JournalType.create!(name: "Książka bankowa")
+
+journal1 = Journal.create!(year: 2012, journal_type: type1)
+journal2 = Journal.create!(year: 2013, journal_type: type2)
+journal1.save!
+journal2.save!
+
+e1 = Entry.new(name: 'entry 1: darowizna', document_number: 'ey1', journal_id: journal1.id)
+e2 = Entry.new(name: 'entry 2: akcja, material', document_number: 'ntr2', journal_id: journal1.id)
+e3 = Entry.new(name: 'entry 3: wyposazenie', document_number: 'fv4', journal_id: journal1.id)
+e4 = Entry.new(name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal_id: journal2.id)
+e5 = Entry.new(name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal_id: journal2.id)
 
 item1 = Item.create!(amount: 1, category_id: c1.id, entry_id: e1.id)
 item2 = Item.create!(amount: 2, category_id: c2.id, entry_id: e2.id)
@@ -52,13 +60,3 @@ e2.save!
 e3.save!
 e4.save!
 e5.save!
-
-type1 = JournalType.create!(name: "Książka finansowa")
-type2 = JournalType.create!(name: "Książka bankowa")
-
-journal1 = Journal.create!(year: 2012, journal_type: type1)
-journal2 = Journal.create!(year: 2013, journal_type: type2)
-journal1.entries = [e1, e2, e3]
-journal2.entries = [e4, e5]
-journal1.save!
-journal2.save!
