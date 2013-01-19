@@ -18,7 +18,7 @@ table.users tr.invited td { color: #aaa; }
     <td><%= user.is_superadmin ? "TAK" : "nie" %></td>
     <td><%= link_to 'Pokaż', user %></td>
     <% if current_user.is_superadmin %>
-      <!--<td><%= link_to 'Edytuj', edit_user_path(user) %></td>-->
+      <td><%= link_to 'Edytuj', edit_user_path(user) %></td>
       <td><%= link_to 'Usuń', user, confirm: 'Na pewno usunąć użytkownika?', method: :delete %></td>
     <% end %>
   </tr>

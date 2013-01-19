@@ -5,6 +5,7 @@ pl:
         email: "E-mail"
         password: "Hasło"
         remember_me: "Zapamiętaj sobie"
+        is_superadmin: "Superadmin"
       category:
         name: "Nazwa"
         is_expense: "Wydatek"
