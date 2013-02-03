@@ -21,7 +21,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should not save entry with multiple items of one category" do
     entry = entries(:one)
-    category = Category.create
+    category = categories(:one)
+
     item1 = Item.new(:category => category)
     item2 = Item.new(:category => category)
     entry.items << item1 << item2
@@ -33,7 +34,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should not add item with duplicate category" do
     entry = entries(:one)
-    category = Category.create
+    category = categories(:one)
+
     item1 = Item.new(:category => category)
     item2 = Item.new(:category => category)
     items = []
@@ -46,10 +48,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should save entry with items of different categories" do
     entry = entries(:one)
-    category1 = Category.create
-    category2 = Category.create
-    item1 = Item.new(:category => category1)
-    item2 = Item.new(:category => category2)
+    item1 = Item.new(:category => categories(:three))
+    item2 = Item.new(:category => categories(:four))
     entry.items << item1 << item2
 
     assert entry.save!
@@ -58,28 +58,26 @@ class EntryTest < ActiveSupport::TestCase
   test "should add items to existing entry" do
     entry = entries(:one)
 
-    category1 = Category.create
-    item1 = Item.new(:category => category1)
+    item1 = Item.new(:category => categories(:three))
     entry.items << item1
     entry.save!
 
-    category2 = Category.create
-    item2 = Item.new(:category => category2)
+    item2 = Item.new(:category => categories(:four))
     entry.items << item2
     assert entry.save!
   end
   
   test "get amount for category should return 0 when there is no item for this category" do
     entry = Entry.create
-    category = Category.create
+    category = categories(:one)
 
     assert_equal(0, entry.get_amount_for_category(category.id))
   end
 
   test "get amount for category should return 0 when item for this category has nil amount" do
     entry = Entry.create
-    category = Category.create
-    item = Item.create(:category=>category, :amount=>nil)
+    category = categories(:one)
+    item = Item.create(:category => category, :amount => nil)
     entry.items << item
 
     assert_equal(0, entry.get_amount_for_category(category.id))
@@ -87,8 +85,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "get amount for category should return nonzero value when such item exists" do
     entry = Entry.create
-    category = Category.create
-    item = Item.create(:category=>category, :amount=>5)
+    category = categories(:one)
+    item = Item.create(:category => category, :amount => 5)
     entry.items << item
 
     assert_equal(5, entry.get_amount_for_category(category.id))

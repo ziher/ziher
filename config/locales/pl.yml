@@ -8,6 +8,7 @@ pl:
         is_superadmin: "Superadmin"
       category:
         name: "Nazwa"
+        year: "Rok"
         is_expense: "Wydatek"
       journal:
         name: "Nazwa"

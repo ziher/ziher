@@ -1,6 +1,5 @@
 class Category < ActiveRecord::Base
-#commented out until this becomes valid
-  #validates :order, :presence => true
+  validates :year, :presence => true
 
   def Category.get_all_years
     years = []
