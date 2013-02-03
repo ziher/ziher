@@ -13,9 +13,10 @@ c2 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2012)
 c3 = Category.create!(name: 'Transport', is_expense: true, year: 2012)
 c4 = Category.create!(name: 'Wyposazenie', is_expense: true, year: 2012)
 c5 = Category.create!(name: 'Materialy', is_expense: true, year: 2012)
-Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2012)
-Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2011)
-Category.create!(name: 'Wyposazenie', is_expense: true, year: 2011)
+c6 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2012)
+c7_2011 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2011)
+c8_2011 = Category.create!(name: 'Wyposazenie', is_expense: true, year: 2011)
+c9_2011 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2011)
 
 unit1 = Unit.create!(name: 'Jedrkowa')
 
@@ -30,7 +31,7 @@ type1 = JournalType.create!(name: "Książka finansowa", is_default: true)
 type2 = JournalType.create!(name: "Książka bankowa")
 
 journal1 = Journal.create!(year: 2012, journal_type: type1)
-journal2 = Journal.create!(year: 2013, journal_type: type2)
+journal2 = Journal.create!(year: 2011, journal_type: type2)
 journal1.save!
 journal2.save!
 
@@ -44,9 +45,9 @@ item1 = Item.create!(amount: 1, category_id: c1.id, entry_id: e1.id)
 item2 = Item.create!(amount: 2, category_id: c2.id, entry_id: e2.id)
 item3 = Item.create!(amount: 3, category_id: c5.id, entry_id: e2.id)
 item4 = Item.create!(amount: 4, category_id: c4.id, entry_id: e3.id)
-item5 = Item.create!(amount: 5, category_id: c3.id, entry_id: e4.id)
-item6 = Item.create!(amount: 6, category_id: c1.id, entry_id: e5.id)
-item7 = Item.create!(amount: 7, category_id: c4.id, entry_id: e5.id)
+item5 = Item.create!(amount: 5, category_id: c7_2011.id, entry_id: e4.id)
+item6 = Item.create!(amount: 6, category_id: c8_2011.id, entry_id: e5.id)
+item7 = Item.create!(amount: 7, category_id: c9_2011.id, entry_id: e5.id)
 
 e1.items << item1
 e2.items << item2
