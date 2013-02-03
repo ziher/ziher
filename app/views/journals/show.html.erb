@@ -25,9 +25,10 @@
   </thead>
 
 
+<% i = 0 %>
 <% @entries.each do |entry| %>
   <tr class="node <%= cycle("even", "odd") -%>">
-    <td>lp</td>
+    <td><%= i+=1 =%>.</td>
     <td><%= entry.date %></td>
     <td><%= entry.name %><br/><%= entry.document_number %></td>
 
