@@ -26,6 +26,11 @@
 
 
 <% i = 0 %>
+<% sums_income = Hash.new(0) %>
+<% sums_expense = Hash.new(0) %>
+<% sum_income_total = 0 %>
+<% sum_expense_total = 0 %>
+
 <% @entries.each do |entry| %>
   <tr class="node <%= cycle("even", "odd") -%>">
     <td><%= i+=1 =%>.</td>
@@ -33,14 +38,21 @@
     <td><%= entry.name %><br/><%= entry.document_number %></td>
 
     <% @categories_income.each do |category| %>
-      <td><%= entry.get_amount_for_category(category.id) %></td>
+      <% amount = entry.get_amount_for_category(category.id) %>
+      <td><%= amount %></td>
+      <% sums_income[category.id] += amount %>
     <% end %>
 
     <td><%= entry.income_sum %></td>
+    <% sum_income_total += entry.income_sum %>
+
     <td><%= entry.expense_sum %></td>
+    <% sum_expense_total += entry.expense_sum %>
 
     <% @categories_expense.each do |category| %>
-        <td><%= entry.get_amount_for_category(category.id) %></td>
+        <% amount = entry.get_amount_for_category(category.id) %>
+        <td><%= amount %></td>
+      <% sums_expense[category.id] += amount %>
     <% end %>
 
     <td><%= link_to 'Pokaż', entry %></td>
@@ -48,6 +60,20 @@
     <td><%= link_to 'Usuń', entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
   </tr>
 <% end %>
+
+<!%-- row with sums for each category --%>
+<tr>
+  <td colspan="3">Suma</td>
+  <% @categories_income.each do |category| %>
+  <td><%= sums_income[category.id] %></td>
+  <% end %>
+  <td><%= sum_income_total %></td>
+  <td><%= sum_expense_total %></td>
+  <% @categories_expense.each do |category| %>
+  <td><%= sums_expense[category.id] %></td>
+  <% end %>
+  <td colspan="3"></td>
+</tr>
 </table>
 
 <br />
