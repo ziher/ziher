@@ -1,5 +1,8 @@
 <h1>Kategorie</h1>
 
+<%= link_to 'Pokaż wszystkie kategorie', categories_path %><br/>
+<br/>
+
 <form method="GET">
   <%= select_tag "year", options_for_select(@years, @year) %>
   <% is_expense = I18n.t('category.is_expense') %>
@@ -8,7 +11,6 @@
   <%= submit_tag I18n.t('search') %>
 </form>
 
-<% if @year and @is_expense %>
 <table>
   <tr>
     <th>Nazwa</th>
@@ -19,7 +21,12 @@
     <th></th>
   </tr>
 
-<% filtered_categories = Category.find_by_year_and_type(@year, @is_expense == "true") %>
+<% if @year and @is_expense %>
+  <% filtered_categories = Category.find_by_year_and_type(@year, @is_expense == "true") %>
+<% else %>
+  <% filtered_categories = Category.all %>
+<% end %>
+
 <% filtered_categories.each do |category| %>
   <tr>
     <td><%= category.name %></td>
@@ -36,4 +43,3 @@
 
 <%= link_to 'Nowa kategoria', new_category_path %>
 
-<% end %>
