@@ -32,3 +32,8 @@ six:
   is_expense: true
   order: 1
   year: 2012
+
+seven:
+  name: CategorySeven
+  is_expense: true
+  year: 2012

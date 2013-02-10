@@ -13,7 +13,7 @@ class CategoryTest < ActiveSupport::TestCase
 
   test "should find categories for year and type" do
     actual = Category.find_by_year_and_type(2012, true)
-    expected = [categories(:six), categories(:five)]
+    expected = Category.find(:all, :conditions => {:year => 2012, :is_expense => true})
     assert_equal expected, actual
   end
 end

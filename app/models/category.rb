@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-  validates :year, :presence => true
+  validates :year, :presence => {:message => "Kategoria musi byc przypisana do roku"}
 
   def Category.get_all_years
     years = []

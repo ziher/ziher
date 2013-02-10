@@ -46,10 +46,20 @@ class EntryTest < ActiveSupport::TestCase
     }
   end
 
+  test "should not save entry with items of categories from different year" do
+    entry = entries(:one)
+    item1 = Item.new(:category => categories(:one))
+    entry.items << item1
+
+    assert_raise(ActiveRecord::RecordInvalid){
+      assert entry.save!
+    }
+  end
+
   test "should save entry with items of different categories" do
     entry = entries(:one)
-    item1 = Item.new(:category => categories(:three))
-    item2 = Item.new(:category => categories(:four))
+    item1 = Item.new(:category => categories(:six))
+    item2 = Item.new(:category => categories(:seven))
     entry.items << item1 << item2
 
     assert entry.save!
@@ -58,11 +68,11 @@ class EntryTest < ActiveSupport::TestCase
   test "should add items to existing entry" do
     entry = entries(:one)
 
-    item1 = Item.new(:category => categories(:three))
+    item1 = Item.new(:category => categories(:six))
     entry.items << item1
     entry.save!
 
-    item2 = Item.new(:category => categories(:four))
+    item2 = Item.new(:category => categories(:seven))
     entry.items << item2
     assert entry.save!
   end

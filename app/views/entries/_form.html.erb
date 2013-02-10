@@ -28,7 +28,7 @@
     <% category_name = item_fields.object.category.name %>
     <%= item_fields.label :amount, category_name %>
     <%= item_fields.text_field :amount, :class=>"category" %>
-    <%= item_fields.hidden_field :category_id %>
+    <%= item_fields.hidden_field :category_id, :class=>"category_id"%>
     <br/>
   <% end %>
 

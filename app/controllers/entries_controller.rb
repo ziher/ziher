@@ -15,7 +15,7 @@ class EntriesController < ApplicationController
   # GET /entries/1.json
   def show
     @entry = Entry.find(params[:id])
-    @categories = Category.all
+    @categories = Category.where(:year => @entry.journal.year)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -29,7 +29,7 @@ class EntriesController < ApplicationController
     @journal = Journal.find(params[:journal_id])
     @entry = Entry.new
     @entry.items = Array.new
-    Category.all.each do |category|
+    Category.where(:year => @journal.year).each do |category|
       @item = Item.new(:category_id => category.id)
       @entry.items << @item
     end
@@ -44,8 +44,8 @@ class EntriesController < ApplicationController
   def edit
     @entry = Entry.find(params[:id])
     @journal = @entry.journal
-    @categories = Category.all
-    Category.all.each do |category|
+    @categories = Category.where(:year => @entry.journal.year)
+    Category.where(:year => @entry.journal.year).each do |category|
       if not @entry.has_category(category.id)
         @item = Item.new(:category_id => category.id)
         @entry.items << @item

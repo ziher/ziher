@@ -6,9 +6,10 @@ class Entry < ActiveRecord::Base
 
   accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
 
-  validates :items, :presence => true, :allow_blank => false
-  validates :journal, :presence => true, :allow_blank => false
+  validates :items, :presence => {:message => "Wpis musi miec przynajmniej jedna sume"}
+  validates :journal, :presence => {:message => "Wpis musi byc przypisany do ksiazki"}
   validate :cannot_have_multiple_items_in_one_category
+  validate :cannot_have_item_from_category_not_from_journals_year
 
   def get_amount_for_category(category_id)
     result = self.items.find(:first, :conditions=>{:category_id=>category_id})
@@ -26,9 +27,6 @@ class Entry < ActiveRecord::Base
   end
 
   def cannot_have_multiple_items_in_one_category
-    if items.blank?
-      errors[:items] << "Wpis musi miec co najmniej jedna sume"
-    end
     categories = []
     items.each do |item|
       if item.category != nil
@@ -38,6 +36,25 @@ class Entry < ActiveRecord::Base
 
     if categories.length != categories.uniq.length
       errors[:items] << 'Wpis nie moze miec kilku sum z tej samej kategorii'
+    end
+  end
+
+  def cannot_have_item_from_category_not_from_journals_year
+    if journal.nil?
+      errors[:journal] << "Wpis musi byc przypisany do ksiazki"
+      return
+    end
+
+    items.each do |item|
+      if item.nil? || item.category.nil? || item.category.year.nil?
+        errors[:base] << "Wpis musi miec kategorie"
+        return
+      end
+
+      if item.category.year != journal.year
+        errors[:base] << "Wpis nie moze miec sumy dla kategorii z innego roku niz ksiazka: journal.year=#{journal.year} != category.year=#{item.category.year}"
+        return
+      end
     end
   end
 
