@@ -7,4 +7,12 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should have one menu item for each journal type" do
+    sign_in users(:user1)
+    get :index
+    JournalType.all.each do |journal_type|
+      path = journal_path(Journal.find_current_for_type(journal_type))
+      assert_select "a[href='#{path}']"
+    end
+  end
 end

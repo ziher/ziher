@@ -9,7 +9,12 @@
 <body>
 
 | <%= link_to "ZiHeR 2.0", root_path %>
-| <%= link_to "Książka finansowa", entries_path %>
+<% JournalType.all.each do |journal_type| %>
+  <% journal = Journal.find_current_for_type(journal_type) %>
+  <% if journal %>
+  | <%= link_to journal_type.name, journal_path(Journal.find_current_for_type(journal_type)) %>
+  <% end %>
+<% end %>
 | <%= link_to "Ksiażka inwentarzowa", inventory_entries_path %>
 | <%= link_to "Drużyny", units_path %>
 | <%= link_to "Grupy", groups_path %>

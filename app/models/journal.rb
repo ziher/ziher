@@ -29,7 +29,12 @@ class Journal < ActiveRecord::Base
     if not default_type
       return Journal.first
     end
-    journal = Journal.where("journal_type_id = ? AND year <= ?", default_type.id, Time.now.year).order("year DESC").first
+    journal = Journal.find_current_for_type(default_type)
+  end
+
+  # Returns journal for current (or latest) year, of given journal type
+  def Journal.find_current_for_type(type)
+    journal = Journal.where("journal_type_id = ? AND year <= ?", type.id, Time.now.year).order("year DESC").first
   end
 
   private
