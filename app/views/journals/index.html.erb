@@ -16,6 +16,11 @@
     <td><%= link_to 'Pokaż wpisy', journal %></td>
     <td><%= link_to 'Edytuj', edit_journal_path(journal) %></td>
     <td><%= link_to 'Usuń', journal, confirm: 'Na pewno?', method: :delete %></td>
+    <% if journal.is_open %>
+      <td><%= link_to 'Zamknij', close_journal_url(journal), confirm: 'Na pewno?' %></td>
+    <% else %>
+      <td><%= link_to 'Otwórz', open_journal_url(journal), confirm: 'Na pewno?' %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

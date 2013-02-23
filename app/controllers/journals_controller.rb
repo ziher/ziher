@@ -49,6 +49,38 @@ class JournalsController < ApplicationController
     @journal = Journal.find(params[:id])
   end
 
+  # GET /journals/1/open
+  def open
+    @journal = Journal.find(params[:id])
+    @journal.is_open = true
+
+    respond_to do |format|
+      if @journal.save
+        format.html { redirect_to journals_url, notice: 'Książka otwarta.' }
+        format.json { render json: @journal, status: :opened, location: @journal }
+      else
+        format.html { redirect_to journals_url, notice: "Błąd otwierania książki: " + @journal.errors.full_messages.join(', ') }
+        format.json { render json: @journal.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # GET /journals/1/close
+  def close
+    @journal = Journal.find(params[:id])
+    @journal.is_open = false
+
+    respond_to do |format|
+      if @journal.save
+        format.html { redirect_to journals_url, notice: 'Książka zamknięta.' }
+        format.json { render json: @journal, status: :closed, location: @journal }
+      else
+        format.html { redirect_to journals_url, notice: "Błąd zamykania książki: " + @journal.errors.full_messages.join(', ') }
+        format.json { render json: @journal.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # POST /journals
   # POST /journals.json
   def create

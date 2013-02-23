@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20130223101108) do
     t.integer  "journal_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_open"
   end
 
   create_table "units", :force => true do |t|

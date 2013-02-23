@@ -16,6 +16,8 @@ Ziher::Application.routes.draw do
   resources :cash_entries
 
   resources :journals
+  match 'journals/:id/open' => 'journals#open', :as => :open_journal
+  match 'journals/:id/close' => 'journals#close', :as => :close_journal
 
   resources :journal_types
 
