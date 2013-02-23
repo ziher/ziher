@@ -14,6 +14,37 @@ class Journal < ActiveRecord::Base
     end
   end
 
+  # returns sum of all items in this journal in given category
+  def get_sum_for_category(category)
+    return self.find_items_by_category(category).each.sum(&:amount)
+  end
+
+  # returns sum of all expense items
+  def get_expense_sum
+    sum = 0
+    Category.find_all_by_is_expense(true).each do |category|
+      sum += get_sum_for_category(category)
+    end
+    return sum
+  end
+
+  # returns sum of all income items
+  def get_income_sum
+    sum = 0
+    Category.find_all_by_is_expense(false).each do |category|
+      sum += get_sum_for_category(category)
+    end
+    return sum
+  end
+
+  def find_items_by_category(category)
+    items = []
+    self.entries.each do |entry|
+      items += entry.items.find_all_by_category_id(category.id)
+    end
+    return items
+  end
+
   # Returns one journal of given year and type, or nil if not found
   def Journal.find_by_year_and_type(year, type)
     found = Journal.where(:year => year, :journal_type_id => type.id)

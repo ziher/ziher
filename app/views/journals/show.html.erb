@@ -26,11 +26,6 @@
 
 
 <% i = 0 %>
-<% sums_income = Hash.new(0) %>
-<% sums_expense = Hash.new(0) %>
-<% sum_income_total = 0 %>
-<% sum_expense_total = 0 %>
-
 <% @entries.each do |entry| %>
   <tr class="node <%= cycle("even", "odd") -%>">
     <td><%= i+=1 =%>.</td>
@@ -38,21 +33,15 @@
     <td><%= entry.name %><br/><%= entry.document_number %></td>
 
     <% @categories_income.each do |category| %>
-      <% amount = entry.get_amount_for_category(category.id) %>
-      <td><%= amount %></td>
-      <% sums_income[category.id] += amount %>
+      <td><%= entry.get_amount_for_category(category.id) %></td>
     <% end %>
 
     <td><%= entry.income_sum %></td>
-    <% sum_income_total += entry.income_sum %>
 
     <td><%= entry.expense_sum %></td>
-    <% sum_expense_total += entry.expense_sum %>
 
     <% @categories_expense.each do |category| %>
-        <% amount = entry.get_amount_for_category(category.id) %>
-        <td><%= amount %></td>
-      <% sums_expense[category.id] += amount %>
+      <td><%= entry.get_amount_for_category(category.id) %></td>
     <% end %>
 
     <td><%= link_to 'Pokaż', entry %></td>
@@ -65,12 +54,12 @@
 <tr>
   <td colspan="3">Suma</td>
   <% @categories_income.each do |category| %>
-  <td><%= sums_income[category.id] %></td>
+  <td><%= @journal.get_sum_for_category(category) %></td>
   <% end %>
-  <td><%= sum_income_total %></td>
-  <td><%= sum_expense_total %></td>
+  <td><%= @journal.get_income_sum %></td>
+  <td><%= @journal.get_expense_sum %></td>
   <% @categories_expense.each do |category| %>
-  <td><%= sums_expense[category.id] %></td>
+  <td><%= @journal.get_sum_for_category(category) %></td>
   <% end %>
   <td colspan="3"></td>
 </tr>

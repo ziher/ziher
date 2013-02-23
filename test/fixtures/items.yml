@@ -11,3 +11,13 @@ two:
   amount_one_percent: 9.99
   entry: one
   category: two
+
+three:
+  amount: 120
+  entry: two
+  category: five
+
+four:
+  amount: 123.56
+  entry: two
+  category: six

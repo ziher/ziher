@@ -3,6 +3,7 @@ require 'test_helper'
 class JournalTest < ActiveSupport::TestCase
   fixtures :journal_types
   fixtures :journals
+  fixtures :categories
 
   test "should prevent creating two journals of the same type for the same year" do
     assert_raise(ActiveRecord::RecordInvalid){
@@ -72,5 +73,52 @@ class JournalTest < ActiveSupport::TestCase
       journal_2015 = journals(:finance_2015)
       assert_equal journal_2015, Journal.find_current_for_type(journal_types(:finance))
     end
+  end
+
+  test "should count sum for category" do
+    journal = journals(:finance_2012)
+    category = categories(:one)
+
+    entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
+    items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
+    expected_sum = items_for_category.sum(&:amount)
+
+    assert_equal expected_sum, journal.get_sum_for_category(category)
+  end
+
+  test "should count expense sum" do
+    journal = journals(:finance_2012)
+
+    expected_sum = 0
+    Category.all.each do |category|
+      if category.is_expense
+        entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
+        items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
+        expected_sum += items_for_category.sum(&:amount)
+      end
+    end
+
+    assert_equal expected_sum, journal.get_expense_sum
+  end
+
+  test "should count income sum" do
+    journal = journals(:finance_2012)
+
+    expected_sum = 0
+    Category.all.each do |category|
+      if not category.is_expense
+        expected_sum += count_sum_for_category(journal, category)
+      end
+    end
+
+    assert_equal expected_sum, journal.get_income_sum
+  end
+
+  private
+
+  def count_sum_for_category(journal, category)
+      entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
+      items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
+      return items_for_category.sum(&:amount)
   end
 end
