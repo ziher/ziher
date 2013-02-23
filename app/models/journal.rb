@@ -16,7 +16,13 @@ class Journal < ActiveRecord::Base
 
   # returns sum of all items in this journal in given category
   def get_sum_for_category(category)
-    return self.find_items_by_category(category).each.sum(&:amount)
+    sum = 0
+    self.find_items_by_category(category).each do |item|
+      if item.amount
+        sum += item.amount
+      end
+    end
+    return sum
   end
 
   # returns sum of all expense items

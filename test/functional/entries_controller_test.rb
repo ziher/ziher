@@ -84,7 +84,7 @@ class EntriesControllerTest < ActionController::TestCase
       delete :destroy, id: @entry.to_param
     end
 
-    assert_redirected_to entries_path
+    assert_redirected_to journal_path(@entry.journal)
   end
 
   test "should not save empty items" do

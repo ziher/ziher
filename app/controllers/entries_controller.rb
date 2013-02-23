@@ -90,10 +90,11 @@ class EntriesController < ApplicationController
   # DELETE /entries/1.json
   def destroy
     @entry = Entry.find(params[:id])
+    journal = @entry.journal
     @entry.destroy
 
     respond_to do |format|
-      format.html { redirect_to entries_url }
+      format.html { redirect_to journal_url(journal) }
       format.json { head :ok }
     end
   end
