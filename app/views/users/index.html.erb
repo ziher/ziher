@@ -32,5 +32,5 @@ table.users tr.invited td { color: #aaa; }
 <br />
 
 <% if can? :create, User %>
-<%= link_to "Nowy użytkownik", new_user_invitation_path, :accesskey => 'N' %>
+<%= link_to "Nowy użytkownik", new_user_path, :accesskey => 'N' %>
 <% end %>

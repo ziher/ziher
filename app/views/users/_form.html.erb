@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.text_field :email, 'disabled' => 'true' %>
+    <%= f.text_field :email, 'disabled' => !@user.id.nil? %>
   </div>
   
   <div class="field">
