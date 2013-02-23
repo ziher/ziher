@@ -109,4 +109,15 @@ class Entry < ActiveRecord::Base
 
     return result
   end
+
+  def sum
+    result = 0
+    items.each do |item|
+      if item.amount
+        result += item.amount
+      end
+    end
+
+    return result
+  end
 end

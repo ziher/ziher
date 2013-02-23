@@ -153,4 +153,15 @@ class EntryTest < ActiveSupport::TestCase
       entry.destroy
     }
   end
+
+  test "should count sum of items" do
+    entry = entries(:expense_one)
+
+    expected_sum = 0
+    Item.find_all_by_entry_id(entry.id).each do |item|
+      expected_sum += item.amount
+    end
+
+    assert_equal expected_sum, entry.sum
+  end
 end
