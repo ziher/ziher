@@ -58,8 +58,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should save entry with items of different categories" do
     entry = entries(:one)
-    item1 = Item.new(:category => categories(:six))
-    item2 = Item.new(:category => categories(:seven))
+    item1 = Item.new(:category => categories(:seven))
+    item2 = Item.new(:category => categories(:eight))
     entry.items << item1 << item2
 
     assert entry.save!
@@ -67,10 +67,6 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should add items to existing entry" do
     entry = entries(:one)
-
-    item1 = Item.new(:category => categories(:six))
-    entry.items << item1
-    entry.save!
 
     item2 = Item.new(:category => categories(:seven))
     entry.items << item2

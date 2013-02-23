@@ -37,3 +37,8 @@ seven:
   name: CategorySeven
   is_expense: true
   year: 2012
+
+eight:
+  name: CategoryEight
+  is_expense: true
+  year: 2012
