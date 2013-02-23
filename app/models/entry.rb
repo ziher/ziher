@@ -1,4 +1,4 @@
-#encoding=UTF-8
+# encoding: utf-8
 class Entry < ActiveRecord::Base
   include ActiveModel::Validations
 
@@ -12,6 +12,10 @@ class Entry < ActiveRecord::Base
   validate :cannot_have_multiple_items_in_one_category
   validate :cannot_have_item_from_category_not_from_journals_year
   validate :must_be_either_expense_or_income
+
+  # if the journal is closed then everything inside should be frozen
+  validate :should_not_change_if_journal_is_closed
+  before_destroy :should_not_change_if_journal_is_closed
 
   def get_amount_for_category(category_id)
     result = self.items.find(:first, :conditions=>{:category_id=>category_id})
@@ -42,20 +46,26 @@ class Entry < ActiveRecord::Base
   end
 
   def cannot_have_item_from_category_not_from_journals_year
-    if journal.nil?
-      errors[:journal] << "Wpis musi byc przypisany do ksiazki"
-      return
-    end
+    if journal
+      items.each do |item|
+        if item.nil? || item.category.nil? || item.category.year.nil?
+          errors[:base] << "Wpis musi miec kategorie"
+          return false
+        end
 
-    items.each do |item|
-      if item.nil? || item.category.nil? || item.category.year.nil?
-        errors[:base] << "Wpis musi miec kategorie"
-        return
+        if item.category.year != journal.year
+          errors[:base] << "Wpis nie moze miec sumy dla kategorii z innego roku niz ksiazka: journal.year=#{journal.year} != category.year=#{item.category.year}"
+          return false
+        end
       end
+    end
+  end
 
-      if item.category.year != journal.year
-        errors[:base] << "Wpis nie moze miec sumy dla kategorii z innego roku niz ksiazka: journal.year=#{journal.year} != category.year=#{item.category.year}"
-        return
+  def should_not_change_if_journal_is_closed
+    if journal
+      if not journal.is_open?
+        errors[:journal] << "Aby zmieniać wpisy książka musi być otwarta"
+        return false
       end
     end
   end

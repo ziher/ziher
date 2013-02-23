@@ -3,11 +3,14 @@
 finance_2012:
   year: 2012
   journal_type: finance
+  is_open: true
 
 bank_2012:
   year: 2012
   journal_type: bank
+  is_open: true
 
 finance_2015:
   year: 2015
   journal_type: finance
+  is_open: true

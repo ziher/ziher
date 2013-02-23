@@ -114,5 +114,43 @@ class EntryTest < ActiveSupport::TestCase
       entry.save!
     }
   end
-end
 
+  test "should save entry when the journal is opened" do
+    entry = entries(:one)
+    entry.journal.is_open = true
+
+    assert entry.save!
+  end
+
+  test "should not save entry when the journal is closed" do
+    entry = entries(:one)
+    entry.journal.is_open = false
+
+    assert_raise(ActiveRecord::RecordInvalid){
+      entry.save!
+    }
+  end
+
+  test "should not add entry when the journal is closed" do
+    entry = Entry.create
+    category = categories(:one)
+    item = Item.create(:category => category, :amount => 5)
+    entry.items << item
+    entry.journal = journals(:finance_2012)
+    entry.journal.is_open = false
+
+    assert_raise(ActiveRecord::RecordInvalid){
+      entry.save!
+    }
+  end
+
+  test "should not delete entry when the journal is closed" do
+    entry = entries(:one)
+    journal = entry.journal
+    journal.is_open = false
+
+    assert_no_difference('journal.entries.count') {
+      entry.destroy
+    }
+  end
+end
