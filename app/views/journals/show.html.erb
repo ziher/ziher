@@ -67,4 +67,5 @@
 
 <br />
 
-<%= link_to 'Nowy wpis', new_entry_path(:journal_id => @journal.id) %>
+<%= link_to 'Nowy wydatek', new_entry_path(:journal_id => @journal.id, :is_expense => true) %>
+<%= link_to 'Nowy wpływ', new_entry_path(:journal_id => @journal.id, :is_expense => false) %>

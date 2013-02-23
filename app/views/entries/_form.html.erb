@@ -33,6 +33,7 @@
   <% end %>
 
   <%= f.hidden_field :journal_id, :value => @journal.id %>
+  <%= f.hidden_field :is_expense, :value => @entry.is_expense %>
 
   <div class="actions">
     <%= f.submit "Zapisz"%>

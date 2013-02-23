@@ -1,4 +1,8 @@
-<h1>Nowy wpis</h1>
+<% if @entry.is_expense %>
+<h1>Nowy wydatek</h1>
+<% else %>
+<h1>Nowy wpływ</h1>
+<% end %>
 
 <%= render 'form' %>
 
