@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
+expense_one:
   date: 2012-03-24
   name: EntryOne
   document_number: MyString
   journal: finance_2012
+  is_expense: true
 
-two:
+expense_two:
   date: 2012-03-24
   name: EntryTwo
   document_number: MyString
   journal: finance_2012
+  is_expense: true

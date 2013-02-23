@@ -5,7 +5,7 @@ class EntryTest < ActiveSupport::TestCase
   fixtures :journals
 
   test "should not save entry without items" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     entry.items = []
     assert_raise(ActiveRecord::RecordInvalid){
       entry.save!
@@ -13,7 +13,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should not save entry without journal" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     entry.journal = nil
     assert_raise(ActiveRecord::RecordInvalid){
       entry.save!
@@ -21,7 +21,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should not save entry with multiple items of one category" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     category = categories(:one)
 
     item1 = Item.new(:category => category)
@@ -34,7 +34,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should not add item with duplicate category" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     category = categories(:one)
 
     item1 = Item.new(:category => category)
@@ -48,7 +48,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should not save entry with items of categories from different year" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     item1 = Item.new(:category => categories(:one))
     entry.items << item1
 
@@ -58,7 +58,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should save entry with items of different categories" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     item1 = Item.new(:category => categories(:seven))
     item2 = Item.new(:category => categories(:eight))
     entry.items << item1 << item2
@@ -67,7 +67,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should add items to existing entry" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
 
     item2 = Item.new(:category => categories(:seven))
     entry.items << item2
@@ -116,14 +116,14 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should save entry when the journal is opened" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     entry.journal.is_open = true
 
     assert entry.save!
   end
 
   test "should not save entry when the journal is closed" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     entry.journal.is_open = false
 
     assert_raise(ActiveRecord::RecordInvalid){
@@ -145,7 +145,7 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "should not delete entry when the journal is closed" do
-    entry = entries(:one)
+    entry = entries(:expense_one)
     journal = entry.journal
     journal.is_open = false
 

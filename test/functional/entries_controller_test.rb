@@ -3,7 +3,7 @@ require 'test_helper'
 class EntriesControllerTest < ActionController::TestCase
   setup do
     sign_in users(:user1)
-    @entry = entries(:one)
+    @entry = entries(:expense_one)
   end
 
   test "should get new" do

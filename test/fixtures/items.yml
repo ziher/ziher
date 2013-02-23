@@ -3,21 +3,21 @@
 one:
   amount: 9.99
   amount_one_percent: 9.99
-  entry: one
+  entry: expense_one
   category: five
 
 two:
   amount: 9.99
   amount_one_percent: 9.99
-  entry: one
+  entry: expense_one
   category: six
 
 three:
   amount: 120
-  entry: two
+  entry: expense_two
   category: five
 
 four:
   amount: 123.56
-  entry: two
+  entry: expense_two
   category: six

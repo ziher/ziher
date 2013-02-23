@@ -47,11 +47,11 @@ journal2 = Journal.create!(year: 2011, journal_type: type2, is_open: true)
 journal1.save!
 journal2.save!
 
-darowizna = Entry.new(name: 'entry 1: darowizna', document_number: 'ey1', journal: journal1)
-akcja_i_darowizna = Entry.new(name: 'entry 2: akcja, darowizna', document_number: 'ntr2', journal: journal1)
-wyposazenie = Entry.new(name: 'entry 3: wyposazenie', document_number: 'fv4', journal: journal1)
-transport = Entry.new(name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal: journal2)
-wynagrodzenie_i_wyposazenie = Entry.new(name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal: journal2)
+darowizna = Entry.new(name: 'entry 1: darowizna', document_number: 'ey1', journal: journal1, is_expense: false)
+akcja_i_darowizna = Entry.new(name: 'entry 2: akcja, darowizna', document_number: 'ntr2', journal: journal1, is_expense: false)
+wyposazenie = Entry.new(name: 'entry 3: wyposazenie', document_number: 'fv4', journal: journal1, is_expense: true)
+transport = Entry.new(name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal: journal2, is_expense: false)
+wynagrodzenie_i_wyposazenie = Entry.new(name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal: journal2, is_expense: true)
 
 darowizna.items << Item.create!(amount: 1, category: darowizny_2011)
 akcja_i_darowizna.items << Item.create!(amount: 2, category: akcje_zarobkowe_2012)
