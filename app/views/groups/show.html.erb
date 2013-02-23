@@ -6,6 +6,15 @@
 </p>
 
 <p>
+  <b>Podgrupy:</b><br/>
+  <% if @group.subgroups.each do |g| %>
+    <%= g.name %><br />
+  <% end.empty? %>
+    (Brak przypisanych podgrup)
+  <% end %>
+</p>
+
+<p>
   <b>Drużyny:</b><br/>
   <% if @group.units.each do |u| %>
     <%= u.name %><br />
@@ -24,4 +33,5 @@
 </p>
 
 <%= link_to 'Edytuj', edit_group_path(@group) %> |
+<%= link_to 'Nowa grupa', new_group_path, :accesskey => 'n' %> |
 <%= link_to 'Lista', groups_path %>

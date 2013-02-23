@@ -18,14 +18,26 @@ c7_2011 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2011)
 c8_2011 = Category.create!(name: 'Wyposazenie', is_expense: true, year: 2011)
 c9_2011 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2011)
 
-unit1 = Unit.create!(name: 'Jedrkowa')
+dukt = Unit.create!(name: '9 ZDH Dukt')
+pajaki = Unit.create!(name: '31 DH Pająki')
+wiklina = Unit.create!(name: '9 ZDH Wiklina')
+orleta = Unit.create!(name: '30 DH Orlęta')
+wigryk = Unit.create!(name: '45 ŻDH Wigry')
+
+
+zhhy = Group.create!(name: 'Zielonogórski Hufiec Harcerzy', units: [dukt, pajaki])
+zhhek = Group.create!(name: 'Zielonogórski Hufiec Harcerek', units: [wiklina, orleta, wigryk])
+obwzg = Group.create!(name: 'Obwód Zielonogórski', subgroups: [zhhy, zhhek])
+wchhy = Group.create!(name: 'Wielkopolska Chorągiew Harcerzy', subgroups: [zhhy])
+wchhek = Group.create!(name: 'Wielkopolska Chorągiew Harcerek', subgroups: [zhhek])
+okrwlkp = Group.create!(name: 'Okręg Wielkopolski', subgroups: [wchhy, wchhek])
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
 user.confirm!
-user2 = User.create!(email: 'jedrek@localhost.localdomain', password: 'jedrek', confirmed_at: '2012-11-24 23:14:00', confirmation_sent_at: '2012-11-24 23:13:00', is_superadmin: false)
-user2.confirm!
-
-user2.units = [unit1]
+hufcowyzg = User.create!(email: 'hufcowy_zg@zhr.com', password: 'hufcowy_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', groups: [zhhy])
+hufcowyzg.confirm!
+hufcowazg = User.create!(email: 'hufcowa_zg@zhr.com', password: 'hufcowa_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', groups: [zhhek])
+hufcowazg.confirm!
 
 type1 = JournalType.create!(name: "Książka finansowa", is_default: true)
 type2 = JournalType.create!(name: "Książka bankowa")

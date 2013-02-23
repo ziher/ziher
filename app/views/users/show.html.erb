@@ -16,6 +16,15 @@
 </p>
 
 <p>
+  <b>Przypisane grupy:</b><br/>
+  <% if @user.groups.each do |g| %>
+    <%= g.name %><br />
+  <% end.empty? %>
+    Brak przypisanych grup
+  <% end %>
+</p>
+
+<p>
   <b>Przypisane drużyny:</b><br/>
   <% if @user.units.each do |u| %>
     <%= u.name %><br />
@@ -24,16 +33,9 @@
   <% end %>
 </p>
 
-<p>
-  <b>Przypisane grupy:</b><br/>
-  <% if @user.groups.each do |g| %>
-    <%= g.name %><br />
-  <% end.empty? %>
-    Brak przypisanych grup
-  <% end %>
-</p>
 <!--%= debug @user %-->
 <p>
-  <%= link_to 'Edytuj', edit_user_path(@user) %> |
-  <%= link_to 'Lista', users_path %>
+  <%= link_to 'Edytuj', edit_user_path(@user), :accesskey => 'e' %> |
+  <%= link_to 'Nowy użytkownik', new_user_path, :accesskey => 'n' %> |
+  <%= link_to 'Lista', users_path, :accesskey => 'l' %>
 </p>

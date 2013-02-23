@@ -4,6 +4,7 @@ pl:
       user:
         email: "E-mail"
         password: "Hasło"
+        password_confirmation: "Powtórz hasło"
         remember_me: "Zapamiętaj sobie"
         is_superadmin: "Superadmin"
         unit_ids: "Przypisane drużyny"

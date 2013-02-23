@@ -17,6 +17,11 @@
   </div>
   
   <div class="field">
+    <%= f.label :subgroup_ids %>
+    <%= f.select :subgroup_ids, Group.all.collect { |g| [ g.name, g.id ] }, { :include_blank => "(Brak przypisanych podgrup)" }, :multiple => true %>
+  </div>
+
+  <div class="field">
     <%= f.label :unit_ids %>
     <%= f.select :unit_ids, Unit.all.collect { |u| [ u.name, u.id ] }, { :include_blank => "(Brak przypisanych drużyn)" }, :multiple => true %>
   </div>
