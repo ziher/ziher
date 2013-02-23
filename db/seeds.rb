@@ -53,21 +53,14 @@ wyposazenie = Entry.new(name: 'entry 3: wyposazenie', document_number: 'fv4', jo
 transport = Entry.new(name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal: journal2)
 wynagrodzenie_i_wyposazenie = Entry.new(name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal: journal2)
 
-suma_darowizna = Item.create!(amount: 1, category: darowizny_2011)
-suma_akcja_zarobkowa = Item.create!(amount: 2, category: akcje_zarobkowe_2012)
-suma_darowizna_2 = Item.create!(amount: 3, category: darowizny_2011)
-suma_wyposazenie = Item.create!(amount: 4, category: wyposazenie_2012)
-suma_transport = Item.create!(amount: 5, category: wynagrodzenia_2011)
-suma_wynagrodzenie_2 = Item.create!(amount: 6, category: wynagrodzenia_2011)
-suma_wyposazenie_2 = Item.create!(amount: 7, category: wyposazenie_2011)
+darowizna.items << Item.create!(amount: 1, category: darowizny_2011)
+akcja_i_darowizna.items << Item.create!(amount: 2, category: akcje_zarobkowe_2012)
+akcja_i_darowizna.items << Item.create!(amount: 3, category: darowizny_2011)
+wyposazenie.items << Item.create!(amount: 4, category: wyposazenie_2012)
+transport.items << Item.create!(amount: 5, category: wynagrodzenia_2011)
+wynagrodzenie_i_wyposazenie.items << Item.create!(amount: 6, category: wynagrodzenia_2011)
+wynagrodzenie_i_wyposazenie.items << Item.create!(amount: 7, category: wyposazenie_2011)
 
-darowizna.items << suma_darowizna
-akcja_i_darowizna.items << suma_akcja_zarobkowa
-akcja_i_darowizna.items << suma_darowizna_2
-wyposazenie.items << suma_wyposazenie
-transport.items << suma_transport
-wynagrodzenie_i_wyposazenie.items << suma_wynagrodzenie_2
-wynagrodzenie_i_wyposazenie.items << suma_wyposazenie_2
 darowizna.save!
 akcja_i_darowizna.save!
 wyposazenie.save!
