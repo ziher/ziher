@@ -62,6 +62,7 @@ class EntriesController < ApplicationController
   # PUT /entries/1.json
   def update
     @entry = Entry.find(params[:id])
+    @journal = @entry.journal
 
     respond_to do |format|
       if @entry.update_attributes(params[:entry])

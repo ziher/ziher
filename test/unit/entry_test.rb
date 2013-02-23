@@ -2,6 +2,7 @@ require 'test_helper'
 
 class EntryTest < ActiveSupport::TestCase
   fixtures :categories
+  fixtures :journals
 
   test "should not save entry without items" do
     entry = entries(:one)
@@ -96,6 +97,22 @@ class EntryTest < ActiveSupport::TestCase
     entry.items << item
 
     assert_equal(5, entry.get_amount_for_category(category.id))
+  end
+
+  test "should not allow entry being both income and expense" do
+    #given
+    entry = Entry.create
+    entry.journal = journals(:finance_2012)
+    income_item = Item.create(:category => categories(:two), :amount => 1)
+    expense_item = Item.create(:category => categories(:five), :amount => 1)
+
+    #when
+    entry.items << income_item << expense_item
+
+    #then
+    assert_raise(ActiveRecord::RecordInvalid){
+      entry.save!
+    }
   end
 end
 

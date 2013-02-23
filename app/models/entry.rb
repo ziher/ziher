@@ -1,3 +1,4 @@
+#encoding=UTF-8
 class Entry < ActiveRecord::Base
   include ActiveModel::Validations
 
@@ -10,6 +11,7 @@ class Entry < ActiveRecord::Base
   validates :journal, :presence => {:message => "Wpis musi byc przypisany do ksiazki"}
   validate :cannot_have_multiple_items_in_one_category
   validate :cannot_have_item_from_category_not_from_journals_year
+  validate :must_be_either_expense_or_income
 
   def get_amount_for_category(category_id)
     result = self.items.find(:first, :conditions=>{:category_id=>category_id})
@@ -54,6 +56,20 @@ class Entry < ActiveRecord::Base
       if item.category.year != journal.year
         errors[:base] << "Wpis nie moze miec sumy dla kategorii z innego roku niz ksiazka: journal.year=#{journal.year} != category.year=#{item.category.year}"
         return
+      end
+    end
+  end
+
+  def must_be_either_expense_or_income
+    is_expense = false
+    is_income = false
+    items.each do |item|
+      if item.amount and item.amount > 0
+        is_expense = true if item.category.is_expense
+        is_income = true if not item.category.is_expense
+        if is_expense and is_income
+          errors[:base] << "Wpis nie może być jednocześnie wpływem i wydatkiem"
+        end
       end
     end
   end
