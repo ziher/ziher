@@ -6,12 +6,6 @@ class EntriesControllerTest < ActionController::TestCase
     @entry = entries(:one)
   end
 
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:entries)
-  end
-
   test "should get new" do
     get :new, journal_id: @entry.journal_id
     assert_response :success
