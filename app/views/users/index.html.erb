@@ -8,6 +8,7 @@ table.users tr.invited td { color: #aaa; }
     <th>E-mail</th>
     <th>Status</th>
     <th>Superadmin</th>
+    <th>Zablokowany</th>
     <th colspan="3">Akcja</th>
   </tr>
 
@@ -16,6 +17,7 @@ table.users tr.invited td { color: #aaa; }
     <td><%= user.email %></td>
     <td><%= I18n.t(user.status) %></td>
     <td><%= user.is_superadmin ? "TAK" : "nie" %></td>
+    <td><%= user.is_blocked ? "TAK" : "nie" %></td>
     <td><%= link_to 'Pokaż', user %></td>
     <% if can? :update, User %>
       <td><%= link_to 'Edytuj', edit_user_path(user) %></td>

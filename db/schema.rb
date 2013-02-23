@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130119231751) do
+ActiveRecord::Schema.define(:version => 20130223101108) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(:version => 20130119231751) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.boolean  "is_superadmin",                        :default => false
+    t.boolean  "is_blocked",                           :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

@@ -11,6 +11,11 @@
 </p>
 
 <p>
+  <b>Zablokowany:</b>
+  <%= @user.is_blocked ? "Tak" : "Nie" %>
+</p>
+
+<p>
   <b>Przypisane drużyny:</b><br/>
   <% if @user.units.each do |u| %>
     <%= u.name %><br />

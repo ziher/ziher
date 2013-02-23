@@ -15,9 +15,15 @@
     <%= f.label :email %><br />
     <%= f.text_field :email, 'disabled' => 'true' %>
   </div>
+  
   <div class="field">
     <%= f.label :is_superadmin %><br />
     <%= f.check_box :is_superadmin %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :is_blocked %><br />
+    <%= f.check_box :is_blocked %>
   </div>
   
   <div class="field">

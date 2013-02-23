@@ -6,6 +6,9 @@ pl:
         password: "Hasło"
         remember_me: "Zapamiętaj sobie"
         is_superadmin: "Superadmin"
+        unit_ids: "Przypisane drużyny"
+        group_ids: "Przypisane grupy drużyn"
+        is_blocked: "Zablokowany"
       category:
         name: "Nazwa"
         year: "Rok"
