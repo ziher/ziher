@@ -36,9 +36,9 @@
       <td><%= entry.get_amount_for_category(category.id) %></td>
     <% end %>
 
-    <td><%= entry.income_sum %></td>
+    <td><%= entry.is_expense ? 0 : entry.sum %></td>
 
-    <td><%= entry.expense_sum %></td>
+    <td><%= entry.is_expense ? entry.sum : 0 %></td>
 
     <% @categories_expense.each do |category| %>
       <td><%= entry.get_amount_for_category(category.id) %></td>
