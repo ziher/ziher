@@ -53,13 +53,13 @@ e3 = Entry.new(name: 'entry 3: wyposazenie', document_number: 'fv4', journal_id:
 e4 = Entry.new(name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal_id: journal2.id)
 e5 = Entry.new(name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal_id: journal2.id)
 
-item1 = Item.create!(amount: 1, category_id: c1.id, entry_id: e1.id)
-item2 = Item.create!(amount: 2, category_id: c2.id, entry_id: e2.id)
-item3 = Item.create!(amount: 3, category_id: c1.id, entry_id: e2.id)
-item4 = Item.create!(amount: 4, category_id: c4.id, entry_id: e3.id)
-item5 = Item.create!(amount: 5, category_id: c7_2011.id, entry_id: e4.id)
-item6 = Item.create!(amount: 6, category_id: c8_2011.id, entry_id: e5.id)
-item7 = Item.create!(amount: 7, category_id: c9_2011.id, entry_id: e5.id)
+item1 = Item.create!(amount: 1, category_id: c1.id)
+item2 = Item.create!(amount: 2, category_id: c2.id)
+item3 = Item.create!(amount: 3, category_id: c1.id)
+item4 = Item.create!(amount: 4, category_id: c4.id)
+item5 = Item.create!(amount: 5, category_id: c7_2011.id)
+item6 = Item.create!(amount: 6, category_id: c7_2011.id)
+item7 = Item.create!(amount: 7, category_id: c8_2011.id)
 
 e1.items << item1
 e2.items << item2
