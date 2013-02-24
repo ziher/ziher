@@ -83,4 +83,13 @@ class CategoriesController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  def sort
+    @categories = Category.all
+    @categories.each do |category|
+      category.position = params['category'].index(category.id.to_s) + 1
+      category.save
+    end
+    render :nothing => true
+  end
 end

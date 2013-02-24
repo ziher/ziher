@@ -22,6 +22,10 @@ Ziher::Application.routes.draw do
   resources :journal_types
 
   resources :categories
+  root to: "categories#index"
+  resources :categories do
+    post :sort, on: :collection
+  end
 
   resources :inventory_journals
 

@@ -8,7 +8,7 @@ one:
 two:
   name: CategoryTwo
   is_expense: false
-  order: 2
+  position: 2
   year: 2012
 
 three:
@@ -24,13 +24,13 @@ four:
 five:
   name: CategoryFive
   is_expense: true
-  order: 3
+  position: 3
   year: 2012
 
 six:
   name: CategorySix
   is_expense: true
-  order: 1
+  position: 1
   year: 2012
 
 seven:

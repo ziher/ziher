@@ -11,6 +11,20 @@
   <%= submit_tag I18n.t('search') %>
 </form>
 
+<% if @year and @is_expense %>
+  <% filtered_categories = Category.find_by_year_and_type(@year, @is_expense == "true") %>
+<% else %>
+  <% filtered_categories = Category.all %>
+<% end %>
+
+<ul id="categories">
+<% filtered_categories.each do |category| %>
+  <li id="category_<%= category.id %>">
+    <span class="handle">[drag]</span><%= category.name %> <%= category.is_expense %> <%= category.year %>
+  </li>
+<% end %>
+</ul>
+
 <table>
   <tr>
     <th>Nazwa</th>
@@ -20,12 +34,6 @@
     <th></th>
     <th></th>
   </tr>
-
-<% if @year and @is_expense %>
-  <% filtered_categories = Category.find_by_year_and_type(@year, @is_expense == "true") %>
-<% else %>
-  <% filtered_categories = Category.all %>
-<% end %>
 
 <% filtered_categories.each do |category| %>
   <tr>
@@ -42,4 +50,3 @@
 <br />
 
 <%= link_to 'Nowa kategoria', new_category_path %>
-

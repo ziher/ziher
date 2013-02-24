@@ -1,4 +1,7 @@
 class Category < ActiveRecord::Base
+  acts_as_list
+  default_scope :order => 'position ASC'
+
   validates :year, :presence => {:message => "Kategoria musi byc przypisana do roku"}
 
   def Category.get_all_years
@@ -10,6 +13,6 @@ class Category < ActiveRecord::Base
   end
 
   def Category.find_by_year_and_type(year, is_expense)
-    Category.find(:all, :conditions => {:year => year, :is_expense => is_expense}, :order => "'order' ASC")
+    Category.find(:all, :conditions => {:year => year, :is_expense => is_expense})
   end
 end
