@@ -2,6 +2,13 @@
 
 <table>
   <thead>
+  
+    <tr>
+      <th colspan="3"></th>
+      <th colspan="<%= @categories_income.count %>" class="balance-label">Saldo początkowe:</th>
+      <th colspan="2" class="balance" id="initial-balance"><%= @journal.initial_balance %></th>
+      <th colspan="<%= @categories_expense.count + 3 %>"></th>
+    </tr>
 
     <tr>
       <th rowspan="2">Lp.</th>

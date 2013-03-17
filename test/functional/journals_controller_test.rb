@@ -48,4 +48,9 @@ class JournalsControllerTest < ActionController::TestCase
 
     assert_redirected_to journals_path
   end
+
+  test "should show initial balance" do
+    get :show, id: @journal.to_param
+    assert_select "#initial-balance", @journal.initial_balance.to_s
+  end
 end

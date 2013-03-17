@@ -4,6 +4,7 @@ finance_2012:
   year: 2012
   journal_type: finance
   is_open: true
+  initial_balance: 219.28
 
 bank_2012:
   year: 2012

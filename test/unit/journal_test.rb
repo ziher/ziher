@@ -114,6 +114,11 @@ class JournalTest < ActiveSupport::TestCase
     assert_equal expected_sum, journal.get_income_sum
   end
 
+  test "should have initial balance" do
+    journal = journals(:finance_2012)
+    assert_not_nil journal.initial_balance
+  end
+
   private
 
   def count_sum_for_category(journal, category)

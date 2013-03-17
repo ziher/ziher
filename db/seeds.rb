@@ -43,7 +43,7 @@ type1 = JournalType.create!(name: "Książka finansowa", is_default: true)
 type2 = JournalType.create!(name: "Książka bankowa")
 
 journal1 = Journal.create!(year: 2012, journal_type: type1, is_open: true)
-journal2 = Journal.create!(year: 2011, journal_type: type2, is_open: true)
+journal2 = Journal.create!(year: 2011, journal_type: type2, is_open: true, initial_balance: 12.34)
 journal1.save!
 journal2.save!
 
