@@ -85,9 +85,9 @@ class CategoriesController < ApplicationController
   end
 
   def sort
-    @categories = Category.all
-    @categories.each do |category|
-      category.position = params['category'].index(category.id.to_s) + 1
+    params['category'].each_with_index do |category, position|
+      category = Category.find(category)
+      category.position = position
       category.save
     end
     render :nothing => true

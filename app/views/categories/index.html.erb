@@ -17,13 +17,15 @@
   <% filtered_categories = Category.all %>
 <% end %>
 
-<ul id="categories">
-<% filtered_categories.each do |category| %>
-  <li id="category_<%= category.id %>">
-    <span class="handle">[drag]</span><%= category.name %> <%= category.is_expense %> <%= category.year %>
-  </li>
+<% if @year and @is_expense %>
+  <ul id="categories">
+  <% filtered_categories.each do |category| %>
+    <li id="category_<%= category.id %>">
+      <span class="handle">[drag] </span><%= category.name %>
+    </li>
+  <% end %>
+  </ul>
 <% end %>
-</ul>
 
 <table>
   <tr>
