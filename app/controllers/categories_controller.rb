@@ -4,6 +4,9 @@ class CategoriesController < ApplicationController
   def index
     @years = Category.get_all_years()
     @year = params[:year]
+    if not @year
+      @year = @years.first
+    end
 
     respond_to do |format|
       format.html # index.html.erb
