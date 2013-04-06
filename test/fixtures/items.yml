@@ -21,3 +21,8 @@ four:
   amount: 123.56
   entry: expense_two
   category: six
+
+five:
+  amount: 100.05
+  entry: expense_three
+  category: six

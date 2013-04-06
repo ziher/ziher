@@ -1,5 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
+finance_2011:
+  year: 2011
+  journal_type: finance
+  is_open: true
+  initial_balance: 200
+
 finance_2012:
   year: 2012
   journal_type: finance

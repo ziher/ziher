@@ -6,6 +6,18 @@ class Journal < ActiveRecord::Base
   validates :year, :presence => true
   validate :cannot_have_duplicated_type
 
+  before_create :set_initial_balance
+
+  def set_initial_balance
+    previous = Journal.find_previous_for_type(self.journal_type, self.year-1)
+    if previous
+      previous_balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
+      self.initial_balance = previous_balance
+    else
+      self.initial_balance = 0
+    end
+  end
+
   def cannot_have_duplicated_type
     if self.journal_type
       found = Journal.find_by_year_and_type(self.year, self.journal_type)
@@ -72,7 +84,11 @@ class Journal < ActiveRecord::Base
 
   # Returns journal for current (or latest) year, of given journal type
   def Journal.find_current_for_type(type)
-    journal = Journal.where("journal_type_id = ? AND year <= ?", type.id, Time.now.year).order("year DESC").first
+    journal = Journal.find_previous_for_type(type, Time.now.year)
+  end
+
+  def Journal.find_previous_for_type(type, year)
+    journal = Journal.where("journal_type_id = ? AND year <= ?", type.id, year).order("year DESC").first
   end
 
   private

@@ -119,9 +119,46 @@ class JournalTest < ActiveSupport::TestCase
     assert_not_nil journal.initial_balance
   end
 
+  test "should count initial balance" do
+    #given
+    previous = journals(:finance_2012)
+    balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
+
+    #when
+    new_journal = Journal.create!(:year => 2013, :journal_type => journal_types(:finance))
+
+    #then
+    assert_equal balance, new_journal.initial_balance
+  end
+
+  test "should set initial balance to zero when there is no previous journal" do
+    #when
+    new_journal = Journal.create!(:year => 2001, :journal_type => journal_types(:finance))
+
+    #then
+    assert_equal 0, new_journal.initial_balance
+  end
+
+  test "should count initial balance when last journal is not previous year" do
+    #given
+    previous = journals(:finance_2012)
+    balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
+
+    #when
+    new_journal = Journal.create(:year => 2014, :journal_type => journal_types(:finance))
+
+    #then
+    assert_equal balance, new_journal.initial_balance
+  end
+
   test "should require year" do
+    #given
     journal = journals(:finance_2012)
+
+    #when
     journal.year = nil
+
+    #then
     assert_raise(ActiveRecord::RecordInvalid){
       journal.save!
     }
