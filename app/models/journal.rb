@@ -3,6 +3,7 @@ class Journal < ActiveRecord::Base
   has_many :entries
 
   validates :journal_type, :presence => true
+  validates :year, :presence => true
   validate :cannot_have_duplicated_type
 
   def cannot_have_duplicated_type

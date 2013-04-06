@@ -29,7 +29,7 @@ class JournalTest < ActiveSupport::TestCase
   end
 
   test "should save journal with type" do
-    journal = Journal.create!(:journal_type => journal_types(:finance))
+    journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013)
     assert_not_nil journal
   end
 
@@ -117,6 +117,14 @@ class JournalTest < ActiveSupport::TestCase
   test "should have initial balance" do
     journal = journals(:finance_2012)
     assert_not_nil journal.initial_balance
+  end
+
+  test "should require year" do
+    journal = journals(:finance_2012)
+    journal.year = nil
+    assert_raise(ActiveRecord::RecordInvalid){
+      journal.save!
+    }
   end
 
   private
