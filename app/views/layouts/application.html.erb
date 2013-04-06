@@ -7,6 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div class="container">
 
 | <%= link_to "ZiHeR 2.0", root_path %>
 <% JournalType.all.each do |journal_type| %>
@@ -33,5 +34,6 @@
 
 <%= yield %>
 
+</div>
 </body>
 </html>

@@ -1,27 +1,34 @@
-<h2>Zaloguj się</h2>
+<div class="row">
+  <h2 class="span3 offset4 pull-left">Zaloguj się</h2>
+</div>
 
-użytkownik: ziher_to@zhr.pl<br />
-hasło: 0xDEADBEEF<br />
-<input type="button" 
-       onclick="document.getElementById('user_email').value='ziher_to@zhr.pl';
-                document.getElementById('user_password').value='0xDEADBEEF'"
-       value="wypełnij"/><br/>
-<br />
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-horizontal' }) do |f| %>
+  <div class="row">
+    <div class='span3 offset4'>
+      <div class='control-group'>
+        <%= f.email_field :email, :placeholder => I18n.t('helpers.label.user.email'), :class=>"span3" %>
+      </div>
 
+      <div class='control-group'>
+        <%= f.password_field :password, :placeholder => I18n.t('helpers.label.user.password'), :class=>"span3" %>
+      </div>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+      <div class='control-group'>
+        <% if devise_mapping.rememberable? %>
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, :class=>"checkbox inline" %>
+        <% end %>
+      </div>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+      <div class='control-group'>
+        <input type="button" class="btn btn-primary pull-left" value="Wypełnij"
+               onclick="document.getElementById('user_email').value='ziher_to@zhr.pl'; document.getElementById('user_password').value='0xDEADBEEF'" />
+        <%= f.submit "Zaloguj się", :class => 'btn btn-primary pull-right' %>
+      </div>
 
-	<div>
-		<%= f.submit "Zaloguj się" %>
-		<% if devise_mapping.rememberable? -%>
-			<%= f.check_box :remember_me %> <%= f.label :remember_me %>
-		<% end -%>
-	</div>
+    </div>
+  </div>
+
 <% end %>
 <br/>
 
