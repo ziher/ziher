@@ -33,3 +33,5 @@ pl:
   search: "Szukaj"
   edit: "Edycja"
   back: "Wstecz"
+  expenses: "Wydatki"
+  incomes: "Wpływy"

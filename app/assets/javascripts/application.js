@@ -21,27 +21,3 @@ $(function() {
     //$.datepicker.setDefaults({ selectOtherMonths: true }); //we show multiple months so this doesn't have much sense
     $("#entry_date").datepicker();
 });
-
-
-// This should go into categories.js or sth
-$(document).ready(function(){
-  $('#categories').sortable({
-    axis: 'y',
-    dropOnEmpty: false,
-    handle: '.handle',
-    cursor: 'crosshair',
-    items: 'li',
-    opacity: 0.4,
-    scroll: true,
-    update: function(){
-      $.ajax({
-        type: 'post',
-        data: $('#categories').sortable('serialize'),
-        dataType: 'script',
-        complete: function(request){
-          $('#categories').effect('highlight');
-        },
-        url: '/categories/sort'})
-    }
-  });
-});

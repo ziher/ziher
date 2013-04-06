@@ -2,10 +2,8 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @categories = Category.all
     @years = Category.get_all_years()
     @year = params[:year]
-    @is_expense = params[:is_expense]
 
     respond_to do |format|
       format.html # index.html.erb
