@@ -17,7 +17,7 @@ class Journal < ActiveRecord::Base
 
   # calculates balance of previous year's journal and sets it as this journal's initial balance
   def set_initial_balance
-    previous = Journal.find_previous_for_type(self.journal_type, self.year-1)
+    previous = Journal.find_previous_for_type(self.unit, self.journal_type, self.year-1)
     if previous
       previous_balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
       self.initial_balance = previous_balance
@@ -84,11 +84,13 @@ class Journal < ActiveRecord::Base
     end
   end
 
+  # Returns the most recent journal for given type, that the given user has access to
   def Journal.get_default(type, user)
     journals = Journal.find_by_type_and_user(type, user).first
   end
 
   # Returns all journals of the specified type that the specified user has access to.
+  # Journals are ordered by year, starting from newest
   def Journal.find_by_type_and_user(type, user)
     journals = Journal.find_by_sql(["with recursive G as (
   select group_id, subgroup_id
@@ -104,16 +106,17 @@ select *
     where j.journal_type_id = :journal_type_id
       and (j.unit_id in (select uus.unit_id from units_users uus where uus.user_id = :user_id)
         or j.unit_id in (select gu.unit_id from groups_units gu inner join groups_users gus on gus.group_id = gu.group_id where gus.user_id = :user_id)
-        or j.unit_id in (select gu.unit_id from groups_units gu where group_id in (select group_id from G union select subgroup_id from G)))", 
+        or j.unit_id in (select gu.unit_id from groups_units gu where group_id in (select group_id from G union select subgroup_id from G)))
+      order by j.year DESC", 
       { :journal_type_id => type.id, :user_id => user.id }])
   end
 
   # Returns journal for current (or latest) year, of given journal type
-  def Journal.find_current_for_type(type)
-    journal = Journal.find_previous_for_type(type, Time.now.year)
+  def Journal.find_current_for_type(unit, type)
+    journal = Journal.find_previous_for_type(unit, type, Time.now.year)
   end
 
-  def Journal.find_previous_for_type(type, year)
+  def Journal.find_previous_for_type(unit, type, year)
     journal = Journal.where("journal_type_id = ? AND year <= ?", type.id, year).order("year DESC").first
   end
 

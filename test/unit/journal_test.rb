@@ -7,29 +7,29 @@ class JournalTest < ActiveSupport::TestCase
 
   test "should prevent creating two journals of the same type for the same year" do
     assert_raise(ActiveRecord::RecordInvalid){
-      journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2012)
+      journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2012, :unit => units(:one))
     }
   end
 
   test "should save two journals of the same type for different years" do
-    journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013)
+    journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013, :unit => units(:one))
     assert_not_nil journal
   end
 
   test "should save journal after it was created" do
-    journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013)
+    journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013, :unit => units(:one))
     journal.save!
     assert_not_nil journal
   end
 
   test "should prevent saving without type" do
     assert_raise(ActiveRecord::RecordInvalid){
-      journal = Journal.create!
+      journal = Journal.create!(:unit => units(:one))
     }
   end
 
   test "should save journal with type" do
-    journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013)
+    journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013, :unit => units(:one))
     assert_not_nil journal
   end
 
@@ -47,7 +47,7 @@ class JournalTest < ActiveSupport::TestCase
     year_2015 = Time.parse('2015-05-05')
     pretend_now_is(year_2015) do
       journal_2015 = journals(:finance_2015)
-      assert_equal journal_2015, Journal.get_default
+      assert_equal journal_2015, Journal.get_default(journal_types(:finance), users(:user1))
     end
   end
 
@@ -55,7 +55,7 @@ class JournalTest < ActiveSupport::TestCase
     year_2016 = Time.parse('2016-06-06')
     pretend_now_is(year_2016) do
       journal_2015 = journals(:finance_2015)
-      assert_equal journal_2015, Journal.get_default
+      assert_equal journal_2015, Journal.get_default(journal_types(:finance), users(:user1))
     end
   end
 
@@ -63,7 +63,7 @@ class JournalTest < ActiveSupport::TestCase
     year_2015 = Time.parse('2015-05-05')
     pretend_now_is(year_2015) do
       journal_2015 = journals(:finance_2015)
-      assert_equal journal_2015, Journal.find_current_for_type(journal_types(:finance))
+      assert_equal journal_2015, Journal.find_current_for_type(units(:one), journal_types(:finance))
     end
   end
 
@@ -71,7 +71,7 @@ class JournalTest < ActiveSupport::TestCase
     year_2016 = Time.parse('2016-06-06')
     pretend_now_is(year_2016) do
       journal_2015 = journals(:finance_2015)
-      assert_equal journal_2015, Journal.find_current_for_type(journal_types(:finance))
+      assert_equal journal_2015, Journal.find_current_for_type(units(:one), journal_types(:finance))
     end
   end
 
@@ -125,7 +125,7 @@ class JournalTest < ActiveSupport::TestCase
     balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
 
     #when
-    new_journal = Journal.create!(:year => 2013, :journal_type => journal_types(:finance))
+    new_journal = Journal.create!(:year => 2013, :journal_type => journal_types(:finance), :unit => units(:one))
 
     #then
     assert_equal balance, new_journal.initial_balance
@@ -133,7 +133,7 @@ class JournalTest < ActiveSupport::TestCase
 
   test "should set initial balance to zero when there is no previous journal" do
     #when
-    new_journal = Journal.create!(:year => 2001, :journal_type => journal_types(:finance))
+    new_journal = Journal.create!(:year => 2001, :journal_type => journal_types(:finance), :unit => units(:one))
 
     #then
     assert_equal 0, new_journal.initial_balance
@@ -145,7 +145,7 @@ class JournalTest < ActiveSupport::TestCase
     balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
 
     #when
-    new_journal = Journal.create(:year => 2014, :journal_type => journal_types(:finance))
+    new_journal = Journal.create(:year => 2014, :journal_type => journal_types(:finance), :unit => units(:one))
 
     #then
     assert_equal balance, new_journal.initial_balance
