@@ -4,6 +4,7 @@ class Journal < ActiveRecord::Base
   has_many :entries
 
   validates :journal_type, :presence => true
+  validates :unit, :presence => true
   validates :year, :presence => true
   validate :cannot_have_duplicated_type
 
@@ -83,14 +84,28 @@ class Journal < ActiveRecord::Base
     end
   end
 
-  # Returns journal for current (or latest) year, of default journal type,
-  # or first found journal if default journal type is not specified
-  def Journal.get_default
-    default_type = JournalType.where(:is_default => true).first
-    if not default_type
-      return Journal.first
-    end
-    journal = Journal.find_current_for_type(default_type)
+  def Journal.get_default(type, user)
+    journals = Journal.find_by_type_and_user(type, user).first
+  end
+
+  # Returns all journals of the specified type that the specified user has access to.
+  def Journal.find_by_type_and_user(type, user)
+    journals = Journal.find_by_sql(["with recursive G as (
+  select group_id, subgroup_id
+    from subgroups
+      where group_id in (select gus.group_id from groups_users gus where gus.user_id = :user_id)
+  union all
+  select subg.group_id, subg.subgroup_id
+    from subgroups subg
+      join G on G.subgroup_id = subg.group_id
+)
+select *
+  from journals j
+    where j.journal_type_id = :journal_type_id
+      and (j.unit_id in (select uus.unit_id from units_users uus where uus.user_id = :user_id)
+        or j.unit_id in (select gu.unit_id from groups_units gu inner join groups_users gus on gus.group_id = gu.group_id where gus.user_id = :user_id)
+        or j.unit_id in (select gu.unit_id from groups_units gu where group_id in (select group_id from G union select subgroup_id from G)))", 
+      { :journal_type_id => type.id, :user_id => user.id }])
   end
 
   # Returns journal for current (or latest) year, of given journal type

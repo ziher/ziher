@@ -4,7 +4,11 @@ class JournalsController < ApplicationController
   # GET /journals
   # GET /journals.json
   def index
-    @journals = Journal.all
+    if (params[:journal_type_id])
+      @journals = Journal.where(:journal_type_id => params[:journal_type_id])
+    else
+      @journals = Journal.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -28,9 +32,13 @@ class JournalsController < ApplicationController
 
   def default
     # get default journal
-    @journal = Journal.get_default
-    # redirect to it
-    redirect_to journal_path(@journal)
+    journal_type = JournalType.find(params[:journal_type_id])
+    @journal = Journal.get_default(journal_type, current_user)
+    if (@journal != nil)
+      redirect_to journal_path(@journal)
+    else
+      redirect_to journals_path
+    end
   end
 
   # GET /journals/new

@@ -1,24 +1,21 @@
 Ziher::Application.routes.draw do
-  resources :groups
 
-  root :to => 'journals#default'
-
-  match "journals/default" => "journals#default"
+  root :to => 'journals#default', :defaults => { :journal_type_id => 1 }
 
   get "users/new"
   post "users" => "users#create"
-
   devise_for :users
   resources :users
-
+  resources :groups
   resources :entries
-
   resources :cash_entries
 
   resources :journals
   match 'journals/:id/open' => 'journals#open', :as => :open_journal
   match 'journals/:id/close' => 'journals#close', :as => :close_journal
-
+  match 'journals/type/:journal_type_id' => 'journals#index'
+  match 'ksiazka_finansowa' => 'journals#default', :defaults => { :journal_type_id => 1 }, :as => :default_finance_journal
+  match 'ksiazka_bankowa' =>  'journals#default', :defaults => { :journal_type_id => 2 }, :as => :default_bank_journal
   resources :journal_types
 
   resources :categories

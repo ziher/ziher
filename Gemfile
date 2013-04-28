@@ -6,7 +6,7 @@ gem 'rails', '3.1.12'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 group :development, :test do
-  gem 'sqlite3'
+  gem 'pg'
   gem 'time-warp'
 end
 
