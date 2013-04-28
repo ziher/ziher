@@ -42,3 +42,8 @@ eight:
   name: CategoryEight
   is_expense: true
   year: 2012
+
+nine_income_2011:
+  name: Income category 2011
+  is_expense: false
+  year: 2011

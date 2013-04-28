@@ -164,6 +164,26 @@ class JournalTest < ActiveSupport::TestCase
     }
   end
 
+  test "should recalculate balance when adding entry" do
+    #given
+    #two open journals
+    earlier = journals(:finance_2011)
+    later = journals(:finance_2012)
+    balance_before = later.initial_balance
+
+    #when
+    #an entry is added to earlier journal
+    item = Item.new(:amount => 20, :category => categories(:nine_income_2011))
+    entry = Entry.new(:items => [item], :journal_id => earlier.id)
+    entry.save!
+
+    #then
+    #later journal's balance is recalculated
+    later.reload
+    balance_after = later.initial_balance
+    assert_equal(balance_before + 20, balance_after)
+  end
+
   private
 
   def count_sum_for_category(journal, category)
@@ -171,4 +191,5 @@ class JournalTest < ActiveSupport::TestCase
       items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
       return items_for_category.sum(&:amount)
   end
+
 end

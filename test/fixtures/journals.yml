@@ -10,7 +10,7 @@ finance_2012:
   year: 2012
   journal_type: finance
   is_open: true
-  initial_balance: 219.28
+  initial_balance: 100
 
 bank_2012:
   year: 2012
@@ -21,3 +21,4 @@ finance_2015:
   year: 2015
   journal_type: finance
   is_open: true
+  initial_balance: 0

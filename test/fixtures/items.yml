@@ -23,6 +23,6 @@ four:
   category: six
 
 five:
-  amount: 100.05
+  amount: 100
   entry: expense_three
   category: six

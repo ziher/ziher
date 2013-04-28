@@ -17,6 +17,8 @@ class Entry < ActiveRecord::Base
   validate :should_not_change_if_journal_is_closed
   before_destroy :should_not_change_if_journal_is_closed
 
+  after_save :recalculate_initial_balance
+
   def get_amount_for_category(category_id)
     result = self.items.find(:first, :conditions=>{:category_id=>category_id})
 
@@ -98,4 +100,14 @@ class Entry < ActiveRecord::Base
 
     return result
   end
+
+  # recalculates initial balance for next year's journal
+  def recalculate_initial_balance
+    next_journal = self.journal.find_next_year_journal
+    if next_journal
+      next_journal.set_initial_balance
+      next_journal.save!
+    end
+  end
+
 end

@@ -1,5 +1,6 @@
 class Journal < ActiveRecord::Base
   belongs_to :journal_type
+  belongs_to :unit
   has_many :entries
 
   validates :journal_type, :presence => true
@@ -8,6 +9,12 @@ class Journal < ActiveRecord::Base
 
   before_create :set_initial_balance
 
+  # returns a user-friendly string representation
+  def to_s
+    return "Journal(#{self.id}, #{self.journal_type}, #{self.year}, #{self.unit}, #{self.is_open ? 'open' : 'closed'}, #{initial_balance})"
+  end
+
+  # calculates balance of previous year's journal and sets it as this journal's initial balance
   def set_initial_balance
     previous = Journal.find_previous_for_type(self.journal_type, self.year-1)
     if previous
@@ -62,6 +69,10 @@ class Journal < ActiveRecord::Base
       items += entry.items.find_all_by_category_id(category.id)
     end
     return items
+  end
+
+  def find_next_year_journal
+    return Journal.first(:conditions => {:year => self.year + 1, :unit_id => self.unit_id, :journal_type_id => self.journal_type.id})
   end
 
   # Returns one journal of given year and type, or nil if not found
