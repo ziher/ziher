@@ -13,15 +13,20 @@
       <% end %>
 
       <li class="<%= 'active' if current_page?(inventory_entries_path) %>"> <%= link_to "Książka inwentarzowa", inventory_entries_path %> </li>
-      <li class="<%= 'active' if current_page?(units_path) %>"> <%= link_to "Drużyny", units_path %> </li>
-      <li class="<%= 'active' if current_page?(groups_path) %>"> <%= link_to "Grupy", groups_path %> </li>
-      <li class="<%= 'active' if current_page?(categories_path) %>"> <%= link_to "Kategorie", categories_path %> </li>
-      <li class="<%= 'active' if current_page?(journals_path) %>"> <%= link_to "Książki", journals_path %> </li>
-      <li class="<%= 'active' if current_page?(journal_types_path) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Administracja <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class="<%= 'active' if current_page?(units_path) %>"> <%= link_to "Drużyny", units_path %> </li>
+          <li class="<%= 'active' if current_page?(groups_path) %>"> <%= link_to "Grupy", groups_path %> </li>
+          <li class="<%= 'active' if current_page?(categories_path) %>"> <%= link_to "Kategorie", categories_path %> </li>
+          <li class="<%= 'active' if current_page?(journals_path) %>"> <%= link_to "Książki", journals_path %> </li>
+          <li class="<%= 'active' if current_page?(journal_types_path) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li>
 
-      <% if can? :read, User %>
-        <li class="<%= 'active' if current_page?(users_path) %>"> <%= link_to "Użytkownicy", users_path %> </li>
-      <% end %>
+          <% if can? :read, User %>
+            <li class="<%= 'active' if current_page?(users_path) %>"> <%= link_to "Użytkownicy", users_path %> </li>
+          <% end %>
+        </ul>
+      </li>
 
     </ul>
   </div>
