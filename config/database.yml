@@ -63,6 +63,7 @@ test:
   host: localhost
   username: ziher
   password: ziher
+  min_messages: warning
 
 production:
   adapter: postgresql
