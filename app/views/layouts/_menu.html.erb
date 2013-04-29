@@ -27,7 +27,10 @@
 </div>
 
 <div class="row">
-  <div class="span3 offset9">
+  <div class="span6">
+    <%= yield :journal_select %>
+  </div>
+  <div class="span6">
     <ul class="nav nav-pills">
       <% if user_signed_in? %>
         <li class="pull-right"><%= link_to destroy_user_session_path, :method => :delete do %><%= current_user.email %> - <i class='icon-off'></i>Wyloguj się<%end%></li>

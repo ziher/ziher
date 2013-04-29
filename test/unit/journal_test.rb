@@ -33,13 +33,13 @@ class JournalTest < ActiveSupport::TestCase
     assert_not_nil journal
   end
 
-  test "should find one journal by year and type" do
-    found = Journal.find_by_year_and_type(2012, journal_types(:finance))
+  test "should find one journal by unit and year and type" do
+    found = Journal.find_by_unit_and_year_and_type(units(:one), 2012, journal_types(:finance))
     assert_instance_of Journal, found
   end
 
-  test "should return nil when not found by year and type" do
-    found = Journal.find_by_year_and_type(2014, journal_types(:finance))
+  test "should return nil when not found by unit and year and type" do
+    found = Journal.find_by_unit_and_year_and_type(units(:one), 2014, journal_types(:finance))
     assert_nil found
   end
 

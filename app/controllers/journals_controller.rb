@@ -4,7 +4,21 @@ class JournalsController < ApplicationController
   # GET /journals
   # GET /journals.json
   def index
-    if (params[:journal_type_id])
+    if (params[:unit_id] && params[:journal_type_id] && params[:year])
+      journal = Journal.find_previous_for_type(Unit.find(params[:unit_id]), JournalType.find(params[:journal_type_id]), params[:year])
+      if (journal != nil)
+        redirect_to journal
+        return
+      else
+        journal = Journal.find_current_for_type(Unit.find(params[:unit_id]), JournalType.find(params[:journal_type_id]))
+        if (journal != nil)
+          redirect_to journal
+          return
+        else
+          @journals = Journal.where(:journal_type_id => params[:journal_type_id])
+        end
+      end
+    elsif (params[:journal_type_id])
       @journals = Journal.where(:journal_type_id => params[:journal_type_id])
     else
       @journals = Journal.all
@@ -23,6 +37,8 @@ class JournalsController < ApplicationController
     @categories_expense = Category.find_by_year_and_type(@journal.year, true)
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
     @entries = @journal.entries
+    @user_units = Unit.find_by_user(current_user)
+    @years = @journal.find_all_years()
 
     respond_to do |format|
       format.html # show.html.erb
