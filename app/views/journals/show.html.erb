@@ -20,9 +20,9 @@
 <% end %>
 <h1><%=@journal.journal_type.name%>, <%=@journal.year%></h1>
 
-<table>
+<table class="table table-bordered table-condensed">
+
   <thead>
-  
     <tr>
       <th colspan="3"></th>
       <th colspan="<%= @categories_income.count %>" class="balance-label">Saldo początkowe:</th>
@@ -31,7 +31,7 @@
     </tr>
 
     <tr>
-      <th rowspan="2">Lp.</th>
+      <th rowspan="2">#</th>
       <th rowspan="2">Data</th>
       <th rowspan="2">Treść</th>
       <th colspan="<%= @categories_income.count %>">Wpływy szczegółowo</th>
@@ -43,53 +43,59 @@
 
     <tr>
       <% @categories_income.each do |category| %>
-        <th><%= category.name %></th>
+        <th class="income_<%= category.id %>"><%= category.name %></th>
       <% end %>
       <% @categories_expense.each do |category| %>
-        <th><%= category.name %></th>
+        <th class="expense_<%= category.id %>"><%= category.name %></th>
       <% end %>
     </tr>
   </thead>
 
+  <tbody>
+  <% i = 0 %>
+  <% @entries.each do |entry| %>
+    <tr class="node <%= cycle("even", "odd") -%>"></tr>
+    <tr>
+      <td><%= i+=1 =%>.</td>
+      <td><%= entry.date %></td>
+      <td><%= entry.name %><br/><%= entry.document_number %></td>
 
-<% i = 0 %>
-<% @entries.each do |entry| %>
-  <tr class="node <%= cycle("even", "odd") -%>">
-    <td><%= i+=1 =%>.</td>
-    <td><%= entry.date %></td>
-    <td><%= entry.name %><br/><%= entry.document_number %></td>
+      <% @categories_income.each do |category| %>
+        <td class="income_<%= category.id %>"><%= entry.get_amount_for_category(category.id) %></td>
+      <% end %>
 
-    <% @categories_income.each do |category| %>
-      <td><%= entry.get_amount_for_category(category.id) %></td>
-    <% end %>
+      <td><%= entry.is_expense ? 0 : entry.sum %></td>
 
-    <td><%= entry.is_expense ? 0 : entry.sum %></td>
+      <td><%= entry.is_expense ? entry.sum : 0 %></td>
 
-    <td><%= entry.is_expense ? entry.sum : 0 %></td>
+      <% @categories_expense.each do |category| %>
+        <td class="expense_<%= category.id %>"><%= entry.get_amount_for_category(category.id) %></td>
+      <% end %>
 
-    <% @categories_expense.each do |category| %>
-      <td><%= entry.get_amount_for_category(category.id) %></td>
-    <% end %>
-
-    <td><%= link_to 'Pokaż', entry %></td>
-    <td><%= link_to 'Edytuj', edit_entry_path(entry) %></td>
-    <td><%= link_to 'Usuń', entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
-  </tr>
-<% end %>
-
-<!%-- row with sums for each category --%>
-<tr>
-  <td colspan="3">Suma</td>
-  <% @categories_income.each do |category| %>
-  <td><%= @journal.get_sum_for_category(category) %></td>
+      <td><%= link_to 'Pokaż', entry %></td>
+      <td><%= link_to 'Edytuj', edit_entry_path(entry) %></td>
+      <td><%= link_to 'Usuń', entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
+    </tr>
   <% end %>
-  <td><%= @journal.get_income_sum %></td>
-  <td><%= @journal.get_expense_sum %></td>
-  <% @categories_expense.each do |category| %>
-  <td><%= @journal.get_sum_for_category(category) %></td>
-  <% end %>
-  <td colspan="3"></td>
-</tr>
+  </tbody>
+
+  <!%-- row with sums for each category --%>
+  <tfoot>
+    <tr>
+      <td colspan="3">Suma</td>
+      <% @categories_income.each do |category| %>
+        <td class="income_<%= category.id %>"><%= @journal.get_sum_for_category(category) %></td>
+      <% end %>
+
+      <td><%= @journal.get_income_sum %></td>
+      <td><%= @journal.get_expense_sum %></td>
+
+      <% @categories_expense.each do |category| %>
+        <td class="expense_<%= category.id %>"><%= @journal.get_sum_for_category(category) %></td>
+      <% end %>
+      <td colspan="3"></td>
+    </tr>
+  </tfoot>
 </table>
 
 <br />

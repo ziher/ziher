@@ -22,3 +22,17 @@ $(function() {
     //$.datepicker.setDefaults({ selectOtherMonths: true }); //we show multiple months so this doesn't have much sense
     $("#entry_date").datepicker();
 });
+
+$(document).ready(function(){
+  $('table').delegate('td','mouseover mouseleave', function(e) {
+      if (e.type == 'mouseover') {
+        $(this).parent().addClass("hover");
+        var className = $(this).attr('class');
+        $('.'+className).addClass("hover");
+      } else {
+        $(this).parent().removeClass("hover");
+        var className = $(this).attr('class');
+        $('.'+className.split(' ').join('.')).removeClass("hover");
+      }
+  });
+});
