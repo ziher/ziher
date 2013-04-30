@@ -92,7 +92,7 @@ class Journal < ActiveRecord::Base
   # Returns all journals of the specified type that the specified user has access to.
   # Journals are ordered by year, starting from newest
   def Journal.find_by_type_and_user(type, user)
-    journals = Journal.where(:journal_type_id => type.id, :unit_id => Unit.find_by_user(user).map { |u| u.id })
+    journals = Journal.where(:journal_type_id => type.id, :unit_id => Unit.find_by_user(user).map { |u| u.id }).order("year DESC")
   end
 
   # Returns journal for current (or latest) year, of given journal type
