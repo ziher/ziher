@@ -92,23 +92,7 @@ class Journal < ActiveRecord::Base
   # Returns all journals of the specified type that the specified user has access to.
   # Journals are ordered by year, starting from newest
   def Journal.find_by_type_and_user(type, user)
-    journals = Journal.find_by_sql(["with recursive G as (
-  select group_id, subgroup_id
-    from subgroups
-      where group_id in (select gus.group_id from groups_users gus where gus.user_id = :user_id)
-  union all
-  select subg.group_id, subg.subgroup_id
-    from subgroups subg
-      join G on G.subgroup_id = subg.group_id
-)
-select *
-  from journals j
-    where j.journal_type_id = :journal_type_id
-      and (j.unit_id in (select uus.unit_id from units_users uus where uus.user_id = :user_id)
-        or j.unit_id in (select gu.unit_id from groups_units gu inner join groups_users gus on gus.group_id = gu.group_id where gus.user_id = :user_id)
-        or j.unit_id in (select gu.unit_id from groups_units gu where group_id in (select group_id from G union select subgroup_id from G)))
-      order by j.year DESC", 
-      { :journal_type_id => type.id, :user_id => user.id }])
+    journals = Journal.where(:journal_type_id => type.id, :unit_id => Unit.find_by_user(user).map { |u| u.id })
   end
 
   # Returns journal for current (or latest) year, of given journal type
