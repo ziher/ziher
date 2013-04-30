@@ -53,4 +53,9 @@ class JournalsControllerTest < ActionController::TestCase
     get :show, id: @journal.to_param
     assert_select "#initial-balance", @journal.initial_balance.to_s
   end
+
+  test "should not have access to journal" do
+    get :show, id: journals(:two2012f)
+    assert_unauthorized
+  end
 end

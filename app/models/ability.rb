@@ -6,8 +6,13 @@ class Ability
     if user.is_superadmin
       can :manage, :all
     else
-      can :manage, :all
-      cannot :manage, User
+#      cannot :manage, :all
+      can :manage, Unit do |unit|
+        user.find_units.include?(unit)
+      end
+      can :manage, Journal do |journal|
+        journal.new_record? or can? :manage, journal.unit
+      end
     end
     # Define abilities for the passed in user here. For example:
     #

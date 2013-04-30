@@ -10,6 +10,12 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def assert_unauthorized(msg = nil)
+    full_message = build_message(msg, "should not be authorized")
+    assert_block(full_message) do
+      @response.response_code == 302 and I18n.t(:"unauthorized.default") == flash[:alert]
+    end
+  end
 end
 
 class ActionController::TestCase

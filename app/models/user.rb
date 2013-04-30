@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
     super && !self.is_blocked
   end
 
+  def find_units
+    Unit.find_by_user(self)
+  end
+
 protected
 
   def password_required?

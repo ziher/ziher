@@ -33,16 +33,14 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should fail getting index" do
     sign_in users(:user1)
-    assert_raise(CanCan::AccessDenied) {
-      get :index
-    }
+    get :index
+    assert_unauthorized
   end
   
   test "should fail getting edit user" do
     sign_in users(:user1)
     @admin = users(:admin)
-    assert_raise(CanCan::AccessDenied) {
-      get :edit, id: @admin.to_param 
-    }
+    get :edit, id: @admin.to_param
+    assert_unauthorized
   end
 end

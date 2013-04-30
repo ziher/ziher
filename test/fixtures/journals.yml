@@ -26,3 +26,10 @@ finance_2015:
   is_open: true
   initial_balance: 0
   unit: one
+
+two2012f:
+  year: 2012
+  journal_type: finance
+  is_open: true
+  initial_balance: 0
+  unit: two

@@ -35,3 +35,5 @@ pl:
   back: "Wstecz"
   expenses: "Wydatki"
   incomes: "Wpływy"
+  unauthorized:
+    default: "Próbowałeś/łaś obejrzeć coś, czego nie wolno ci oglądać."
