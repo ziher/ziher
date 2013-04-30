@@ -2,6 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.hover{
+  background-color:#f5f5f5;
+}
+
+.hover_dim{
+  background-color:#ddd;
+}
+
+tr > th.valign_middle {
+  vertical-align: middle;
+}
+
+tr > th.text-center {
+  text-align: center;
+}
+
+tr > td.text-right {
+  text-align: right;
+}
+
 /*
 .odd{
   background-color:#cccccc;
@@ -10,11 +30,6 @@
   background-color:#ffffff;
 }
 */
-
-.hover{
-  background-color:#f5f5f5;
-}
-
 
 /*
 table { 

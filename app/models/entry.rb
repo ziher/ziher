@@ -29,6 +29,11 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def get_formatted_amount_for_category(category_id)
+    amount = get_amount_for_category(category_id)
+    return (amount == 0) ? "-" : amount
+  end
+
   def has_category(category_id)
     existing_item = self.items.find(:first, :conditions=>{:category_id=>category_id})
     return (existing_item != nil)
