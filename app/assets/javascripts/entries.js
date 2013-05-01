@@ -4,7 +4,7 @@ function journalChanged(){
   showSelectedJournal();
 }
 
-function transferChanged(input){
+function isLinkedChanged(input){
   hideAll();
   if(input.checked){
     showJournalsSelect();

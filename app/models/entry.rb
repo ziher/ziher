@@ -4,6 +4,7 @@ class Entry < ActiveRecord::Base
 
   has_many :items, dependent: :destroy
   belongs_to :journal
+  has_one :linked_entry, :class_name => "Entry"
 
   accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
 

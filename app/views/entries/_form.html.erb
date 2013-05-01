@@ -39,9 +39,8 @@
     </div>
 
     <div class="span6">
-    <!%-- TODO: ten input ma byc tagiem do entry.is_transfer --%>
-      <input type="checkbox" id="is_transfer" onchange="transferChanged(this)"/>
-      <label for="is_transfer">Przenieś do innej książki</label>
+      <input type="checkbox" id="is_linked" onchange="isLinkedChanged(this)"/>
+      <label for="is_linked">Przenieś do innej książki</label>
       <% @other_journals = Journal.all %><!%-- TODO: ktore ksiazki powinny sie tu pokazywac --%>
       <%= select_tag "journals", options_from_collection_for_select(@other_journals, "id", "journal_type"), :onchange => 'journalChanged()', :style => "display: none" %>
 

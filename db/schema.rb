@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130317090007) do
+ActiveRecord::Schema.define(:version => 20130501195035) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20130317090007) do
     t.datetime "updated_at"
     t.integer  "journal_id"
     t.boolean  "is_expense"
+    t.integer  "linked_entry_id"
   end
 
   create_table "groups", :force => true do |t|
