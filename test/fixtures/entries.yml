@@ -20,3 +20,10 @@ expense_three:
   document_number: MyString
   journal: finance_2011
   is_expense: true
+
+income_one:
+  date: 2012-03-25
+  name: EntryFour
+  document_number: MyString123
+  journal: finance_2012
+  is_expense: false

@@ -18,6 +18,8 @@ pl:
         name: "Nazwa"
         year: "Rok"
         journal_type: "Rodzaj"
+    journal:
+      one_percent_tooltip: "Środki wydane z 1 procenta"
 
   category:
     is_expense: "Wydatek"

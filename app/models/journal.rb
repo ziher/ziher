@@ -46,11 +46,31 @@ class Journal < ActiveRecord::Base
     return sum
   end
 
+  # returns sum one percent of all items in this journal in given category
+  def get_sum_one_percent_for_category(category)
+    sum = 0
+    self.find_items_by_category(category).each do |item|
+      if item.amount_one_percent
+        sum += item.amount_one_percent
+      end
+    end
+    return sum
+  end
+
   # returns sum of all expense items
   def get_expense_sum
     sum = 0
     Category.find_all_by_is_expense(true).each do |category|
       sum += get_sum_for_category(category)
+    end
+    return sum
+  end
+
+  # returns sum of all one percent expense items
+  def get_expense_one_percent_sum
+    sum = 0
+    Category.find_all_by_is_expense(true).each do |category|
+      sum += get_sum_one_percent_for_category(category)
     end
     return sum
   end

@@ -1,4 +1,5 @@
 # encoding: utf-8
+# TODO: wywalic stringi do I18n
 class Entry < ActiveRecord::Base
   include ActiveModel::Validations
 
@@ -30,9 +31,14 @@ class Entry < ActiveRecord::Base
     end
   end
 
-  def get_formatted_amount_for_category(category_id)
-    amount = get_amount_for_category(category_id)
-    return (amount == 0) ? "-" : amount
+  def get_amount_one_percent_for_category(category_id)
+    result = self.items.find(:first, :conditions=>{:category_id=>category_id})
+
+    if result != nil && result.amount_one_percent != nil
+      return result.amount_one_percent
+    else
+      return 0
+    end
   end
 
   def has_category(category_id)
@@ -101,6 +107,17 @@ class Entry < ActiveRecord::Base
     items.each do |item|
       if item.amount
         result += item.amount
+      end
+    end
+
+    return result
+  end
+
+  def sum_one_percent
+    result = 0
+    items.each do |item|
+      if item.amount_one_percent
+        result += item.amount_one_percent
       end
     end
 

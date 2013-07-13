@@ -27,11 +27,25 @@
       </div>
 
       <%= f.fields_for :items do |item_fields| %>
-        <% category_name = item_fields.object.category.name %>
-        <%= item_fields.label :amount, category_name %>
-        <%= item_fields.text_field :amount, :class=>"category" %>
-        <%= item_fields.hidden_field :category_id, :class=>"category_id"%>
-        <br/>
+        <div class="row">
+          <% category_name = item_fields.object.category.name %>
+
+          <div class="span3">
+            <% #item amount %>
+            <%= item_fields.label :amount, category_name %>
+            <%= item_fields.text_field :amount, :class=>"category" %>
+          </div>
+
+          <% if @entry.is_expense then %>
+            <div class="span3">
+              <% #item amount one percent %>
+              <%= item_fields.label :amount_one_percent, "1%" %>
+              <%= item_fields.text_field :amount_one_percent, :class=>"category" %>
+            </div>
+          <% end %>
+
+          <%= item_fields.hidden_field :category_id, :class=>"category_id"%>
+        </div>
       <% end %>
 
       <%= f.hidden_field :journal_id, :value => @journal.id %>

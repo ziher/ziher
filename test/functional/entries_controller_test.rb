@@ -4,6 +4,7 @@ class EntriesControllerTest < ActionController::TestCase
   setup do
     sign_in users(:user1)
     @entry = entries(:expense_one)
+    @entry_income = entries(:income_one)
   end
 
   test "should get new" do
@@ -31,10 +32,18 @@ class EntriesControllerTest < ActionController::TestCase
     assert_redirected_to entry_path(assigns(:entry))
   end
 
-  test "should show all possible categories when editing existing entry" do
+  test "should show all possible categories when editing existing expense entry" do
     get :edit, id: @entry.to_param
-    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count
+    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2
     Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).each do |category|
+      assert_select "input.category_id[value='#{category.id}']", true
+    end
+  end
+
+  test "should show all possible categories when editing existing income entry" do
+    get :edit, id: @entry_income.to_param
+    assert_select "input.category", Category.where(:year => @entry_income.journal.year, :is_expense => @entry_income.is_expense).count
+    Category.where(:year => @entry_income.journal.year, :is_expense => @entry_income.is_expense).each do |category|
       assert_select "input.category_id[value='#{category.id}']", true
     end
   end
@@ -46,11 +55,18 @@ class EntriesControllerTest < ActionController::TestCase
     end
   end
 
-  test "should not show duplicate categories when editing existing entry" do
+  test "should not show duplicate categories when editing existing expense entry" do
     get :edit, id: @entry.to_param
     put :update, id: @entry.to_param, entry: @entry.attributes
     get :edit, id: @entry.to_param
-    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count
+    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2
+  end
+
+  test "should not show duplicate categories when editing existing income entry" do
+    get :edit, id: @entry_income.to_param
+    put :update, id: @entry_income.to_param, entry: @entry_income.attributes
+    get :edit, id: @entry_income.to_param
+    assert_select "input.category", Category.where(:year => @entry_income.journal.year, :is_expense => @entry_income.is_expense).count
   end
 
   test "should show entry" do

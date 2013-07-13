@@ -3,6 +3,8 @@
 class JournalsController < ApplicationController
   load_and_authorize_resource
 
+  helper JournalsHelper
+
   # GET /journals
   # GET /journals.json
   def index

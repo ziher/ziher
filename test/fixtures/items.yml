@@ -26,3 +26,14 @@ five:
   amount: 100
   entry: expense_three
   category: six
+
+# TODO: Adding anything for category two breaks the tests - needs to be checked out
+#six:
+#  amount: 10
+#  entry: income_one
+#  category: two
+
+seven:
+  amount: 15
+  entry: income_one
+  category: ten
