@@ -6,6 +6,7 @@ Ziher::Application.routes.draw do
   post "users" => "users#create"
   devise_for :users
   resources :users
+  resources :user_group_associations
   resources :groups
   resources :entries
   resources :cash_entries
@@ -29,6 +30,7 @@ Ziher::Application.routes.draw do
   resources :inventory_entries
 
   resources :units
+  resources :user_unit_associations
 
   get "home/index"
 

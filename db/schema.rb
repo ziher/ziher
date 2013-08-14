@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130501211540) do
+ActiveRecord::Schema.define(:version => 20130812190040) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -42,13 +42,6 @@ ActiveRecord::Schema.define(:version => 20130501211540) do
   create_table "groups_units", :force => true do |t|
     t.integer  "group_id"
     t.integer  "unit_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "groups_users", :force => true do |t|
-    t.integer  "group_id"
-    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -113,9 +106,25 @@ ActiveRecord::Schema.define(:version => 20130501211540) do
     t.datetime "updated_at"
   end
 
-  create_table "units_users", :id => false, :force => true do |t|
+  create_table "user_group_associations", :force => true do |t|
+    t.integer  "group_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "can_view_entries",   :default => false
+    t.boolean  "can_manage_entries", :default => false
+    t.boolean  "can_close_journals", :default => false
+    t.boolean  "can_manage_users",   :default => false
+    t.boolean  "can_manage_units",   :default => false
+  end
+
+  create_table "user_unit_associations", :force => true do |t|
     t.integer "unit_id"
     t.integer "user_id"
+    t.boolean "can_view_entries",   :default => false
+    t.boolean "can_manage_entries", :default => false
+    t.boolean "can_close_journals", :default => false
+    t.boolean "can_manage_users",   :default => false
   end
 
   create_table "users", :force => true do |t|

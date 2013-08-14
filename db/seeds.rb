@@ -33,22 +33,39 @@ okrwlkp = Group.create!(name: 'Okręg Wielkopolski', subgroups: [wchhy, wchhek])
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
 user.confirm!
-druzynowy_dukt = User.create!(email: 'druzynowy_dukt@zhr.com', password: 'druzynowy_dukt@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', units: [dukt])
+
+druzynowy_dukt = User.create!(email: 'druzynowy_dukt@zhr.com', password: 'druzynowy_dukt@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 druzynowy_dukt.confirm!
-druzynowy_pajaki = User.create!(email: 'druzynowy_pajaki@zhr.com', password: 'druzynowy_pajaki@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', units: [pajaki])
+UserUnitAssociation.create!(user: druzynowy_dukt, unit: dukt, can_view_entries: true, can_manage_entries: true)
+UserUnitAssociation.create!(user: druzynowy_dukt, unit: pajaki, can_view_entries: true)
+
+druzynowy_pajaki = User.create!(email: 'druzynowy_pajaki@zhr.com', password: 'druzynowy_pajaki@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 druzynowy_pajaki.confirm!
-druzynowa_wiklina = User.create!(email: 'druzynowa_wiklina@zhr.com', password: 'druzynowa_wiklina@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', units: [wiklina])
+UserUnitAssociation.create!(user: druzynowy_pajaki, unit: pajaki, can_view_entries: true, can_manage_entries: true)
+
+druzynowa_wiklina = User.create!(email: 'druzynowa_wiklina@zhr.com', password: 'druzynowa_wiklina@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 druzynowa_wiklina.confirm!
-druzynowa_orleta = User.create!(email: 'druzynowa_orleta@zhr.com', password: 'druzynowa_orleta@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', units: [orleta])
+UserUnitAssociation.create!(user: druzynowa_wiklina, unit: wiklina, can_view_entries: true, can_manage_entries: true)
+
+druzynowa_orleta = User.create!(email: 'druzynowa_orleta@zhr.com', password: 'druzynowa_orleta@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 druzynowa_orleta.confirm!
-druzynowa_wigryk = User.create!(email: 'druzynowa_wigryk@zhr.com', password: 'druzynowa_wigryk@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', units: [wigryk])
+UserUnitAssociation.create!(user: druzynowa_orleta, unit: orleta, can_view_entries: true, can_manage_entries: true)
+
+druzynowa_wigryk = User.create!(email: 'druzynowa_wigryk@zhr.com', password: 'druzynowa_wigryk@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 druzynowa_wigryk.confirm!
-hufcowyzg = User.create!(email: 'hufcowy_zg@zhr.com', password: 'hufcowy_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', groups: [zhhy])
+UserUnitAssociation.create!(user: druzynowa_wigryk, unit: wigryk, can_view_entries: true, can_manage_entries: true)
+
+hufcowyzg = User.create!(email: 'hufcowy_zg@zhr.com', password: 'hufcowy_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 hufcowyzg.confirm!
-hufcowazg = User.create!(email: 'hufcowa_zg@zhr.com', password: 'hufcowa_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', groups: [zhhek])
+UserGroupAssociation.create!(user: hufcowyzg, group: zhhy, can_view_entries: true)
+
+hufcowazg = User.create!(email: 'hufcowa_zg@zhr.com', password: 'hufcowa_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 hufcowazg.confirm!
-skarbnik_okrwlkp = User.create!(email: 'skarbnik_okrwlkp@zhr.com', password: 'skarbnik_okrwlkp@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00', groups: [okrwlkp])
+UserGroupAssociation.create!(user: hufcowazg, group: zhhek, can_view_entries: true)
+
+skarbnik_okrwlkp = User.create!(email: 'skarbnik_okrwlkp@zhr.com', password: 'skarbnik_okrwlkp@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 skarbnik_okrwlkp.confirm!
+UserGroupAssociation.create!(user: skarbnik_okrwlkp, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
 
 finance = JournalType.create!(name: "Książka finansowa", is_default: true)
 bank = JournalType.create!(name: "Książka bankowa")
