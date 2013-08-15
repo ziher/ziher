@@ -83,7 +83,6 @@
         </td>
       <% end %>
 
-      <td><%= link_to 'Pokaż', entry %></td>
       <td><%= link_to edit_entry_path(entry) do%><i class="icon-pencil"></i> Edytuj<%end%></td>
       <td><%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash"></i> Usuń<%end%></td>
     </tr>

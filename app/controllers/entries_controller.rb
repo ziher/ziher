@@ -32,13 +32,15 @@ class EntriesController < ApplicationController
   def edit
     @entry = Entry.find(params[:id])
     @journal = @entry.journal
-    @categories = Category.where(:year => @entry.journal.year)
+    @categories = Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense)
     Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).each do |category|
       if not @entry.has_category(category.id)
         @item = Item.new(:category_id => category.id)
         @entry.items << @item
       end
     end
+
+    @sorted_items = @entry.items.sort_by {|item| item.category.position.to_s}
   end
 
   # POST /entries

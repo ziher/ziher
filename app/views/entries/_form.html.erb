@@ -26,7 +26,7 @@
         <%= f.text_field :document_number %>
       </div>
 
-      <%= f.fields_for :items do |item_fields| %>
+      <%= f.fields_for :items, @sorted_items do |item_fields| %>
         <div class="row">
           <% category_name = item_fields.object.category.name %>
 
