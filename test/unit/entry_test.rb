@@ -12,6 +12,15 @@ class EntryTest < ActiveSupport::TestCase
     }
   end
 
+  test "should not save entry when amount one percent is greater than amount" do
+    entry = entries(:expense_one)
+    entry.items[0].amount = 1
+    entry.items[0].amount_one_percent = 2
+    assert_raise(ActiveRecord::RecordInvalid){
+      entry.save!
+    }
+  end
+
   test "should not save entry without journal" do
     entry = entries(:expense_one)
     entry.journal = nil
