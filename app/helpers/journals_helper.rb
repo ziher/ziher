@@ -9,7 +9,7 @@ module JournalsHelper
     else
       result = amount.to_s
 
-      result += "<br/><small><span title='" + I18n.t('helpers.journal.one_percent_tooltip')  + "' class='muted'>"
+      result += "<br/><small><span title='" + I18n.t('helpers.label.journal.one_percent_tooltip')  + "' class='muted'>"
       if amount_one_percent != 0
         result += amount_one_percent.to_s
       end

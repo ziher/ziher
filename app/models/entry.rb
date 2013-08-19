@@ -9,8 +9,12 @@ class Entry < ActiveRecord::Base
 
   accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
 
-  validates :items, :presence => {:message => "Wpis musi miec przynajmniej jedna sume"}
-  validates :journal, :presence => {:message => "Wpis musi byc przypisany do ksiazki"}
+  validates :items, :presence => true
+  validates :journal, :presence => true
+  validates :date, :presence => true
+  validates :name, :presence => true
+  validates :document_number, :presence => true
+
   validate :cannot_have_multiple_items_in_one_category
   validate :cannot_have_item_from_category_not_from_journals_year
   validate :must_be_either_expense_or_income
@@ -75,7 +79,7 @@ class Entry < ActiveRecord::Base
     if journal
       items.each do |item|
         if item.nil? || item.category.nil? || item.category.year.nil?
-          errors[:base] << "Wpis musi miec kategorie"
+          errors[:base] << "Wpis musi miec kategorie z danego roku"
           return false
         end
 

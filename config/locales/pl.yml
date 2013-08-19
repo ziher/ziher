@@ -1,4 +1,26 @@
 pl:
+  activerecord:
+    attributes:
+      entry:
+        date: "Data"
+        document_number: "Numer dokumentu"
+        name: "Nazwa"
+        journal: ""
+        items: ""
+    errors:
+      models:
+        entry:
+          attributes:
+            date:
+              blank: "wpisu nie może być pusta"
+            document_number:
+              blank: "nie może być pusty"
+            name:
+              blank: "nie może być pusta"
+            journal:
+              blank: "Wpis musi być przypisany do książki"
+            items:
+              blank: "Wpis musi mieć przynajmniej jedną sumę"
   helpers:
     label:
       user:
@@ -18,8 +40,7 @@ pl:
         name: "Nazwa"
         year: "Rok"
         journal_type: "Rodzaj"
-    journal:
-      one_percent_tooltip: "Środki wydane z 1 procenta"
+        one_percent_tooltip: "Środki wydane z 1 procenta"
 
   category:
     is_expense: "Wydatek"

@@ -174,7 +174,7 @@ class JournalTest < ActiveSupport::TestCase
     #when
     #an entry is added to earlier journal
     item = Item.new(:amount => 20, :category => categories(:nine_income_2011))
-    entry = Entry.new(:items => [item], :journal_id => earlier.id)
+    entry = Entry.new(:items => [item], :journal_id => earlier.id, :date => "2011-01-01", :name => "name", :document_number => "document number")
     entry.save!
 
     #then
