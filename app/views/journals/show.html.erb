@@ -19,8 +19,8 @@
   </select>
 <% end %>
 <h1><%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%></h1>
-<%= link_to 'Nowy wpływ', new_entry_path(:journal_id => @journal.id, :is_expense => false) %>
-<%= link_to 'Nowy wydatek', new_entry_path(:journal_id => @journal.id, :is_expense => true) %>
+<% if can? :update, @journal %><%= link_to 'Nowy wpływ', new_entry_path(:journal_id => @journal.id, :is_expense => false) %><% end %>
+<% if can? :update, @journal %><%= link_to 'Nowy wydatek', new_entry_path(:journal_id => @journal.id, :is_expense => true) %><% end %>
 
 <table class="table table-bordered table-condensed">
 
@@ -60,8 +60,8 @@
       <td>
         <small>
           <span style='display: block;'><%= i+=1 =%>.</span>
-          <%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%>
-          <%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%>
+          <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%><% end %>
+          <% if can? :destroy, entry %><%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%><% end %>
         </small>
       </td>
       <td><small><%= entry.date %></small></td>

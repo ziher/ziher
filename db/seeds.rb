@@ -34,13 +34,22 @@ pajaki = Unit.create!(name: '31 DH Pająki')
 wiklina = Unit.create!(name: '9 ZDH Wiklina')
 orleta = Unit.create!(name: '30 DH Orlęta')
 wigryk = Unit.create!(name: '45 ŻDH Wigry')
-
 zhhy = Group.create!(name: 'Zielonogórski Hufiec Harcerzy', units: [dukt, pajaki])
 zhhek = Group.create!(name: 'Zielonogórski Hufiec Harcerek', units: [wiklina, orleta, wigryk])
 obwzg = Group.create!(name: 'Obwód Zielonogórski', subgroups: [zhhy, zhhek])
 wchhy = Group.create!(name: 'Wielkopolska Chorągiew Harcerzy', subgroups: [zhhy])
 wchhek = Group.create!(name: 'Wielkopolska Chorągiew Harcerek', subgroups: [zhhek])
 okrwlkp = Group.create!(name: 'Okręg Wielkopolski', subgroups: [wchhy, wchhek])
+
+wrch1 = Unit.create!(name: '1 Wrocławska Drużyna Harcerzy')
+wrch2 = Unit.create!(name: '2 Wrocławska Drużyna Harcerzy')
+wrdz1 = Unit.create!(name: '1 Wrocławska Drużyna Harcerek')
+wrdz2 = Unit.create!(name: '2 Wrocławska Drużyna Harcerek')
+wrhhy = Group.create!(name: 'Wrocławski Hufiec Harcerzy', units: [wrch1, wrch2])
+wrhhek = Group.create!(name: 'Wrocławski Hufiec Harcerek', units: [wrdz1, wrdz2])
+dchhy = Group.create!(name: 'Wrocławska Chorągiew Harcerzy', subgroups: [wrhhy])
+dchhek = Group.create!(name: 'Wrocławska Chorągiew Harcerek', subgroups: [wrhhek])
+okrdln = Group.create!(name: 'Okręg Dolnośląski', subgroups: [dchhy, dchhek])
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
 user.confirm!
@@ -69,14 +78,21 @@ UserUnitAssociation.create!(user: druzynowa_wigryk, unit: wigryk, can_view_entri
 hufcowyzg = User.create!(email: 'hufcowy_zg@zhr.com', password: 'hufcowy_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 hufcowyzg.confirm!
 UserGroupAssociation.create!(user: hufcowyzg, group: zhhy, can_view_entries: true)
+UserUnitAssociation.create!(user: hufcowyzg, unit: dukt, can_view_entries: true, can_manage_entries: true)
 
 hufcowazg = User.create!(email: 'hufcowa_zg@zhr.com', password: 'hufcowa_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 hufcowazg.confirm!
 UserGroupAssociation.create!(user: hufcowazg, group: zhhek, can_view_entries: true)
+UserUnitAssociation.create!(user: hufcowazg, unit: orleta, can_view_entries: true, can_manage_entries: true)
 
 skarbnik_okrwlkp = User.create!(email: 'skarbnik_okrwlkp@zhr.com', password: 'skarbnik_okrwlkp@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 skarbnik_okrwlkp.confirm!
 UserGroupAssociation.create!(user: skarbnik_okrwlkp, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
+
+skarbnik_zachodu = User.create!(email: 'skarbnik_zachodu@zhr.com', password: 'skarbnik_zachodu@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
+skarbnik_zachodu.confirm!
+UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
+UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
 
 finance = JournalType.create!(name: "Książka finansowa", is_default: true)
 bank = JournalType.create!(name: "Książka bankowa")

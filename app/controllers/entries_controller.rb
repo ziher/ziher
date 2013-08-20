@@ -3,6 +3,7 @@ class EntriesController < ApplicationController
   # GET /entries/1.json
   def show
     @entry = Entry.find(params[:id])
+    authorize! :read, @entry
     @categories = Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense)
 
     respond_to do |format|
@@ -15,7 +16,8 @@ class EntriesController < ApplicationController
   # GET /entries/new.json
   def new
     @journal = Journal.find(params[:journal_id])
-    @entry = Entry.new(:is_expense => params[:is_expense])
+    @entry = Entry.new(:is_expense => params[:is_expense], :journal_id => params[:journal_id])
+    authorize! :create, @entry
     @entry.items = Array.new
     Category.where(:year => @journal.year, :is_expense => @entry.is_expense).each do |category|
       @item = Item.new(:category_id => category.id)
@@ -31,6 +33,7 @@ class EntriesController < ApplicationController
   # GET /entries/1/edit
   def edit
     @entry = Entry.find(params[:id])
+    authorize! :update, @entry
     @journal = @entry.journal
     @categories = Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense)
     Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).each do |category|
@@ -48,10 +51,11 @@ class EntriesController < ApplicationController
   # creates Entry and related Items
   def create
     @entry = Entry.new(params[:entry])
+    authorize! :create, @entry
 
     respond_to do |format|
       if @entry.save!
-        format.html { redirect_to @entry, notice: 'Wpis utworzony' }
+        format.html { redirect_to @entry.journal, notice: 'Wpis utworzony' }
         format.json { render json: @entry, status: :created, location: @entry }
       else
         format.html { render action: "new" }
@@ -64,6 +68,7 @@ class EntriesController < ApplicationController
   # PUT /entries/1.json
   def update
     @entry = Entry.find(params[:id])
+    authorize! :update, @entry
     @journal = @entry.journal
 
     respond_to do |format|
@@ -81,6 +86,7 @@ class EntriesController < ApplicationController
   # DELETE /entries/1.json
   def destroy
     @entry = Entry.find(params[:id])
+    authorize! :destroy, @entry
     journal = @entry.journal
     @entry.destroy
 

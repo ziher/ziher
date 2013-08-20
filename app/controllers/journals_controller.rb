@@ -56,7 +56,9 @@ class JournalsController < ApplicationController
     if (@journal != nil)
       redirect_to journal_path(@journal)
     else
-      redirect_to journals_path
+      respond_to do |format|
+        format.html # default.html.erb
+      end
     end
   end
 

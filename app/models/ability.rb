@@ -7,11 +7,27 @@ class Ability
       can :manage, :all
     else
 #      cannot :manage, :all
+
       can :manage, Unit do |unit|
         user.find_units.include?(unit)
       end
-      can :manage, Journal do |journal|
-        journal.new_record? or can? :manage, journal.unit
+      
+      can :default, Journal
+
+      can :read, Journal do |journal|
+        user.can_view_entries(journal)
+      end
+
+      can :update, Journal do |journal|
+        user.can_manage_entries(journal)
+      end
+
+      can :read, Entry do |entry|
+        user.can_view_entries(entry.journal)
+      end
+
+      can [:create, :update, :destroy], Entry do |entry|
+        user.can_manage_entries(entry.journal)
       end
     end
     # Define abilities for the passed in user here. For example:
