@@ -187,4 +187,36 @@ class EntryTest < ActiveSupport::TestCase
 
     assert_equal expected_sum, entry.sum
   end
+
+  test "linked entry sum must match" do
+    #given
+    entry = entries(:expense_one)
+    entry.items = [Item.create(:category => categories(:five), :amount => 100)]
+    linked = entries(:income_one)
+    linked.items = [Item.create(:category => categories(:two), :amount => 200)]
+
+    #when
+    entry.linked_entry = linked
+    
+    #then    
+    assert_raise(ActiveRecord::RecordInvalid){
+      entry.save!
+    }
+  end
+
+  test "income cannot be linked to income" do
+    #given
+    entry = entries(:expense_one)
+    entry.items = [Item.create(:category => categories(:five), :amount => 100)]
+    linked = entries(:expense_two)
+    linked.items = [Item.create(:category => categories(:two), :amount => 100)]
+
+    #when
+    entry.linked_entry = linked
+    
+    #then    
+    assert_raise(ActiveRecord::RecordInvalid){
+      entry.save!
+    }
+  end
 end

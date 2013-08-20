@@ -5,7 +5,7 @@ class Entry < ActiveRecord::Base
 
   has_many :items, dependent: :destroy
   belongs_to :journal
-  has_one :linked_entry, :class_name => "Entry"
+  has_one :linked_entry, :class_name => "Entry", :foreign_key => "linked_entry_id"
 
   accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
 
@@ -18,8 +18,9 @@ class Entry < ActiveRecord::Base
   validate :cannot_have_multiple_items_in_one_category
   validate :cannot_have_item_from_category_not_from_journals_year
   validate :must_be_either_expense_or_income
-
   validate :cannot_have_amount_one_percent_greater_than_amount
+  validate :linked_entry_sum_must_match
+  validate :linked_entry_must_be_opposite
 
   # if the journal is closed then everything inside should be frozen
   validate :should_not_change_if_journal_is_closed
@@ -110,6 +111,22 @@ class Entry < ActiveRecord::Base
         if is_expense and is_income
           errors[:base] << "Wpis nie może być jednocześnie wpływem i wydatkiem"
         end
+      end
+    end
+  end
+
+  def linked_entry_sum_must_match
+    if linked_entry != nil
+      if self.sum != linked_entry.sum
+        errors[:linked_entry] << "Połączony wpis musi mieć taką samą kwotę"
+      end
+    end
+  end
+
+  def linked_entry_must_be_opposite
+    if linked_entry != nil
+      if self.is_expense == linked_entry.is_expense
+        errors[:linked_entry] << "Połączony wpis musi być odwrotnego typu"
       end
     end
   end
