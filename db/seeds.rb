@@ -87,11 +87,11 @@ wiklina1998b = Journal.create!(year: 1998, journal_type: bank, unit: wiklina, is
 wigryk2011f = Journal.create!(year: 2011, journal_type: finance, unit: wigryk, is_open: true, initial_balance: 12.34)
 wigryk2011b = Journal.create!(year: 2011, journal_type: bank, unit: wigryk, is_open: true, initial_balance: 12.34)
 
-darowizna = Entry.new(name: 'entry 1: darowizna', document_number: 'ey1', journal: dukt2012f, is_expense: false)
-akcja_i_darowizna = Entry.new(name: 'entry 2: akcja, darowizna', document_number: 'ntr2', journal: dukt2012f, is_expense: false)
-wyposazenie = Entry.new(name: 'entry 3: wyposazenie', document_number: 'fv4', journal: dukt2012f, is_expense: true)
-transport = Entry.new(name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal: wigryk2011b, is_expense: false)
-wynagrodzenie_i_wyposazenie = Entry.new(name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal: wigryk2011b, is_expense: true)
+darowizna = Entry.new(date: '2012-01-01', name: 'entry 1: darowizna', document_number: 'ey1', journal: dukt2012f, is_expense: false)
+akcja_i_darowizna = Entry.new(date: '2012-01-01', name: 'entry 2: akcja, darowizna', document_number: 'ntr2', journal: dukt2012f, is_expense: false)
+wyposazenie = Entry.new(date: '2012-01-01', name: 'entry 3: wyposazenie', document_number: 'fv4', journal: dukt2012f, is_expense: true)
+transport = Entry.new(date: '2011-01-01', name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal: wigryk2011b, is_expense: false)
+wynagrodzenie_i_wyposazenie = Entry.new(date: '2011-01-01', name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal: wigryk2011b, is_expense: true)
 
 darowizna.items << Item.create!(amount: 1, category: darowizny_2011)
 akcja_i_darowizna.items << Item.create!(amount: 2, category: akcje_zarobkowe_2012)
