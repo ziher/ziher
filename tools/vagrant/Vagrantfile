@@ -18,6 +18,16 @@ DEBIAN_FRONTEND=noninteractive apt-get --yes install git curl
 sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=1.9.3"
 sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
 
+# some ruby variables to make ZiHeR a wee bit faster
+sudo -H -u vagrant -i echo "export RUBY_HEAP_MIN_SLOTS=800000" >> /home/vagrant/.bashrc
+sudo -H -u vagrant -i echo "export RUBY_HEAP_FREE_MIN=100000" >> /home/vagrant/.bashrc
+sudo -H -u vagrant -i echo "export RUBY_HEAP_SLOTS_INCREMENT=300000" >> /home/vagrant/.bashrc
+sudo -H -u vagrant -i echo "export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1" >> /home/vagrant/.bashrc
+sudo -H -u vagrant -i echo "export RUBY_GC_MALLOC_LIMIT=79000000" >> /home/vagrant/.bashrc
+
+# https://github.com/mitchellh/vagrant/issues/866 - ~/.bashrc is not loaded in 'vagrant ssh' sessions
+sudo -H -u vagrant -i echo "source ~/.bashrc" >> /home/vagrant/.bash_profile
+
 echo ====================== Instaluje PostgreSQL
 DEBIAN_FRONTEND=noninteractive apt-get --yes install libpq-dev postgresql postgresql-client
 sudo -u postgres psql postgres -c "alter user postgres with password 'postgres'"
@@ -26,7 +36,7 @@ sudo -u postgres psql postgres -c "create user ziher with password 'ziher' creat
 service postgresql restart
 
 echo ====================== Sciagam kod zrodlowy ZiHeR-a
-sudo -H -u vagrant -i git clone git://github.com/zhr/ziher.git
+sudo -H -u vagrant -i git clone https://github.com/zhr/ziher.git
 
 echo ====================== Sciagam gemy i uzupelniam baze danych
 sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; bundle install"
