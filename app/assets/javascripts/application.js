@@ -28,14 +28,14 @@ $(document).ready(function(){
       if (e.type == 'mouseover') {
         $(this).parent().addClass("hover");
         var className = $(this).attr('class');
-        className = className.match(/income_([\d*]|all)|expense_([\d*]|all)/)[0];
+        className = className.match(/income_(\d*|all)|expense_(\d*|all)/)[0];
         $('.'+className).addClass("hover");
         $(this).addClass("hover_dim");
       } else {
         $(this).removeClass("hover_dim");
         $(this).parent().removeClass("hover");
         var className = $(this).attr('class');
-        className = className.match(/income_([\d*]|all)|expense_([\d*]|all)/)[0];
+        className = className.match(/income_(\d*|all)|expense_(\d*|all)/)[0];
         $('.'+className).removeClass("hover");
       }
   });
