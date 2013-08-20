@@ -14,7 +14,8 @@ DEBIAN_FRONTEND=noninteractive apt-get update
 
 echo ====================== Instaluje RVM
 DEBIAN_FRONTEND=noninteractive apt-get --yes install git curl
-sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby"
+# there is a problem with twitter-bootstrap-rails and ruby 2.0 so let's use 1.9.3 instead
+sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=1.9.3"
 sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
 
 echo ====================== Instaluje PostgreSQL
