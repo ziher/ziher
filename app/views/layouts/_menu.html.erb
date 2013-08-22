@@ -1,14 +1,14 @@
 <div class="row">
   <div class="span12">
     <ul class="nav nav-pills">
-      <li class=""><%= link_to root_path do %> <i class='icon-home'></i> ZiHeR <% end %></li>
+      <li class=""><%= link_to root_path, class: 'muted' do %> <i class='icon-home'></i> ZiHeR <% end %></li>
 
-      <li class=""><%= link_to "Książka finansowa", default_finance_journal_path %></li>
-      <li class=""><%= link_to "Książka bankowa", default_bank_journal_path %></li>
+      <li class=""><%= link_to "Książka finansowa", default_finance_journal_path, class: "muted" %></li>
+      <li class=""><%= link_to "Książka bankowa", default_bank_journal_path, class: "muted" %></li>
 
-      <li class="<%= 'active' if current_page?(inventory_entries_path) %>"> <%= link_to "Książka inwentarzowa", inventory_entries_path %> </li>
+      <li class="<%= 'active' if current_page?(inventory_entries_path) %>"> <%= link_to "Książka inwentarzowa", inventory_entries_path, class: "muted" %> </li>
       <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Administracja <b class="caret"></b></a>
+        <a class="dropdown-toggle muted" data-toggle="dropdown" href="#"> Administracja <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li class="<%= 'active' if current_page?(units_path) %>"> <%= link_to "Drużyny", units_path %> </li>
           <li class="<%= 'active' if current_page?(groups_path) %>"> <%= link_to "Grupy", groups_path %> </li>
@@ -33,7 +33,11 @@
   <div class="span6">
     <ul class="nav nav-pills">
       <% if user_signed_in? %>
-        <li class="pull-right"><%= link_to destroy_user_session_path, :method => :delete do %><%= current_user.email %> - <i class='icon-off'></i>&nbsp;Wyloguj się<%end%></li>
+        <li class="pull-right">
+          <%= link_to destroy_user_session_path, :method => :delete, class: "muted" do %>
+            <%= current_user.email %> - <i class='icon-off'></i>&nbsp;Wyloguj się
+          <%end%>
+        </li>
       <% end %>
     </ul>
   </div>

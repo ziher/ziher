@@ -13,7 +13,7 @@
 <% [incomes, expenses].each do |categories| %>
 <div>
   <%= categories[:label] %>
-  <ul class="categories" style="list-style: none">
+  <ul class="categories unstyled">
   <% categories[:data].each do |category| %>
     <li id="category_<%= category.id %>">
       <span class="handle"><i class="icon-align-justify" title="Chwyć i przenieś"></i></span>
