@@ -58,22 +58,24 @@
     <tr class="node <%= cycle("even", "odd") -%>"></tr>
     <tr>
       <td>
-        <small><span style='display: block;'><%= i+=1 =%>.</span>
+        <small>
+          <span style='display: block;'><%= i+=1 =%>.</span>
           <%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%>
           <%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%>
-        </small></td>
+        </small>
+      </td>
       <td><small><%= entry.date %></small></td>
       <td><small><%= entry.name %><br/><%= entry.document_number %></small></td>
 
       <% @categories_income.each do |category| %>
-        <td class="income_<%= category.id %> text-right">
+        <td class="income income_<%= category.id %> text-right">
           <small><% print_formatted_amount(entry.get_amount_for_category(category.id)) %></small>
         </td>
       <% end %>
 
-      <td class="income_all text-right"><small><%= entry.is_expense ? "-" : entry.sum %></small></td>
+      <td class="income income_all text-right"><small><%= entry.is_expense ? "-" : entry.sum %></small></td>
 
-      <td class="expense_all text-right">
+      <td class="expense expense_all text-right">
         <small>
         <% if entry.is_expense
             print_formatted_amount_with_one_percent(entry.sum, entry.sum_one_percent)
@@ -85,7 +87,7 @@
       </td>
 
       <% @categories_expense.each do |category| %>
-        <td class="expense_<%= category.id %> text-right">
+        <td class="expense expense_<%= category.id %> text-right">
           <small>
             <% print_formatted_amount_with_one_percent(entry.get_amount_for_category(category.id), entry.get_amount_one_percent_for_category(category.id)) %>
           </small>
@@ -102,26 +104,26 @@
       <td colspan="3"><strong>Suma</strong></td>
 
       <% @categories_income.each do |category| %>
-        <td class="income_<%= category.id %> text-right" text-right>
+        <td class="income income_<%= category.id %> text-right" text-right>
           <small>
             <% print_formatted_amount(@journal.get_sum_for_category(category)) %>
           </small>
         </td>
       <% end %>
 
-      <td class="income_all text-right">
+      <td class="income income_all text-right">
         <small>
           <% print_formatted_amount(@journal.get_income_sum) %>
         </small>
       </td>
-      <td class="expense_all text-right">
+      <td class="expense expense_all text-right">
         <small>
           <% print_formatted_amount_with_one_percent(@journal.get_expense_sum, @journal.get_expense_one_percent_sum) %>
         </small>
       </td>
 
       <% @categories_expense.each do |category| %>
-        <td class="expense_<%= category.id %> text-right">
+        <td class="expense expense_<%= category.id %> text-right">
           <small>
             <% print_formatted_amount_with_one_percent(@journal.get_sum_for_category(category), @journal.get_sum_one_percent_for_category(category)) %>
           </small>

@@ -13,9 +13,10 @@ class JournalsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:journals)
   end
 
-  test "should show zeros for empty items when showing all entries" do
+  test "should show dashes for empty items when showing all entries" do
     get :show, id: @journal.to_param
-    assert_select "td", "0" 
+    assert_select "td.income", "-"
+    assert_select "td.expense", "-"
   end
 
   test "should get new" do
