@@ -11,7 +11,7 @@ admin:
   confirmation_sent_at: 2012-03-24 22:36:09
   is_superadmin: true
 
-user1:
+scoutmaster_dukt:
   #email: andrzej.stencel+user-at-ziher.c64@gmail.com
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09

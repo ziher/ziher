@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EntriesControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:user1)
+    sign_in users(:scoutmaster_dukt)
     @entry = entries(:expense_one)
     @entry_income = entries(:income_one)
   end
@@ -29,7 +29,7 @@ class EntriesControllerTest < ActionController::TestCase
       post :create, entry: new_hash
     end
 
-    assert_redirected_to entry_path(assigns(:entry))
+    assert_redirected_to journal_path(@entry.journal)
   end
 
   test "should show all possible categories when editing existing expense entry" do

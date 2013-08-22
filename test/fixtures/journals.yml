@@ -5,31 +5,31 @@ finance_2011:
   journal_type: finance
   is_open: true
   initial_balance: 200
-  unit: one
+  unit: dukt
 
 finance_2012:
   year: 2012
   journal_type: finance
   is_open: true
   initial_balance: 100
-  unit: one
+  unit: dukt
 
 bank_2012:
   year: 2012
   journal_type: bank
   is_open: true
-  unit: one
+  unit: dukt
 
 finance_2015:
   year: 2015
   journal_type: finance
   is_open: true
   initial_balance: 0
-  unit: one
+  unit: dukt
 
 two2012f:
   year: 2012
   journal_type: finance
   is_open: true
   initial_balance: 0
-  unit: two
+  unit: pajaki

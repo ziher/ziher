@@ -4,10 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-user1unit1:
-  user: user1
-  unit: one
+scoutmaster_dukt_dukt:
+  user: scoutmaster_dukt
+  unit: dukt
   can_view_entries: true
-#
-#two: {}
-#  column: value
+  can_manage_entries: true
+#scoutmaster_dukt_pajaki:
+#  user: scoutmaster_dukt
+#  unit: pajaki
+#  can_view_entries: true

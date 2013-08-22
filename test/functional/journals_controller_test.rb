@@ -2,9 +2,9 @@ require 'test_helper'
 
 class JournalsControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:user1)
+    sign_in users(:scoutmaster_dukt)
     @journal = journals(:finance_2012)
-    @new_journal = Journal.new(:journal_type => journal_types(:finance), :year => 2014, :unit => units(:one))
+    @new_journal = Journal.new(:journal_type => journal_types(:finance), :year => 2014, :unit => units(:dukt))
   end
 
   test "should get index" do
@@ -19,17 +19,12 @@ class JournalsControllerTest < ActionController::TestCase
     assert_select "td.expense", "-"
   end
 
-  test "should get new" do
+  test "scoutmaster cannot create journals" do
     get :new
-    assert_response :success
-  end
+    assert_unauthorized
 
-  test "should create journal" do
-    assert_difference('Journal.count') do
-      post :create, journal: @new_journal.attributes
-    end
-
-    assert_redirected_to journal_path(assigns(:journal))
+    post :create, journal: @new_journal.attributes
+    assert_unauthorized
   end
 
   test "should show journal" do
@@ -42,12 +37,10 @@ class JournalsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should destroy journal" do
-    assert_difference('Journal.count', -1) do
-      delete :destroy, id: @journal.to_param
-    end
+  test "scoutmaster cannot destroy journals" do
+    delete :destroy, id: @journal.to_param
 
-    assert_redirected_to journals_path
+    assert_unauthorized
   end
 
   test "should show initial balance" do

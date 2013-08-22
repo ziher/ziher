@@ -2,10 +2,10 @@
 
 one:
   year: 1
-  unit: one
+  unit: dukt
   open: false
 
 two:
   year: 1
-  unit: two
+  unit: pajaki
   open: false

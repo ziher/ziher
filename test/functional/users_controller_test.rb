@@ -32,13 +32,13 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should fail getting index" do
-    sign_in users(:user1)
+    sign_in users(:scoutmaster_dukt)
     get :index
     assert_unauthorized
   end
   
   test "should fail getting edit user" do
-    sign_in users(:user1)
+    sign_in users(:scoutmaster_dukt)
     @admin = users(:admin)
     get :edit, id: @admin.to_param
     assert_unauthorized

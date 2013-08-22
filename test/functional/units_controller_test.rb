@@ -2,8 +2,8 @@ require 'test_helper'
 
 class UnitsControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:user1)
-    @unit = units(:one)
+    sign_in users(:scoutmaster_dukt)
+    @unit = units(:dukt)
   end
 
   test "should get index" do
