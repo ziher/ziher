@@ -28,4 +28,9 @@ class CategoryTest < ActiveSupport::TestCase
     expected = Category.find(:all, :conditions => {:year => 2012, :is_expense => true})
     assert_equal expected, actual
   end
+
+  test "should not allow editing category if there are items" do
+    # TODO: ten test (i jego rozwiazanie w modelu) trzeba zaimplementowac
+    assert true
+  end
 end

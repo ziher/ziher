@@ -10,13 +10,16 @@
 <% expenses = {:label => I18n.t(:expenses), :data => Category.find_by_year_and_type(@year, true)} %>
 <% incomes = {:label => I18n.t(:incomes), :data => Category.find_by_year_and_type(@year, false)} %>
 
-<% [expenses, incomes].each do |categories| %>
+<% [incomes, expenses].each do |categories| %>
 <div>
   <%= categories[:label] %>
-  <ul class="categories">
+  <ul class="categories" style="list-style: none">
   <% categories[:data].each do |category| %>
     <li id="category_<%= category.id %>">
-      <span class="handle">[drag] </span><%= category.name %>
+      <span class="handle"><i class="icon-align-justify" title="Chwyć i przenieś"></i></span>
+        <% if category.is_one_percent %><small>[1%]</small><% end %>
+        <%= category.name %>
+        <%= link_to edit_category_path(category) do %><i class="icon-pencil"></i><% end %>
     </li>
   <% end %>
   </ul>

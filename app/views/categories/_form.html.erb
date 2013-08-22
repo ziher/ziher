@@ -12,17 +12,21 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
+    <%= f.label :name %>
     <%= f.text_field :name %>
-  </div>
+  </div><br />
   <div class="field">
-    <%= f.label :year %><br />
+    <%= f.label :year %>
     <%= f.text_field :year %>
-  </div>
+  </div><br />
   <div class="field">
-    <%= f.label :is_expense %><br />
+    <%= f.label :is_expense %>
     <%= f.check_box :is_expense %>
-  </div>
+  </div><br />
+  <div class="field">
+    <%= f.label :is_one_percent %>
+    <%= f.check_box :is_one_percent %>
+  </div><br />
   <div class="actions">
     <%= f.submit I18n.t(:save)%>
   </div>

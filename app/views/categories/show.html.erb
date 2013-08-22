@@ -15,6 +15,11 @@
   <%= @category.is_expense %>
 </p>
 
+<p>
+  <b>1 procent?</b>
+  <%= @category.is_one_percent %>
+</p>
+
 
 <%= link_to 'Edytuj', edit_category_path(@category) %> |
 <%= link_to 'Wstecz', categories_path %>

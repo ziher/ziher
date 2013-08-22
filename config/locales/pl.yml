@@ -36,6 +36,7 @@ pl:
         name: "Nazwa"
         year: "Rok"
         is_expense: "Wydatek"
+        is_one_percent: "1 procent"
       journal:
         name: "Nazwa"
         year: "Rok"
