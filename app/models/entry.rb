@@ -18,7 +18,6 @@ class Entry < ActiveRecord::Base
   validate :cannot_have_multiple_items_in_one_category
   validate :cannot_have_item_from_category_not_from_journals_year
   validate :must_be_either_expense_or_income
-  validate :cannot_have_amount_one_percent_greater_than_amount
   validate :linked_entry_sum_must_match
   validate :linked_entry_must_be_opposite
 
@@ -51,16 +50,6 @@ class Entry < ActiveRecord::Base
   def has_category(category_id)
     existing_item = self.items.find(:first, :conditions=>{:category_id=>category_id})
     return (existing_item != nil)
-  end
-
-  def cannot_have_amount_one_percent_greater_than_amount
-    items.each do |item|
-      if item != nil && item.amount != nil && item.amount_one_percent != nil
-        if item.amount_one_percent > item.amount
-          errors[:items] << "Wartość 1% (#{item.amount_one_percent}) musi być mniejsza niż podana suma (#{item.amount})"
-        end
-      end
-    end
   end
 
   def cannot_have_multiple_items_in_one_category
