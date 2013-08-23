@@ -33,4 +33,18 @@ class CategoryTest < ActiveSupport::TestCase
     # TODO: ten test (i jego rozwiazanie w modelu) trzeba zaimplementowac
     assert true
   end
+
+  test "should not allow multiple one percent categories in a year" do
+    #given
+    category1 = categories(:one_one_percent)
+    category2 = Category.new(:year => category1.year)
+
+    #when
+    category2.is_one_percent = true
+
+    #then
+    assert_raise(ActiveRecord::RecordInvalid){
+      category2.save!
+    }
+  end
 end

@@ -5,6 +5,12 @@ one:
   is_expense: false
   year: 2014
 
+one_one_percent:
+  name: CategoryOne_one_percent
+  is_expense: false
+  year: 2014
+  is_one_percent: true
+
 two:
   name: CategoryTwo
   is_expense: false

@@ -17,6 +17,7 @@ pozostale_2012 = Category.create!(name: 'Pozostałe', is_expense: false, year: 2
 skladki_2012 = Category.create!(name: 'Składki', is_expense: false, year: 2012)
 darowizny_2012 = Category.create!(name: 'Darowizny', is_expense: false, year: 2012)
 akcje_zarobkowe_2012 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2012)
+jeden_procent_2012 = Category.create!(name: '1%', is_expense: false, is_one_percent: true, year: 2012)
 
 transport_2012 = Category.create!(name: 'Transport', is_expense: true, year: 2012)
 wyposazenie_2012 = Category.create!(name: 'Wyposażenie', is_expense: true, year: 2012)
