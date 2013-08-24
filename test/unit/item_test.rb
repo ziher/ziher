@@ -52,4 +52,17 @@ class ItemTest < ActiveSupport::TestCase
       item.save!
     }
   end
+
+  test "should update amount one percent if category type is one percent" do
+    #given
+    item = items(:income_one_percent)
+    item.amount = 2
+    item.amount_one_percent = 0
+
+    #when
+    item.save!
+
+    #then
+    assert_equal(item.amount_one_percent, item.amount)
+  end
 end

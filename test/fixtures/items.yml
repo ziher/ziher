@@ -37,3 +37,9 @@ seven:
   amount: 15
   entry: income_one
   category: ten
+
+income_one_percent:
+  amount: 2
+  amount_one_percent: 2
+  entry: income_one
+  category: two_one_percent

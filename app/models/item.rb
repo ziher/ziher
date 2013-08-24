@@ -4,8 +4,16 @@ class Item < ActiveRecord::Base
   belongs_to :entry
   belongs_to :category
 
+  before_save :handle_one_percent_category
+
   validate :cannot_have_amount_one_percent_greater_than_amount
   validate :cannot_have_amount_one_percent_if_amount_is_nil
+
+  def handle_one_percent_category
+    if self.category.is_one_percent then
+      self.amount_one_percent = self.amount
+    end
+  end
 
   def cannot_have_amount_one_percent_greater_than_amount
     if self.amount != nil && self.amount_one_percent != nil

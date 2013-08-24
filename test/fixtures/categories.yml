@@ -17,6 +17,12 @@ two:
   position: 2
   year: 2012
 
+two_one_percent:
+  name: CategoryTwo_one_percent
+  is_expense: false
+  year: 2012
+  is_one_percent: true
+
 three:
   name: CategoryThree
   is_expense: false
