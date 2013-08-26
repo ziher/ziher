@@ -12,7 +12,7 @@ class Journal < ActiveRecord::Base
 
   # returns a user-friendly string representation
   def to_s
-    return "Journal(#{self.id}, #{self.journal_type}, #{self.year}, #{self.unit}, #{self.is_open ? 'open' : 'closed'}, #{initial_balance})"
+    return "Journal(#{self.id}, #{self.journal_type}, #{self.year}, #{self.unit.name}, #{self.is_open ? 'open' : 'closed'}, #{initial_balance}, #{initial_balance_one_percent})"
   end
 
   # calculates balance of previous year's journal and sets it as this journal's initial balance
@@ -20,9 +20,10 @@ class Journal < ActiveRecord::Base
     previous = Journal.find_previous_for_type(self.unit, self.journal_type, self.year-1)
     if previous
       previous_balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
+      previous_balance_one_percent = previous.initial_balance_one_percent + previous.get_income_sum_one_percent - previous.get_expense_one_percent_sum
+
       self.initial_balance = previous_balance
-    else
-      self.initial_balance = 0
+      self.initial_balance_one_percent = previous_balance_one_percent
     end
   end
 
@@ -80,6 +81,15 @@ class Journal < ActiveRecord::Base
     sum = 0
     Category.find_all_by_is_expense(false).each do |category|
       sum += get_sum_for_category(category)
+    end
+    return sum
+  end
+
+  # returns sum of all one percent income items
+  def get_income_sum_one_percent
+    sum = 0
+    Category.find_all_by_is_expense(false).each do |category|
+      sum += get_sum_one_percent_for_category(category)
     end
     return sum
   end

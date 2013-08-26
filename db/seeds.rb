@@ -98,11 +98,11 @@ UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrdln, can_view_ent
 finance = JournalType.create!(name: "Książka finansowa", is_default: true)
 bank = JournalType.create!(name: "Książka bankowa")
 
-dukt2010f = Journal.create!(year: 2010, journal_type: finance, unit: dukt, is_open: false)
+dukt2010f = Journal.create!(year: 2010, journal_type: finance, unit: dukt, is_open: false, initial_balance: 9.00, initial_balance_one_percent: 9.00)
 dukt2010b = Journal.create!(year: 2010, journal_type: bank, unit: dukt, is_open: false)
 dukt2011f = Journal.create!(year: 2011, journal_type: finance, unit: dukt, is_open: false)
 dukt2011b = Journal.create!(year: 2011, journal_type: bank, unit: dukt, is_open: false)
-dukt2012f = Journal.create!(year: 2012, journal_type: finance, unit: dukt, is_open: true)
+dukt2012f = Journal.create!(year: 2012, journal_type: finance, unit: dukt, is_open: true, initial_balance: 9.00, initial_balance_one_percent: 6.00)
 dukt2012b = Journal.create!(year: 2012, journal_type: bank, unit: dukt, is_open: true)
 pajaki2010f = Journal.create!(year: 2010, journal_type: finance, unit: pajaki, is_open: false)
 pajaki2010b = Journal.create!(year: 2010, journal_type: bank, unit: pajaki, is_open: false)
