@@ -52,25 +52,30 @@
       <%= f.hidden_field :is_expense, :value => @entry.is_expense %>
     </div>
 
-    <div class="span6">
-      <input type="checkbox" id="is_linked" onchange="isLinkedChanged(this)"/>
-      <label for="is_linked">Przenieś do innej książki</label>
-      <% @other_journals = Journal.all %><!%-- TODO: ktore ksiazki powinny sie tu pokazywac --%>
-      <%= select_tag "journals", options_from_collection_for_select(@other_journals, "id", "journal_type"), :onchange => 'journalChanged()', :style => "display: none" %>
+    <% if @entry.is_expense %>
+      <div class="span6">
+        <%= check_box_tag :is_linked, :is_linked, @linked_entry.id, :onclick => "showOrHideLinkedEntry()" %>
+        <label for="is_linked">Przenieś do innej książki</label>
 
-      <% @other_journals.each do |journal| %>
-        <% @categories = Category.find_by_year_and_type(journal.year, !@entry.is_expense) %>
-        <div class="journal-categories" id="journal-<%=journal.id%>" style="display:none">
-          <% @categories.each do |category| %>
-            <%= category.name %> <input type="text"><br/>
+        <div id="linked_entry_div">
+          <%= fields_for :linked_entry, @linked_entry do |linked_entry| %>
+            <%= linked_entry.select :journal_id, options_from_collection_for_select(@other_journals, "id", "journal_type")%>
+
+            <%= linked_entry.fields_for :items do |linked_item_fields| %>
+              <%= linked_item_fields.label :amount, linked_item_fields.object.category.name %>
+              <%= linked_item_fields.text_field :amount, :class=>"category" %>
+              <%= linked_item_fields.hidden_field :category_id, :value => linked_item_fields.object.category.id %>
+            <% end %>
           <% end %>
-          <br/><br/>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 
   <div class="actions">
     <%= f.submit "Zapisz"%>
   </div>
 <% end %>
+<script type="text/JavaScript">
+  showOrHideLinkedEntry();
+</script>

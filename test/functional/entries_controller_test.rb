@@ -34,7 +34,7 @@ class EntriesControllerTest < ActionController::TestCase
 
   test "should show all possible categories when editing existing expense entry" do
     get :edit, id: @entry.to_param
-    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2
+    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2 + Category.where(:year => @entry.journal.year, :is_expense => !@entry.is_expense).count
     Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).each do |category|
       assert_select "input.category_id[value='#{category.id}']", true
     end
@@ -59,7 +59,7 @@ class EntriesControllerTest < ActionController::TestCase
     get :edit, id: @entry.to_param
     put :update, id: @entry.to_param, entry: @entry.attributes
     get :edit, id: @entry.to_param
-    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2
+    assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2 + Category.where(:year => @entry.journal.year, :is_expense => !@entry.is_expense).count
   end
 
   test "should not show duplicate categories when editing existing income entry" do

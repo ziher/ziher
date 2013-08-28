@@ -8,6 +8,7 @@ class Entry < ActiveRecord::Base
   has_one :linked_entry, :class_name => "Entry", :foreign_key => "linked_entry_id"
 
   accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
+  accepts_nested_attributes_for :linked_entry
 
   validates :items, :presence => true
   validates :journal, :presence => true
