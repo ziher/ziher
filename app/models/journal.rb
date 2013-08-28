@@ -94,6 +94,14 @@ class Journal < ActiveRecord::Base
     return sum
   end
 
+  def get_final_balance
+    return self.initial_balance + get_income_sum - get_expense_sum
+  end
+
+  def get_final_balance_one_percent
+    return self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_one_percent_sum
+  end
+
   def find_items_by_category(category)
     items = []
     self.entries.each do |entry|
