@@ -12,11 +12,16 @@
   <% end %>
 
   <div class="field">
-    Użytkownik: <%= @user_unit_association.user.email %>
+    Użytkownik: <%= @user_unit_association.user.email %><%= f.hidden_field :user_id, :value => @user_unit_association.user_id %>
   </div>
   
   <div class="field">
-  	Jednostka: <%= @user_unit_association.unit.name %>
+  	Jednostka: 
+  	<% if params[:action] == "edit" %>
+      <%= @user_unit_association.unit.name %><%= f.hidden_field :unit_id, :value => @user_unit_association.unit_id %>
+    <% else %>
+      <%= f.collection_select(:unit_id, @units, :id, :name) %>
+    <% end %>
   </div>
 
   <div class="field">

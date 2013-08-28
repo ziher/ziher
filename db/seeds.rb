@@ -48,8 +48,8 @@ wrdz1 = Unit.create!(name: '1 Wrocławska Drużyna Harcerek')
 wrdz2 = Unit.create!(name: '2 Wrocławska Drużyna Harcerek')
 wrhhy = Group.create!(name: 'Wrocławski Hufiec Harcerzy', units: [wrch1, wrch2])
 wrhhek = Group.create!(name: 'Wrocławski Hufiec Harcerek', units: [wrdz1, wrdz2])
-dchhy = Group.create!(name: 'Wrocławska Chorągiew Harcerzy', subgroups: [wrhhy])
-dchhek = Group.create!(name: 'Wrocławska Chorągiew Harcerek', subgroups: [wrhhek])
+dchhy = Group.create!(name: 'Dolnośląska Chorągiew Harcerzy', subgroups: [wrhhy])
+dchhek = Group.create!(name: 'Dolnośląska Chorągiew Harcerek', subgroups: [wrhhek])
 okrdln = Group.create!(name: 'Okręg Dolnośląski', subgroups: [dchhy, dchhek])
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
@@ -90,9 +90,37 @@ skarbnik_okrwlkp = User.create!(email: 'skarbnik_okrwlkp@zhr.com', password: 'sk
 skarbnik_okrwlkp.confirm!
 UserGroupAssociation.create!(user: skarbnik_okrwlkp, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
 
+druzynowy_wrch1 = User.create!(email: 'druzynowy_wrch1@zhr.com', password: 'druzynowy_wrch1@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
+druzynowy_wrch1.confirm!
+UserUnitAssociation.create!(user: druzynowy_wrch1, unit: wrch1, can_view_entries: true, can_manage_entries: true)
+
+druzynowy_wrch2 = User.create!(email: 'druzynowy_wrch2@zhr.com', password: 'druzynowy_wrch2@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
+druzynowy_wrch2.confirm!
+UserUnitAssociation.create!(user: druzynowy_wrch2, unit: wrch2, can_view_entries: true, can_manage_entries: true)
+
+druzynowa_wrdz1 = User.create!(email: 'druzynowa_wrdz1@zhr.com', password: 'druzynowa_wrdz1@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
+druzynowa_wrdz1.confirm!
+UserUnitAssociation.create!(user: druzynowa_wrdz1, unit: wrdz1, can_view_entries: true, can_manage_entries: true)
+
+druzynowa_wrdz2 = User.create!(email: 'druzynowa_wrdz2@zhr.com', password: 'druzynowa_wrdz2@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
+druzynowa_wrdz2.confirm!
+UserUnitAssociation.create!(user: druzynowa_wrdz2, unit: wrdz2, can_view_entries: true, can_manage_entries: true)
+
+hufcowywr = User.create!(email: 'hufcowy_wr@zhr.com', password: 'hufcowy_wr@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
+hufcowywr.confirm!
+UserGroupAssociation.create!(user: hufcowywr, group: wrhhy, can_view_entries: true)
+
+hufcowawr = User.create!(email: 'hufcowa_wr@zhr.com', password: 'hufcowa_wr@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
+hufcowawr.confirm!
+UserGroupAssociation.create!(user: hufcowawr, group: wrhhek, can_view_entries: true)
+
+skarbnik_okrdln = User.create!(email: 'skarbnik_okrdln@zhr.com', password: 'skarbnik_okrdln@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
+skarbnik_okrdln.confirm!
+UserGroupAssociation.create!(user: skarbnik_okrdln, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
+
 skarbnik_zachodu = User.create!(email: 'skarbnik_zachodu@zhr.com', password: 'skarbnik_zachodu@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 skarbnik_zachodu.confirm!
-UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
+UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: false)
 UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
 
 finance = JournalType.create!(name: "Książka finansowa", is_default: true)

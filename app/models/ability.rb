@@ -21,6 +21,10 @@ class Ability
       can :update, Journal do |journal|
         user.can_manage_entries(journal)
       end
+      
+      can [:close, :open], Journal do |journal|
+        user.can_close_journal(journal)
+      end
 
       can :read, Entry do |entry|
         user.can_view_entries(entry.journal)
@@ -29,6 +33,19 @@ class Ability
       can [:create, :update, :destroy], Entry do |entry|
         user.can_manage_entries(entry.journal)
       end
+      
+      can :manage, User do |other_user|
+        user.can_manage_user(other_user)
+      end
+      
+      can :manage, UserGroupAssociation do |uga|
+        uga.new_record? || user.can_manage_user(uga.user)
+      end
+      
+      can :manage, UserUnitAssociation do |uua|
+        user.can_manage_user(uua.user)
+      end
+      
     end
     # Define abilities for the passed in user here. For example:
     #

@@ -1,16 +1,21 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource
 
   # GET /users
   def index
+    @users = current_user.users_to_manage
   end
 
   # GET /users/1
   def show
+    @user = User.find(params[:id])
+    authorize! :read, @user
   end
 
   # POST /users
   def create
+    @user = User.new(params[:user])
+    authorize! :create, @user
+
     respond_to do |format|
       if @user.save
         @user.invite!(current_user)
@@ -25,10 +30,15 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find(params[:id])
+    authorize! :update, @user
   end
 
   # PUT /users/1
   def update
+    @user = User.find(params[:id])
+    authorize! :update, @user
+
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'Zmiany zapisane.' }
@@ -41,6 +51,9 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    @user = User.find(params[:id])
+    authorize! :destroy, @user
+
     @user.destroy
 
     respond_to do |format|

@@ -25,18 +25,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get new user" do
-    sign_in users(:admin)
-    get :new
-    assert_response :success
-  end
-
-  test "should fail getting index" do
-    sign_in users(:scoutmaster_dukt)
-    get :index
-    assert_unauthorized
-  end
-  
   test "should fail getting edit user" do
     sign_in users(:scoutmaster_dukt)
     @admin = users(:admin)

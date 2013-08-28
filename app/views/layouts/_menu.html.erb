@@ -12,13 +12,10 @@
         <ul class="dropdown-menu">
           <li class="<%= 'active' if current_page?(units_path) %>"> <%= link_to "Drużyny", units_path %> </li>
           <li class="<%= 'active' if current_page?(groups_path) %>"> <%= link_to "Grupy", groups_path %> </li>
-          <li class="<%= 'active' if current_page?(categories_path) %>"> <%= link_to "Kategorie", categories_path %> </li>
-          <li class="<%= 'active' if current_page?(journals_path) %>"> <%= link_to "Książki", journals_path %> </li>
-          <li class="<%= 'active' if current_page?(journal_types_path) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li>
-
-          <% if can? :read, User %>
-            <li class="<%= 'active' if current_page?(users_path) %>"> <%= link_to "Użytkownicy", users_path %> </li>
-          <% end %>
+          <% if can? :manage, Category %><li class="<%= 'active' if current_page?(categories_path) %>"> <%= link_to "Kategorie", categories_path %> </li><% end %>
+          <% if can? :manage, Journal %><li class="<%= 'active' if current_page?(journals_path) %>"> <%= link_to "Książki", journals_path %> </li><% end %>
+          <% if can? :manage, JournalType %><li class="<%= 'active' if current_page?(journal_types_path) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li><% end %>
+          <% if current_user != nil && current_user.can_manage_any_user %><li class="<%= 'active' if current_page?(users_path) %>"> <%= link_to "Użytkownicy", users_path %> </li><% end %>
         </ul>
       </li>
 

@@ -16,11 +16,11 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.boolean  "is_expense"
-    t.boolean  "is_one_percent", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
     t.integer  "year"
+    t.boolean  "is_one_percent", :default => false
   end
 
   create_table "entries", :force => true do |t|

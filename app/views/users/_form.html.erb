@@ -25,16 +25,6 @@
     <%= f.label :is_blocked %><br />
     <%= f.check_box :is_blocked %>
   </div>
-  
-  <div class="field">
-    <%= f.label :unit_ids %>
-    <%= f.select :unit_ids, Unit.all.collect { |u| [ u.name, u.id ] }, { :include_blank => "(Nieprzypisany do żadnej drużyny)" }, :multiple => true %>
-  </div>
-
-  <div class="field">
-    <%= f.label :group_ids %>
-    <%= f.select :group_ids, Group.all.collect { |g| [ g.name, g.id ] }, { :include_blank => "(Nieprzypisany do żadnej grupy)" }, :multiple => true %>
-  </div>
 
   <div class="actions">
     <%= f.submit %>

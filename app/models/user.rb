@@ -13,6 +13,10 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :is_superadmin, :confirmed_at, :confirmation_sent_at, :units, :unit_ids, :groups, :group_ids, :is_blocked
 
+  def to_s
+    return "User(#{self.id}, #{self.email})"
+  end
+
   def status
     if self.confirmed_at == nil
       :invited
@@ -23,6 +27,10 @@ class User < ActiveRecord::Base
 
   def active_for_authentication?
     super && !self.is_blocked
+  end
+  
+  def find_groups
+    Group.find_by_user(self)
   end
 
   def find_units
@@ -37,8 +45,17 @@ class User < ActiveRecord::Base
     rights_to(journal.unit)["can_manage_entries"] == "t"
   end
   
+  def can_close_journal(journal)
+    rights_to(journal.unit)["can_close_journals"] == "t"
+  end
+  
   def rights_to(unit)
-    rights = self.connection.execute("select bool_or(can_view_entries) as can_view_entries, bool_or(can_manage_entries) as can_manage_entries from (
+    rights = self.connection.execute("select 
+  bool_or(can_view_entries) as can_view_entries, 
+  bool_or(can_manage_entries) as can_manage_entries, 
+  bool_or(can_close_journals) as can_close_journals,
+  bool_or(can_manage_users) as can_manage_users 
+  from (
 
 with recursive G as (
   select uga.group_id, uga.group_id as subgroup_id, gu.unit_id
@@ -52,19 +69,56 @@ with recursive G as (
       left join groups_units gu2 on gu2.group_id = subg.subgroup_id
 )
 
-select 'U' as source, null as master_group, uua.can_view_entries, uua.can_manage_entries
+select 'U' as source, null as master_group, uua.can_view_entries, uua.can_manage_entries, uua.can_close_journals, uua.can_manage_users
   from user_unit_associations uua
   where uua.user_id = #{self.id}
     and uua.unit_id = #{unit.id}
 
 union
 
-select 'G', uga.group_id, uga.can_view_entries, uga.can_manage_entries
+select 'G', uga.group_id, uga.can_view_entries, uga.can_manage_entries, uga.can_close_journals, uga.can_manage_users
   from user_group_associations uga
   where uga.group_id in (select group_id from G where G.unit_id = #{unit.id})
 ) as x")[0]
   end
+  
+  def can_manage_user(other_user)
+    self.users_to_manage.include? other_user
+  end
+  
+  def can_manage_any_user
+    self.is_superadmin || !self.users_to_manage.empty?
+  end
 
+  def users_to_manage
+    User.find_by_sql("select * from users where id in (
+with recursive G as (
+  select uga.user_id, uga.group_id, uga.group_id as subgroup_id, gu.unit_id
+    from user_group_associations uga 
+      left join groups_units gu on gu.group_id = uga.group_id
+    where uga.can_manage_users = 't'
+  union all
+  select G.user_id, G.group_id, subg.subgroup_id, gu2.unit_id
+    from subgroups subg
+      inner join G on G.subgroup_id = subg.group_id
+      left join groups_units gu2 on gu2.group_id = subg.subgroup_id
+)
+
+select uua.user_id
+  from user_unit_associations uua
+  where uua.unit_id in (select G.unit_id from G where G.user_id = #{self.id})
+    and uua.user_id <> #{self.id}
+    and not exists (select G1.unit_id from G as G1 where exists (select 1 from G as G2 where G2.unit_id = G1.unit_id and G2.user_id = uua.user_id) and not exists (select 1 from G as G3 where G3.unit_id = G1.unit_id and G3.user_id = #{self.id}))
+
+union
+
+select G.user_id
+  from G 
+  where G.unit_id in (select G.unit_id from G where G.user_id = #{self.id})
+    and G.user_id <> #{self.id}
+    and not exists (select G1.unit_id from G as G1 where exists (select 1 from G as G2 where G2.unit_id = G1.unit_id and G2.user_id = G.user_id) and not exists (select 1 from G as G3 where G3.unit_id = G1.unit_id and G3.user_id = #{self.id}))
+)")
+  end
 
 protected
 
