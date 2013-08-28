@@ -1,3 +1,6 @@
+# encoding: utf-8
+include ActionView::Helpers::NumberHelper
+
 require 'test_helper'
 
 class JournalsControllerTest < ActionController::TestCase
@@ -45,7 +48,8 @@ class JournalsControllerTest < ActionController::TestCase
 
   test "should show initial balance" do
     get :show, id: @journal.to_param
-    assert_select "#initial-balance", @journal.initial_balance.to_s
+    assert_select "#initial-balance", /#{number_with_precision(@journal.initial_balance, :precision => 2)} zł/
+    assert_select "#initial-balance", /(#{number_with_precision(@journal.initial_balance_one_percent, :precision => 2)} zł)/
   end
 
   test "should not have access to journal" do
