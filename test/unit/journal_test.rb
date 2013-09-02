@@ -184,6 +184,24 @@ class JournalTest < ActiveSupport::TestCase
     assert_equal(balance_before + 20, balance_after)
   end
 
+  test "should return only current year for linked entry" do
+    #given
+    journal = journals(:finance_2012)
+
+    #then
+    journal.journals_for_linked_entry.each do |linked_journal|
+      assert(linked_journal.year == journal.year)
+    end
+  end
+
+  test "should not return current journal for linked entry" do
+    #given
+    journal = journals(:finance_2012)
+
+    #then
+    assert(!journal.journals_for_linked_entry.include?(journal))
+  end
+
   private
 
   def count_sum_for_category(journal, category)

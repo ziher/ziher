@@ -16,7 +16,7 @@ class EntriesController < ApplicationController
   # GET /entries/new.json
   def new
     @journal = Journal.find(params[:journal_id])
-    @other_journals = Journal.where(:year => @journal.year)
+    @other_journals = @journal.journals_for_linked_entry
     @entry = Entry.new(:is_expense => params[:is_expense], :journal_id => params[:journal_id])
     authorize! :create, @entry
     @entry.items = []
@@ -60,7 +60,7 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
     authorize! :update, @entry
     @journal = @entry.journal
-    @other_journals = Journal.where(:year => @journal.year)
+    @other_journals = @journal.journals_for_linked_entry
     @categories = Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense)
     create_empty_items(@entry, @journal.year)
 
