@@ -42,6 +42,8 @@ pl:
         year: "Rok"
         journal_type: "Rodzaj"
         one_percent_tooltip: "Środki wydane z 1 procenta"
+        name_tooltip: "Nazwa dokumentu"
+        document_number_tooltip: "Numer dokumentu"
 
   category:
     is_expense: "Wydatek"

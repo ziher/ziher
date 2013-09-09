@@ -18,7 +18,7 @@
     <% end %>
   </select>
 <% end %>
-<h1><%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%></h1>
+
 <% if can? :update, @journal %><%= link_to 'Nowy wpływ', new_entry_path(:journal_id => @journal.id, :is_expense => false) %><% end %>
 <% if can? :update, @journal %><%= link_to 'Nowy wydatek', new_entry_path(:journal_id => @journal.id, :is_expense => true) %><% end %>
 
@@ -33,7 +33,9 @@
         (<%= number_with_precision(@journal.initial_balance_one_percent, :precision => 2) %> zł)
       </th>
 
-      <th colspan="<%= @categories_expense.count %>"></th>
+      <th colspan="<%= @categories_expense.count %>">
+        <span class='muted pull-right'><%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%></span>
+      </th>
     </tr>
 
     <tr>
@@ -69,7 +71,13 @@
         </small>
       </td>
       <td><small><%= entry.date %></small></td>
-      <td><small><%= entry.name %><br/><%= entry.document_number %></small></td>
+      <td>
+        <small>
+          <span title='<%= I18n.t('helpers.label.journal.name_tooltip') %>'><%= entry.name %></span>
+          <hr style='margin: 2px 0;'/>
+          <span title='<%= I18n.t('helpers.label.journal.document_number_tooltip') %>'><%= entry.document_number %></span>
+        </small>
+      </td>
 
       <% @categories_income.each do |category| %>
         <td class="income income_<%= category.id %> text-right">
