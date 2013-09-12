@@ -1,9 +1,10 @@
 language: ruby
 rvm:
- - 1.9.2
  - 1.9.3
 
 before_script:
+ - gem update --system
+ - gem --version
  - psql -c 'create database ziher_test;' -U postgres
  - rake db:migrate
 
