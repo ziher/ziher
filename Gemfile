@@ -45,7 +45,8 @@ gem 'acts_as_list'
 
 group :test do
   # Pretty printed test output
-  gem 'turn', '0.8.2'#, :require => false
+  gem "turn", "~> 0.9.6", :require => false
+  #gem "minitest", "~> 5.0.7"
 end
 
 gem 'rails-i18n'

@@ -37,9 +37,11 @@ service postgresql restart
 
 echo ====================== Sciagam kod zrodlowy ZiHeR-a
 sudo -H -u vagrant -i git clone https://github.com/zhr/ziher.git
+#sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; git checkout 1e00c66a45b723d"
 
 echo ====================== Sciagam gemy i uzupelniam baze danych
 sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; bundle install"
+sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; rake db:create:all"
 sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; rake db:reset"
 
 echo '====================== ZiHeR jest gotowy do zabawy!'
