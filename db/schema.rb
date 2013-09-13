@@ -11,13 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130822194049) do
+ActiveRecord::Schema.define(:version => 20130913205729) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.boolean  "is_expense"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "position"
     t.integer  "year"
     t.boolean  "is_one_percent", :default => false
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
     t.date     "date"
     t.string   "name"
     t.string   "document_number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "journal_id"
     t.boolean  "is_expense"
     t.integer  "linked_entry_id"
@@ -36,15 +36,13 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "groups_units", :force => true do |t|
-    t.integer  "group_id"
-    t.integer  "unit_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "group_id"
+    t.integer "unit_id"
   end
 
   create_table "inventory_entries", :force => true do |t|
@@ -55,16 +53,16 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
     t.decimal  "unit_price"
     t.string   "source"
     t.string   "stock_number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "inventory_journals", :force => true do |t|
     t.integer  "year"
     t.integer  "unit_id"
     t.boolean  "open"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "inventory_journals", ["unit_id"], :name => "index_inventory_journals_on_unit_id"
@@ -74,14 +72,14 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
     t.decimal  "amount_one_percent"
     t.integer  "entry_id"
     t.integer  "category_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "journal_types", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.boolean  "is_default", :default => false
   end
 
@@ -89,8 +87,8 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
     t.integer  "year"
     t.integer  "unit_id"
     t.integer  "journal_type_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.boolean  "is_open"
     t.decimal  "initial_balance",             :default => 0.0, :null => false
     t.decimal  "initial_balance_one_percent", :default => 0.0, :null => false
@@ -103,15 +101,15 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
 
   create_table "units", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "user_group_associations", :force => true do |t|
     t.integer  "group_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.boolean  "can_view_entries",   :default => false
     t.boolean  "can_manage_entries", :default => false
     t.boolean  "can_close_journals", :default => false
@@ -143,8 +141,8 @@ ActiveRecord::Schema.define(:version => 20130822194049) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
