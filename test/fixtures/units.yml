@@ -5,3 +5,21 @@ dukt:
 
 pajaki:
   name: 31 DH Pajaki
+
+troop_1zgf:
+  name: 1 Zielonogórska Drużyna Harcerek
+
+troop_2zgf:
+  name: 2 Zielonogórska Drużyna Harcerek
+
+troop_1pom:
+  name: 1 Poznańska Drużyna Harcerzy
+
+troop_2pom:
+  name: 2 Poznańska Drużyna Harcerzy
+
+troop_1pof:
+  name: 1 Poznańska Drużyna Harcerek
+
+troop_2pof:
+  name: 2 Poznańska Drużyna Harcerek

@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
     super && !self.is_blocked
   end
   
-  def find_groups
-    Group.find_by_user(self)
+  def find_groups(privileges = {})
+    Group.find_by_user(self, privileges)
   end
 
   def find_units

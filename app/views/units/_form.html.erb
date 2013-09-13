@@ -12,20 +12,15 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :nazwa %><br />
+    <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
   
   <div class="field">
     <%= f.label :group_ids %>
-    <%= f.select :group_ids, Group.all.collect { |g| [ g.name, g.id ] }, {}, :multiple => true %>
+    <%= f.select :group_ids, @groups.collect { |g| [ g.name, g.id ] }, {}, { :multiple => true } %>
   </div>
 
-  <div class="field">
-    <%= f.label :user_ids %>
-    <%= f.select :user_ids, User.all.collect { |u| [ u.email, u.id ] }, {}, :multiple => true %>
-  </div>
-  
   <div class="actions">
     <%= f.submit "Zapisz"%>
   </div>

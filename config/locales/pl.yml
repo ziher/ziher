@@ -23,6 +23,10 @@ pl:
               blank: "Wpis musi mieć przynajmniej jedną sumę"
   helpers:
     label:
+      unit:
+        name: "Nazwa jednostki"
+        group_ids: "Grupy, do których należy jednostka"
+        user_ids: "Użytkownicy przypisani do jednostki"
       user:
         email: "E-mail"
         password: "Hasło"

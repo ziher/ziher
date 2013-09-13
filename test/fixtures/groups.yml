@@ -1,7 +1,34 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: Group One
+district_zg_f: # All female troops from Zielona Góra
+  name: Zielonogórski Hufiec Harcerek
+  units: [troop_1zgf, troop_2zgf]
 
-two:
-  name: Group Two
+district_zg_m: # All male troops from Zielona Góra
+  name: Zielonogórski Hufiec Harcerzy
+  units: [dukt, pajaki]
+
+district_zg: # All troops from Zielona Góra
+  name: Obwód Zielonogórski
+  subgroups: [district_zg_f, district_zg_m]
+
+district_po_m: # All male troops from Poznań
+  name: Poznański Hufiec Harcerzy
+  units: [troop_1pom, troop_2pom]
+
+district_po_f: # All female troops from Poznań
+  name: Poznański Hufiec Harcerek
+  units: [troop_1pof, troop_2pof]
+
+region_p_f: # All female troops from Greater Poland
+  name: Wielkopolska Chorągiew Harcerek
+  subgroups: [district_zg_f, district_po_f]
+
+region_p_m: # All male troops from Greater Poland
+  name: Wielkopolska Chorągiew Harcerzy
+  subgroups: [district_zg_m, district_po_m]
+
+# P stands for Greater Poland voivodship (from the first letter in car plates)
+region_p: # All troops from Greater Poland
+  name: Okręg Wielkopolski
+  subgroups: [region_p_f, region_p_m]

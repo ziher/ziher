@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UnitsControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:scoutmaster_dukt)
+    sign_in users(:admin)
     @unit = units(:dukt)
   end
 

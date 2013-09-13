@@ -2,7 +2,8 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.all
+    @groups = Group.find_by_user(current_user)
+    authorize! :read, @groups
 
     respond_to do |format|
       format.html # index.html.erb

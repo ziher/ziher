@@ -1,11 +1,27 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+master_zg_m_district_zg_m:
+  user: master_zg_m
+  group: district_zg_m
+  can_view_entries: true
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-#one: {}
-# column: value
-#
-#two: {}
-#  column: value
+master_p_region_p:
+  user: master_p
+  group: region_p
+  can_view_entries: true
+
+master_p_m_region_p_m:
+  user: master_p_m
+  group: region_p_m
+
+master_p_f_region_p_f:
+  user: master_p_f
+  group: region_p_f
+  can_view_entries: true
+
+treasurer_p_region_p:
+  user: treasurer_p
+  group: region_p
+  can_view_entries: true
+  can_manage_entries: true
+  can_close_journals: true
+  can_manage_users: true
+  can_manage_units: true

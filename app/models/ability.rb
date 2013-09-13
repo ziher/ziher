@@ -7,10 +7,6 @@ class Ability
       can :manage, :all
     else
 #      cannot :manage, :all
-
-      can :manage, Unit do |unit|
-        user.find_units.include?(unit)
-      end
       
       can :default, Journal
 
@@ -33,7 +29,13 @@ class Ability
       can [:create, :update, :destroy], Entry do |entry|
         user.can_manage_entries(entry.journal)
       end
+
+# Unit
+      can :manage, Unit do |unit|
+        !(unit.groups & user.find_groups({ :can_manage_units => true })).empty?
+      end
       
+ # User
       can :manage, User do |other_user|
         user.can_manage_user(other_user)
       end
