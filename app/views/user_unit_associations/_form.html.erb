@@ -1,4 +1,4 @@
-<%= form_for(@user_unit_association) do |f| %>
+<%= form_for(@user_unit_association, :url => { :action => "update", :from => params[:from] }) do |f| %>
   <% if @user_unit_association.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user_unit_association.errors.count, "error") %> prohibited this user-unit association from being saved:</h2>
@@ -41,6 +41,6 @@
   </div>
   
   <div class="actions">
-    <%= f.submit "Zapisz"%>
+    <%= f.submit "Zapisz" %>
   </div>
 <% end %>

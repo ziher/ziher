@@ -17,7 +17,7 @@ class UserUnitAssociationsController < ApplicationController
 
     respond_to do |format|
       if @user_unit_association.update_attributes(params[:user_unit_association])
-        format.html { redirect_to @user_unit_association.user, notice: 'Zmiany zapisane.' }
+        format.html { redirect_to params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
