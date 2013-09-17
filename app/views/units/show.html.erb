@@ -21,12 +21,12 @@
   	<tr><th>Użytkownik</th><th>Przeglądanie książki</th><th>Edycja książki</th><th>Zamykanie książki</th><th>Zarządzanie użytkownikami</th><th></th></tr>
   <% end %>
   <% if @unit.user_unit_associations.sort {|uua1, uua2| uua1.user.email <=> uua2.user.email }.each do |uua| %>
-    <tr><td><%= uua.user.email %></td><td><%= uua.can_view_entries %></td><td><%= uua.can_manage_entries %></td><td><%= uua.can_close_journals %></td><td><%= uua.can_manage_users %></td><td><% if can? :update, @unit %><%= link_to 'Edytuj', edit_user_unit_association_path(uua) + "?from=unit" %><% end %> <% if can? :update, @unit %><%= link_to 'Usuń', uua, confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %></td>
+    <tr><td><%= uua.user.email %></td><td><%= uua.can_view_entries %></td><td><%= uua.can_manage_entries %></td><td><%= uua.can_close_journals %></td><td><%= uua.can_manage_users %></td><td><% if can? :update, @unit %><%= link_to 'Edytuj', edit_user_unit_association_path(uua, :from => "unit") %><% end %> <% if can? :update, @unit %><%= link_to 'Usuń', user_unit_association_path(uua, :from => "unit"), confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %></td>
   <% end.empty? %>
     <tr><td colspan="5">Brak przypisanych użytkowników</td></tr>
   <% end %>
   </table>
-  <!--<% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz użytkownika', new_user_unit_association_path(:unit_id => @unit.id) %><% end %>-->
+  <% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz użytkownika', new_user_unit_association_path(:unit_id => @unit.id, :from => "unit") %><% end %>
 </p>
 
 

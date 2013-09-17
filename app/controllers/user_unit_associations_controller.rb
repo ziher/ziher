@@ -28,10 +28,15 @@ class UserUnitAssociationsController < ApplicationController
 
   def new
     @user_unit_association = UserUnitAssociation.new
-    @user_unit_association.user = User.find(params[:user_id])
+    if (params[:user_id])
+      @user_unit_association.user = User.find(params[:user_id])
+      @units = current_user.find_units.reject! { |u| @user_unit_association.user.units.include?(u) }
+    elsif (params[:unit_id])
+      @user_unit_association.unit = Unit.find(params[:unit_id])
+      @users = current_user.users_to_manage.reject! { |u| @user_unit_association.unit.users.include?(u) }
+      @user_unit_association.user = @users.first
+    end
     authorize! :create, @user_unit_association
-    
-    @units = current_user.find_units.reject! { |u| @user_unit_association.user.units.include?(u) }
   end
 
   def create
@@ -40,7 +45,7 @@ class UserUnitAssociationsController < ApplicationController
     
     respond_to do |format|
       if @user_unit_association.save
-        format.html { redirect_to @user_unit_association.user, notice: 'Użytkownik przypisany do jednostki.' }
+        format.html { redirect_to params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user, notice: 'Użytkownik przypisany do jednostki.' }
         format.json { render json: @user_unit_association, status: :created, location: @user_unit_association }
       else
         format.html { render action: "new" }
@@ -54,10 +59,11 @@ class UserUnitAssociationsController < ApplicationController
     authorize! :destroy, @user_unit_association
 
     user = @user_unit_association.user
+    unit = @user_unit_association.unit
     @user_unit_association.destroy
 
     respond_to do |format|
-      format.html { redirect_to user }
+      format.html { redirect_to params[:from] == "unit" ? unit : user }
       format.json { head :ok }
     end
   end
