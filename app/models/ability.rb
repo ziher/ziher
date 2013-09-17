@@ -35,19 +35,21 @@ class Ability
         !(unit.groups & user.find_groups({ :can_manage_units => true })).empty?
       end
       
- # User
+# User
       can :manage, User do |other_user|
         user.can_manage_user(other_user)
       end
       
+# UserGroupAssociation
       can :manage, UserGroupAssociation do |uga|
         uga.new_record? || user.can_manage_user(uga.user)
       end
       
+# UserUnitAssociation
       can :manage, UserUnitAssociation do |uua|
         user.can_manage_user(uua.user)
       end
-      
+
     end
     # Define abilities for the passed in user here. For example:
     #

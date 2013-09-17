@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   def active_for_authentication?
     super && !self.is_blocked
   end
-  
+
   def find_groups(privileges = {})
     Group.find_by_user(self, privileges)
   end
@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   def can_close_journal(journal)
     rights_to(journal.unit)["can_close_journals"] == "t"
   end
-  
+
   def rights_to(unit)
     rights = self.connection.execute("select 
   bool_or(can_view_entries) as can_view_entries, 
