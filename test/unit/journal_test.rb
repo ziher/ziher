@@ -28,6 +28,55 @@ class JournalTest < ActiveSupport::TestCase
     }
   end
 
+# TODO: uncomment when closing journals is accessible by journal's method
+#
+#  test "should prevent closing when final sum one percent is less than zero" do
+#    #given
+#    journal = journals(:finance_2012)
+#    journal.initial_balance = 0
+#    journal.initial_balance_one_percent = 0
+#
+#    income_item1 = Item.new(:amount => 1, :amount_one_percent => 0, :category => categories(:two))
+#    income_item2 = Item.new(:amount => 1, :amount_one_percent => 1, :category => categories(:two_one_percent))
+#    income_entry = Entry.new(:items => [income_item1, income_item2], :journal_id => journal.id, :date => "2012-01-01", :name => "name", :document_number => "document number")
+#    income_entry.save!
+#
+#    expense_item = Item.new(:amount => 2, :amount_one_percent => 1.01, :category => categories(:five))
+#    expense_entry = Entry.new(:items => [expense_item], :journal_id => journal.id, :date => "2012-01-01", :name => "name", :document_number => "document number")
+#    expense_entry.save!
+#
+#    #when
+#    journal.entries = [income_entry, expense_entry]
+#
+#    #then
+#    assert_raise(ActiveRecord::RecordInvalid){
+#      journal.close!
+#    }
+#  end
+#
+#  test "should prevent closing when final sum one percent is bigger than final sum" do
+#    #given
+#    journal = journals(:finance_2012)
+#    journal.initial_balance = 0
+#    journal.initial_balance_one_percent = 0
+#
+#    income_item = Item.new(:amount => 1, :amount_one_percent => 1, :category => categories(:two_one_percent))
+#    income_entry = Entry.new(:items => [income_item], :journal_id => journal.id, :date => "2012-01-01", :name => "name", :document_number => "document number")
+#    income_entry.save!
+#
+#    expense_item = Item.new(:amount => 1, :amount_one_percent => 0.99, :category => categories(:five))
+#    expense_entry = Entry.new(:items => [expense_item], :journal_id => journal.id, :date => "2012-01-01", :name => "name", :document_number => "document number")
+#    expense_entry.save!
+#
+#    #when
+#    journal.entries = [income_entry, expense_entry]
+#
+#    #then
+#    assert_raise(ActiveRecord::RecordInvalid){
+#      journal.close!
+#    }
+#  end
+
   test "should save journal with type" do
     journal = Journal.create!(:journal_type => journal_types(:finance), :year => 2013, :unit => units(:dukt))
     assert_not_nil journal
