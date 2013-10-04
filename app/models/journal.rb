@@ -150,8 +150,42 @@ class Journal < ActiveRecord::Base
     return Journal.where("year = ? AND id <> ?", self.year, self.id)
   end
 
+  def verify_final_balance_one_percent_more_than_zero
+    if self.get_final_balance_one_percent <= 0
+      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_less_than_zero, :sum_one_percent => get_final_balance_one_percent, :scope => :journal)
+      return false
+    else
+      return true
+    end
+  end
+
+  def verify_final_balance_one_percent_no_more_than_sum
+    if self.get_final_balance_one_percent > self.get_final_balance
+      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => get_final_balance_one_percent, :sum => get_final_balance, :scope => :journal)
+      return false
+    else
+      return true
+    end
+  end
+
+  def verify_journal
+    result = true
+    result = false if not verify_final_balance_one_percent_more_than_zero
+    result = false if not verify_final_balance_one_percent_no_more_than_sum
+    return result
+  end
+
+  def close
+    if verify_journal then
+      self.is_open = false
+      return self.save!
+    else
+      return false
+    end
+  end
+
   private
   def add_error_for_duplicated_type
-    errors[:journal_type] = I18n.t :journal_for_this_year_and_type_already_exists, :year => self.year, :type => self.journal_type.name, :scope => :journal
+    errors[:journal_type] << I18n.t(:journal_for_this_year_and_type_already_exists, :year => self.year, :type => self.journal_type.name, :scope => :journal)
   end
 end

@@ -57,6 +57,8 @@ pl:
     year: "Rok"
     journal_type: "Rodzaj"
     journal_for_this_year_and_type_already_exists: "Książka typu '%{type}' na rok %{year} już istnieje"
+    sum_one_percent_must_not_be_more_than_sum: "Wartość 1% (%{sum_one_percent}) nie może być większa niż suma w ogóle (%{sum})"
+    sum_one_percent_must_not_be_less_than_zero: "Wartość 1% (%{sum_one_percent}) nie może być mniejsza niż zero"
   active: "aktywny"
   invited: "zaproszony"
   save: "Zapisz"
