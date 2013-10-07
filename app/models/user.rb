@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
   def find_groups(privileges = {})
     Group.find_by_user(self, privileges)
   end
+  
+  def groups_to_manage
+    find_groups({ :can_manage_groups => true })
+  end
 
   def find_units
     Unit.find_by_user(self)
@@ -91,7 +95,10 @@ select 'G', uga.group_id, uga.can_view_entries, uga.can_manage_entries, uga.can_
   end
 
   def users_to_manage
-    User.find_by_sql("select * from users where id in (
+    if (self.is_superadmin)
+      User.order("email")
+    else
+      User.find_by_sql("select * from users where id in (
 with recursive G as (
   select uga.user_id, uga.group_id, uga.group_id as subgroup_id, gu.unit_id
     from user_group_associations uga 
@@ -118,6 +125,7 @@ select G.user_id
     and G.user_id <> #{self.id}
     and not exists (select G1.unit_id from G as G1 where exists (select 1 from G as G2 where G2.unit_id = G1.unit_id and G2.user_id = G.user_id) and not exists (select 1 from G as G3 where G3.unit_id = G1.unit_id and G3.user_id = #{self.id}))
 )")
+    end
   end
 
 protected

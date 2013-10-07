@@ -23,3 +23,15 @@ troop_1pof:
 
 troop_2pof:
   name: 2 Poznańska Drużyna Harcerek
+
+troop_1dwm:
+  name: 1 Wrocławska Drużyna Harcerzy
+
+troop_2dwm:
+  name: 2 Wrocławska Drużyna Harcerzy
+
+troop_1dwf:
+  name: 1 Wrocławska Drużyna Harcerek
+
+troop_2dwf:
+  name: 2 Wrocławska Drużyna Harcerek

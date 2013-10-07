@@ -5,7 +5,7 @@ class Unit < ActiveRecord::Base
 
   def Unit.find_by_user(user)
     if (user.is_superadmin)
-      units = Unit.all
+      units = Unit.order("name")
     else
       units = Unit.find_by_sql(["with recursive G as (
   select group_id, subgroup_id

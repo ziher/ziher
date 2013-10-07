@@ -52,6 +52,8 @@ dchhy = Group.create!(name: 'Dolnośląska Chorągiew Harcerzy', subgroups: [wrh
 dchhek = Group.create!(name: 'Dolnośląska Chorągiew Harcerek', subgroups: [wrhhek])
 okrdln = Group.create!(name: 'Okręg Dolnośląski', subgroups: [dchhy, dchhek])
 
+zhr = Group.create!(name: 'Związek Harcerstwa Rzeczypospolitej', subgroups: [okrwlkp, okrdln])
+
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
 user.confirm!
 
@@ -88,7 +90,7 @@ UserUnitAssociation.create!(user: hufcowazg, unit: orleta, can_view_entries: tru
 
 skarbnik_okrwlkp = User.create!(email: 'skarbnik_okrwlkp@zhr.com', password: 'skarbnik_okrwlkp@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 skarbnik_okrwlkp.confirm!
-UserGroupAssociation.create!(user: skarbnik_okrwlkp, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
+UserGroupAssociation.create!(user: skarbnik_okrwlkp, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 druzynowy_wrch1 = User.create!(email: 'druzynowy_wrch1@zhr.com', password: 'druzynowy_wrch1@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
 druzynowy_wrch1.confirm!
@@ -116,12 +118,12 @@ UserGroupAssociation.create!(user: hufcowawr, group: wrhhek, can_view_entries: t
 
 skarbnik_okrdln = User.create!(email: 'skarbnik_okrdln@zhr.com', password: 'skarbnik_okrdln@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 skarbnik_okrdln.confirm!
-UserGroupAssociation.create!(user: skarbnik_okrdln, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
+UserGroupAssociation.create!(user: skarbnik_okrdln, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 skarbnik_zachodu = User.create!(email: 'skarbnik_zachodu@zhr.com', password: 'skarbnik_zachodu@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 skarbnik_zachodu.confirm!
-UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: false)
-UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true)
+UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: false, can_manage_groups: false)
+UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 finance = JournalType.create!(name: "Książka finansowa", is_default: true)
 bank = JournalType.create!(name: "Książka bankowa")

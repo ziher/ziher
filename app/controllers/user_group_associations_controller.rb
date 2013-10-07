@@ -17,7 +17,7 @@ class UserGroupAssociationsController < ApplicationController
 
     respond_to do |format|
       if @user_group_association.update_attributes(params[:user_group_association])
-        format.html { redirect_to @user_group_association.user, notice: 'Zmiany zapisane.' }
+        format.html { redirect_to params[:from] == "group" ? @user_group_association.group : @user_group_association.user, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -28,10 +28,15 @@ class UserGroupAssociationsController < ApplicationController
 
   def new
     @user_group_association = UserGroupAssociation.new
-    @user_group_association.user = User.find(params[:user_id])
+    if (params[:user_id])
+      @user_group_association.user = User.find(params[:user_id])
+      @groups = current_user.find_groups.reject { |g| @user_group_association.user.groups.include?(g) }
+    elsif (params[:group_id])
+      @user_group_association.group = Group.find(params[:group_id])
+      @users = current_user.users_to_manage.reject { |u| @user_group_association.group.users.include?(u) }
+      @user_group_association.user = @users.first
+    end
     authorize! :create, @user_group_association
-    
-    @groups = current_user.find_groups.reject! { |g| @user_group_association.user.groups.include?(g) }
   end
 
   def create
@@ -40,7 +45,7 @@ class UserGroupAssociationsController < ApplicationController
     
     respond_to do |format|
       if @user_group_association.save
-        format.html { redirect_to @user_group_association.user, notice: 'Użytkownik przypisany do grupy.' }
+        format.html { redirect_to params[:from] == "group" ? @user_group_association.group : @user_group_association.user, notice: 'Użytkownik przypisany do grupy.' }
         format.json { render json: @user_group_association, status: :created, location: @user_group_association }
       else
         format.html { render action: "new" }
@@ -57,7 +62,7 @@ class UserGroupAssociationsController < ApplicationController
     @user_group_association.destroy
 
     respond_to do |format|
-      format.html { redirect_to user }
+      format.html { redirect_to params[:from] == "group" ? group : user }
       format.json { head :ok }
     end
   end

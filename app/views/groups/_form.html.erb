@@ -15,20 +15,22 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
+
+<% if @group.new_record? %>
+  <div class="field">
+    Grupa nadrzędna<br />
+    <%= select_tag(:supergroup_id, options_for_select(@supergroups.collect { |g| [ g.name, g.id ] }, @supergroup.id)) %>
+  </div>
+<% end %>
   
   <div class="field">
     <%= f.label :subgroup_ids %>
-    <%= f.select :subgroup_ids, Group.all.collect { |g| [ g.name, g.id ] }, { :include_blank => "(Brak przypisanych podgrup)" }, :multiple => true %>
+    <%= f.select :subgroup_ids, @subgroups.collect { |g| [ g.name, g.id ] }, { :include_blank => "(Brak przypisanych podgrup)" }, :multiple => true %>
   </div>
 
   <div class="field">
     <%= f.label :unit_ids %>
-    <%= f.select :unit_ids, Unit.all.collect { |u| [ u.name, u.id ] }, { :include_blank => "(Brak przypisanych drużyn)" }, :multiple => true %>
-  </div>
-
-  <div class="field">
-    <%= f.label :user_ids %>
-    <%= f.select :user_ids, User.all.collect { |u| [ u.email, u.id ] }, { :include_blank => "(Brak przypisanych użytkowników)" }, :multiple => true %>
+    <%= f.select :unit_ids, @units.collect { |u| [ u.name, u.id ] }, { :include_blank => "(Brak przypisanych drużyn)" }, :multiple => true %>
   </div>
   
   <div class="actions">

@@ -23,15 +23,39 @@
   <% end %>
 </p>
 
-<p>
-  <b>Użytkownicy:</b><br/>
-  <% if @group.users.each do |u| %>
-    <%= u.email %><br />
-  <% end.empty? %>
-    (Brak przypisanych użytkowników)
+  <b>Użytkownicy:</b>
+  <table>
+  <% if !@group.user_group_associations.empty? %>
+  	<tr>
+      <th>Użytkownik</th>
+      <th>Przeglądanie książki</th>
+      <th>Edycja książki</th>
+      <th>Zamykanie książki</th>
+      <th>Zarządzanie użytkownikami</th>
+      <th>Zarządzanie jednostkami</th>
+      <th>Zarządzanie grupami</th>
+    </tr>
   <% end %>
-</p>
+  <% if @group.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
+    <tr>
+      <td><%= uga.user.email %></td>
+      <td><%= uga.can_view_entries %></td>
+      <td><%= uga.can_manage_entries %></td>
+      <td><%= uga.can_close_journals %></td>
+      <td><%= uga.can_manage_users %></td>
+      <td><%= uga.can_manage_units %></td>
+      <td><%= uga.can_manage_groups %></td>
+      <td>
+        <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
+        <% if can? :destroy, uga %><%= link_to 'Usuń', uga, confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %>
+      </td>
+    </tr>
+  <% end.empty? %>
+    <tr><td colspan="7">(Brak przypisanych użytkowników)</td></tr>
+  <% end %>
+  </table>
+  <% if can? :create, UserGroupAssociation %><%= link_to 'Przypisz użytkownika', new_user_group_association_path(:group_id => @group.id, :from => "group") %><% end %>
 
+<p></p>
 <%= link_to 'Edytuj', edit_group_path(@group) %> |
-<%= link_to 'Nowa grupa', new_group_path, :accesskey => 'n' %> |
-<%= link_to 'Lista', groups_path %>
+<%= link_to 'Powrót do listy', groups_path %>

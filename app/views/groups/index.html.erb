@@ -1,4 +1,4 @@
-<h1>Grupy drużyn</h1>
+<h1>Grupy jednostek</h1>
 
 <table>
   <tr>
@@ -12,8 +12,8 @@
   <tr>
     <td><%= group.name %></td>
     <td><%= link_to 'Pokaż', group %></td>
-    <td><%= link_to 'Edytuj', edit_group_path(group) %></td>
-    <td><%= link_to 'Usuń', group, confirm: 'Na pewno usunąć grupę?', method: :delete %></td>
+    <td><% if can? :update, group %> <%= link_to 'Edytuj', edit_group_path(group) %> <% end %></td>
+    <td><% if can? :destroy, group %> <%= link_to 'Usuń', group, confirm: 'Na pewno usunąć grupę?', method: :delete %> <% end %></td>
   </tr>
 <% end %>
 </table>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130913205729) do
+ActiveRecord::Schema.define(:version => 20130925200923) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(:version => 20130913205729) do
     t.boolean  "can_close_journals", :default => false
     t.boolean  "can_manage_users",   :default => false
     t.boolean  "can_manage_units",   :default => false
+    t.boolean  "can_manage_groups",  :default => false
   end
 
   create_table "user_unit_associations", :force => true do |t|

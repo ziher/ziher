@@ -23,6 +23,23 @@ pl:
               blank: "Wpis musi mieć przynajmniej jedną sumę"
   helpers:
     label:
+      category:
+        name: "Nazwa"
+        year: "Rok"
+        is_expense: "Wydatek"
+        is_one_percent: "1 procent"
+      group:
+        name: "Nazwa grupy"
+        subgroup_ids: "Podgrupy tej grupy"
+        unit_ids: "Jednostki należące do tej grupy"
+        user_ids: "Użytkownicy przypisani do tej grupy"
+      journal:
+        name: "Nazwa"
+        year: "Rok"
+        journal_type: "Rodzaj"
+        one_percent_tooltip: "Środki wydane z 1 procenta"
+        name_tooltip: "Nazwa dokumentu"
+        document_number_tooltip: "Numer dokumentu"
       unit:
         name: "Nazwa jednostki"
         group_ids: "Grupy, do których należy jednostka"
@@ -36,18 +53,6 @@ pl:
         unit_ids: "Przypisane drużyny"
         group_ids: "Przypisane grupy drużyn"
         is_blocked: "Zablokowany"
-      category:
-        name: "Nazwa"
-        year: "Rok"
-        is_expense: "Wydatek"
-        is_one_percent: "1 procent"
-      journal:
-        name: "Nazwa"
-        year: "Rok"
-        journal_type: "Rodzaj"
-        one_percent_tooltip: "Środki wydane z 1 procenta"
-        name_tooltip: "Nazwa dokumentu"
-        document_number_tooltip: "Numer dokumentu"
 
   category:
     is_expense: "Wydatek"

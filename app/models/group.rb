@@ -6,7 +6,7 @@ class Group < ActiveRecord::Base
 
   def Group.find_by_user(user, privileges = {})
     if (user.is_superadmin)
-      groups = Group.all
+      groups = Group.order("name")
     else
       
       privileges_string = ""

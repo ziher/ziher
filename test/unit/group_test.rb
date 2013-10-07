@@ -2,7 +2,7 @@ require 'test_helper'
 
 class GroupTest < ActiveSupport::TestCase
   test "tests up to date with yml" do
-    assert_equal(8, Group.all.count)
+    assert_equal(13, Group.all.count)
     
     assert_equal(2, groups(:district_zg_m).units.count)
   end

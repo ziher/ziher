@@ -12,6 +12,7 @@ district_zg: # All troops from Zielona Góra
   name: Obwód Zielonogórski
   subgroups: [district_zg_f, district_zg_m]
 
+# P stands for Greater Poland voivodship, PO stands for Poznań (from the first letter in car plates)
 district_po_m: # All male troops from Poznań
   name: Poznański Hufiec Harcerzy
   units: [troop_1pom, troop_2pom]
@@ -28,7 +29,28 @@ region_p_m: # All male troops from Greater Poland
   name: Wielkopolska Chorągiew Harcerzy
   subgroups: [district_zg_m, district_po_m]
 
-# P stands for Greater Poland voivodship (from the first letter in car plates)
 region_p: # All troops from Greater Poland
   name: Okręg Wielkopolski
   subgroups: [region_p_f, region_p_m]
+
+# D stands for Lower Silesian Voivodship, DW stands for Wrocław (from the first letter in car plates)
+district_dw_m: # All male troops from Wrocław
+  name: Wrocławski Hufiec Harcerzy
+  units: [troop_1dwm, troop_2dwm]
+
+district_dw_f: # All female troops from Wrocław
+  name: Wrocławski Hufiec Harcerek
+  units: [troop_1dwf, troop_2dwf]
+
+region_d_f: # All female troops from Lower Silesia
+  name: Dolnośląska Chorągiew Harcerek
+  subgroups: [district_dw_f]
+
+region_d_m: # All male troops from Lower Silesia
+  name: Dolnośląska Chorągiew Harcerzy
+  subgroups: [district_dw_m]
+
+region_d: # All troops from Lower Silesia
+  name: Okręg Dolnośląski
+  subgroups: [region_d_f, region_d_m]
+

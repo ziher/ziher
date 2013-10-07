@@ -7,7 +7,28 @@ class Ability
       can :manage, :all
     else
 #      cannot :manage, :all
-      
+
+# Entry
+      can :read, Entry do |entry|
+        user.can_view_entries(entry.journal)
+      end
+
+      can [:create, :update, :destroy], Entry do |entry|
+        user.can_manage_entries(entry.journal)
+      end
+
+# Group
+      can :read, Group do |group|
+        user.find_groups.include?(group)
+      end
+      can :update, Group do |group|
+        user.groups_to_manage.include?(group)
+      end
+      can :destroy, Group do |group|
+        user.groups_to_manage.index { |g| g.subgroups.include?(group) } != nil # A user cannot destroy the topmost group they are assigned to.
+      end
+
+# Journal
       can :default, Journal
 
       can :read, Journal do |journal|
@@ -20,14 +41,6 @@ class Ability
       
       can [:close, :open], Journal do |journal|
         user.can_close_journal(journal)
-      end
-
-      can :read, Entry do |entry|
-        user.can_view_entries(entry.journal)
-      end
-
-      can [:create, :update, :destroy], Entry do |entry|
-        user.can_manage_entries(entry.journal)
       end
 
 # Unit

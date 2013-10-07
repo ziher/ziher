@@ -2,4 +2,4 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Powrót', user_path(@user_unit_association.user) %>
+<%= link_to 'Anuluj', params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user %>
