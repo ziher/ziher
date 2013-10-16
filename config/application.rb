@@ -47,5 +47,7 @@ module Ziher
 
     # Do not load helpers by default
     config.action_controller.include_all_helpers = false
+
+    config.assets.initialize_on_precompile = false
   end
 end
