@@ -4,11 +4,16 @@
 $ziher_provision_script = <<SCRIPT
 echo ====================== Przygowotuje maszyne...
 
+sudo -H -u vagrant -i echo "export LANGUAGE=en_US.UTF-8" >> /etc/bash.bashrc
+sudo -H -u vagrant -i echo "export LANG=en_US.UTF-8" >> /etc/bash.bashrc
+sudo -H -u vagrant -i echo "export LC_ALL=en_US.UTF-8" >> /etc/bash.bashrc
+
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 update-locale LC_ALL=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+#dpkg-reconfigure locales
 
 DEBIAN_FRONTEND=noninteractive apt-get update
 
@@ -96,13 +101,16 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider :virtualbox do |vb|
+   config.vm.provider :virtualbox do |vb|
   #   # Don't boot with headless mode
   #   vb.gui = true
   #
   #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+     #vb.customize ["modifyvm", :id, "--memory", "2048"]
+     vb.customize ["modifyvm", :id, "--cpus", "2"]
+     vb.customize ["modifyvm", :id, "--ioapic", "on"]
+   end
   #
   # View the documentation for the provider you're using for more
   # information on available options.
