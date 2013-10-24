@@ -86,7 +86,7 @@ class EntriesControllerTest < ActionController::TestCase
 
   test "should update entry" do
     put :update, id: @entry.to_param, entry: @entry.attributes
-    assert_redirected_to entry_path(assigns(:entry))
+    assert_redirected_to journal_path(assigns(:journal))
   end
 
   test "should destroy entry" do
