@@ -75,14 +75,17 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
     authorize! :update, @entry
     @journal = @entry.journal
+    @other_journals = @journal.journals_for_linked_entry
 
     if params[:is_linked]
       if @entry.linked_entry
         @entry.linked_entry.update_attributes(params[:linked_entry])
+        linked_entry = @entry.linked_entry
       else
-        @entry.linked_entry = Entry.new(params[:linked_entry])
+        linked_entry = Entry.new(params[:linked_entry])
       end
-      @entry.linked_entry = copy_to_linked_entry(@entry, @entry.linked_entry)
+      @entry.linked_entry = copy_to_linked_entry(@entry, linked_entry)
+      @linked_entry = @entry.linked_entry
     end
 
     respond_to do |format|
