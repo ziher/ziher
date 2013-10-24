@@ -19,33 +19,49 @@
   </select>
 <% end %>
 
-<% if can? :update, @journal %><%= link_to 'Nowy wpływ', new_entry_path(:journal_id => @journal.id, :is_expense => false) %><% end %>
-<% if can? :update, @journal %><%= link_to 'Nowy wydatek', new_entry_path(:journal_id => @journal.id, :is_expense => true) %><% end %>
+<div class="row">
+ <div class="span12">&nbsp;</div>
+</div>
 
 <table class="table table-bordered table-condensed">
 
   <thead>
     <tr>
-      <th colspan="3"></th>
-      <th colspan="<%= @categories_income.count %>" class="balance-label">Saldo początkowe (w tym 1%):</th>
+      <th colspan="3" title="<%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%>"></th>
+      <th colspan="<%= @categories_income.count %>" class="balance-label"><small>Saldo początkowe (w tym 1%):</small></th>
       <th colspan="2" class="balance" id="initial-balance">
-        <%= number_with_precision(@journal.initial_balance, :precision => 2) %> zł
-        (<%= number_with_precision(@journal.initial_balance_one_percent, :precision => 2) %> zł)
+        <small>
+          <%= number_with_precision(@journal.initial_balance, :precision => 2) %> zł
+          (<%= number_with_precision(@journal.initial_balance_one_percent, :precision => 2) %> zł)
+        </small>
       </th>
 
       <th colspan="<%= @categories_expense.count %>">
-        <span class='muted pull-right'><%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%></span>
+        <span class='muted pull-right'>
+          <small>
+            <% if can? :update, @journal %>
+              <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false) do%>
+                <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i> Nowy wpływ</button>
+              <% end %>
+            <% end %>
+            <% if can? :update, @journal %>
+              <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true) do%>
+                <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i> Nowy wydatek</button>
+              <% end %>
+            <% end %>
+          </small>
+        </span>
       </th>
     </tr>
 
     <tr>
-      <th rowspan="2" class="valign_middle">#</th>
-      <th rowspan="2" class="valign_middle text-center">Data</th>
-      <th rowspan="2" class="valign_middle text-center">Treść</th>
-      <th colspan="<%= @categories_income.count %>" class="text-center">Wpływy szczegółowo</th>
-      <th rowspan="2" class="income_all valign_middle">Wpływy razem</th>
-      <th rowspan="2" class="expense_all valign_middle">Wydatki razem</th>
-      <th colspan="<%= @categories_expense.count %>" class="text-center">Wydatki szczegółowo</th>
+      <th rowspan="2" class="valign_middle"><small>#</small></th>
+      <th rowspan="2" class="valign_middle text-center"><small>Data</small></th>
+      <th rowspan="2" class="valign_middle text-center"><small>Treść</small></th>
+      <th colspan="<%= @categories_income.count %>" class="text-center"><small>Wpływy szczegółowo</small></th>
+      <th rowspan="2" class="income_all valign_middle"><small>Wpływy razem</small></th>
+      <th rowspan="2" class="expense_all valign_middle"><small>Wydatki razem</small></th>
+      <th colspan="<%= @categories_expense.count %>" class="text-center"><small>Wydatki szczegółowo</small></th>
     </tr>
 
     <tr>
@@ -122,7 +138,7 @@
   <!%-- row with sums for each category --%>
   <tfoot>
     <tr>
-      <td colspan="3"><strong>Suma</strong></td>
+      <td colspan="3"><strong><small>Suma</small></strong></td>
 
       <% @categories_income.each do |category| %>
         <td class="income income_<%= category.id %> text-right" text-right>
@@ -154,10 +170,12 @@
 
     <tr>
       <th colspan="3"></th>
-      <th colspan="<%= @categories_income.count %>" class="balance-label">Saldo końcowe (w tym 1%):</th>
+      <th colspan="<%= @categories_income.count %>" class="balance-label"><small>Saldo końcowe (w tym 1%):</small></th>
       <th colspan="2" class="balance" id="initial-balance">
-        <%= number_with_precision(@journal.get_final_balance, :precision => 2) %> zł
-        (<%= number_with_precision(@journal.get_final_balance_one_percent, :precision => 2) %> zł)
+        <small>
+          <%= number_with_precision(@journal.get_final_balance, :precision => 2) %> zł
+          (<%= number_with_precision(@journal.get_final_balance_one_percent, :precision => 2) %> zł)
+        </small>
       </th>
       <th colspan="<%= @categories_expense.count %>"></th>
     </tr>
