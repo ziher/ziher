@@ -23,7 +23,7 @@
  <div class="span12">&nbsp;</div>
 </div>
 
-<table class="table table-bordered table-condensed">
+<table class="table table-condensed">
 
   <thead>
     <tr>
@@ -37,22 +37,24 @@
       </th>
 
       <th colspan="<%= @categories_expense.count %>">
-        <span class='muted pull-right'>
+        <span class='pull-right'>
           <small>
             <% if can? :update, @journal %>
               <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false) do%>
-                <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i> Nowy wpływ</button>
+                <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i>&nbsp;&nbsp;Nowy wpływ</button>
               <% end %>
             <% end %>
             <% if can? :update, @journal %>
               <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true) do%>
-                <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i> Nowy wydatek</button>
+                <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy wydatek</button>
               <% end %>
             <% end %>
           </small>
         </span>
       </th>
     </tr>
+
+    <tr style="border-top: 3px solid #ddd"></tr>
 
     <tr>
       <th rowspan="2" class="valign_middle"><small>#</small></th>
@@ -72,6 +74,8 @@
         <th class="expense_<%= category.id %>"><small><small><%= category.name %></small></small></th>
       <% end %>
     </tr>
+
+    <tr style="border-bottom: 3px solid #ddd"></tr>
   </thead>
 
   <tbody>
@@ -137,7 +141,7 @@
 
   <!%-- row with sums for each category --%>
   <tfoot>
-    <tr>
+    <tr style="border-top: 3px solid #ddd">
       <td colspan="3"><strong><small>Suma</small></strong></td>
 
       <% @categories_income.each do |category| %>
