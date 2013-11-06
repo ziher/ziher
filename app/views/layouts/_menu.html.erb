@@ -3,8 +3,8 @@
     <ul class="nav">
       <li class=""><%= link_to root_path do %> <i class='icon-home'></i> ZiHeR <% end %></li>
 
-      <li class="<%= 'active' if current_page?(controller: 'journals', action: 'show') %>"><%= link_to "Książka finansowa", default_finance_journal_path %></li>
-      <li class="<%= 'active' if current_page?(controller: 'journals', action: 'show') %>"><%= link_to "Książka bankowa", default_bank_journal_path %></li>
+      <li class="active"><%= link_to "Książka finansowa", default_finance_journal_path %></li>
+      <li class=""><%= link_to "Książka bankowa", default_bank_journal_path %></li>
 
       <li class="<%= 'active' if current_page?(inventory_entries_path) %>"> <%= link_to "Książka inwentarzowa", inventory_entries_path %> </li>
       <li class="dropdown">
