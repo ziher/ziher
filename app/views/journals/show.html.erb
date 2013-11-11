@@ -35,13 +35,10 @@
         </small>
       </th>
 
-      <th colspan="<%= @categories_expense.count %>">
-      </th>
+      <th colspan="<%= @categories_expense.count %>"></th>
     </tr>
 
-    <tr style="border-top: 3px solid #ddd"></tr>
-
-    <tr>
+    <tr class="border-top-bold">
       <th rowspan="2" class="valign_middle"><small>#</small></th>
       <th rowspan="2" class="valign_middle text-center"><small>Data</small></th>
       <th rowspan="2" class="valign_middle text-center"><small>Treść</small></th>
@@ -59,18 +56,15 @@
         <th class="expense_<%= category.id %>"><small><small><%= category.name %></small></small></th>
       <% end %>
     </tr>
-
-    <tr style="border-bottom: 3px solid #ddd"></tr>
   </thead>
 
-  <tbody>
+  <tbody class="border-top-bold">
   <% i = 0 %>
   <% @entries.each do |entry| %>
-    <tr class="node <%= cycle("even", "odd") -%>"></tr>
     <tr>
       <td>
         <small>
-          <span style='display: block;'><%= i+=1 =%>.</span>
+          <span style="display: block;"><%= i+=1 =%>.</span>
           <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%><% end %>
           <% if can? :destroy, entry %><%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%><% end %>
         </small>
@@ -125,8 +119,8 @@
   </tbody>
 
   <!%-- row with sums for each category --%>
-  <tfoot>
-    <tr style="border-top: 3px solid #ddd">
+  <tfoot class="border-top-bold">
+    <tr>
       <td colspan="3"><strong><small>Suma</small></strong></td>
 
       <% @categories_income.each do |category| %>
