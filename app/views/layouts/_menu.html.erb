@@ -4,19 +4,19 @@
       <li class=""><%= link_to root_path do %> <i class='icon-home'></i> ZiHeR <% end %></li>
 
       <% if user_signed_in? %>
-        <li class="active"><%= link_to "Książka finansowa", default_finance_journal_path %></li>
-        <li class=""><%= link_to "Książka bankowa", default_bank_journal_path %></li>
+        <li class="<%= menu_active?(default_finance_journal_path) %>"><%= link_to "Książka finansowa", default_finance_journal_path %></li>
+        <li class="<%= menu_active?(default_bank_journal_path) %>"><%= link_to "Książka bankowa", default_bank_journal_path %></li>
 
-        <li class="<%= 'active' if current_page?(inventory_entries_path) %>"> <%= link_to "Książka inwentarzowa", inventory_entries_path %> </li>
+        <li class="<%= menu_active?(inventory_entries_path) %>"> <%= link_to "Książka inwentarzowa", inventory_entries_path %> </li>
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Administracja <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li class="<%= 'active' if current_page?(units_path) %>"> <%= link_to "Drużyny", units_path %> </li>
-            <li class="<%= 'active' if current_page?(groups_path) %>"> <%= link_to "Grupy", groups_path %> </li>
-            <% if can? :manage, Category %><li class="<%= 'active' if current_page?(categories_path) %>"> <%= link_to "Kategorie", categories_path %> </li><% end %>
-            <% if can? :manage, Journal %><li class="<%= 'active' if current_page?(journals_path) %>"> <%= link_to "Książki", journals_path %> </li><% end %>
-            <% if can? :manage, JournalType %><li class="<%= 'active' if current_page?(journal_types_path) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li><% end %>
-            <% if current_user != nil && current_user.can_manage_any_user %><li class="<%= 'active' if current_page?(users_path) %>"> <%= link_to "Użytkownicy", users_path %> </li><% end %>
+            <li class="<%= menu_active?(units_path) %>"> <%= link_to "Drużyny", units_path %> </li>
+            <li class="<%= menu_active?(groups_path) %>"> <%= link_to "Grupy", groups_path %> </li>
+            <% if can? :manage, Category %><li class="<%= menu_active?(categories_path) %>"> <%= link_to "Kategorie", categories_path %> </li><% end %>
+            <% if can? :manage, Journal %><li class="<%= menu_active?(journals_path) %>"> <%= link_to "Książki", journals_path %> </li><% end %>
+            <% if can? :manage, JournalType %><li class="<%= menu_active?(journal_types_path) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li><% end %>
+            <% if current_user != nil && current_user.can_manage_any_user %><li class="<%= menu_active?(users_path) %>"> <%= link_to "Użytkownicy", users_path %> </li><% end %>
           </ul>
         </li>
       <% end %>
