@@ -2,10 +2,18 @@ module ApplicationHelper
   def menu_active?(page_name)
     case page_name
     when :journal_finance
-      "active" if false
+      "active" if
+        request.path_parameters[:controller].to_s == "journals" and
+        Journal.find_by_id(params[:id]) != nil and
+        Journal.find_by_id(params[:id]).journal_type_id == 1
+        # TODO: wywalić magic number
 
     when :journal_bank
-      "active" if false
+      "active" if
+        request.path_parameters[:controller].to_s == "journals" and
+        Journal.find_by_id(params[:id]) != nil and
+        Journal.find_by_id(params[:id]).journal_type_id == 2
+        # TODO: wywalić magic number
 
     when :journal_inventory
       "active" if current_page?(inventory_entries_path)
