@@ -1,4 +1,4 @@
-ZiHeR 2.0
+## ZiHeR
 
 Open source book of account platform used by the scouts teams from [Związek Harcerstwa Rzeczypospolitej](http://www.zhr.pl) from Poland.
 
