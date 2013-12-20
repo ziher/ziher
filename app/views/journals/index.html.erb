@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th><%=t("journal.year")%></th>
+    <th>Druzyna</th>
     <th><%=t("journal.journal_type")%></th>
     <th></th>
     <th></th>
@@ -12,10 +13,9 @@
 <% @journals.each do |journal| %>
   <tr>
     <td><%= journal.year %></td>
+    <td><%= journal.unit.name %></td>
     <td><%= journal.journal_type.name %></td>
     <td><%= link_to 'Pokaż wpisy', journal %></td>
-    <td><%= link_to 'Edytuj', edit_journal_path(journal) %></td>
-    <td><%= link_to 'Usuń', journal, confirm: 'Na pewno?', method: :delete %></td>
     <% if journal.is_open %>
       <td><%= link_to 'Zamknij', close_journal_url(journal), confirm: 'Na pewno?' %></td>
     <% else %>
