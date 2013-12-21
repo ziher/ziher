@@ -37,22 +37,24 @@ sudo -u postgres psql postgres -c "create user ziher with password 'ziher' creat
 #sudo -u postgres sed -i -e 's/\(^local\s*all\s*all\s*\)\(peer$\)/\1md5/g' /etc/postgresql/9.1/main/pg_hba.conf
 service postgresql restart
 
-echo ====================== Sciagam kod zrodlowy ZiHeR-a
-sudo -H -u vagrant -i git clone https://github.com/zhr/ziher.git
+#echo ====================== Sciagam kod zrodlowy ZiHeR-a
+# Tutaj mamy problem jajka i kury - co ma byc najpierw, kod wyciagniety z gita, czy git?
+# Na razie zakladam, ze uzytkownik sciagnal sobie kod wczesniej i z katalogu glownego odpala Vagranta.
+#sudo -H -u vagrant -i git clone https://github.com/zhr/ziher.git /vagrant/
 sudo -H -u vagrant -i bash -c "git config --global color.ui true"
-#sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; git checkout 1e00c66a45b723d"
+#sudo -H -u vagrant -i bash -c "cd /vagrant; git checkout 1e00c66a45b723d"
 
 echo ====================== Sciagam gemy i uzupelniam baze danych
-sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; bundle install"
-sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; rake db:create:all"
-sudo -H -u vagrant -i bash -c "cd /home/vagrant/ziher; rake db:reset"
+sudo -H -u vagrant -i bash -c "cd /vagrant; bundle install"
+sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:create:all"
+sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:reset"
 
 echo '====================== ZiHeR jest gotowy do zabawy!'
 echo '====================== Aby zalogowac sie na maszyne wpisz'
 echo '====================== $ vagrant ssh <enter>'
 echo '======================'
 echo '====================== Nastepnie wejdz do katalogu z ZiHeRem'
-echo '====================== $ cd ziher <enter>'
+echo '====================== $ cd /vagrant <enter>'
 echo '======================'
 echo '====================== Po czym odpal serwer http ktory poda Ci ZiHeRa na tacy'
 echo '====================== $ rails server <enter>'
