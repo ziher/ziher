@@ -8,6 +8,21 @@
 #   cities = City.create!([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create!(name: 'Emanuel', city: cities.first)
 
+darowizny_1997 = Category.create!(name: 'Darowizny', is_expense: false, year: 1997)
+akcje_zarobkowe_1997 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 1997)
+wynagrodzenia_1997 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 1997)
+wyposazenie_1997 = Category.create!(name: 'Wyposazenie', is_expense: true, year: 1997)
+
+darowizny_1998 = Category.create!(name: 'Darowizny', is_expense: false, year: 1998)
+akcje_zarobkowe_1998 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 1998)
+wynagrodzenia_1998 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 1998)
+wyposazenie_1998 = Category.create!(name: 'Wyposazenie', is_expense: true, year: 1998)
+
+darowizny_2010 = Category.create!(name: 'Darowizny', is_expense: false, year: 2010)
+akcje_zarobkowe_2010 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2010)
+wynagrodzenia_2010 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2010)
+wyposazenie_2010 = Category.create!(name: 'Wyposazenie', is_expense: true, year: 2010)
+
 darowizny_2011 = Category.create!(name: 'Darowizny', is_expense: false, year: 2011)
 akcje_zarobkowe_2011 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2011)
 wynagrodzenia_2011 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2011)
