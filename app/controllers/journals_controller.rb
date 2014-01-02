@@ -19,7 +19,14 @@ class JournalsController < ApplicationController
           redirect_to journal
           return
         else
-          @journals = Journal.where(:journal_type_id => params[:journal_type_id])
+          # if there is no current Journal for type - just create it and keep going
+          journal = Journal.create!(:journal_type_id => params[:journal_type_id], :unit_id => params[:unit_id], :year => Time.now.year, :is_open => true)
+          if (journal != nil)
+            redirect_to journal
+            return
+          else
+            @journals = Journal.where(:journal_type_id => params[:journal_type_id])
+          end
         end
       end
     elsif (params[:journal_type_id])
