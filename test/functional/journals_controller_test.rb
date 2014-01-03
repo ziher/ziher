@@ -16,6 +16,19 @@ class JournalsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:journals)
   end
 
+  test "index should redirect to journal" do
+    journal_2011 = journals(:finance_2011)
+    get :index, {:unit_id => journal_2011.unit.id, :journal_type_id => journal_2011.journal_type.id, :year => journal_2011.year}
+    assert_redirected_to journal_2011
+  end
+
+  test "index should create journal if it doesnt exist" do
+    assert_difference('Journal.count') do
+      get :index, {:unit_id => @new_journal.unit.id, :journal_type_id => @new_journal.journal_type_id, :year => @new_journal.year}
+    end
+    assert_redirected_to Journal.last
+  end
+
   test "should show dashes for empty items when showing all entries" do
     get :show, id: @journal.to_param
     assert_select "td.income", "-"

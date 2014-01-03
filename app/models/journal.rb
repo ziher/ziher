@@ -133,11 +133,6 @@ class Journal < ActiveRecord::Base
     journals = Journal.where(:journal_type_id => type.id, :unit_id => Unit.find_by_user(user).map { |u| u.id }).order("year DESC")
   end
 
-  # Returns journal for current (or latest) year, of given journal type
-  def Journal.find_current_for_type(unit, type)
-    journal = Journal.find_previous_for_type(unit, type, Time.now.year)
-  end
-
   def Journal.find_previous_for_type(unit, type, year)
     journal = Journal.where("unit_id = ? AND journal_type_id = ? AND year <= ?", unit.id, type.id, year).order("year DESC").first
   end

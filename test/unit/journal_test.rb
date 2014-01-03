@@ -102,22 +102,6 @@ class JournalTest < ActiveSupport::TestCase
     end
   end
 
-  test "should find current journal" do
-    year_2015 = Time.parse('2015-05-05')
-    pretend_now_is(year_2015) do
-      journal_2015 = journals(:finance_2015)
-      assert_equal journal_2015, Journal.find_current_for_type(units(:dukt), journal_types(:finance))
-    end
-  end
-
-  test "should find last year journal as current" do
-    year_2016 = Time.parse('2016-06-06')
-    pretend_now_is(year_2016) do
-      journal_2015 = journals(:finance_2015)
-      assert_equal journal_2015, Journal.find_current_for_type(units(:dukt), journal_types(:finance))
-    end
-  end
-
   test "should count sum for category" do
     journal = journals(:finance_2012)
     category = categories(:one)
