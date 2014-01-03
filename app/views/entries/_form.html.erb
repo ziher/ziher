@@ -52,7 +52,8 @@
       <%= f.hidden_field :is_expense, :value => @entry.is_expense %>
     </div>
 
-    <% if @entry.is_expense %>
+    <!%-- przenoszenie kwot miedzy ksiazkami na razie wstrzymane --%>
+    <% if false and @entry.is_expense %>
       <div class="span6">
         <%= check_box_tag :is_linked, :is_linked, @linked_entry.id, :onclick => "showOrHideLinkedEntry()" %>
         <label for="is_linked">Przenieś do innej książki</label>
