@@ -47,6 +47,19 @@ class EntryTest < ActiveSupport::TestCase
     }
   end
 
+  test "should not save entry from different year" do
+    #given
+    entry = entries(:expense_one)
+
+    #when - the date is from previous year (from 12 months before)
+    entry.date <<= 12
+
+    #then
+    assert_raise(ActiveRecord::RecordInvalid){
+      entry.save!
+    }
+  end
+
   test "should not save entry with items of categories from different year" do
     entry = entries(:expense_one)
     item1 = Item.new(:category => categories(:one))
