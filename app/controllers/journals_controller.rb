@@ -10,19 +10,12 @@ class JournalsController < ApplicationController
   def index
     if (params[:unit_id] && params[:journal_type_id] && params[:year])
       journal = Journal.find_by_unit_and_year_and_type(Unit.find(params[:unit_id]), params[:year], JournalType.find(params[:journal_type_id]))
-      if (journal != nil)
-        redirect_to journal
-        return
-      else
+      if journal == nil
         # if there is no current Journal for type - just create it and keep going
-        journal = Journal.create!(:journal_type_id => params[:journal_type_id], :unit_id => params[:unit_id], :year => Time.now.year, :is_open => true)
-        if (journal != nil)
-          redirect_to journal
-          return
-        else
-          @journals = Journal.where(:journal_type_id => params[:journal_type_id])
-        end
+        journal = Journal.create_for_current_year(params[:journal_type_id], params[:unit_id])
       end
+      redirect_to journal
+      return
     elsif (params[:journal_type_id])
       @journals = Journal.where(:journal_type_id => params[:journal_type_id])
     else

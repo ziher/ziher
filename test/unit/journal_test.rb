@@ -229,6 +229,20 @@ class JournalTest < ActiveSupport::TestCase
     assert(!journal.journals_for_linked_entry.include?(journal))
   end
 
+  test "should create journal" do
+    #given
+    journal = journals(:finance_2012)
+    unit_id = journal.unit.id
+    type_id = journal.journal_type_id
+
+    #when
+    new_journal = Journal.create_for_current_year(type_id, unit_id)
+
+    #then
+    assert_equal Time.now.year, new_journal.year
+    assert new_journal.is_open
+  end
+
   private
 
   def count_sum_for_category(journal, category)

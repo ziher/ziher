@@ -137,6 +137,11 @@ class Journal < ActiveRecord::Base
     journal = Journal.where("unit_id = ? AND journal_type_id = ? AND year <= ?", unit.id, type.id, year).order("year DESC").first
   end
 
+  # Creates a new open journal for given journal type and unit and current year.
+  def Journal.create_for_current_year(type_id, unit_id)
+    Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year, :is_open => true)
+  end
+
   def find_all_years()
     years = Journal.where("journal_type_id = ? AND unit_id = ?", self.journal_type.id, self.unit.id)
   end
