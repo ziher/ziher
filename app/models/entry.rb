@@ -16,6 +16,8 @@ class Entry < ActiveRecord::Base
   validates :name, :presence => true
   validates :document_number, :presence => true
 
+  validate :must_be_from_journals_year
+
   validate :cannot_have_multiple_items_in_one_category
   validate :cannot_have_item_from_category_not_from_journals_year
   validate :must_be_either_expense_or_income
@@ -63,6 +65,15 @@ class Entry < ActiveRecord::Base
 
     if categories.length != categories.uniq.length
       errors[:items] << 'Wpis nie moze miec kilku sum z tej samej kategorii'
+    end
+  end
+
+  def must_be_from_journals_year
+    if journal && self.date
+      if self.date.year!= journal.year
+        errors[:base] << "Wpis nie moze byc z innego roku: journal.year=#{journal.year} != entry.year=#{self.date.year}"
+        return false
+      end
     end
   end
 
