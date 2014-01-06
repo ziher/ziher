@@ -2,8 +2,8 @@
  function selectedUnitChanged(unitId) {
    document.location.href = "<%= journals_path %>?unit_id=" + unitId.toString() + "&journal_type_id=<%= @journal.journal_type.id %>&year=<%= @journal.year %>";
  }
- function selectedYearChanged(journalId) {
-   document.location.href = "<%= journals_path %>/" + journalId;
+ function selectedYearChanged(year) {
+   document.location.href = "<%= journals_path %>?unit_id=<%= @journal.unit.id %>&journal_type_id=<%= @journal.journal_type.id %>&year=" + year;
  }
 </script>
 <select onchange="selectedUnitChanged(this.value)" class="span4">
@@ -12,7 +12,7 @@
   <% end %>
 </select>
 <select onchange="selectedYearChanged(this.value)" class="span1">
-  <% @years.each do |journal| %>
-    <option value="<%= journal.id %>" <%= journal.year == @journal.year ? "selected='selected'" : "" %>><%= journal.year %></option>
+  <% @years.each do |year| %>
+    <option value="<%= year %>" <%= year == @journal.year ? "selected='selected'" : "" %>><%= year %></option>
   <% end %>
 </select>

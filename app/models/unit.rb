@@ -2,6 +2,7 @@ class Unit < ActiveRecord::Base
   has_and_belongs_to_many :groups
   has_many :user_unit_associations
   has_many :users, through: :user_unit_associations
+  has_many :journals
 
   def Unit.find_by_user(user)
     if (user.is_superadmin)
@@ -25,4 +26,13 @@ select *
         { :user_id => user.id }])
     end
   end
+
+  # Returns years for which the unit has journals of given type, plus current year.
+  # Years are sorted oldest first.
+  def find_journal_years(journal_type)
+    result = self.journals.select{|journal| journal.journal_type == journal_type}.map{|journal| journal.year}
+    result << Time.now.year
+    result.uniq.sort
+  end
+
 end

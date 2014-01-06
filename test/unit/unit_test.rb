@@ -17,4 +17,53 @@ class UnitTest < ActiveSupport::TestCase
     units = Unit.find_by_user(users(:master_p))
     assert_equal(8, units.count)
   end
+
+  test "should return all journal years including current" do
+    #given
+    year_2025 = Time.parse('2025-05-05')
+    pretend_now_is(year_2025) do
+      dukt = units(:dukt)
+      finance_type = journal_types(:finance)
+
+      #when
+      years = dukt.find_journal_years(finance_type).to_set
+
+      #then
+      expected_years = dukt.journals.map{|journal| journal.year}.uniq.to_set
+      expected_years << Time.now.year
+
+      assert_equal expected_years, years
+    end
+  end
+
+  test "should return journal years sorted" do
+    #given
+    year_2005 = Time.parse('2005-05-05')
+    pretend_now_is(year_2005) do
+      dukt = units(:dukt)
+      finance_type = journal_types(:finance)
+
+      #when
+      years = dukt.find_journal_years(finance_type)
+
+      #then
+      assert_equal years.sort, years
+    end
+  end
+
+  test "should not return duplicate years" do
+    #given
+    year_2012 = Time.parse('2012-05-05')
+    pretend_now_is(year_2012) do
+      dukt = units(:dukt)
+      finance_type = journal_types(:finance)
+
+      #when
+      years = dukt.find_journal_years(finance_type)
+
+      #then
+      assert_equal years.uniq, years
+    end
+  end
+
 end

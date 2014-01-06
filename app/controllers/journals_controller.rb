@@ -35,7 +35,7 @@ class JournalsController < ApplicationController
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
     @entries = @journal.entries
     @user_units = Unit.find_by_user(current_user)
-    @years = @journal.find_all_years()
+    @years = @journal.unit.find_journal_years(@journal.journal_type)
 
     respond_to do |format|
       format.html # show.html.erb
