@@ -21,6 +21,7 @@ $(function() {
     $.datepicker.setDefaults({ showOtherMonths: true });
     //$.datepicker.setDefaults({ selectOtherMonths: true }); //we show multiple months so this doesn't have much sense
     $("#entry_date").datepicker();
+    $("#inventory_entry_date").datepicker();
 });
 
 $(document).ready(function(){

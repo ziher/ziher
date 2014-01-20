@@ -11,35 +11,39 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :data %><br />
-    <%= f.date_select :date %>
-  </div>
-  <div class="field">
-    <%= f.label :nazwa %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :numer_dokumentu %><br />
-    <%= f.text_field :document_number %>
-  </div>
-  <div class="field">
-    <%= f.label :wartość %><br />
-    <%= f.number_field :amount %>
-  </div>
-  <div class="field">
-    <%= f.label :cena_jednostkowa %><br />
-    <%= f.text_field :unit_price %>
-  </div>
-  <div class="field">
-    <%= f.label :Źródło %><br />
-    <%= f.text_field :source %>
-  </div>
-  <div class="field">
-    <%= f.label :numer_inwentarzowy %><br />
-    <%= f.text_field :stock_number %>
-  </div>
-  <div class="actions">
-    <%= f.submit "Zapisz"%>
+  <div class="row">
+    <div class="span6">
+      <div class="field">
+        <%= f.label :data %>
+        <%= f.text_field :date %>
+      </div>
+      <div class="field">
+        <%= f.label :nazwa %>
+        <%= f.text_field :name %>
+      </div>
+      <div class="field">
+        <%= f.label :numer_dokumentu %>
+        <%= f.text_field :document_number %>
+      </div>
+      <div class="field">
+        <%= f.label :wartość %>
+        <%= f.number_field :amount %>
+      </div>
+      <div class="field">
+        <%= f.label :cena_jednostkowa %>
+        <%= f.text_field :unit_price %>
+      </div>
+      <div class="field">
+        <%= f.label :Źródło %>
+        <%= f.text_field :source %>
+      </div>
+      <div class="field">
+        <%= f.label :numer_inwentarzowy %>
+        <%= f.text_field :stock_number %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Zapisz"%>
+      </div>
+    </div>
   </div>
 <% end %>
