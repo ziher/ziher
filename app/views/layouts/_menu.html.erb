@@ -24,10 +24,12 @@
 
     <% if user_signed_in? %>
       <ul class="nav pull-right">
-        <li>
-          <%= link_to destroy_user_session_path, :method => :delete do %>
-            <%= current_user.email %> - <i class='icon-off'></i>&nbsp;Wyloguj się
-          <%end%>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= current_user.email %> <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li class="disabled"><a href="#"><i class='icon-wrench'></i>&nbsp;&nbsp;&nbsp;Zmień hasło</a></li>
+            <li><%= link_to destroy_user_session_path, :method => :delete do %><i class='icon-off'></i>&nbsp;&nbsp;&nbsp;Wyloguj się <%end%></li>
+          </ul>
         </li>
       </ul>
     <% end %>
