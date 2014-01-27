@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140127150237) do
+ActiveRecord::Schema.define(:version => 20140106210952) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -47,24 +47,24 @@ ActiveRecord::Schema.define(:version => 20140127150237) do
 
   create_table "inventory_entries", :force => true do |t|
     t.date     "date"
+    t.string   "stock_number"
     t.string   "name"
     t.string   "document_number"
-    t.integer  "amount"
-    t.decimal  "unit_price"
     t.string   "source"
-    t.string   "stock_number"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer  "amount"
+    t.decimal  "unit_price",      :precision => 9, :scale => 2
     t.string   "comment"
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
   end
 
   create_table "items", :force => true do |t|
-    t.decimal  "amount"
-    t.decimal  "amount_one_percent"
+    t.decimal  "amount",             :precision => 9, :scale => 2
+    t.decimal  "amount_one_percent", :precision => 9, :scale => 2
     t.integer  "entry_id"
     t.integer  "category_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
   end
 
   create_table "journal_types", :force => true do |t|
@@ -78,11 +78,11 @@ ActiveRecord::Schema.define(:version => 20140127150237) do
     t.integer  "year"
     t.integer  "unit_id"
     t.integer  "journal_type_id"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                                                 :null => false
+    t.datetime "updated_at",                                                                 :null => false
     t.boolean  "is_open"
-    t.decimal  "initial_balance",             :default => 0.0, :null => false
-    t.decimal  "initial_balance_one_percent", :default => 0.0, :null => false
+    t.decimal  "initial_balance",             :precision => 9, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "initial_balance_one_percent", :precision => 9, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "subgroups", :id => false, :force => true do |t|
