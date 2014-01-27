@@ -5,8 +5,8 @@
     <th>Data</th>
     <th>Nazwa</th>
     <th>Numer dokumentu</th>
+    <th>Ilość</th>
     <th>Wartość</th>
-    <th>Cena jednostkowa</th>
     <th>Źródło</th>
     <th>Numer inwentarzowy</th>
     <th></th>
@@ -20,7 +20,7 @@
     <td><%= inventory_entry.name %></td>
     <td><%= inventory_entry.document_number %></td>
     <td><%= inventory_entry.amount %></td>
-    <td><%= inventory_entry.unit_price %></td>
+    <td><%= inventory_entry.total_value %></td>
     <td><%= inventory_entry.source %></td>
     <td><%= inventory_entry.stock_number %></td>
     <td><%= link_to 'Edytuj', edit_inventory_entry_path(inventory_entry) %></td>

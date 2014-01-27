@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(:version => 20140106210952) do
     t.string   "document_number"
     t.string   "source"
     t.integer  "amount"
-    t.decimal  "unit_price",      :precision => 9, :scale => 2
+    t.decimal  "total_value",     :precision => 9, :scale => 2
     t.string   "comment"
     t.datetime "created_at",                                    :null => false
     t.datetime "updated_at",                                    :null => false
