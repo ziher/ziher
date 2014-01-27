@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140106210952) do
+ActiveRecord::Schema.define(:version => 20140127150237) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -47,12 +47,13 @@ ActiveRecord::Schema.define(:version => 20140106210952) do
 
   create_table "inventory_entries", :force => true do |t|
     t.date     "date"
+    t.string   "stock_number"
     t.string   "name"
     t.string   "document_number"
+    t.string   "source"
     t.integer  "amount"
     t.decimal  "unit_price"
-    t.string   "source"
-    t.string   "stock_number"
+    t.string   "comment"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
