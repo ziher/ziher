@@ -15,7 +15,7 @@ module ApplicationHelper
         Journal.find_by_id(params[:id]).journal_type_id == 2
         # TODO: wywalić magic number
 
-    when :journal_inventory
+    when :inventory
       "active" if current_page?(inventory_entries_path)
 
     when :units

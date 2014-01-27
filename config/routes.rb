@@ -26,8 +26,6 @@ Ziher::Application.routes.draw do
     post :sort, on: :collection
   end
 
-  resources :inventory_journals
-
   resources :inventory_entries
 
   resources :units

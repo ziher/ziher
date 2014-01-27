@@ -47,26 +47,16 @@ ActiveRecord::Schema.define(:version => 20140127150237) do
 
   create_table "inventory_entries", :force => true do |t|
     t.date     "date"
-    t.string   "stock_number"
     t.string   "name"
     t.string   "document_number"
-    t.string   "source"
     t.integer  "amount"
     t.decimal  "unit_price"
-    t.string   "comment"
+    t.string   "source"
+    t.string   "stock_number"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.string   "comment"
   end
-
-  create_table "inventory_journals", :force => true do |t|
-    t.integer  "year"
-    t.integer  "unit_id"
-    t.boolean  "open"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "inventory_journals", ["unit_id"], :name => "index_inventory_journals_on_unit_id"
 
   create_table "items", :force => true do |t|
     t.decimal  "amount"
