@@ -15,7 +15,7 @@ export LANG=en_US.UTF-8
 DEBIAN_FRONTEND=noninteractive apt-get update
 
 echo ====================== Instaluje RVM
-DEBIAN_FRONTEND=noninteractive apt-get --yes install git curl
+DEBIAN_FRONTEND=noninteractive apt-get --yes install git curl vim
 # there is a problem with twitter-bootstrap-rails and ruby 2.0 so let's use 1.9.3 instead
 sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=1.9.3"
 sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
@@ -26,6 +26,7 @@ sudo -H -u vagrant -i echo "export RUBY_HEAP_FREE_MIN=100000" >> /home/vagrant/.
 sudo -H -u vagrant -i echo "export RUBY_HEAP_SLOTS_INCREMENT=300000" >> /home/vagrant/.bashrc
 sudo -H -u vagrant -i echo "export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1" >> /home/vagrant/.bashrc
 sudo -H -u vagrant -i echo "export RUBY_GC_MALLOC_LIMIT=79000000" >> /home/vagrant/.bashrc
+sudo -H -u vagrant -i echo "force_color_prompt=yes" >> /home/vagrant/.bashrc
 
 # https://github.com/mitchellh/vagrant/issues/866 - ~/.bashrc is not loaded in 'vagrant ssh' sessions
 sudo -H -u vagrant -i echo "source ~/.bashrc" >> /home/vagrant/.bash_profile
