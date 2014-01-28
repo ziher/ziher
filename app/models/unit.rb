@@ -3,6 +3,7 @@ class Unit < ActiveRecord::Base
   has_many :user_unit_associations
   has_many :users, through: :user_unit_associations
   has_many :journals
+  has_many :inventory_entries
 
   def Unit.find_by_user(user)
     if (user.is_superadmin)

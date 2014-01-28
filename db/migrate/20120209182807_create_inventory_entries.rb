@@ -9,6 +9,7 @@ class CreateInventoryEntries < ActiveRecord::Migration
       t.integer :amount
       t.decimal :total_value, :precision => 9, :scale => 2
       t.string :comment
+      t.integer :unit_id
 
       t.timestamps
     end
