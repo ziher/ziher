@@ -1,19 +1,17 @@
 <div class="row top-buffer-40">
   <div class="span6">
-    <div class='pull-left'>
-      <small>
-        <% if can? :update, @journal %>
-          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false) do%>
-            <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i>&nbsp;&nbsp;Nowy wpływ</button>
-          <% end %>
+    <small>
+      <% if can? :update, @journal %>
+        <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false) do%>
+          <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i>&nbsp;&nbsp;Nowy wpływ</button>
         <% end %>
-        <% if can? :update, @journal %>
-          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true) do%>
-            <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy wydatek</button>
-          <% end %>
+      <% end %>
+      <% if can? :update, @journal %>
+        <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true) do%>
+          <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy wydatek</button>
         <% end %>
-      </small>
-    </div>
+      <% end %>
+    </small>
   </div>
   <div class="span6">
     <div class="pull-right">

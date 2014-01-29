@@ -1,14 +1,34 @@
-<h1>Książka inwentarzowa</h1>
+<div class="row top-buffer-40">
+  <div class="span6">
+    <small>
+      <% if can? :update, @inventory_entry %>
+        <%= link_to new_inventory_entry_path do %>
+          <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i>&nbsp;&nbsp;Nowy przychód</button>
+        <% end %>
+      <% end %>
+      <% if can? :update, @inventory_entry %>
+        <%= link_to new_inventory_entry_path do %>
+          <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy rozchód</button>
+        <% end %>
+      <% end %>
+    </small>
+  </div>
+  <div class="span6">
+    <div class="pull-right">
+      <%#= render "shared/journal_select" %>
+    </div>
+  </div>
+</div>
 
-<table>
+<table class="table table-condensed top-buffer-20">
   <tr>
     <th>Data</th>
+    <th>Numer inwentarzowy</th>
     <th>Nazwa</th>
     <th>Numer dokumentu</th>
+    <th>Źródło</th>
     <th>Ilość</th>
     <th>Wartość</th>
-    <th>Źródło</th>
-    <th>Numer inwentarzowy</th>
     <th></th>
     <th></th>
     <th></th>
@@ -17,12 +37,12 @@
 <% @inventory_entries.each do |inventory_entry| %>
   <tr>
     <td><%= inventory_entry.date %></td>
+    <td><%= inventory_entry.stock_number %></td>
     <td><%= inventory_entry.name %></td>
     <td><%= inventory_entry.document_number %></td>
+    <td><%= inventory_entry.source %></td>
     <td><%= inventory_entry.amount %></td>
     <td><%= inventory_entry.total_value %></td>
-    <td><%= inventory_entry.source %></td>
-    <td><%= inventory_entry.stock_number %></td>
     <td><%= link_to 'Edytuj', edit_inventory_entry_path(inventory_entry) %></td>
     <td><%= link_to 'Usuń', inventory_entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
   </tr>
