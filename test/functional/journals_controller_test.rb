@@ -53,12 +53,6 @@ class JournalsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "scoutmaster cannot destroy journals" do
-    delete :destroy, id: @journal.to_param
-
-    assert_unauthorized
-  end
-
   test "should show initial balance" do
     get :show, id: @journal.to_param
     assert_select "#initial-balance", /#{number_with_precision(@journal.initial_balance, :precision => 2)} zł/

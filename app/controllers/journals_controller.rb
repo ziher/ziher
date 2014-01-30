@@ -37,6 +37,9 @@ class JournalsController < ApplicationController
     @user_units = Unit.find_by_user(current_user)
     @years = @journal.unit.find_journal_years(@journal.journal_type)
 
+    session[:current_year] = @journal.year
+    session[:current_unit_id] = @journal.unit.id
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @journal }
@@ -46,7 +49,8 @@ class JournalsController < ApplicationController
   def default
     # get default journal
     journal_type = JournalType.find(params[:journal_type_id])
-    @journal = Journal.get_default(journal_type, current_user)
+
+    @journal = Journal.get_default(journal_type, current_user, session[:current_unit_id], session[:current_year])
     if (@journal != nil)
       redirect_to journal_path(@journal)
     else
@@ -125,17 +129,6 @@ class JournalsController < ApplicationController
         format.html { render action: "edit" }
         format.json { render json: @journal.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /journals/1
-  # DELETE /journals/1.json
-  def destroy
-    @journal.destroy
-
-    respond_to do |format|
-      format.html { redirect_to journals_url }
-      format.json { head :ok }
     end
   end
 end

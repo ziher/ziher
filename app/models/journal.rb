@@ -123,8 +123,17 @@ class Journal < ActiveRecord::Base
   end
 
   # Returns the most recent journal for given type, that the given user has access to
-  def Journal.get_default(type, user)
-    journals = Journal.find_by_type_and_user(type, user).first
+  def Journal.get_default(type, user, unit_id = nil, year = nil)
+    journals = Journal.find_by_type_and_user(type, user)
+
+    #if there was the unit and year passed - use them to find the proper journal
+    if (unit_id != nil && year != nil)
+      if journals.any?{|journal| journal.unit.id == unit_id && journal.year == year}
+        return journals.find{|journal| journal.unit.id == unit_id && journal.year == year}
+      end
+    end
+
+    return journals.first
   end
 
   # Returns all journals of the specified type that the specified user has access to.
