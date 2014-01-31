@@ -11,8 +11,8 @@ class JournalsController < ApplicationController
     if (params[:unit_id] && params[:journal_type_id] && params[:year])
       journal = Journal.find_by_unit_and_year_and_type(Unit.find(params[:unit_id]), params[:year], JournalType.find(params[:journal_type_id]))
       if journal == nil
-        # if there is no current Journal for type - just create it and keep going
-        journal = Journal.create_for_current_year(params[:journal_type_id], params[:unit_id])
+        # if there is no such Journal - just get the current year one
+        journal = Journal.get_current_for_type(params[:unit_id], params[:journal_type_id])
       end
       redirect_to journal
       return
