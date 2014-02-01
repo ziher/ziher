@@ -130,6 +130,11 @@ class Journal < ActiveRecord::Base
     if (unit_id != nil && year != nil)
       if journals.any?{|journal| journal.unit.id == unit_id && journal.year == year}
         return journals.find{|journal| journal.unit.id == unit_id && journal.year == year}
+      else
+        # if the journal was not found it means it doesn't exist -
+        # journal probably existed for the unit and year but different journal type -
+        # in such case just create the journal for the type
+        return Journal.create!(:journal_type_id => type.id, :unit_id => unit_id, :year => year, :is_open => true)
       end
     end
 
@@ -161,6 +166,7 @@ class Journal < ActiveRecord::Base
   def Journal.create_for_current_year(type_id, unit_id)
     Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year, :is_open => true)
   end
+
 
   def find_all_years()
     years = Journal.where("journal_type_id = ? AND unit_id = ?", self.journal_type.id, self.unit.id)

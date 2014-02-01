@@ -14,6 +14,8 @@ class JournalsController < ApplicationController
         # if there is no such Journal - just get the current year one
         journal = Journal.get_current_for_type(params[:unit_id], params[:journal_type_id])
       end
+      session[:current_unit_id] = journal.unit.id
+      session[:current_year] = journal.year
       redirect_to journal
       return
     elsif (params[:journal_type_id])
