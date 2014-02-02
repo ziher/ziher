@@ -3,6 +3,11 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries.json
   def index
     @inventory_entries = InventoryEntry.all
+    @user_units = Unit.find_by_user(current_user)
+
+    if (params[:unit_id])
+      session[:current_unit_id] = params[:unit_id].to_i
+    end
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,0 +1,10 @@
+<script type="text/javascript">
+ function selectedUnitChanged(unitId) {
+   document.location.href = "<%= inventory_entries_path %>?unit_id=" + unitId.toString();
+ }
+</script>
+<select onchange="selectedUnitChanged(this.value)" class="span4">
+  <% @user_units.each do |unit| %>
+    <option value="<%= unit.id %>" <%= unit.id == session[:current_unit_id] ? "selected='selected'" : "" %>><%= unit.name %></option>
+  <% end %>
+</select>
