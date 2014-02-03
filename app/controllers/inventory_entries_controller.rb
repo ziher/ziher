@@ -2,12 +2,12 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries
   # GET /inventory_entries.json
   def index
-    @inventory_entries = InventoryEntry.all
-    @user_units = Unit.find_by_user(current_user)
-
     if (params[:unit_id])
       session[:current_unit_id] = params[:unit_id].to_i
     end
+
+    @inventory_entries = InventoryEntry.where(:unit_id => session[:current_unit_id])
+    @user_units = Unit.find_by_user(current_user)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -29,6 +29,7 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries/new
   # GET /inventory_entries/new.json
   def new
+    @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.new
 
     respond_to do |format|
@@ -39,12 +40,14 @@ class InventoryEntriesController < ApplicationController
 
   # GET /inventory_entries/1/edit
   def edit
+    @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.find(params[:id])
   end
 
   # POST /inventory_entries
   # POST /inventory_entries.json
   def create
+    @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.new(params[:inventory_entry])
 
     respond_to do |format|
@@ -61,6 +64,7 @@ class InventoryEntriesController < ApplicationController
   # PUT /inventory_entries/1
   # PUT /inventory_entries/1.json
   def update
+    @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.find(params[:id])
 
     respond_to do |format|

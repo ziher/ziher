@@ -13,6 +13,7 @@ class InventoryEntriesControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
+    session[:current_unit_id] = @inventory_entry.unit.id
     get :new
     assert_response :success
   end
@@ -31,6 +32,7 @@ class InventoryEntriesControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
+    session[:current_unit_id] = @inventory_entry.unit.id
     get :edit, id: @inventory_entry.to_param
     assert_response :success
   end

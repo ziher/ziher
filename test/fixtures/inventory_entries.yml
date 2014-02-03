@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
+  unit: dukt
   date: 2012-02-09
   name: MyString
   document_number: MyString
@@ -10,6 +11,7 @@ one:
   stock_number: MyString
 
 two:
+  unit: dukt
   date: 2012-02-09
   name: MyString
   document_number: MyString
