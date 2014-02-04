@@ -7,7 +7,7 @@
         <% end %>
       <% end %>
       <% if can? :update, @inventory_entry %>
-        <%= link_to new_inventory_entry_path do %>
+        <%= link_to new_inventory_entry_path(:is_expense => "") do %>
           <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy rozchód</button>
         <% end %>
       <% end %>
@@ -29,7 +29,6 @@
     <th>Źródło</th>
     <th>Ilość</th>
     <th>Wartość</th>
-    <th></th>
     <th></th>
     <th></th>
   </tr>

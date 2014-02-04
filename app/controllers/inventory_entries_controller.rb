@@ -50,6 +50,10 @@ class InventoryEntriesController < ApplicationController
     @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.new(params[:inventory_entry])
 
+    if (params[:is_expense] == "1")
+      @inventory_entry.amount *= -1
+    end
+
     respond_to do |format|
       if @inventory_entry.save
         format.html { redirect_to @inventory_entry, notice: 'Wpis utworzony.' }

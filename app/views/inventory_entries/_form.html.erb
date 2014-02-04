@@ -47,4 +47,5 @@
     </div>
   </div>
   <%= f.hidden_field :unit_id, :value => @unit.id %>
+  <%= hidden_field_tag :is_expense, (params[:is_expense]) ? "1" : "" %>
 <% end %>
