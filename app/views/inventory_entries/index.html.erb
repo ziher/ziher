@@ -22,15 +22,21 @@
 
 <table class="table table-condensed top-buffer-20">
   <tr>
-    <th>Data</th>
-    <th>Numer inwentarzowy</th>
-    <th>Nazwa</th>
-    <th>Numer dokumentu</th>
-    <th>Źródło</th>
-    <th>Ilość</th>
-    <th>Wartość</th>
-    <th></th>
-    <th></th>
+    <th rowspan="2" class="valign_middle">Data</th>
+    <th rowspan="2" class="valign_middle">Numer inwentarzowy</th>
+    <th rowspan="2" class="valign_middle">Nazwa</th>
+    <th rowspan="2" class="valign_middle">Numer dokumentu</th>
+    <th rowspan="2" class="valign_middle">Źródło</th>
+    <th colspan="2" class="text-center">Ilość</th>
+    <th rowspan="2" class="valign_middle">Cena jednostkowa</th>
+    <th rowspan="2" class="valign_middle">Wartość</th>
+    <th rowspan="2"></th>
+    <th rowspan="2"></th>
+  </tr>
+
+  <tr>
+    <th>Przychód</th>
+    <th>Rozchód</th>
   </tr>
 
 <% @inventory_entries.each do |inventory_entry| %>
@@ -40,12 +46,12 @@
     <td><%= inventory_entry.name %></td>
     <td><%= inventory_entry.document_number %></td>
     <td><%= inventory_entry.source %></td>
-    <td><%= inventory_entry.amount %></td>
+    <td><%= inventory_entry.is_expense ? '-' : inventory_entry.get_positive_amount %></td>
+    <td><%= inventory_entry.is_expense ? inventory_entry.get_positive_amount : '-' %></td>
+    <td><%= inventory_entry.total_value / inventory_entry.get_positive_amount %></td>
     <td><%= inventory_entry.total_value %></td>
     <td><%= link_to 'Edytuj', edit_inventory_entry_path(inventory_entry) %></td>
     <td><%= link_to 'Usuń', inventory_entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
