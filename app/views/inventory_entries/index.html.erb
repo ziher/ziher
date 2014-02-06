@@ -2,12 +2,12 @@
   <div class="span6">
     <small>
       <% if can? :update, @inventory_entry %>
-        <%= link_to new_inventory_entry_path do %>
+        <%= link_to new_inventory_entry_path(:is_expense => false) do %>
           <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i>&nbsp;&nbsp;Nowy przychód</button>
         <% end %>
       <% end %>
       <% if can? :update, @inventory_entry %>
-        <%= link_to new_inventory_entry_path(:is_expense => "") do %>
+        <%= link_to new_inventory_entry_path(:is_expense => true) do %>
           <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy rozchód</button>
         <% end %>
       <% end %>
@@ -46,10 +46,10 @@
     <td><%= inventory_entry.name %></td>
     <td><%= inventory_entry.document_number %></td>
     <td><%= inventory_entry.source %></td>
-    <td><%= inventory_entry.is_expense ? '-' : inventory_entry.get_positive_amount %></td>
-    <td><%= inventory_entry.is_expense ? inventory_entry.get_positive_amount : '-' %></td>
-    <td><%= inventory_entry.total_value / inventory_entry.get_positive_amount %></td>
-    <td><%= inventory_entry.total_value %></td>
+    <td><%= inventory_entry.is_expense ? '-' : inventory_entry.amount %></td>
+    <td><%= inventory_entry.is_expense ? inventory_entry.amount : '-' %></td>
+    <td><%= inventory_entry.total_value / inventory_entry.amount %></td>
+    <td><%= inventory_entry.total_value * (inventory_entry.is_expense ? -1 : 1)  %></td>
     <td><%= link_to 'Edytuj', edit_inventory_entry_path(inventory_entry) %></td>
     <td><%= link_to 'Usuń', inventory_entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
   </tr>

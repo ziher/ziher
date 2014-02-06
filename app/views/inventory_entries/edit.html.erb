@@ -1,4 +1,4 @@
-<h1>Edycja wpisu inwentarzowego</h1>
+<h1><%= @inventory_entry.is_expense ? "Rozchód" : "Przychód" %> inwentarzowy</h1>
 
 <%= render 'form' %>
 

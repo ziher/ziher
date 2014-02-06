@@ -9,13 +9,4 @@ class InventoryEntry < ActiveRecord::Base
   validates :source, :presence => true
   validates :amount, :presence => true
   validates :total_value, :presence => true
-
-  # returns amount as a positive value
-  def get_positive_amount
-    return self.amount < 0 ? self.amount * -1 : self.amount
-  end
-
-  def is_expense
-    return self.amount < 0
-  end
 end

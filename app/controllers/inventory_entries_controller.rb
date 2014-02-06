@@ -30,7 +30,7 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries/new.json
   def new
     @unit = Unit.find_by_id(session[:current_unit_id])
-    @inventory_entry = InventoryEntry.new
+    @inventory_entry = InventoryEntry.new(:is_expense => params[:is_expense])
 
     respond_to do |format|
       format.html # new.html.erb
@@ -49,10 +49,6 @@ class InventoryEntriesController < ApplicationController
   def create
     @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.new(params[:inventory_entry])
-
-    if (params[:is_expense] == "1")
-      @inventory_entry.amount *= -1
-    end
 
     respond_to do |format|
       if @inventory_entry.save

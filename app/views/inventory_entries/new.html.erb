@@ -1,4 +1,8 @@
-<h1>Nowy wpis inwentarzowy</h1>
+<% if @inventory_entry.is_expense %>
+  <h1>Nowy rozchód</h1>
+<% else %>
+  <h1>Nowy przychód</h1>
+<% end %>
 
 <%= render 'form' %>
 

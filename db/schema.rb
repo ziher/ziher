@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20140106210952) do
     t.string   "document_number"
     t.string   "source"
     t.integer  "amount"
+    t.boolean  "is_expense"
     t.decimal  "total_value",     :precision => 9, :scale => 2
     t.string   "comment"
     t.integer  "unit_id"
