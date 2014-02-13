@@ -18,12 +18,14 @@
   </div>
   </p>
 
-	<p>
-  <div class="field">
-    <%= f.label :is_superadmin %>
-    <%= f.check_box :is_superadmin %>
-  </div>
-  </p>
+  <% if can? :set_superadmin, @user %>
+    <p>
+    <div class="field">
+      <%= f.label :is_superadmin %>
+      <%= f.check_box :is_superadmin %>
+    </div>
+    </p>
+  <% end %>
 
 	<p>
   <div class="field">

@@ -49,10 +49,23 @@ class Ability
       end
       
 # User
-      can :manage, User do |other_user|
+
+      alias_action :read, :destroy, :to => :crud
+
+      can :crud, User do |other_user|
         user.can_manage_user(other_user)
       end
-      
+
+      can :create, User do |other_user|
+        user.can_manage_user(other_user)
+      end
+
+      can :update, User do |other_user|
+        user.can_manage_user(other_user)
+      end
+
+      can :set_superadmin, User if user.is_superadmin?
+
 # UserGroupAssociation
       can :manage, UserGroupAssociation do |uga|
         uga.new_record? || user.can_manage_user(uga.user)

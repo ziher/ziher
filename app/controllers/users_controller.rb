@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     authorize! :create, @user
+    authorize! :set_superadmin, @user if params[:user][:set_superadmin]
 
     respond_to do |format|
       if @user.save
@@ -42,6 +43,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     authorize! :update, @user
+    authorize! :set_superadmin, @user if params[:user][:set_superadmin]
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -66,4 +68,3 @@ class UsersController < ApplicationController
     end
   end
 end
-

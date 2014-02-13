@@ -5,10 +5,12 @@
   <%= @user.email if @user.email %>
 </p>
 
-<p>
-  <b>Superadmin:</b>
-  <%= @user.is_superadmin ? "Tak" : "Nie" %>
-</p>
+<% if can? :set_superadmin, @user %>
+  <p>
+    <b>Superadmin:</b>
+    <%= @user.is_superadmin ? "Tak" : "Nie" %>
+  </p>
+<% end %>
 
 <p>
   <b>Zablokowany:</b>
