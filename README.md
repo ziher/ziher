@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/zhr/ziher.png?label=ready)](https://waffle.io/zhr/ziher)
 ## ZiHeR
 
 Open source book of account platform used by the scouts teams from [Związek Harcerstwa Rzeczypospolitej](http://www.zhr.pl) from Poland.
