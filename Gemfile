@@ -53,7 +53,7 @@ end
 
 gem 'rails-i18n'
 
-gem 'devise', '2.1.2'
+gem 'devise', '2.1.4'
 gem 'devise-i18n'
 gem 'devise_invitable', '1.1.2'
 
