@@ -4,7 +4,7 @@ pl:
       send_instructions: 'Zaprosznie zostało wysłane na adres %{email}.'
       invitation_token_invalid: 'Podany kod zaproszenia jest nieprawidłowy!'
       updated: 'Hasło zostało zapisane. Jesteś teraz zalogowana(-ny).'
-      no_invitations_remaining: "No invitations remaining" # TODO: Przetłumaczyć na polski
+      no_invitations_remaining: "Brak oczekujących zaproszeń"
       new:
         header: "Nowy użytkownik"
         submit_button: "Wyślij zaproszenie"
@@ -13,4 +13,4 @@ pl:
         submit_button: "Ustaw hasło"
     mailer:
       invitation_instructions:
-        subject: 'Zaproszenie do ZiHeR'
+        subject: "Zaproszenie do ZiHeR"
