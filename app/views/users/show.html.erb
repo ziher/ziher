@@ -5,6 +5,16 @@
   <%= @user.email if @user.email %>
 </p>
 
+<p>
+  <b>Imię:</b>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <b>Nazwisko:</b>
+  <%= @user.last_name %>
+</p>
+
 <% if can? :set_superadmin, @user %>
   <p>
     <b>Superadmin:</b>

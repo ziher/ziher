@@ -9,6 +9,16 @@
   </div>
 
   <div class="field">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+  </div>
+
+  <div class="field">
     <%= f.label :password %> <i><%= t "devise.registrations.edit.new_password_info" %></i><br/>
     <%= f.password_field :password, :autocomplete => "off" %>
   </div>

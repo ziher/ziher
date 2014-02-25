@@ -54,6 +54,8 @@ pl:
         unit_ids: "Przypisane drużyny"
         group_ids: "Przypisane grupy drużyn"
         is_blocked: "Zablokowany"
+        first_name: "Imię"
+        last_name: "Nazwisko"
 
   category:
     is_expense: "Wydatek"

@@ -18,6 +18,20 @@
   </div>
   </p>
 
+	<p>
+  <div class="field">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name %>
+  </div>
+  </p>
+
+	<p>
+  <div class="field">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+  </div>
+  </p>
+
   <% if can? :set_superadmin, @user %>
     <p>
     <div class="field">

@@ -6,6 +6,8 @@ table.users tr.invited td { color: #aaa; }
 <table class="users">
   <tr>
     <th>E-mail</th>
+    <th>Imię</th>
+    <th>Nazwisko</th>
     <th>Status</th>
     <% if can? :set_superadmin, @user %>
       <th>Superadmin</th>
@@ -17,6 +19,8 @@ table.users tr.invited td { color: #aaa; }
 <% @users.each do |user| %>
   <tr class="<%= user.status %>">
     <td><%= user.email %></td>
+    <td><%= user.first_name %></td>
+    <td><%= user.last_name %></td>
     <td><%= I18n.t(user.status) %></td>
     <% if can? :set_superadmin, @user %>
       <td><%= user.is_superadmin ? "TAK" : "nie" %></td>
