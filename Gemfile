@@ -2,19 +2,19 @@ source 'http://rubygems.org'
 
 ruby "1.9.3"
 
-gem 'rails', '3.2.16'
+gem 'rails', '3.2.17'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
+gem 'pg'
+
 group :development, :test do
-  gem 'pg'
   gem 'time-warp'
 end
 
 # production is set on Heroku right now which needs PostgreSQL
 group :production do
-  gem 'pg'
 end
 
 # Gems used only for assets and not required
