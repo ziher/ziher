@@ -6,3 +6,7 @@
  *= require_tree . 
  *= require jquery.ui.datepicker
 */
+
+#navbar {
+    margin-top: 10px;
+}
