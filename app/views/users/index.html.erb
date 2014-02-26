@@ -8,6 +8,7 @@ table.users tr.invited td { color: #aaa; }
     <th>E-mail</th>
     <th>Imię</th>
     <th>Nazwisko</th>
+    <th>Telefon</th>
     <th>Status</th>
     <% if can? :set_superadmin, @user %>
       <th>Superadmin</th>
@@ -21,6 +22,7 @@ table.users tr.invited td { color: #aaa; }
     <td><%= user.email %></td>
     <td><%= user.first_name %></td>
     <td><%= user.last_name %></td>
+    <td><%= user.phone %></td>
     <td><%= I18n.t(user.status) %></td>
     <% if can? :set_superadmin, @user %>
       <td><%= user.is_superadmin ? "TAK" : "nie" %></td>

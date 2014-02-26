@@ -15,6 +15,11 @@
   <%= @user.last_name %>
 </p>
 
+<p>
+  <b>Telefon:</b>
+  <%= @user.phone %>
+</p>
+
 <% if can? :set_superadmin, @user %>
   <p>
     <b>Superadmin:</b>

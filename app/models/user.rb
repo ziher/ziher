@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :units, through: :user_unit_associations
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_superadmin, :confirmed_at, :confirmation_sent_at, :units, :unit_ids, :groups, :group_ids, :is_blocked, :first_name, :last_name
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :is_superadmin, :confirmed_at, :confirmation_sent_at, :units, :unit_ids, :groups, :group_ids, :is_blocked, :first_name, :last_name, :phone
 
   def to_s
     return "User(#{self.id}, #{self.email})"

@@ -19,6 +19,11 @@
   </div>
 
   <div class="field">
+    <%= f.label :phone %>
+    <%= f.text_field :phone %>
+  </div>
+
+  <div class="field">
     <%= f.label :password %> <i><%= t "devise.registrations.edit.new_password_info" %></i><br/>
     <%= f.password_field :password, :autocomplete => "off" %>
   </div>
@@ -40,4 +45,4 @@
 
 <p><%= t "devise.registrations.edit.delete_account_info" %> <%= link_to t("devise.registrations.edit.delete_account"), registration_path(resource_name), :confirm => "Na pewno?", :method => :delete %>.</p>
 
-<%= link_to "Back", :back %>
+<%= link_to "Powrót", :back %>

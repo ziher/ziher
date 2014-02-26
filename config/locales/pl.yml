@@ -56,6 +56,7 @@ pl:
         is_blocked: "Zablokowany"
         first_name: "Imię"
         last_name: "Nazwisko"
+        phone: "Telefon"
 
   category:
     is_expense: "Wydatek"

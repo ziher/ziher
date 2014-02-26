@@ -32,6 +32,13 @@
   </div>
   </p>
 
+	<p>
+  <div class="field">
+    <%= f.label :phone %>
+    <%= f.text_field :phone %>
+  </div>
+  </p>
+
   <% if can? :set_superadmin, @user %>
     <p>
     <div class="field">
@@ -49,6 +56,6 @@
 	</p>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :Zapisz %>
   </div>
 <% end %>
