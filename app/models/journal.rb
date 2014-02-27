@@ -176,8 +176,8 @@ class Journal < ActiveRecord::Base
     return Journal.where("year = ? AND id <> ?", self.year, self.id)
   end
 
-  def verify_final_balance_one_percent_more_than_zero
-    if self.get_final_balance_one_percent <= 0
+  def verify_final_balance_one_percent_not_less_than_zero
+    if self.get_final_balance_one_percent < 0
       errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_less_than_zero, :sum_one_percent => get_final_balance_one_percent, :scope => :journal)
       return false
     else
@@ -196,7 +196,7 @@ class Journal < ActiveRecord::Base
 
   def verify_journal
     result = true
-    result = false if not verify_final_balance_one_percent_more_than_zero
+    result = false if not verify_final_balance_one_percent_not_less_than_zero
     result = false if not verify_final_balance_one_percent_no_more_than_sum
     return result
   end

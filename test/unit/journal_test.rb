@@ -51,6 +51,19 @@ class JournalTest < ActiveSupport::TestCase
     assert !(journal.close)
   end
 
+  test "should allow closing when final sum one percent equals zero" do
+    #given
+    journal = journals(:finance_2012)
+    journal.initial_balance = 0
+    journal.entries = []
+
+    #when
+    journal.initial_balance_one_percent = 0
+
+    #then
+    assert journal.close
+  end
+
   test "should prevent closing when final sum one percent is bigger than final sum" do
     #given
     journal = journals(:finance_2012)

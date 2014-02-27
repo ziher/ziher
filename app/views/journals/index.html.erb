@@ -17,9 +17,9 @@
     <td><%= journal.journal_type.name %></td>
     <td><%= link_to 'Pokaż wpisy', journal %></td>
     <% if journal.is_open %>
-      <td><%= link_to 'Zamknij', close_journal_url(journal), confirm: 'Na pewno?' %></td>
+      <td><%= link_to 'Zamknij', close_journal_url(journal), confirm: 'Czy na pewno zamknąć?' %></td>
     <% else %>
-      <td><%= link_to 'Otwórz', open_journal_url(journal), confirm: 'Na pewno?' %></td>
+      <td><%= link_to 'Otwórz', open_journal_url(journal), confirm: 'Czy na pewno otworzyć?' %></td>
     <% end %>
   </tr>
 <% end %>
