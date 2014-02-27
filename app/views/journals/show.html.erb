@@ -67,8 +67,13 @@
       <td>
         <small>
           <span style="display: block;"><%= i+=1 =%>.</span>
-          <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%><% end %>
-          <% if can? :destroy, entry %><%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%><% end %>
+          <% if @journal.is_open? %>
+            <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%><% end %>
+            <% if can? :destroy, entry %><%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%><% end %>
+          <% else %>
+            <% if can? :update, entry %><span class="disabled"><i class="icon-pencil" title="Nie można edytować wpisów zamkniętej książki"></i></span><% end %>
+            <% if can? :destroy, entry %><span class="disabled"><i class="icon-trash" title="Nie można usuwać wpisów zamkniętej książki"></i></span><% end %>
+          <% end %>
         </small>
       </td>
       <td><small><%= entry.date %></small></td>
