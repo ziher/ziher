@@ -5,7 +5,15 @@ Ziher::Application.routes.draw do
   get "users/new"
   post "users" => "users#create"
   devise_for :users
-  resources :users
+  resources :users do
+		member do
+			get :block
+			get :unblock
+			get :promote
+			get :demote
+		end
+	end
+	
   resources :user_group_associations
   resources :groups
   resources :entries

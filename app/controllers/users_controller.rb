@@ -1,3 +1,4 @@
+# encoding: utf-8
 class UsersController < ApplicationController
 
   # GET /users
@@ -67,4 +68,69 @@ class UsersController < ApplicationController
       format.json { head :ok }
     end
   end
+
+	# Blockes user
+	def block
+		@user = User.find(params[:id])
+		authorize! :update, @user
+		
+		@user.is_blocked = true
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to @user, notice: 'Użytkownik zablokowany.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+	end
+
+	def unblock
+		@user = User.find(params[:id])
+		authorize! :update, @user
+		
+		@user.is_blocked = false
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to @user, notice: 'Użytkownik odblokowany.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+	end
+
+	def promote
+		@user = User.find(params[:id])
+		authorize! :update, @user
+		
+		@user.is_superadmin = true
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to @user, notice: 'Użytkownik awansowany na superadmina.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+	end
+
+	def demote
+		@user = User.find(params[:id])
+		authorize! :update, @user
+		
+		@user.is_superadmin = false
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to @user, notice: 'Użytkownik pozbawiony roli superadmina.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+	end
 end
