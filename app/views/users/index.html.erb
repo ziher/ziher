@@ -29,7 +29,7 @@ table.users tr.invited td { color: #aaa; }
     <% end %>
     <td><%= user.is_blocked ? "TAK" : "nie" %></td>
     <td><% if can? :read, user %><%= link_to 'Pokaż', user %><% end %></td>
-		<td><% if can? :update, user %><%= link_to 'Edytuj', edit_user_path(user) %><% end %></td>
+    <td><% if can? :update, user %><%= link_to 'Edytuj', edit_user_path(user) %><% end %></td>
     <td><% if can? :destroy, user %><%= link_to 'Usuń', user, confirm: 'Na pewno usunąć użytkownika?', method: :delete %><% end %></td>
   </tr>
 <% end %>

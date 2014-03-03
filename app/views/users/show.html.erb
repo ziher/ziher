@@ -10,7 +10,6 @@
   <%= @user.first_name %>
 </p>
 
-<% if current_user.is_superadmin %>
 <p>
   <b>Nazwisko:</b>
   <%= @user.last_name %>
@@ -32,13 +31,12 @@
   <b>Zablokowany:</b>
   <%= @user.is_blocked ? "Tak" : "Nie" %>
 </p>
-<% end %>
 
 <p>
   <b>Przypisane grupy:</b><br/>
   <table>
   <% if !@user.user_group_associations.empty? %>
-  	<tr>
+    <tr>
       <th>Grupa</th>
       <th>Przeglądanie książki</th>
       <th>Edycja książki</th>
@@ -73,7 +71,7 @@
   <b>Przypisane drużyny:</b><br/>
   <table>
   <% if !@user.user_unit_associations.empty? %>
-  	<tr>
+    <tr>
       <th>Drużyna</th>
       <th>Przeglądanie książki</th>
       <th>Edycja książki</th>
@@ -104,20 +102,20 @@
 <p>
   <% if can? :update, @user %><%= link_to 'Edytuj', edit_user_path(@user), :accesskey => 'e' %> |<% end %>
   <% if can? :update, @user %>
-		<% if @user.is_blocked %>
-			<%= link_to  'Odblokuj', unblock_user_path(@user), :confirm => 'Czy chcesz pozwolić użytkownikowi na zalogowanie się?', :title => 'Umożliwia użytkownikowi zalogowanie się' %> |
-		<% else %>
-			<%= link_to 'Zablokuj', block_user_path(@user), :confirm => 'Czy chcez zablokować możliwość zalogowania się?', :title => 'Pozbawia użytkownika możliwości zalogowania się' %> |
-		<% end %>
-	<% end %>
-	<% if current_user.is_superadmin %>
-		<% if @user.is_superadmin %>
-			<%= link_to 'Zdegraduj', demote_user_path(@user), :confirm => 'Pozbawić użytkownika roli superadmina?', :title => 'Pozbawia użytkownika roli superadmina' %> |
-		<% else %>
-			<%= link_to 'Awansuj', promote_user_path(@user), :confirm => 'Awansować użytkownika do roli superadmina?', :title => 'Awansuje użytkownika do roli superadmina' %> |
-		<% end %>
-	<% end %>
-	<% if can? :destroy, @user %><%= link_to 'Usuń', @user, confirm: 'Na pewno usunąć użytkownika?', method: :delete %><% end %>
+    <% if @user.is_blocked %>
+      <%= link_to  'Odblokuj', unblock_user_path(@user), :confirm => 'Czy chcesz pozwolić użytkownikowi na zalogowanie się?', :title => 'Umożliwia użytkownikowi zalogowanie się' %> |
+    <% else %>
+      <%= link_to 'Zablokuj', block_user_path(@user), :confirm => 'Czy chcez zablokować możliwość zalogowania się?', :title => 'Pozbawia użytkownika możliwości zalogowania się' %> |
+    <% end %>
+  <% end %>
+  <% if current_user.is_superadmin %>
+    <% if @user.is_superadmin %>
+      <%= link_to 'Zdegraduj', demote_user_path(@user), :confirm => 'Pozbawić użytkownika roli superadmina?', :title => 'Pozbawia użytkownika roli superadmina' %> |
+    <% else %>
+      <%= link_to 'Awansuj', promote_user_path(@user), :confirm => 'Awansować użytkownika do roli superadmina?', :title => 'Awansuje użytkownika do roli superadmina' %> |
+    <% end %>
+  <% end %>
+  <% if can? :destroy, @user %><%= link_to 'Usuń', @user, confirm: 'Na pewno usunąć użytkownika?', method: :delete %><% end %>
 </p>
 
 <p>

@@ -6,14 +6,14 @@ Ziher::Application.routes.draw do
   post "users" => "users#create"
   devise_for :users
   resources :users do
-		member do
-			get :block
-			get :unblock
-			get :promote
-			get :demote
-		end
-	end
-	
+    member do
+      get :block
+      get :unblock
+      get :promote
+      get :demote
+    end
+  end
+  
   resources :user_group_associations
   resources :groups
   resources :entries

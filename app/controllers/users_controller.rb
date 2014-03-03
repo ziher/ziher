@@ -12,9 +12,9 @@ class UsersController < ApplicationController
     authorize! :read, @user
   end
 
-	def new
-		@user = User.new
-	end
+  def new
+    @user = User.new
+  end
 
   # POST /users
   def create
@@ -69,12 +69,12 @@ class UsersController < ApplicationController
     end
   end
 
-	# Blockes user
-	def block
-		@user = User.find(params[:id])
-		authorize! :update, @user
-		
-		@user.is_blocked = true
+  # Blockes user
+  def block
+    @user = User.find(params[:id])
+    authorize! :update, @user
+    
+    @user.is_blocked = true
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'Użytkownik zablokowany.' }
@@ -84,13 +84,13 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
-	end
+  end
 
-	def unblock
-		@user = User.find(params[:id])
-		authorize! :update, @user
-		
-		@user.is_blocked = false
+  def unblock
+    @user = User.find(params[:id])
+    authorize! :update, @user
+    
+    @user.is_blocked = false
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'Użytkownik odblokowany.' }
@@ -100,13 +100,13 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
-	end
+  end
 
-	def promote
-		@user = User.find(params[:id])
-		authorize! :update, @user
-		
-		@user.is_superadmin = true
+  def promote
+    @user = User.find(params[:id])
+    authorize! :update, @user
+    
+    @user.is_superadmin = true
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'Użytkownik awansowany na superadmina.' }
@@ -116,13 +116,13 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
-	end
+  end
 
-	def demote
-		@user = User.find(params[:id])
-		authorize! :update, @user
-		
-		@user.is_superadmin = false
+  def demote
+    @user = User.find(params[:id])
+    authorize! :update, @user
+    
+    @user.is_superadmin = false
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'Użytkownik pozbawiony roli superadmina.' }
@@ -132,5 +132,5 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
-	end
+  end
 end
