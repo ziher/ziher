@@ -7,6 +7,19 @@ Open source book of account platform used by the scouts teams from [Związek Har
 [![Code Climate](https://codeclimate.com/github/zhr/ziher.png)](https://codeclimate.com/github/zhr/ziher)
 [![Stories in Ready](https://badge.waffle.io/zhr/ziher.png?label=ready)](https://waffle.io/zhr/ziher)
 
+## Getting started
+
+To get ZiHeR up and running on your local machine:
+1. Clone the git repo
+2. Install [Vagrant](http://http://www.vagrantup.com/)
+3. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+4. Cd to where you cloned ZiHeR
+5. `vagrant up`
+6. `vagrant ssh`
+7. `cd /vagrant`
+8. `rails server`
+9. Go to http://192.168.33.10:3000 in your browser
+
 ## Copyright / License
 
 Copyright 2013 Andrzej Stencel, Magda Stożek, Marcin Stożek
