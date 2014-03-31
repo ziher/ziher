@@ -63,4 +63,20 @@ class JournalsControllerTest < ActionController::TestCase
     get :show, id: journals(:two2012f)
     assert_unauthorized
   end
+
+  test "should show alert for negative balnce" do
+    #given
+    entry = entries(:expense_one)
+    entry.items = [Item.create(:category => categories(:five), :amount => 100)]
+    entry.save!
+    sum_one_percent = @journal.get_final_balance_one_percent
+    sum = @journal.get_final_balance
+
+    #when
+    get :show, id: @journal.to_param
+
+    #then
+    expected_message = I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => sum_one_percent, :sum => sum, :scope => :journal)
+    assert_equal expected_message, flash[:alert]
+  end
 end

@@ -42,8 +42,13 @@ class JournalsController < ApplicationController
     session[:current_year] = @journal.year
     session[:current_unit_id] = @journal.unit.id
 
+    unless @journal.verify_journal
+      flash.now[:alert] = @journal.errors[:one_percent].join("\n")
+    end
+
     respond_to do |format|
       format.html # show.html.erb
+      #format.html { redirect_to journals_url, alert: "Błąd otwierania książki: " + @journal.errors.full_messages.join(', ') }
       format.json { render json: @journal }
     end
   end
