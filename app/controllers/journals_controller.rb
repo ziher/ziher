@@ -48,7 +48,6 @@ class JournalsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      #format.html { redirect_to journals_url, alert: "Błąd otwierania książki: " + @journal.errors.full_messages.join(', ') }
       format.json { render json: @journal }
     end
   end
