@@ -1,5 +1,8 @@
 Ziher::Application.routes.draw do
 
+  resources :inventory_sources
+
+
   root :to => 'journals#default', :defaults => { :journal_type_id => 1 }
 
   get "users/new"
