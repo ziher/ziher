@@ -34,12 +34,12 @@ five:
 #  category: two
 
 seven:
-  amount: 15
+  amount: 150
   entry: income_one
   category: ten
 
 income_one_percent:
-  amount: 2
-  amount_one_percent: 2
+  amount: 20
+  amount_one_percent: 20
   entry: income_one
   category: two_one_percent
