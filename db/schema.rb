@@ -67,6 +67,8 @@ ActiveRecord::Schema.define(:version => 20140331211018) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "inventory_sources", ["name"], :name => "index_inventory_sources_on_name", :unique => true
+
   create_table "items", :force => true do |t|
     t.decimal  "amount",             :precision => 9, :scale => 2
     t.decimal  "amount_one_percent", :precision => 9, :scale => 2

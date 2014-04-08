@@ -5,5 +5,5 @@ one:
   is_active: false
 
 two:
-  name: MyString
+  name: MyStringTwo
   is_active: false

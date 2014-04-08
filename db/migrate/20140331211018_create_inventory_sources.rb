@@ -6,5 +6,7 @@ class CreateInventorySources < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :inventory_sources, :name, :unique => true
   end
 end

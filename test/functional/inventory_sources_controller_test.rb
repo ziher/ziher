@@ -2,6 +2,7 @@ require 'test_helper'
 
 class InventorySourcesControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:admin)
     @inventory_source = inventory_sources(:one)
   end
 
@@ -18,7 +19,7 @@ class InventorySourcesControllerTest < ActionController::TestCase
 
   test "should create inventory_source" do
     assert_difference('InventorySource.count') do
-      post :create, inventory_source: { is_active: @inventory_source.is_active, name: @inventory_source.name }
+      post :create, inventory_source: { is_active: @inventory_source.is_active, name: @inventory_source.name + "_tmp" }
     end
 
     assert_redirected_to inventory_source_path(assigns(:inventory_source))

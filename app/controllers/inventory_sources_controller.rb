@@ -3,6 +3,7 @@ class InventorySourcesController < ApplicationController
   # GET /inventory_sources.json
   def index
     @inventory_sources = InventorySource.all
+    authorize! :read, InventorySource
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +15,7 @@ class InventorySourcesController < ApplicationController
   # GET /inventory_sources/1.json
   def show
     @inventory_source = InventorySource.find(params[:id])
+    authorize! :read, @inventory_source
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,6 +27,7 @@ class InventorySourcesController < ApplicationController
   # GET /inventory_sources/new.json
   def new
     @inventory_source = InventorySource.new
+    authorize! :create, @inventory_source
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,12 +38,14 @@ class InventorySourcesController < ApplicationController
   # GET /inventory_sources/1/edit
   def edit
     @inventory_source = InventorySource.find(params[:id])
+    authorize! :update, @inventory_source
   end
 
   # POST /inventory_sources
   # POST /inventory_sources.json
   def create
     @inventory_source = InventorySource.new(params[:inventory_source])
+    authorize! :create, @inventory_source
 
     respond_to do |format|
       if @inventory_source.save
@@ -57,6 +62,7 @@ class InventorySourcesController < ApplicationController
   # PUT /inventory_sources/1.json
   def update
     @inventory_source = InventorySource.find(params[:id])
+    authorize! :update, @inventory_source
 
     respond_to do |format|
       if @inventory_source.update_attributes(params[:inventory_source])
@@ -73,6 +79,7 @@ class InventorySourcesController < ApplicationController
   # DELETE /inventory_sources/1.json
   def destroy
     @inventory_source = InventorySource.find(params[:id])
+    authorize! :destroy, @inventory_source
     @inventory_source.destroy
 
     respond_to do |format|
