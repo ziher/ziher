@@ -1,9 +1,9 @@
-<h1>Listing inventory_sources</h1>
+<h1>Źródła książki inwentarzowej</h1>
 
 <table>
   <tr>
-    <th>Name</th>
-    <th>Is active</th>
+    <th>Nazwa</th>
+    <th>Aktywne</th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,13 +13,13 @@
   <tr>
     <td><%= inventory_source.name %></td>
     <td><%= inventory_source.is_active %></td>
-    <td><%= link_to 'Show', inventory_source %></td>
-    <td><%= link_to 'Edit', edit_inventory_source_path(inventory_source) %></td>
-    <td><%= link_to 'Destroy', inventory_source, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Pokaż', inventory_source %></td>
+    <td><%= link_to 'Edytuj', edit_inventory_source_path(inventory_source) %></td>
+    <td><%= link_to 'Usuń', inventory_source, method: :delete, data: { confirm: 'Czy na pewno?' } %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Inventory source', new_inventory_source_path %>
+<%= link_to 'Nowe źródło', new_inventory_source_path %>

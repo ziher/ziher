@@ -12,14 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
+    <%= f.label :nazwa %>
     <%= f.text_field :name %>
   </div>
+  <br/>
   <div class="field">
-    <%= f.label :is_active %><br />
+    <%= f.label :aktywne %>
     <%= f.check_box :is_active %>
   </div>
+  <br/>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :Zapisz %>
   </div>
 <% end %>
