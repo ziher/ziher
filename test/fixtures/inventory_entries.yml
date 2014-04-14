@@ -7,8 +7,8 @@ one:
   document_number: MyString
   amount: 1
   total_value: 9.99
-  source: MyString
   stock_number: MyString
+  inventory_source: one
 
 two:
   unit: dukt
@@ -17,5 +17,5 @@ two:
   document_number: MyString
   amount: 1
   total_value: 9.99
-  source: MyString
   stock_number: MyString
+  inventory_source: two
