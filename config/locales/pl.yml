@@ -49,7 +49,7 @@ pl:
         password: "Hasło"
         password_confirmation: "Powtórz hasło"
         current_password: "Aktualne hasło"
-        remember_me: "Zapamiętaj sobie"
+        remember_me: "Zapamiętaj"
         is_superadmin: "Superadmin"
         unit_ids: "Przypisane drużyny"
         group_ids: "Przypisane grupy drużyn"

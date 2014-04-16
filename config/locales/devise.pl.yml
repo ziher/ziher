@@ -15,15 +15,15 @@ pl:
   devise:
     failure:
       already_authenticated: 'Jesteś już zalogowana(-ny).'
-      unauthenticated: 'Zaloguj się i to już!'
+      unauthenticated: 'Jesteś niezalogowana(-ny) - zaloguj się!'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
-      invalid: 'Invalid email or password.'
+      invalid: 'Nieprawidłowy adres email lub hasło.'
       invalid_token: 'Invalid authentication token.'
       timeout: 'Your session expired, please sign in again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
-      signed_in: 'To było proste! Jesteś teraz zalogowana(-ny).'
+      signed_in: 'Jesteś teraz zalogowana(-ny). Baw się dobrze!'
       signed_out: 'Jesteś teraz wylogowana(-ny). Już tęsknimy!'
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'

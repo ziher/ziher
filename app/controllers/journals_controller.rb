@@ -58,6 +58,7 @@ class JournalsController < ApplicationController
 
     @journal = Journal.get_default(journal_type, current_user, session[:current_unit_id], session[:current_year])
     if (@journal != nil)
+      flash.keep
       redirect_to journal_path(@journal)
     else
       respond_to do |format|
