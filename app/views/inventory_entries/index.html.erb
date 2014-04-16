@@ -45,7 +45,7 @@
     <td><%= inventory_entry.stock_number %></td>
     <td><%= inventory_entry.name %></td>
     <td><%= inventory_entry.document_number %></td>
-    <td><%= inventory_entry.source %></td>
+    <td><%= inventory_entry.inventory_source.name %></td>
     <td><%= inventory_entry.is_expense ? '-' : inventory_entry.amount %></td>
     <td><%= inventory_entry.is_expense ? inventory_entry.amount : '-' %></td>
     <td><%= inventory_entry.total_value / inventory_entry.amount %></td>

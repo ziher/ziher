@@ -214,3 +214,9 @@ akcja_i_darowizna.save!
 wyposazenie.save!
 transport.save!
 wynagrodzenie_i_wyposazenie.save!
+
+zrodlo_finansowe = InventorySource.create!(name: "ks. finansowa", is_active: true)
+zrodlo_bankowe = InventorySource.create!(name: "ks. bankowa", is_active: true)
+
+wpis_inwentarzowy = InventoryEntry.create!(date: '2011-01-02', stock_number: "symbol", name: "nazwa", document_number: "numer dokumentu", amount: 3, is_expense: false, total_value: 10, comment: "komentarz", unit: dukt, inventory_source: zrodlo_finansowe)
+wpis_inwentarzowy = InventoryEntry.create!(date: '2011-02-01', stock_number: "symbol", name: "nazwa", document_number: "numer dokumentu", amount: 3, is_expense: true, total_value: 10, comment: "komentarz", unit: dukt, inventory_source: zrodlo_bankowe)
