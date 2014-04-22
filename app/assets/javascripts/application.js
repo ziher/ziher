@@ -13,8 +13,8 @@
 //= require jquery.ui.effect
 //= require_tree .
 
-$(function() {
-    $.datepicker.setDefaults( $.datepicker.regional[ "pl" ] );
+$(function () {
+    $.datepicker.setDefaults($.datepicker.regional[ "pl" ]);
     $.datepicker.setDefaults({ dateFormat: "yy-mm-dd" });
     $.datepicker.setDefaults({ numberOfMonths: 3 });
     $.datepicker.setDefaults({ showCurrentAtPos: 2 }); //show current and 2 previous months
@@ -24,20 +24,32 @@ $(function() {
     $("#inventory_entry_date").datepicker();
 });
 
-$(document).ready(function(){
-  $('table').delegate('td, th','mouseover mouseleave', function(e) {
-      if (e.type == 'mouseover') {
-        if ($(this).is("td")) { $(this).parent().addClass("hover"); }
-        var className = $(this).attr('class');
-        className = className.match(/income_(\d+|all)|expense_(\d+|all)/)[0];
-        $('.'+className).addClass("hover");
-        $(this).addClass("hover_dim");
-      } else {
-        $(this).removeClass("hover_dim");
-        $(this).parent().removeClass("hover");
-        var className = $(this).attr('class');
-        className = className.match(/income_(\d+|all)|expense_(\d+|all)/)[0];
-        $('.'+className).removeClass("hover");
-      }
-  });
+$(document).ready(function () {
+    $('table').delegate('td, th', 'mouseover mouseleave', function (e) {
+        if (e.type == 'mouseover') {
+            if ($(this).is("td")) {
+                $(this).parent().addClass("hover");
+            }
+            var className = $(this).attr('class');
+            if (className) {
+                var incomeOrExpense = className.match(/income_(\d+|all)|expense_(\d+|all)/);
+                if (incomeOrExpense) {
+                    className = incomeOrExpense[0];
+                    $('.' + className).addClass("hover");
+                    $(this).addClass("hover_dim");
+                }
+            }
+        } else {
+            $(this).removeClass("hover_dim");
+            $(this).parent().removeClass("hover");
+            var className = $(this).attr('class');
+            if (className) {
+                var incomeOrExpense = className.match(/income_(\d+|all)|expense_(\d+|all)/);
+                if (incomeOrExpense) {
+                    className = incomeOrExpense[0];
+                    $('.' + className).removeClass("hover");
+                }
+            }
+        }
+    });
 });
