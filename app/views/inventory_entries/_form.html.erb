@@ -35,7 +35,7 @@
       </div>
       <div class="field">
         <%= f.label :Źródło %>
-        <%= f.text_field :inventory_source %>
+        <%= collection_select(:inventory_entry, :inventory_source_id, InventorySource.all, :id, :name, prompt: true) %>
       </div>
       <div class="field">
         <%= f.label :numer_inwentarzowy %>
