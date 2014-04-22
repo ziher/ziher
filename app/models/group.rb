@@ -26,4 +26,18 @@ select * from groups where id in (select group_id from G) order by name",
         { :user_id => user.id }])
     end
   end
+
+  def Group.find_all_subgroups(group)
+    subgroups = group.subgroups.dup
+
+    unless group.subgroups.empty?
+      group.subgroups.each do |sub|
+        Group.find_all_subgroups(sub).each do |recursive_sub|
+          subgroups << recursive_sub
+        end
+      end
+    end
+
+    return subgroups
+  end
 end

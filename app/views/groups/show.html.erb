@@ -15,6 +15,15 @@
 </p>
 
 <p>
+  <b>Wszystkie podgrupy:</b><br/>
+  <% if Group.find_all_subgroups(@group).each do |g| %>
+    <%= g.name %><br />
+  <% end.empty? %>
+    (Brak przypisanych podgrup)
+  <% end %>
+</p>
+
+<p>
   <b>Drużyny:</b><br/>
   <% if @group.units.each do |u| %>
     <%= u.name %><br />
