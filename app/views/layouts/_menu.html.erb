@@ -18,7 +18,7 @@
             <% if can? :manage, Journal %><li class="<%= menu_active?(:journals) %>"> <%= link_to "Książki", journals_path %> </li><% end %>
             <% if can? :manage, JournalType %><li class="<%= menu_active?(:journal_types) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li><% end %>
             <% if can? :manage, Category %><li class="<%= menu_active?(:categories) %>"> <%= link_to "Plan kont", categories_path %> </li><% end %>
-            <% if can? :manage, InventorySource %><li class="<%= menu_active?(:journal_types) %>"> <%= link_to "Źródła inwentarza", inventory_sources_path %> </li><% end %>
+            <% if can? :manage, InventorySource %><li class="<%= menu_active?(:inventory_sources) %>"> <%= link_to "Źródła inwentarza", inventory_sources_path %> </li><% end %>
           </ul>
         </li>
       <% end %>
