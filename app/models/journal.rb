@@ -167,9 +167,8 @@ class Journal < ActiveRecord::Base
     Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year, :is_open => true)
   end
 
-
-  def find_all_years()
-    years = Journal.where("journal_type_id = ? AND unit_id = ?", self.journal_type.id, self.unit.id)
+  def Journal.find_all_years
+    Journal.all.map { |journal| journal.year}.uniq.sort
   end
 
   def journals_for_linked_entry

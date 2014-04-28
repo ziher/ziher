@@ -1,8 +1,17 @@
 <h1>Drużyny</h1>
 
-<table>
+Saldo początkowe
+
+<table class="table table-condensed top-buffer-20">
   <tr>
-    <th>Name</th>
+    <th>Nazwa</th>
+    <th>Saldo początkowe
+      <select onchange="selectedYearChanged(this.value)" class="span1">
+          <% @years.each do |year| %>
+              <option value="<%= year %>" <%= year == session[:current_year] ? "selected='selected'" : "" %>><%= year %></option>
+          <% end %>
+      </select>
+      </th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,6 +20,7 @@
 <% @units.each do |unit| %>
   <tr>
     <td><%= unit.name %></td>
+    <td></td>
     <td><%= link_to 'Pokaż', unit %></td>
     <td><%= link_to 'Edytuj', edit_unit_path(unit) %></td>
     <td><%= link_to 'Usuń', unit, confirm: 'Na pewno usunąć drużynę?', method: :delete %></td>
