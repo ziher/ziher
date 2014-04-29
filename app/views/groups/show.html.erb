@@ -16,10 +16,28 @@
 
 <p>
   <b>Wszystkie podgrupy:</b><br/>
-  <% if Group.find_all_subgroups(@group).each do |g| %>
+  <% if @group.find_all_subgroups().each do |g| %>
     <%= g.name %><br />
   <% end.empty? %>
     (Brak przypisanych podgrup)
+  <% end %>
+</p>
+
+<p>
+  <b>Wszystkie nadgrupy:</b><br/>
+  <% if @group.find_all_supergroups().each do |g| %>
+    <%= g.name %><br />
+  <% end.empty? %>
+    (Brak przypisanych nadgrup)
+  <% end %>
+</p>
+
+<p>
+  <b>Wszystkie supergrupy:</b><br/>
+  <% if Group.find_all_supergroups().each do |g| %>
+    <%= g.name %><br />
+  <% end.empty? %>
+    (Brak supergrup)
   <% end %>
 </p>
 

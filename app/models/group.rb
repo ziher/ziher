@@ -27,17 +27,25 @@ select * from groups where id in (select group_id from G) order by name",
     end
   end
 
-  def Group.find_all_subgroups(group)
-    subgroups = group.subgroups.dup
+  def find_all_subgroups()
+    subgroups = self.subgroups.dup
 
-    unless group.subgroups.empty?
-      group.subgroups.each do |sub|
-        Group.find_all_subgroups(sub).each do |recursive_sub|
+    unless self.subgroups.empty?
+      self.subgroups.each do |sub|
+        sub.find_all_subgroups().each do |recursive_sub|
           subgroups << recursive_sub
         end
       end
     end
 
-    return subgroups
+    return subgroups.uniq
+  end
+
+  def Group.find_all_supergroups()
+    supergroups = Group.find_by_sql("select * from groups where id not in (select subgroup_id from subgroups) order by name")
+  end
+
+  def find_all_supergroups()
+    supergroups = Group.find_by_sql("select * from groups where id in (select group_id from subgroups where subgroup_id = #{self.id}) order by name")
   end
 end
