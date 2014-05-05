@@ -5,41 +5,60 @@
   <%= @group.name %>
 </p>
 
-<p>
-  <b>Podgrupy:</b><br/>
-  <% if @group.subgroups.each do |g| %>
-    <%= g.name %><br />
-  <% end.empty? %>
-    (Brak przypisanych podgrup)
-  <% end %>
-</p>
+<div class="row">
+  <div class="accordion span4" id="accordion">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSubGroups">
+          Podgrupy:
+        </a>
+      </div>
+      <div id="collapseSubGroups" class="accordion-body collapse in">
+        <div class="accordion-inner">
+          <% if @group.subgroups.each do |g| %>
+            <%= link_to g.name, g %><br />
+          <% end.empty? %>
+            (Brak przypisanych podgrup)
+          <% end %>
+        </div>
+      </div>
+    </div>
 
-<p>
-  <b>Wszystkie podgrupy:</b><br/>
-  <% if @group.find_all_subgroups().each do |g| %>
-    <%= g.name %><br />
-  <% end.empty? %>
-    (Brak przypisanych podgrup)
-  <% end %>
-</p>
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseAllSubGroups">
+          Wszystkie podgrupy:
+        </a>
+      </div>
+      <div id="collapseAllSubGroups" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <% if @group.find_all_subgroups().each do |g| %>
+            <%= link_to g.name, g %><br/>
+          <% end.empty? %>
+            (Brak przypisanych podgrup)
+          <% end %>
+        </div>
+      </div>
+    </div>
 
-<p>
-  <b>Wszystkie nadgrupy:</b><br/>
-  <% if @group.find_all_supergroups().each do |g| %>
-    <%= g.name %><br />
-  <% end.empty? %>
-    (Brak przypisanych nadgrup)
-  <% end %>
-</p>
-
-<p>
-  <b>Wszystkie supergrupy:</b><br/>
-  <% if Group.find_all_supergroups().each do |g| %>
-    <%= g.name %><br />
-  <% end.empty? %>
-    (Brak supergrup)
-  <% end %>
-</p>
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSuperGroups">
+          Wszystkie nadgrupy:
+        </a>
+      </div>
+      <div id="collapseSuperGroups" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <% if @group.find_all_supergroups().each do |g| %>
+            <%= link_to g.name, g %><br />
+          <% end.empty? %>
+            (Brak przypisanych nadgrup)
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <p>
   <b>Drużyny:</b><br/>

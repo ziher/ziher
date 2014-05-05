@@ -1,5 +1,15 @@
 <h1>Grupy jednostek</h1>
 
+<p>
+  <b>Wszystkie supergrupy:</b><br/>
+  <% if Group.find_all_supergroups().each do |g| %>
+    <%= link_to g.name, g %><br />
+  <% end.empty? %>
+    (Brak supergrup)
+  <% end %>
+</p>
+
+
 <table>
   <tr>
     <th>Nazwa</th>
