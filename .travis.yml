@@ -6,5 +6,5 @@ before_script:
  - gem update --system
  - gem --version
  - psql -c 'create database ziher_test;' -U postgres
- - rake db:migrate
+ - bundle exec rake db:migrate
 
