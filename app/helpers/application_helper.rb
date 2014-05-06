@@ -50,4 +50,8 @@ module ApplicationHelper
         current_page?(inventory_sources_path)
     end
   end
+
+  def render_boolean_icon(value)
+    return value ? "<i class='icon-ok'>".html_safe : "<i class='icon-minus'>".html_safe
+  end
 end

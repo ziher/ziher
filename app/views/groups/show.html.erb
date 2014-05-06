@@ -10,13 +10,13 @@
     <div class="accordion-group">
       <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSubGroups">
-          Podgrupy:
+          Podgrupy
         </a>
       </div>
       <div id="collapseSubGroups" class="accordion-body collapse in">
         <div class="accordion-inner">
           <% if @group.subgroups.each do |g| %>
-            <%= link_to g.name, g %><br />
+            <%= link_to g.name, g, :class=>"muted" %><br />
           <% end.empty? %>
             (Brak przypisanych podgrup)
           <% end %>
@@ -27,13 +27,13 @@
     <div class="accordion-group">
       <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseAllSubGroups">
-          Wszystkie podgrupy:
+          Wszystkie podgrupy
         </a>
       </div>
       <div id="collapseAllSubGroups" class="accordion-body collapse">
         <div class="accordion-inner">
           <% if @group.find_all_subgroups().each do |g| %>
-            <%= link_to g.name, g %><br/>
+            <%= link_to g.name, g, :class=>"muted" %><br/>
           <% end.empty? %>
             (Brak przypisanych podgrup)
           <% end %>
@@ -44,13 +44,13 @@
     <div class="accordion-group">
       <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSuperGroups">
-          Wszystkie nadgrupy:
+          Wszystkie nadgrupy
         </a>
       </div>
       <div id="collapseSuperGroups" class="accordion-body collapse">
         <div class="accordion-inner">
           <% if @group.find_all_supergroups().each do |g| %>
-            <%= link_to g.name, g %><br />
+            <%= link_to g.name, g, :class=>"muted" %><br />
           <% end.empty? %>
             (Brak przypisanych nadgrup)
           <% end %>
@@ -60,47 +60,78 @@
   </div>
 </div>
 
-<p>
-  <b>Drużyny:</b><br/>
-  <% if @group.units.each do |u| %>
-    <%= u.name %><br />
-  <% end.empty? %>
-    (Brak przypisanych drużyn)
-  <% end %>
-</p>
+<div class="row">
+  <div class="accordion span4" id="accordion-units">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-units" href="#collapseUnits">
+          Drużyny
+        </a>
+      </div>
+      <div id="collapseUnits" class="accordion-body collapse in">
+        <div class="accordion-inner">
+          <% if @group.units.each do |u| %>
+            <%= u.name %><br />
+          <% end.empty? %>
+            (Brak przypisanych drużyn)
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <b>Użytkownicy:</b>
-  <table>
-  <% if !@group.user_group_associations.empty? %>
-  	<tr>
-      <th>Użytkownik</th>
-      <th>Przeglądanie książki</th>
-      <th>Edycja książki</th>
-      <th>Zamykanie książki</th>
-      <th>Zarządzanie użytkownikami</th>
-      <th>Zarządzanie jednostkami</th>
-      <th>Zarządzanie grupami</th>
-    </tr>
-  <% end %>
-  <% if @group.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
-    <tr>
-      <td><%= uga.user.email %></td>
-      <td><%= uga.can_view_entries %></td>
-      <td><%= uga.can_manage_entries %></td>
-      <td><%= uga.can_close_journals %></td>
-      <td><%= uga.can_manage_users %></td>
-      <td><%= uga.can_manage_units %></td>
-      <td><%= uga.can_manage_groups %></td>
-      <td>
-        <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
-        <% if can? :destroy, uga %><%= link_to 'Usuń', uga, confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %>
-      </td>
-    </tr>
-  <% end.empty? %>
-    <tr><td colspan="7">(Brak przypisanych użytkowników)</td></tr>
-  <% end %>
-  </table>
-  <% if can? :create, UserGroupAssociation %><%= link_to 'Przypisz użytkownika', new_user_group_association_path(:group_id => @group.id, :from => "group") %><% end %>
+<div class="row">
+  <div class="accordion span12" id="accordion-users">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-users" href="#collapseUsers">
+          Użytkownicy
+        </a>
+      </div>
+      <div id="collapseUsers" class="accordion-body collapse in">
+        <div class="accordion-inner">
+          <table class="table table-condensed">
+          <% if !@group.user_group_associations.empty? %>
+            <thead>
+              <tr>
+                <th>Użytkownik</th>
+                <th>Przeglądanie książki</th>
+                <th>Edycja książki</th>
+                <th>Zamykanie książki</th>
+                <th>Zarządzanie użytkownikami</th>
+                <th>Zarządzanie jednostkami</th>
+                <th>Zarządzanie grupami</th>
+                <th></th>
+              </tr>
+            </thead>
+          <% end %>
+          <% if @group.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
+            <tbody>
+              <tr>
+                <td><%= uga.user.email %></td>
+                <td><%= render_boolean_icon(uga.can_view_entries) %></td>
+                <td><%= render_boolean_icon(uga.can_manage_entries) %></td>
+                <td><%= render_boolean_icon(uga.can_close_journals) %></td>
+                <td><%= render_boolean_icon(uga.can_manage_users) %></td>
+                <td><%= render_boolean_icon(uga.can_manage_units) %></td>
+                <td><%= render_boolean_icon(uga.can_manage_groups) %></td>
+                <td>
+                  <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
+                  <% if can? :destroy, uga %><%= link_to 'Usuń', uga, confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %>
+                </td>
+              </tr>
+            </tbody>
+          <% end.empty? %>
+            <tr><td colspan="7">(Brak przypisanych użytkowników)</td></tr>
+          <% end %>
+          </table>
+          <% if can? :create, UserGroupAssociation %><%= link_to 'Przypisz użytkownika', new_user_group_association_path(:group_id => @group.id, :from => "group") %><% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <p></p>
 <%= link_to 'Edytuj', edit_group_path(@group) %> |
