@@ -1,11 +1,22 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Nazwa:</b>
-  <%= @group.name %>
-</p>
-
 <div class="row">
+  <div class="span10">
+    <b>Nazwa:</b>
+    <%= @group.name %>
+  </div>
+  <div class="span2">
+    <% if can? :update, @group %>
+      <%= link_to 'Edytuj', edit_group_path(@group), class: 'btn btn-small btn-primary' %>
+    <% end %>
+
+    <% if can? :destroy, @group %>
+      <%= link_to 'Usuń', @group, confirm: 'Na pewno usunąć grupę?', method: :delete, class: 'btn btn-small btn-primary' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row top-buffer-20">
   <div class="accordion span12" id="accordion-users">
     <div class="accordion-group">
       <div class="accordion-heading">
@@ -138,5 +149,4 @@
 </div>
 
 <p></p>
-<%= link_to 'Edytuj', edit_group_path(@group) %> |
 <%= link_to 'Powrót do listy', groups_path %>
