@@ -1,18 +1,14 @@
 <p id="notice"><%= notice %></p>
 
 <div class="row">
-  <div class="span10">
+  <div class="span12">
     <b>Nazwa:</b>
     <%= @group.name %>
-  </div>
-  <div class="span2">
-    <% if can? :update, @group %>
-      <%= link_to 'Edytuj', edit_group_path(@group), class: 'btn btn-small btn-primary' %>
-    <% end %>
-
-    <% if can? :destroy, @group %>
-      <%= link_to 'Usuń', @group, confirm: 'Na pewno usunąć grupę?', method: :delete, class: 'btn btn-small btn-primary' %>
-    <% end %>
+      <% if can? :update, @group %>
+        <%= link_to edit_group_path(@group) do %>
+          <i class="icon-pencil" title="Edytuj"></i>
+        <% end %>
+      <% end %>
   </div>
 </div>
 
@@ -83,6 +79,11 @@
           <% end.empty? %>
             (Brak przypisanych drużyn)
           <% end %>
+          <% if can? :update, @group %>
+            <div class="top-buffer-20">
+              <%= link_to "Edytuj", edit_group_path(@group), class: "btn btn-small" %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
@@ -103,6 +104,11 @@
             <%= link_to g.name, g, :class => "muted"  %><br />
           <% end.empty? %>
             (Brak podgrup)
+          <% end %>
+          <% if can? :update, @group %>
+            <div class="top-buffer-20">
+              <%= link_to "Edytuj", edit_group_path(@group), class: "btn btn-small" %>
+            </div>
           <% end %>
         </div>
       </div>
@@ -148,5 +154,15 @@
   </div>
 </div>
 
-<p></p>
-<%= link_to 'Powrót do listy', groups_path %>
+<div class="row">
+  <div class="span10">
+    <%= link_to 'Powrót do listy', groups_path %>
+  </div>
+  <div class="span2">
+    <div class="pull-right">
+      <% if can? :destroy, @group %>
+        <%= link_to 'Usuń grupę', @group, confirm: 'Na pewno usunąć grupę?', method: :delete, class: 'btn btn-small btn-danger' %>
+      <% end %>
+    </div>
+  </div>
+</div>
