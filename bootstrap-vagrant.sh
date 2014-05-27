@@ -35,7 +35,7 @@ echo ====================== Instaluje PostgreSQL
 DEBIAN_FRONTEND=noninteractive apt-get --yes install libpq-dev postgresql postgresql-client
 sudo -u postgres psql postgres -c "alter user postgres with password 'postgres'"
 sudo -u postgres psql postgres -c "create user ziher with password 'ziher' createdb"
-#sudo -u postgres sed -i -e 's/\(^local\s*all\s*all\s*\)\(peer$\)/\1md5/g' /etc/postgresql/9.1/main/pg_hba.conf
+sudo -u postgres sed -i -e 's/\(^local\s*all\s*all\s*\)\(peer$\)/\1md5/g' /etc/postgresql/9.1/main/pg_hba.conf
 service postgresql restart
 
 #echo ====================== Sciagam kod zrodlowy ZiHeR-a
