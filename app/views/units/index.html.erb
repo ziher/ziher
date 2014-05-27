@@ -1,21 +1,18 @@
 <h1>Drużyny</h1>
 
-Saldo początkowe
-
 <table class="table table-condensed top-buffer-20">
   <tr>
-    <th rowspan="3">Nazwa</th>
+    <th class="name-cell" rowspan="3">Nazwa</th>
     <th colspan="4">Saldo początkowe
-      <select class="span1">
+      <select class="span1 no-margin">
           <% @years.each do |year| %>
               <option value="<%= year %>" <%= year == session[:current_year] ? "selected='selected'" : "" %>><%= year %></option>
           <% end %>
       </select>
     </th>
-    <th rowspan="3"></th>
-    <th rowspan="3"></th>
-    <th rowspan="3"></th>
-    <th rowspan="3"></th>
+    <th class="action-cell" rowspan="3"></th>
+    <th class="action-cell" rowspan="3"></th>
+    <th class="action-cell" rowspan="3"></th>
   </tr>
     <tr>
       <th colspan="2">finansowe</th>
@@ -31,14 +28,13 @@ Saldo początkowe
 <% @units.each do |unit| %>
   <tr>
     <td><%= unit.name %></td>
-    <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    <td><%= link_to 'Pokaż', unit %></td>
-    <td><%= link_to 'Edytuj', edit_unit_path(unit) %></td>
-    <td><%= link_to 'Usuń', unit, confirm: 'Na pewno usunąć drużynę?', method: :delete %></td>
+    <td class="amount-cell">-</td>
+      <td class="amount-cell">-</td>
+      <td class="amount-cell">-</td>
+      <td class="amount-cell">-</td>
+    <td class="action-cell"><%= link_to 'Pokaż', unit %></td>
+    <td class="action-cell"><%= link_to 'Edytuj', edit_unit_path(unit) %></td>
+    <td class="action-cell"><%= link_to 'Usuń', unit, confirm: 'Na pewno usunąć drużynę?', method: :delete %></td>
   </tr>
 <% end %>
 </table>

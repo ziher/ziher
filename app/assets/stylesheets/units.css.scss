@@ -1,3 +1,24 @@
 // Place all the styles related to the Units controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.table th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+td.action-cell {
+  text-align: center;
+}
+
+th.name-cell {
+  width: 30%;
+}
+
+td.amount-cell {
+  text-align: right;
+}
+
+.no-margin {
+  margin-bottom: 0;
+}
