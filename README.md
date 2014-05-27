@@ -13,7 +13,7 @@ Open source book of account platform used by the scouts teams from [Związek Har
 To get ZiHeR up and running on your local machine:
 
 1. Clone the git repo
-1. Install [Vagrant](http://http://www.vagrantup.com/)
+1. Install [Vagrant](http://www.vagrantup.com/)
 1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 1. Cd to where you cloned ZiHeR
 1. `vagrant up`
