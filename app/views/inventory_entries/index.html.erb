@@ -2,13 +2,13 @@
   <div class="span6">
     <small>
       <% if can? :update, @inventory_entry %>
-        <%= link_to new_inventory_entry_path(:is_expense => false) do %>
-          <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i>&nbsp;&nbsp;Nowy przychód</button>
+        <%= link_to new_inventory_entry_path(:is_expense => false), class: 'btn btn-small btn-primary' do %>
+          <i class="icon-plus"></i>&nbsp;&nbsp;Nowy przychód
         <% end %>
       <% end %>
       <% if can? :update, @inventory_entry %>
-        <%= link_to new_inventory_entry_path(:is_expense => true) do %>
-          <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy rozchód</button>
+        <%= link_to new_inventory_entry_path(:is_expense => true), class: 'btn btn-small btn-primary' do %>
+          <i class="icon-minus"></i>&nbsp;&nbsp;Nowy rozchód
         <% end %>
       <% end %>
     </small>

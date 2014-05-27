@@ -3,13 +3,13 @@
     <% if @journal.is_open? %>
       <small>
         <% if can? :update, @journal %>
-          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false) do%>
-            <button class="btn btn-small btn-primary" type="button"><i class="icon-plus"></i>&nbsp;&nbsp;Nowy wpływ</button>
+          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false), class: 'btn btn-small btn-primary' do%>
+            <i class="icon-plus"></i>&nbsp;&nbsp;Nowy wpływ
           <% end %>
         <% end %>
         <% if can? :update, @journal %>
-          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true) do%>
-            <button class="btn btn-small btn-primary" type="button"><i class="icon-minus"></i>&nbsp;&nbsp;Nowy wydatek</button>
+          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true), class: 'btn btn-small btn-primary' do%>
+            <i class="icon-minus"></i>&nbsp;&nbsp;Nowy wydatek
           <% end %>
         <% end %>
       </small>
