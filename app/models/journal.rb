@@ -12,7 +12,7 @@ class Journal < ActiveRecord::Base
 
   # returns a user-friendly string representation
   def to_s
-    return "Journal(#{self.id}, #{self.journal_type}, #{self.year}, #{self.unit.name}, #{self.is_open ? 'open' : 'closed'}, #{initial_balance}, #{initial_balance_one_percent})"
+    return "Journal(id:#{self.id}, type:#{self.journal_type}, year:#{self.year}, unit:#{self.unit.name}, open:#{self.is_open ? 'open' : 'closed'}, balance:#{initial_balance}, balance1%:#{initial_balance_one_percent})"
   end
 
   # calculates balance of previous year's journal and sets it as this journal's initial balance
