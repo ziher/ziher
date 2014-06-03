@@ -3,7 +3,7 @@ Ziher::Application.routes.draw do
   resources :inventory_sources
 
 
-  root :to => 'journals#default', :defaults => { :journal_type_id => 1 }
+  root :to => 'journals#default', :defaults => { :journal_type_id => JournalType::FINANCE_TYPE_ID }
 
   get "users/new"
   post "users" => "users#create"
@@ -22,13 +22,13 @@ Ziher::Application.routes.draw do
   resources :entries
   resources :cash_entries
 
-  match 'journals/default' => 'journals#default', :defaults => { :journal_type_id => 1 }
+  match 'journals/default' => 'journals#default', :defaults => { :journal_type_id => JournalType::FINANCE_TYPE_ID }
   resources :journals
   match 'journals/:id/open' => 'journals#open', :as => :open_journal
   match 'journals/:id/close' => 'journals#close', :as => :close_journal
   match 'journals/type/:journal_type_id' => 'journals#index'
-  match 'ksiazka_finansowa' => 'journals#default', :defaults => { :journal_type_id => 1 }, :as => :default_finance_journal
-  match 'ksiazka_bankowa' =>  'journals#default', :defaults => { :journal_type_id => 2 }, :as => :default_bank_journal
+  match 'ksiazka_finansowa' => 'journals#default', :defaults => { :journal_type_id => JournalType::FINANCE_TYPE_ID }, :as => :default_finance_journal
+  match 'ksiazka_bankowa' =>  'journals#default', :defaults => { :journal_type_id => JournalType::BANK_TYPE_ID }, :as => :default_bank_journal
   resources :journal_types
 
   resources :categories
