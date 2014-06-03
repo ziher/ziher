@@ -1,33 +1,39 @@
 <h1>Grupy jednostek</h1>
 
-<p>
-  <b>Wszystkie supergrupy:</b><br/>
-  <% if Group.find_all_supergroups().each do |g| %>
-    <%= link_to g.name, g %><br />
-  <% end.empty? %>
-    (Brak supergrup)
-  <% end %>
-</p>
+<div class="row top-buffer-40">
+  <div class="span12">
+    <b>Grupy nadrzędne:</b><br/>
+    <% if Group.find_all_supergroups().each do |g| %>
+      <%= link_to g.name, g %><br />
+    <% end.empty? %>
+      Brak grup.
+    <% end %>
+  </div>
+</div>
 
+<div class="row top-buffer-40">
+  <div class="span12">
+    <%= link_to 'Utwórz nową grupę', new_group_path, class: "btn btn-small btn primary" %>
+  </div>
+</div>
 
-<table>
-  <tr>
-    <th>Nazwa</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @groups.each do |group| %>
-  <tr>
-    <td><%= group.name %></td>
-    <td><%= link_to 'Pokaż', group %></td>
-    <td><% if can? :update, group %> <%= link_to 'Edytuj', edit_group_path(group) %> <% end %></td>
-    <td><% if can? :destroy, group %> <%= link_to 'Usuń', group, confirm: 'Na pewno usunąć grupę?', method: :delete %> <% end %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'Nowa grupa', new_group_path %>
+<div class="row top-buffer-40">
+  <div class="accordion span4" id="accordion-allgroups">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-allgroups" href="#collapseAllGroups">
+          Wszystkie grupy
+        </a>
+      </div>
+      <div id="collapseAllGroups" class="accordion-body collapse">
+        <div class="accordion-inner muted">
+          <% if @groups.each do |group| %>
+            <%= link_to group.name, group, :class => "muted" %><br />
+          <% end.empty? %>
+            Brak grup.
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
