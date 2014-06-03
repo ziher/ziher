@@ -215,8 +215,8 @@ skarbnik_zachodu.confirm!
 UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: false, can_manage_groups: false)
 UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
-finance = JournalType.create!(name: "Książka finansowa", is_default: true)
-bank = JournalType.create!(name: "Książka bankowa")
+finance = JournalType.create!(id: JournalType::FINANCE_TYPE_ID, name: "Książka finansowa", is_default: true)
+bank = JournalType.create!(id: JournalType::BANK_TYPE_ID, name: "Książka bankowa")
 
 dukt2010f = Journal.create!(year: 2010, journal_type: finance, unit: dukt, is_open: false, initial_balance: 9.00, initial_balance_one_percent: 9.00)
 dukt2010b = Journal.create!(year: 2010, journal_type: bank, unit: dukt, is_open: false)

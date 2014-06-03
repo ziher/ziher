@@ -3,6 +3,7 @@ class UnitsController < ApplicationController
   # GET /units.json
   def index
     @units = Unit.find_by_user(current_user)
+    @years = Journal.find_all_years
 
     respond_to do |format|
       format.html # index.html.erb

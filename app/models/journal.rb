@@ -12,7 +12,7 @@ class Journal < ActiveRecord::Base
 
   # returns a user-friendly string representation
   def to_s
-    return "Journal(#{self.id}, #{self.journal_type}, #{self.year}, #{self.unit.name}, #{self.is_open ? 'open' : 'closed'}, #{initial_balance}, #{initial_balance_one_percent})"
+    return "Journal(id:#{self.id}, type:#{self.journal_type}, year:#{self.year}, unit:#{self.unit.name}, open:#{self.is_open ? 'open' : 'closed'}, balance:#{initial_balance}, balance1%:#{initial_balance_one_percent})"
   end
 
   # calculates balance of previous year's journal and sets it as this journal's initial balance
@@ -167,9 +167,8 @@ class Journal < ActiveRecord::Base
     Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year, :is_open => true)
   end
 
-
-  def find_all_years()
-    years = Journal.where("journal_type_id = ? AND unit_id = ?", self.journal_type.id, self.unit.id)
+  def Journal.find_all_years
+    Journal.all.map { |journal| journal.year}.uniq.sort
   end
 
   def journals_for_linked_entry

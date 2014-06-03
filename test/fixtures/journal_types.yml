@@ -1,8 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 finance:
+  id: 1
   name: Finansowa
   is_default: true
 
 bank:
+  id: 2
   name: Bankowa
