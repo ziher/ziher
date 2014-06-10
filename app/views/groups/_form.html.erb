@@ -11,33 +11,29 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="row-fluid top-buffer-20">
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class: "span6" %>
   </div>
-  <br/>
 
-<% if @group.new_record? %>
-  <div class="field">
-    Grupa nadrzędna<br />
-    <%= select_tag(:supergroup_id, options_for_select(@supergroups.collect { |g| [ g.name, g.id ] }, @supergroup.id)) %>
-  </div>
-  <br/>
-<% end %>
+  <% if @group.new_record? %>
+    <div class="field">
+      Grupa nadrzędna<br />
+      <%= select_tag(:supergroup_id, options_for_select(@supergroups.collect { |g| [ g.name, g.id ] }, @supergroup.id), class: "span6") %>
+    </div>
+  <% end %>
   
-  <div class="field">
+  <div class="row-fluid top-buffer-20">
     <%= f.label :subgroup_ids %>
-    <%= f.select :subgroup_ids, @subgroups.collect { |g| [ g.name, g.id ] }, { :include_blank => "(Brak przypisanych podgrup)" }, :multiple => true %>
+    <%= f.select :subgroup_ids, @subgroups.collect { |g| [ g.name, g.id ] }, { :include_blank => "(Brak przypisanych podgrup)" }, :multiple => true, class: "span6" %>
   </div>
-  <br/>
 
-  <div class="field">
+  <div class="row-fluid top-buffer-20">
     <%= f.label :unit_ids %>
-    <%= f.select :unit_ids, @units.collect { |u| [ u.name, u.id ] }, { :include_blank => "(Brak przypisanych drużyn)" }, :multiple => true %>
+    <%= f.select :unit_ids, @units.collect { |u| [ u.name, u.id ] }, { :include_blank => "(Brak przypisanych drużyn)" }, :multiple => true, class: "span6" %>
   </div>
-  <br/>
   
-  <div class="actions">
-    <%= f.submit "Aktualizuj grupę" %>
+  <div class="actions top-buffer-20">
+    <%= f.submit "Aktualizuj grupę", class: "btn" %>
   </div>
 <% end %>
