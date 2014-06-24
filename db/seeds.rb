@@ -120,6 +120,20 @@ inne_2013 = Category.create!(name: 'Inne', is_expense: true, year: 2013)
 wynagrodzenia_2013 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2013)
 skladki_wydatek_2013 = Category.create!(name: 'Składki', is_expense: true, year: 2013)
 
+# Districts
+dlnsl = Group.create!(name: 'Okręg Dolnośląski')
+grnsl = Group.create!(name: 'Okręg Górnośląski')
+kujpom = Group.create!(name: 'Okręg Kujawsko-Pomorski')
+lubel = Group.create!(name: 'Okręg Lubelski')
+lodz = Group.create!(name: 'Okręg Łódzki')
+mlp = Group.create!(name: 'Okręg Małopolski')
+maz = Group.create!(name: 'Okręg Mazowiecki')
+podkarp = Group.create!(name: 'Okręg Podkarpacki')
+pomor = Group.create!(name: 'Okręg Pomorski')
+plnzach = Group.create!(name: 'Okręg Północno-Zachodni')
+wlp = Group.create!(name: 'Okręg Wielkopolski')
+zhr = Group.create!(name: 'Związek Harcerstwa Rzeczypospolitej', subgroups: [dlnsl, grnsl, kujpom, lubel, lodz, mlp, maz, podkarp, pomor, plnzach, wlp])
+
 dukt = Unit.create!(name: '9 ZDH Dukt')
 pajaki = Unit.create!(name: '31 DH Pająki')
 wiklina = Unit.create!(name: '9 ZDH Wiklina')
@@ -130,7 +144,7 @@ zhhek = Group.create!(name: 'Zielonogórski Hufiec Harcerek', units: [wiklina, o
 obwzg = Group.create!(name: 'Obwód Zielonogórski', subgroups: [zhhy, zhhek])
 wchhy = Group.create!(name: 'Wielkopolska Chorągiew Harcerzy', subgroups: [zhhy])
 wchhek = Group.create!(name: 'Wielkopolska Chorągiew Harcerek', subgroups: [zhhek])
-okrwlkp = Group.create!(name: 'Okręg Wielkopolski', subgroups: [wchhy, wchhek])
+wlp.subgroups.push(wchhy, wchhek)
 
 wrch1 = Unit.create!(name: '1 Wrocławska Drużyna Harcerzy')
 wrch2 = Unit.create!(name: '2 Wrocławska Drużyna Harcerzy')
@@ -140,9 +154,7 @@ wrhhy = Group.create!(name: 'Wrocławski Hufiec Harcerzy', units: [wrch1, wrch2]
 wrhhek = Group.create!(name: 'Wrocławski Hufiec Harcerek', units: [wrdz1, wrdz2])
 dchhy = Group.create!(name: 'Dolnośląska Chorągiew Harcerzy', subgroups: [wrhhy])
 dchhek = Group.create!(name: 'Dolnośląska Chorągiew Harcerek', subgroups: [wrhhek])
-okrdln = Group.create!(name: 'Okręg Dolnośląski', subgroups: [dchhy, dchhek])
-
-zhr = Group.create!(name: 'Związek Harcerstwa Rzeczypospolitej', subgroups: [okrwlkp, okrdln])
+dlnsl.subgroups.push(dchhy, dchhek)
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
 user.confirm!
@@ -178,9 +190,9 @@ hufcowazg.confirm!
 UserGroupAssociation.create!(user: hufcowazg, group: zhhek, can_view_entries: true)
 UserUnitAssociation.create!(user: hufcowazg, unit: orleta, can_view_entries: true, can_manage_entries: true)
 
-skarbnik_okrwlkp = User.create!(email: 'skarbnik_okrwlkp@zhr.com', password: 'skarbnik_okrwlkp@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-skarbnik_okrwlkp.confirm!
-UserGroupAssociation.create!(user: skarbnik_okrwlkp, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
+skarbnik_wlp = User.create!(email: 'skarbnik_wlp@zhr.com', password: 'skarbnik_wlp@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
+skarbnik_wlp.confirm!
+UserGroupAssociation.create!(user: skarbnik_wlp, group: wlp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 druzynowy_wrch1 = User.create!(email: 'druzynowy_wrch1@zhr.com', password: 'druzynowy_wrch1@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
 druzynowy_wrch1.confirm!
@@ -206,14 +218,14 @@ hufcowawr = User.create!(email: 'hufcowa_wr@zhr.com', password: 'hufcowa_wr@zhr.
 hufcowawr.confirm!
 UserGroupAssociation.create!(user: hufcowawr, group: wrhhek, can_view_entries: true)
 
-skarbnik_okrdln = User.create!(email: 'skarbnik_okrdln@zhr.com', password: 'skarbnik_okrdln@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-skarbnik_okrdln.confirm!
-UserGroupAssociation.create!(user: skarbnik_okrdln, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
+skarbnik_dlnsl = User.create!(email: 'skarbnik_dlnsl@zhr.com', password: 'skarbnik_dlnsl@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
+skarbnik_dlnsl.confirm!
+UserGroupAssociation.create!(user: skarbnik_dlnsl, group: dlnsl, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 skarbnik_zachodu = User.create!(email: 'skarbnik_zachodu@zhr.com', password: 'skarbnik_zachodu@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 skarbnik_zachodu.confirm!
-UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrwlkp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: false, can_manage_groups: false)
-UserGroupAssociation.create!(user: skarbnik_zachodu, group: okrdln, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
+UserGroupAssociation.create!(user: skarbnik_zachodu, group: wlp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: false, can_manage_groups: false)
+UserGroupAssociation.create!(user: skarbnik_zachodu, group: dlnsl, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 finance = JournalType.create!(id: JournalType::FINANCE_TYPE_ID, name: "Książka finansowa", is_default: true)
 bank = JournalType.create!(id: JournalType::BANK_TYPE_ID, name: "Książka bankowa")
