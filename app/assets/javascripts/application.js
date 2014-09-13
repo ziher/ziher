@@ -7,10 +7,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require jquery.ui.datepicker
-//= require jquery.ui.datepicker-pl
-//= require jquery.ui.sortable
-//= require jquery.ui.effect
+//= require jquery-ui/datepicker
+//= require jquery-ui/datepicker-pl
+//= require jquery-ui/sortable
+//= require jquery-ui/effect
 //= require_tree .
 
 $(function () {
