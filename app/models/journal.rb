@@ -44,6 +44,7 @@ class Journal < ActiveRecord::Base
         sum += item.amount
       end
     end
+
     return sum
   end
 
@@ -61,7 +62,7 @@ class Journal < ActiveRecord::Base
   # returns sum of all expense items
   def get_expense_sum
     sum = 0
-    Category.find_all_by_is_expense(true).each do |category|
+    Category.where(:year => self.year, :is_expense => true, :is_one_percent => false).each do |category|
       sum += get_sum_for_category(category)
     end
     return sum
@@ -70,7 +71,7 @@ class Journal < ActiveRecord::Base
   # returns sum of all one percent expense items
   def get_expense_one_percent_sum
     sum = 0
-    Category.find_all_by_is_expense(true).each do |category|
+    Category.where(:year => self.year, :is_expense => true, :is_one_percent => true).each do |category|
       sum += get_sum_one_percent_for_category(category)
     end
     return sum
@@ -79,7 +80,7 @@ class Journal < ActiveRecord::Base
   # returns sum of all income items
   def get_income_sum
     sum = 0
-    Category.find_all_by_is_expense(false).each do |category|
+    Category.where(:year => self.year, :is_expense => false, :is_one_percent => false).each do |category|
       sum += get_sum_for_category(category)
     end
     return sum
@@ -88,7 +89,7 @@ class Journal < ActiveRecord::Base
   # returns sum of all one percent income items
   def get_income_sum_one_percent
     sum = 0
-    Category.find_all_by_is_expense(false).each do |category|
+    Category.where(:year => self.year, :is_expense => false, :is_one_percent => true).each do |category|
       sum += get_sum_one_percent_for_category(category)
     end
     return sum
@@ -105,7 +106,7 @@ class Journal < ActiveRecord::Base
   def find_items_by_category(category)
     items = []
     self.entries.each do |entry|
-      items += entry.items.find_all_by_category_id(category.id)
+      items |= entry.items.find_all {|item| item.category == category}
     end
     return items
   end

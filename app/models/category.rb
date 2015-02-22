@@ -8,7 +8,7 @@ class Category < ActiveRecord::Base
 
   def Category.get_all_years
     years = []
-    Category.all.each do |category| 
+    Category.find_each do |category|
       years << category.year
     end
     return years.uniq.sort
@@ -20,7 +20,7 @@ class Category < ActiveRecord::Base
 
   def cannot_have_multiple_one_percent_categories_in_one_year
     years = []
-    Category.all.each do |category|
+    Category.find_each do |category|
       if category.is_one_percent then
         years << category.year
       end

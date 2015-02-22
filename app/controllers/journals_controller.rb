@@ -10,7 +10,7 @@ class JournalsController < ApplicationController
   def index
     if (params[:unit_id] && params[:journal_type_id] && params[:year])
       journal = Journal.find_by_unit_and_year_and_type(Unit.find(params[:unit_id]), params[:year], JournalType.find(params[:journal_type_id]))
-      if journal == nil
+      if journal.nil?
         # if there is no such Journal - just get the current year one
         journal = Journal.get_current_for_type(params[:unit_id], params[:journal_type_id])
       end
@@ -33,6 +33,9 @@ class JournalsController < ApplicationController
   # GET /journals/1
   # GET /journals/1.json
   def show
+    #override CanCan's auto-fetched journal
+    @journal = Journal.includes(:entries => :items).find_by_id(@journal.id)
+
     @categories_expense = Category.find_by_year_and_type(@journal.year, true)
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
     @entries = @journal.entries
@@ -57,7 +60,7 @@ class JournalsController < ApplicationController
     journal_type = JournalType.find(params[:journal_type_id])
 
     @journal = Journal.get_default(journal_type, current_user, session[:current_unit_id], session[:current_year])
-    if (@journal != nil)
+    unless @journal.nil?
       flash.keep
       redirect_to journal_path(@journal)
     else

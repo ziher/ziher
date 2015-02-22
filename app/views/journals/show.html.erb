@@ -85,7 +85,7 @@
 
       <% @categories_income.each do |category| %>
         <td class="income income_<%= category.id %> text-right">
-          <small><% print_formatted_amount(entry.get_amount_for_category(category.id)) %></small>
+          <small><% print_formatted_amount(entry.get_amount_for_category(category)) %></small>
         </td>
       <% end %>
 
@@ -114,7 +114,7 @@
       <% @categories_expense.each do |category| %>
         <td class="expense expense_<%= category.id %> text-right">
           <small>
-            <% print_formatted_amount_with_one_percent(entry.get_amount_for_category(category.id), entry.get_amount_one_percent_for_category(category.id)) %>
+            <% print_formatted_amount_with_one_percent(entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category)) %>
           </small>
         </td>
       <% end %>

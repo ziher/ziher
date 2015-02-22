@@ -30,28 +30,28 @@ class Entry < ActiveRecord::Base
 
   after_save :recalculate_initial_balance
 
-  def get_amount_for_category(category_id)
-    result = self.items.find(:first, :conditions=>{:category_id=>category_id})
+  def get_amount_for_category(category)
+    result = self.items.find_all { |item| item.category == category }
 
-    if result != nil && result.amount != nil
-      return result.amount
+    if result != nil && result.first != nil && result.first.amount != nil
+      return result.first.amount
     else
       return 0
     end
   end
 
-  def get_amount_one_percent_for_category(category_id)
-    result = self.items.find(:first, :conditions=>{:category_id=>category_id})
+  def get_amount_one_percent_for_category(category)
+    result = self.items.find_all { |item| item.category == category }
 
-    if result != nil && result.amount_one_percent != nil
-      return result.amount_one_percent
+    if result != nil && result.first != nil && result.first.amount_one_percent != nil
+      return result.first.amount_one_percent
     else
       return 0
     end
   end
 
-  def has_category(category_id)
-    existing_item = self.items.find(:first, :conditions=>{:category_id=>category_id})
+  def has_category(category)
+    existing_item = self.items.find { |item| item.category == category }
     return (existing_item != nil)
   end
 

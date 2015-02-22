@@ -128,7 +128,7 @@ class EntriesController < ApplicationController
 
   def create_empty_items(entry, year)
     Category.where(:year => year, :is_expense => entry.is_expense).each do |category|
-      if not entry.has_category(category.id)
+      if not entry.has_category(category)
         entry.items << Item.new(:category_id => category.id)
       end
     end
