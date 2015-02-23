@@ -13,6 +13,10 @@ group :development, :test do
   gem 'time-warp'
 end
 
+group :development do
+  gem 'bullet'
+end
+
 # production is set on Heroku right now which needs PostgreSQL
 group :production do
 end

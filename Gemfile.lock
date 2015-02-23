@@ -36,6 +36,9 @@ GEM
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
     builder (3.0.4)
+    bullet (4.14.4)
+      activesupport (>= 3.0.0)
+      uniform_notifier (>= 1.6.0)
     cancan (1.6.10)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -141,6 +144,7 @@ GEM
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    uniform_notifier (1.7.0)
     warden (1.2.3)
       rack (>= 1.0)
 
@@ -149,6 +153,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
+  bullet
   cancan
   coffee-rails (~> 3.2.1)
   devise (= 2.1.4)
