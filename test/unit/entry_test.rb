@@ -91,7 +91,7 @@ class EntryTest < ActiveSupport::TestCase
     entry = Entry.create
     category = categories(:one)
 
-    assert_equal(0, entry.get_amount_for_category(category.id))
+    assert_equal(0, entry.get_amount_for_category(category))
   end
 
   test "get amount for category should return 0 when item for this category has nil amount" do
@@ -100,7 +100,7 @@ class EntryTest < ActiveSupport::TestCase
     item = Item.create(:category => category, :amount => nil)
     entry.items << item
 
-    assert_equal(0, entry.get_amount_for_category(category.id))
+    assert_equal(0, entry.get_amount_for_category(category))
   end
 
   test "get amount for category should return nonzero value when such item exists" do
@@ -109,7 +109,7 @@ class EntryTest < ActiveSupport::TestCase
     item = Item.create(:category => category, :amount => 5)
     entry.items << item
 
-    assert_equal(5, entry.get_amount_for_category(category.id))
+    assert_equal(5, entry.get_amount_for_category(category))
   end
 
   test "should not allow entry being both income and expense" do
