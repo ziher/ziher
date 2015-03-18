@@ -248,12 +248,14 @@ class JournalTest < ActiveSupport::TestCase
     journal = journals(:finance_2012)
     unit_id = journal.unit.id
     type_id = journal.journal_type_id
+    current_year = Time.now.year
+    Journal.destroy_all(year: current_year, unit_id: unit_id)
 
     #when
     new_journal = Journal.create_for_current_year(type_id, unit_id)
 
     #then
-    assert_equal Time.now.year, new_journal.year
+    assert_equal current_year, new_journal.year
     assert new_journal.is_open
   end
 
