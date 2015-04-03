@@ -7,7 +7,7 @@ class JournalsControllerTest < ActionController::TestCase
   setup do
     sign_in users(:scoutmaster_dukt)
     @journal = journals(:finance_2012)
-    @new_journal = Journal.new(:journal_type => journal_types(:finance), :year => 2014, :unit => units(:dukt))
+    @new_journal = Journal.new(:journal_type => journal_types(:bank), :year => 2014, :unit => units(:dukt))
   end
 
   test "should get index" do
