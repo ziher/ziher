@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby "2.1.2"
 
-gem 'rails', '3.2.20'
+gem 'rails', '3.2.21'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -57,7 +57,7 @@ end
 
 gem 'rails-i18n'
 
-gem 'devise', '2.1.4'
+gem 'devise', '~> 2.2.5'
 gem 'devise-i18n'
 gem 'devise_invitable', '1.1.2'
 
