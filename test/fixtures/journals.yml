@@ -4,7 +4,7 @@ finance_2011:
   year: 2011
   journal_type_id: 1
   is_open: true
-  initial_balance: 200
+  initial_balance: 100
   unit: dukt
 
 finance_2012:

@@ -62,7 +62,7 @@ class Journal < ActiveRecord::Base
   # returns sum of all expense items
   def get_expense_sum
     sum = 0
-    Category.where(:year => self.year, :is_expense => true, :is_one_percent => false).each do |category|
+    Category.where(:year => self.year, :is_expense => true).each do |category|
       sum += get_sum_for_category(category)
     end
     return sum
@@ -80,7 +80,7 @@ class Journal < ActiveRecord::Base
   # returns sum of all income items
   def get_income_sum
     sum = 0
-    Category.where(:year => self.year, :is_expense => false, :is_one_percent => false).each do |category|
+    Category.where(:year => self.year, :is_expense => false).each do |category|
       sum += get_sum_for_category(category)
     end
     return sum
