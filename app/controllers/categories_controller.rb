@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   def index
     @years = Category.get_all_years()
     @year = params[:year]
-    if not @year
+    unless @year
       @year = @years.first
     end
 

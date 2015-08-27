@@ -133,9 +133,7 @@ class JournalTest < ActiveSupport::TestCase
     expected_sum = 0
     Category.all.each do |category|
       if category.is_expense
-        entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
-        items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
-        expected_sum += items_for_category.sum(&:amount)
+        expected_sum += count_sum_for_category(journal, category)
       end
     end
 
@@ -147,7 +145,7 @@ class JournalTest < ActiveSupport::TestCase
 
     expected_sum = 0
     Category.all.each do |category|
-      if not category.is_expense
+      unless category.is_expense
         expected_sum += count_sum_for_category(journal, category)
       end
     end

@@ -95,7 +95,7 @@ class Entry < ActiveRecord::Base
 
   def should_not_change_if_journal_is_closed
     if journal
-      if not journal.is_open?
+      unless journal.is_open?
         errors[:journal] << "Aby zmieniać wpisy książka musi być otwarta"
         return false
       end
@@ -108,7 +108,7 @@ class Entry < ActiveRecord::Base
     items.each do |item|
       if item.amount and item.amount > 0
         is_expense = true if item.category.is_expense
-        is_income = true if not item.category.is_expense
+        is_income = true unless item.category.is_expense
         if is_expense and is_income
           errors[:base] << "Wpis nie może być jednocześnie wpływem i wydatkiem"
         end

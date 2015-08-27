@@ -196,8 +196,8 @@ class Journal < ActiveRecord::Base
 
   def verify_journal
     result = true
-    result = false if not verify_final_balance_one_percent_not_less_than_zero
-    result = false if not verify_final_balance_one_percent_no_more_than_sum
+    result = false unless verify_final_balance_one_percent_not_less_than_zero
+    result = false unless verify_final_balance_one_percent_no_more_than_sum
     return result
   end
 
