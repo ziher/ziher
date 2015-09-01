@@ -8,8 +8,14 @@ class UnitTest < ActiveSupport::TestCase
     units = Unit.find_by_user(users(:master_1zgm))
     assert_equal(1, units.count)
 
+    units = Unit.find_by_user(users(:master_2zgm))
+    assert_equal(1, units.count)
+
     units = Unit.find_by_user(users(:master_zg_m))
     assert_equal(2, units.count)
+
+    units = Unit.find_by_user(users(:master_zg))
+    assert_equal(4, units.count)
 
     units = Unit.find_by_user(users(:master_p_f))
     assert_equal(4, units.count)
