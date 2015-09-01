@@ -6,7 +6,7 @@ district_zg_f: # All female troops from Zielona Góra
 
 district_zg_m: # All male troops from Zielona Góra
   name: Zielonogórski Hufiec Harcerzy
-  units: [dukt, pajaki]
+  units: [troop_1zgm, troop_2zgm]
 
 district_zg: # All troops from Zielona Góra
   name: Obwód Zielonogórski

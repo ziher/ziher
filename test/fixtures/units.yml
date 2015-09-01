@@ -1,10 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-dukt:
-  name: 9 ZDH Dukt-Zawisza
+troop_1zgm:
+  name: 1 Zielonogórska Drużyna Harcerzy
 
-pajaki:
-  name: 31 DH Pajaki
+troop_2zgm:
+  name: 2 Zielonogórska Drużyna Harcerzy
 
 troop_1zgf:
   name: 1 Zielonogórska Drużyna Harcerek

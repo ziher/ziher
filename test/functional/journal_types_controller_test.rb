@@ -2,7 +2,7 @@ require 'test_helper'
 
 class JournalTypesControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:scoutmaster_dukt)
+    sign_in users(:master_1zgm)
     @journal_type = journal_types(:finance)
   end
 

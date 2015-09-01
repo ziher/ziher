@@ -5,31 +5,31 @@ finance_2011:
   journal_type_id: 1
   is_open: true
   initial_balance: 100
-  unit: dukt
+  unit: troop_1zgm
 
 finance_2012:
   year: 2012
   journal_type_id: 1
   is_open: true
   initial_balance: 100
-  unit: dukt
+  unit: troop_1zgm
 
 bank_2012:
   year: 2012
   journal_type_id: 2
   is_open: true
-  unit: dukt
+  unit: troop_1zgm
 
 finance_2015:
   year: 2015
   journal_type_id: 1
   is_open: true
   initial_balance: 0
-  unit: dukt
+  unit: troop_1zgm
 
 two2012f:
   year: 2012
   journal_type_id: 1
   is_open: true
   initial_balance: 0
-  unit: pajaki
+  unit: troop_2zgm

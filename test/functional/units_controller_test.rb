@@ -3,7 +3,7 @@ require 'test_helper'
 class UnitsControllerTest < ActionController::TestCase
   setup do
     sign_in users(:admin)
-    @unit = units(:dukt)
+    @unit = units(:troop_1zgm)
   end
 
   test "should get index" do

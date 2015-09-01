@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EntriesControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:scoutmaster_dukt)
+    sign_in users(:master_1zgm)
     @entry = entries(:expense_one)
     @entry_income = entries(:income_one)
   end

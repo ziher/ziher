@@ -5,7 +5,7 @@ class UnitTest < ActiveSupport::TestCase
     units = Unit.find_by_user(users(:admin))
     assert_equal(Unit.all.count, units.count)
 
-    units = Unit.find_by_user(users(:scoutmaster_dukt))
+    units = Unit.find_by_user(users(:master_1zgm))
     assert_equal(1, units.count)
 
     units = Unit.find_by_user(users(:master_zg_m))
@@ -22,14 +22,14 @@ class UnitTest < ActiveSupport::TestCase
     #given
     year_2025 = Time.parse('2025-05-05')
     pretend_now_is(year_2025) do
-      dukt = units(:dukt)
+      troop_1zgm = units(:troop_1zgm)
       finance_type = journal_types(:finance)
 
       #when
-      years = dukt.find_journal_years(finance_type).to_set
+      years = troop_1zgm.find_journal_years(finance_type).to_set
 
       #then
-      expected_years = dukt.journals.map{|journal| journal.year}.uniq.to_set
+      expected_years = troop_1zgm.journals.map{|journal| journal.year}.uniq.to_set
       expected_years << Time.now.year
 
       assert_equal expected_years, years
@@ -40,11 +40,11 @@ class UnitTest < ActiveSupport::TestCase
     #given
     year_2005 = Time.parse('2005-05-05')
     pretend_now_is(year_2005) do
-      dukt = units(:dukt)
+      troop_1zgm = units(:troop_1zgm)
       finance_type = journal_types(:finance)
 
       #when
-      years = dukt.find_journal_years(finance_type)
+      years = troop_1zgm.find_journal_years(finance_type)
 
       #then
       assert_equal years.sort, years
@@ -55,11 +55,11 @@ class UnitTest < ActiveSupport::TestCase
     #given
     year_2012 = Time.parse('2012-05-05')
     pretend_now_is(year_2012) do
-      dukt = units(:dukt)
+      troop_1zgm = units(:troop_1zgm)
       finance_type = journal_types(:finance)
 
       #when
-      years = dukt.find_journal_years(finance_type)
+      years = troop_1zgm.find_journal_years(finance_type)
 
       #then
       assert_equal years.uniq, years

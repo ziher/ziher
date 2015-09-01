@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CategoriesControllerTest < ActionController::TestCase
   setup do
-    sign_in users(:scoutmaster_dukt)
+    sign_in users(:master_1zgm)
     @category = categories(:one)
   end
 

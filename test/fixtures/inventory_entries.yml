@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  unit: dukt
+  unit: troop_1zgm
   date: 2012-02-09
   name: MyString
   document_number: MyString
@@ -11,7 +11,7 @@ one:
   inventory_source: one
 
 two:
-  unit: dukt
+  unit: troop_1zgm
   date: 2012-02-09
   name: MyString
   document_number: MyString
