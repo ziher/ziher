@@ -8,6 +8,10 @@ master_zg_district_zg:
   group: district_zg
   can_view_entries: true
 
+user_zg_district_zg:
+  user: user_zg
+  group: district_zg
+
 master_p_region_p:
   user: master_p
   group: region_p

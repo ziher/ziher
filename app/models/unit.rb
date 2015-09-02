@@ -5,10 +5,11 @@ class Unit < ActiveRecord::Base
   has_many :journals
   has_many :inventory_entries
 
-  def Unit.find_by_user(user)
+  def Unit.find_all_by_user(user)
     if (user.is_superadmin)
       units = Unit.order("name")
     else
+
       units = Unit.find_by_sql(["with recursive G as (
   select group_id, subgroup_id
     from subgroups
@@ -25,6 +26,14 @@ select *
         or u.id in (select gu.unit_id from groups_units gu inner join user_group_associations uga on uga.group_id = gu.group_id where uga.user_id = :user_id)
         or u.id in (select gu.unit_id from groups_units gu where group_id in (select group_id from G union select subgroup_id from G)))", 
         { :user_id => user.id }])
+    end
+  end
+
+  def Unit.find_by_user(user)
+    if (user.is_superadmin)
+      units = Unit.order("name")
+    else
+      units = Unit.find_all_by_user(user).select{|unit| user.can_view_unit_entries(unit)}
     end
   end
 

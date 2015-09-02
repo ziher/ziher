@@ -41,8 +41,12 @@ class User < ActiveRecord::Base
     Unit.find_by_user(self)
   end
 
+  def can_view_unit_entries(unit)
+    rights_to(unit)["can_view_entries"] == "t"
+  end
+
   def can_view_entries(journal)
-    rights_to(journal.unit)["can_view_entries"] == "t"
+    can_view_unit_entries(journal.unit)
   end
   
   def can_manage_entries(journal)
@@ -83,6 +87,7 @@ union
 select 'G', uga.group_id, uga.can_view_entries, uga.can_manage_entries, uga.can_close_journals, uga.can_manage_users
   from user_group_associations uga
   where uga.group_id in (select group_id from G where G.unit_id = #{unit.id})
+    and uga.user_id = #{self.id}
 ) as x")[0]
   end
   

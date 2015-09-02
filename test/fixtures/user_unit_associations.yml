@@ -14,3 +14,7 @@ master_2zgm_troop_2zgm:
   unit: troop_2zgm
   can_view_entries: true
   can_manage_entries: true
+user_zg_troop_2zgm:
+    user: user_zg
+    unit: troop_2zgm
+    can_view_entries: true

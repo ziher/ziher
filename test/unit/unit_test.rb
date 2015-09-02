@@ -24,6 +24,17 @@ class UnitTest < ActiveSupport::TestCase
     assert_equal(8, units.count)
   end
 
+  test "should find only units where group user has access to" do
+    #given
+    user = users(:user_zg)
+    units = Unit.find_by_user(user)
+
+    #when
+
+    #then
+    assert_equal(1, units.count)
+  end
+
   test "should return all journal years including current" do
     #given
     year_2025 = Time.parse('2025-05-05')

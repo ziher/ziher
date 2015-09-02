@@ -25,6 +25,11 @@ master_zg:
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
+user_zg:
+  email: user_zg@zhr.com
+  confirmed_at: 2012-03-24 22:37:00
+  confirmation_sent_at: 2012-03-24 22:36:09
+
 master_p_f:
   email: master_p_f@zhr.com
   confirmed_at: 2012-03-24 22:37:00
