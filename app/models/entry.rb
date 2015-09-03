@@ -150,7 +150,9 @@ class Entry < ActiveRecord::Base
   def sum_one_percent
     result = 0
     items.each do |item|
-      if item.amount_one_percent
+      if !self.is_expense and item.category.is_one_percent and item.amount_one_percent
+        result += item.amount_one_percent
+      elsif item.amount_one_percent
         result += item.amount_one_percent
       end
     end

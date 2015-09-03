@@ -209,4 +209,17 @@ class EntryTest < ActiveSupport::TestCase
       entry.save!
     }
   end
+
+  test "should count income sum one percent for category" do
+    #given
+    entry = entries(:income_one)
+
+    #when
+    expected_amount = entry.items.select{|item| item.category.is_one_percent}.sum(&:amount_one_percent)
+
+    #then
+    assert_not_equal 0, expected_amount
+    assert_equal expected_amount, entry.sum_one_percent
+  end
+
 end

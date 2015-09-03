@@ -153,7 +153,6 @@ class JournalTest < ActiveSupport::TestCase
     assert_equal expected_sum, journal.get_expense_sum_one_percent
   end
 
-
   test "should count income sum" do
     journal = journals(:finance_2012)
 
@@ -165,6 +164,22 @@ class JournalTest < ActiveSupport::TestCase
     end
 
     assert_equal expected_sum, journal.get_income_sum
+  end
+
+  test "should count income sum one percent" do
+    #given
+    journal = journals(:finance_2012)
+    expected_amount = 0
+
+    #when
+    journal.entries.each do |entry|
+      expected_amount += entry.items.select{|item| item.category.is_one_percent}.sum(&:amount_one_percent)
+    end
+
+    #then
+    assert_not_equal 0, expected_amount
+    assert_equal expected_amount, journal.get_income_sum_one_percent
+    assert_not_equal journal.get_income_sum_one_percent, journal.get_expense_sum_one_percent
   end
 
   test "should have initial balance" do
