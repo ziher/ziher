@@ -71,7 +71,7 @@ class Journal < ActiveRecord::Base
   # returns sum of all one percent expense items
   def get_expense_one_percent_sum
     sum = 0
-    Category.where(:year => self.year, :is_expense => true, :is_one_percent => true).each do |category|
+    Category.where(:year => self.year, :is_expense => true).each do |category|
       sum += get_sum_one_percent_for_category(category)
     end
     return sum

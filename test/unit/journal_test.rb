@@ -120,11 +120,7 @@ class JournalTest < ActiveSupport::TestCase
     journal = journals(:finance_2012)
     category = categories(:one)
 
-    entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
-    items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
-    expected_sum = items_for_category.sum(&:amount)
-
-    assert_equal expected_sum, journal.get_sum_for_category(category)
+    assert_equal count_sum_for_category(journal, category), journal.get_sum_for_category(category)
   end
 
   test "should count expense sum" do
@@ -139,6 +135,24 @@ class JournalTest < ActiveSupport::TestCase
 
     assert_equal expected_sum, journal.get_expense_sum
   end
+
+  test "should count expense sum one percent" do
+    #given
+    journal = journals(:finance_2012)
+
+    #when
+    expected_sum = 0
+    Category.all.each do |category|
+      if category.is_expense
+        expected_sum += count_sum_one_percent_for_category(journal, category)
+      end
+    end
+
+    #then
+    assert_not_equal 0, expected_sum
+    assert_equal expected_sum, journal.get_expense_one_percent_sum
+  end
+
 
   test "should count income sum" do
     journal = journals(:finance_2012)
@@ -263,6 +277,12 @@ class JournalTest < ActiveSupport::TestCase
       entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
       items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
       return items_for_category.sum(&:amount)
+  end
+
+  def count_sum_one_percent_for_category(journal, category)
+    entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
+    items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?) and amount_one_percent IS NOT NULL', category.id, entries_for_category])
+    return items_for_category.sum(&:amount_one_percent)
   end
 
 end
