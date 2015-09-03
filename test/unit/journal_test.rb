@@ -150,7 +150,7 @@ class JournalTest < ActiveSupport::TestCase
 
     #then
     assert_not_equal 0, expected_sum
-    assert_equal expected_sum, journal.get_expense_one_percent_sum
+    assert_equal expected_sum, journal.get_expense_sum_one_percent
   end
 
 

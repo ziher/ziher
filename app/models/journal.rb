@@ -20,7 +20,7 @@ class Journal < ActiveRecord::Base
     previous = Journal.find_previous_for_type(self.unit, self.journal_type, self.year-1)
     if previous
       previous_balance = previous.initial_balance + previous.get_income_sum - previous.get_expense_sum
-      previous_balance_one_percent = previous.initial_balance_one_percent + previous.get_income_sum_one_percent - previous.get_expense_one_percent_sum
+      previous_balance_one_percent = previous.initial_balance_one_percent + previous.get_income_sum_one_percent - previous.get_expense_sum_one_percent
 
       self.initial_balance = previous_balance
       self.initial_balance_one_percent = previous_balance_one_percent
@@ -69,7 +69,7 @@ class Journal < ActiveRecord::Base
   end
 
   # returns sum of all one percent expense items
-  def get_expense_one_percent_sum
+  def get_expense_sum_one_percent
     sum = 0
     Category.where(:year => self.year, :is_expense => true).each do |category|
       sum += get_sum_one_percent_for_category(category)
@@ -100,7 +100,7 @@ class Journal < ActiveRecord::Base
   end
 
   def get_final_balance_one_percent
-    return self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_one_percent_sum
+    return self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
   end
 
   def find_items_by_category(category)
