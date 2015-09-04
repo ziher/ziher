@@ -68,6 +68,19 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def one_percent_category_item_should_have_same_amount_values
+    result = true
+    items.each do |item|
+      if item.category.is_one_percent
+        if item.amount != item.amount_one_percent
+          errors[:items] << "Niepoprawny wpis dla kategorii 1% (amount=#{item.amount} != amount_one_percent=#{item.amount_one_percent})"
+          result = false
+        end
+      end
+    end
+    return result
+  end
+
   def must_be_from_journals_year
     if journal && self.date
       if self.date.year!= journal.year
@@ -167,6 +180,10 @@ class Entry < ActiveRecord::Base
       next_journal.set_initial_balance
       next_journal.save!
     end
+  end
+
+  def verify_entry
+    one_percent_category_item_should_have_same_amount_values
   end
 
 end

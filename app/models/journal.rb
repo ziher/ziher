@@ -36,30 +36,27 @@ class Journal < ActiveRecord::Base
     end
   end
 
-  # returns sum of all items in this journal in given category
+  # returns sum of all entries in this journal for given category
   def get_sum_for_category(category)
     sum = 0
-    self.find_items_by_category(category).each do |item|
-      if item.amount
-        sum += item.amount
-      end
+    self.entries.each do |entry|
+      sum += entry.get_amount_for_category(category)
     end
 
     return sum
   end
 
-  # returns sum one percent of all items in this journal in given category
+  # returns sum one percent of all entries in this journal for given category
   def get_sum_one_percent_for_category(category)
     sum = 0
-    self.find_items_by_category(category).each do |item|
-      if item.amount_one_percent
-        sum += item.amount_one_percent
-      end
+    self.entries.each do |entry|
+      sum += entry.get_amount_one_percent_for_category(category)
     end
+
     return sum
   end
 
-  # returns sum of all expense items
+  # returns sum of all expense entries
   def get_expense_sum
     sum = 0
     Category.where(:year => self.year, :is_expense => true).each do |category|
@@ -68,7 +65,7 @@ class Journal < ActiveRecord::Base
     return sum
   end
 
-  # returns sum of all one percent expense items
+  # returns sum of all one percent expense entries
   def get_expense_sum_one_percent
     sum = 0
     Category.where(:year => self.year, :is_expense => true).each do |category|
@@ -77,7 +74,7 @@ class Journal < ActiveRecord::Base
     return sum
   end
 
-  # returns sum of all income items
+  # returns sum of all income entries
   def get_income_sum
     sum = 0
     Category.where(:year => self.year, :is_expense => false).each do |category|
@@ -86,7 +83,7 @@ class Journal < ActiveRecord::Base
     return sum
   end
 
-  # returns sum of all one percent income items
+  # returns sum of all one percent income entries
   def get_income_sum_one_percent
     sum = 0
     Category.where(:year => self.year, :is_expense => false, :is_one_percent => true).each do |category|
@@ -101,14 +98,6 @@ class Journal < ActiveRecord::Base
 
   def get_final_balance_one_percent
     return self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
-  end
-
-  def find_items_by_category(category)
-    items = []
-    self.entries.each do |entry|
-      items |= entry.items.find_all {|item| item.category == category}
-    end
-    return items
   end
 
   def find_next_year_journal
@@ -194,10 +183,22 @@ class Journal < ActiveRecord::Base
     end
   end
 
+  def verify_entries
+    result = true
+    self.entries.each do |entry|
+      if !entry.verify_entry
+        result = false
+        errors[:entry] << entry.errors.values
+      end
+    end
+    return result
+  end
+
   def verify_journal
     result = true
     result = false unless verify_final_balance_one_percent_not_less_than_zero
     result = false unless verify_final_balance_one_percent_no_more_than_sum
+    result = false unless verify_entries
     return result
   end
 
