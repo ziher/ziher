@@ -24,8 +24,8 @@ class EntryTest < ActiveSupport::TestCase
     entry = entries(:expense_one)
     category = categories(:one)
 
-    item1 = Item.new(:category => category)
-    item2 = Item.new(:category => category)
+    item1 = Item.new(:amount => 0, :category => category)
+    item2 = Item.new(:amount => 0, :category => category)
     entry.items << item1 << item2
 
     assert_raise(ActiveRecord::RecordInvalid){
@@ -37,8 +37,8 @@ class EntryTest < ActiveSupport::TestCase
     entry = entries(:expense_one)
     category = categories(:one)
 
-    item1 = Item.new(:category => category)
-    item2 = Item.new(:category => category)
+    item1 = Item.new(:amount => 0, :category => category)
+    item2 = Item.new(:amount => 0, :category => category)
     items = []
     items << item1 << item2
 
@@ -72,8 +72,8 @@ class EntryTest < ActiveSupport::TestCase
 
   test "should save entry with items of different categories" do
     entry = entries(:expense_one)
-    item1 = Item.new(:category => categories(:seven))
-    item2 = Item.new(:category => categories(:eight))
+    item1 = Item.new(:amount => 0, :category => categories(:seven))
+    item2 = Item.new(:amount => 0, :category => categories(:eight))
     entry.items << item1 << item2
 
     assert entry.save!
@@ -82,7 +82,7 @@ class EntryTest < ActiveSupport::TestCase
   test "should add items to existing entry" do
     entry = entries(:expense_one)
 
-    item2 = Item.new(:category => categories(:seven))
+    item2 = Item.new(:amount => 0, :category => categories(:seven))
     entry.items << item2
     assert entry.save!
   end

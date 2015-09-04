@@ -4,12 +4,14 @@ class Item < ActiveRecord::Base
   belongs_to :entry
   belongs_to :category
 
-  before_save :handle_one_percent_category
+  before_save :set_same_values_for_one_percent_category
+
+  validates :amount, :presence => true
 
   validate :cannot_have_amount_one_percent_greater_than_amount
   validate :cannot_have_amount_one_percent_if_amount_is_nil
 
-  def handle_one_percent_category
+  def set_same_values_for_one_percent_category
     if self.category.is_one_percent then
       self.amount_one_percent = self.amount
     end
@@ -28,4 +30,5 @@ class Item < ActiveRecord::Base
       raise "Wydarzyło się coś bardzo nieoczekiwanego - zgłoś się do swojego administratora ZiHeRa."
     end
   end
+  
 end
