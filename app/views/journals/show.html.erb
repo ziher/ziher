@@ -42,10 +42,10 @@
       <th rowspan="2" class="valign_middle"><small>#</small></th>
       <th rowspan="2" class="valign_middle text-center"><small>Data</small></th>
       <th rowspan="2" class="valign_middle text-center"><small>Treść</small></th>
-      <th colspan="<%= @categories_income.count %>" class="text-center"><small>Wpływy szczegółowo</small></th>
-      <th rowspan="2" class="income income_all valign_middle text-center"><small>Wpływy razem</small></th>
-      <th rowspan="2" class="expense expense_all valign_middle text-center"><small>Wydatki razem</small></th>
-      <th colspan="<%= @categories_expense.count %>" class="text-center"><small>Wydatki szczegółowo</small></th>
+      <th colspan="<%= @categories_income.count %>" class="text-center"><small><%=t 'helpers.label.journal.income_detailed'%></small></th>
+      <th rowspan="2" class="income income_all valign_middle text-center"><small><%=t 'helpers.label.journal.income_all'%></small></th>
+      <th rowspan="2" class="expense expense_all valign_middle text-center"><small><%=t 'helpers.label.journal.expense_all'%></small></th>
+      <th colspan="<%= @categories_expense.count %>" class="text-center"><small><%=t 'helpers.label.journal.expense_detailed'%></small></th>
     </tr>
 
     <tr>
@@ -84,12 +84,12 @@
       </td>
 
       <% @categories_income.each do |category| %>
-        <td class="income income_<%= category.id %> text-right">
+        <td class="income income_<%= category.id %> text-right" title="<%=category.name%>">
           <small><% print_formatted_amount(entry.get_amount_for_category(category)) %></small>
         </td>
       <% end %>
 
-      <td class="income income_all text-right">
+      <td class="income income_all text-right" title="<%=t 'helpers.label.journal.income_all'%>">
         <small>
         <% if entry.is_expense
             concat "-"
@@ -100,10 +100,10 @@
         </small>
       </td>
 
-      <td class="expense expense_all text-right">
+      <td class="expense expense_all text-right" title="<%=t 'helpers.label.journal.expense_all'%>">
         <small>
         <% if entry.is_expense
-            print_formatted_amount_with_one_percent(entry.sum, entry.sum_one_percent)
+            print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), entry.sum, entry.sum_one_percent)
            else
             concat "-"
            end
@@ -112,9 +112,9 @@
       </td>
 
       <% @categories_expense.each do |category| %>
-        <td class="expense expense_<%= category.id %> text-right">
+        <td class="expense expense_<%= category.id %> text-right" title="<%=category.name%>">
           <small>
-            <% print_formatted_amount_with_one_percent(entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category)) %>
+            <% print_formatted_amount_with_one_percent(category.name, entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category)) %>
           </small>
         </td>
       <% end %>
@@ -129,28 +129,28 @@
       <td colspan="3"><strong><small>Suma</small></strong></td>
 
       <% @categories_income.each do |category| %>
-        <td class="income income_<%= category.id %> text-right" text-right>
+        <td class="income income_<%= category.id %> text-right" title="<%=category.name%>">
           <small>
             <% print_formatted_amount(@journal.get_sum_for_category(category)) %>
           </small>
         </td>
       <% end %>
 
-      <td class="income income_all text-right">
+      <td class="income income_all text-right" title="<%=t 'helpers.label.journal.income_all'%>">
         <small>
           <% print_formatted_amount(@journal.get_income_sum) %>
         </small>
       </td>
-      <td class="expense expense_all text-right">
+      <td class="expense expense_all text-right" title="<%=t 'helpers.label.journal.expense_all'%>">
         <small>
-          <% print_formatted_amount_with_one_percent(@journal.get_expense_sum, @journal.get_expense_sum_one_percent) %>
+          <% print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), @journal.get_expense_sum, @journal.get_expense_sum_one_percent) %>
         </small>
       </td>
 
       <% @categories_expense.each do |category| %>
-        <td class="expense expense_<%= category.id %> text-right">
+        <td class="expense expense_<%= category.id %> text-right" title="<%=category.name%>">
           <small>
-            <% print_formatted_amount_with_one_percent(@journal.get_sum_for_category(category), @journal.get_sum_one_percent_for_category(category)) %>
+            <% print_formatted_amount_with_one_percent(category.name, @journal.get_sum_for_category(category), @journal.get_sum_one_percent_for_category(category)) %>
           </small>
         </td>
       <% end %>

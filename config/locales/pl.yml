@@ -40,6 +40,10 @@ pl:
         one_percent_tooltip: "Środki wydane z 1 procenta"
         name_tooltip: "Nazwa dokumentu"
         document_number_tooltip: "Numer dokumentu"
+        income_all: "Wpływy razem"
+        income_detailed: "Wypływy szczegółowo"
+        expense_all: "Wydatki razem"
+        expense_detailed: "Wydatki szczegółowo"
       unit:
         name: "Nazwa jednostki"
         group_ids: "Grupy, do których należy jednostka"
