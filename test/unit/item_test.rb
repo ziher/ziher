@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ItemTest < ActiveSupport::TestCase
-  test "should not save item when amount one percent is greater than amount" do
+  test "should not save item when amount one percent is greater than amount and category is not one percent" do
     #given
     item = items(:one)
     item.amount = 1
@@ -64,5 +64,36 @@ class ItemTest < ActiveSupport::TestCase
 
     #then
     assert_equal(item.amount_one_percent, item.amount)
+  end
+
+  test "should decrease amount one percent if amount is less than it and category type is one percent" do
+    #given
+    item = items(:income_one_percent)
+    item.amount = 2
+    item.amount_one_percent = 4
+
+    #when
+    item.save!
+
+    #then
+    assert_equal(item.amount_one_percent, 2)
+    assert_equal(item.amount_one_percent, item.amount)
+  end
+
+  test "should not update amount one percent if category type is not one percent" do
+    #given
+    item = items(:one)
+    amount = 2
+    one_percent = 1
+
+    #when
+    item.amount = amount
+    item.amount_one_percent = one_percent
+    item.save!
+
+    #then
+    assert_equal(item.amount_one_percent, one_percent)
+    assert_equal(item.amount, amount)
+    assert_not_equal(item.amount_one_percent, item.amount)
   end
 end

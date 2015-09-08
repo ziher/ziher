@@ -19,7 +19,7 @@ class Item < ActiveRecord::Base
 
   def cannot_have_amount_one_percent_greater_than_amount
     if self.amount != nil && self.amount_one_percent != nil
-      if self.amount_one_percent > self.amount
+      if self.amount_one_percent > self.amount && !category.is_one_percent
         errors[:items] << "Wartość 1% (#{self.amount_one_percent}) musi być mniejsza niż podana suma (#{self.amount})"
       end
     end
