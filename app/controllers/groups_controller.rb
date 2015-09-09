@@ -2,6 +2,11 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
+    if !current_user.can_manage_any_group
+      redirect_to root_path, alert: 'Brak grup do zarządzania'
+      return
+    end
+
     @groups = Group.find_by_user(current_user, {:can_manage_groups => true})
 
     respond_to do |format|
@@ -52,6 +57,7 @@ class GroupsController < ApplicationController
   # GET /groups/new.json
   def new
     @group = Group.new
+
     @supergroups = current_user.groups_to_manage
     @supergroup = @supergroups.first
     @subgroups = current_user.groups_to_manage

@@ -3,6 +3,11 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
+    if !current_user.can_manage_any_user
+      redirect_to root_path, alert: 'Brak użytkowników do zarządzania'
+      return
+    end
+
     @users = current_user.users_to_manage
   end
 

@@ -33,7 +33,7 @@ select *
     if (user.is_superadmin)
       units = Unit.order("name")
     else
-      units = Unit.find_all_by_user(user).select{|unit| user.can_view_unit_entries(unit)}
+      units = Unit.order("name").find_all_by_user(user).select{|unit| user.can_view_unit_entries(unit)}
     end
   end
 

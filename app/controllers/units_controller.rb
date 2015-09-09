@@ -2,6 +2,11 @@ class UnitsController < ApplicationController
   # GET /units
   # GET /units.json
   def index
+    if !current_user.can_manage_any_unit
+      redirect_to root_path, alert: 'Brak jednostek do zarządzania'
+      return
+    end
+
     @units = Unit.find_by_user(current_user)
     @years = Journal.find_all_years
 

@@ -32,9 +32,17 @@ class User < ActiveRecord::Base
   def find_groups(privileges = {})
     Group.find_by_user(self, privileges)
   end
-  
+
+  def can_manage_any_group
+    self.is_superadmin || !self.groups_to_manage.empty?
+  end
+
   def groups_to_manage
     find_groups({ :can_manage_groups => true })
+  end
+
+  def can_manage_any_unit
+    self.is_superadmin || !self.find_units.empty?
   end
 
   def find_units
