@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    if !current_user.can_manage_any_group
+    unless current_user.can_manage_any_group
       redirect_to root_path, alert: 'Brak grup do zarządzania'
       return
     end

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    if !current_user.can_manage_any_user
+    unless current_user.can_manage_any_user
       redirect_to root_path, alert: 'Brak użytkowników do zarządzania'
       return
     end
