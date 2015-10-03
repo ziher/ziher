@@ -19,7 +19,7 @@ class Ability
 
 # Group
       can :read, Group do |group|
-        user.find_groups.include?(group)
+        user.groups_to_manage.include?(group)
       end
       can :update, Group do |group|
         user.groups_to_manage.include?(group)
