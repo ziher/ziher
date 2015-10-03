@@ -150,7 +150,68 @@ class GroupsControllerTest < ActionController::TestCase
 
   # ########################
   # can_manage_groups = false
-  test 'should not be able to crud group from his supergroup when can_manage_groups is false' do
+  test 'should not be able to create group in his supergroup when can_manage_groups is false' do
+    #given
+    sign_in users(:user_zg)
+    user = users(:user_zg)
+    supergroup = groups(:district_zg)
+    assert ! user.can_manage_group(supergroup)
+    count = Group.count
+
+    #when
+    post :create, group: @group.attributes, supergroup_id: supergroup.id
+
+    #then
+    assert_equal count, Group.count
+    assert_redirected_to root_path
+  end
+
+  test 'should not be able to read his supergroup when can_manage_groups is false' do
+    #given
+    sign_in users(:user_zg)
+    user = users(:user_zg)
+    supergroup = groups(:district_zg)
+    assert ! user.can_manage_group(supergroup)
+
+    #when
+    get :show, id: supergroup.to_param
+
+    #then
+    assert_redirected_to root_path
+  end
+
+  test 'should not be able to read group from his supergroup when can_manage_groups is false' do
+    #given
+    sign_in users(:user_zg)
+    user = users(:user_zg)
+    supergroup = groups(:district_zg)
+    assert ! user.can_manage_group(supergroup)
+
+    #when
+    get :show, id: supergroup.subgroups.first.to_param
+
+    #then
+    assert_redirected_to root_path
+  end
+
+
+  test 'should not be able to update group from his supergroup when can_manage_groups is false' do
+    #given
+    sign_in users(:user_zg)
+    user = users(:user_zg)
+    supergroup = groups(:district_zg)
+    subgroup = supergroup.subgroups.first
+    assert ! user.can_manage_group(supergroup)
+    count = Group.count
+
+    #when
+    put :update, id: subgroup.to_param, group: subgroup.attributes
+
+    #then
+    assert_redirected_to root_path
+  end
+
+  test 'should not be able to delete group from his supergroup when can_manage_groups is false' do
     #given
     sign_in users(:user_zg)
     user = users(:user_zg)
