@@ -95,7 +95,7 @@ class GroupsControllerTest < ActionController::TestCase
     put :update, id: subgroup.to_param, group: subgroup.attributes
 
     #then
-    assert_redirected_to group_path()
+    assert_redirected_to group_path
   end
 
   test 'should be able to delete group from his supergroup when can_manage_groups is true' do
@@ -123,10 +123,27 @@ class GroupsControllerTest < ActionController::TestCase
     count = Group.count
     assert user.can_manage_group(supergroup)
     assert ! user.can_manage_group(group)
+    assert ! user.can_manage_group(group.find_all_supergroups.first)
+
+    #when
+    post :create, group: @group.attributes, supergroup_id: group.find_all_supergroups.first.id
+    #then
+    assert_equal count, Group.count
+    # TODO add check for error message
+    assert_redirected_to root_path
+
+    #when
+    get :show, id: group.to_param
+    #then
+    assert_redirected_to root_path
+
+    #when
+    put :update, id: group.to_param, group: group.attributes
+    #then
+    assert_redirected_to root_path
 
     #when
     delete :destroy, id: group.to_param
-
     #then
     assert_equal count, Group.count
     assert_redirected_to root_path
