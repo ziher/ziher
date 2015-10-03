@@ -18,7 +18,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should create group" do
-    assert_difference('Group.count') do
+    assert_difference('Group.count', 1) do
       post :create, group: @group.attributes, supergroup_id: groups(:district_zg).id
     end
 
@@ -50,7 +50,55 @@ class GroupsControllerTest < ActionController::TestCase
 
   # ########################
   # can_manage_groups = true
-  test 'should be able to crud group from his supergroup when can_manage_groups is true' do
+  test 'should be able to create group in his supergroup when can_manage_groups is true' do
+    #given
+    sign_in users(:master_zg)
+    user = users(:master_zg)
+    supergroup = groups(:district_zg)
+    assert user.can_manage_group(supergroup)
+    count = Group.count
+
+    #when
+    post :create, group: @group.attributes, supergroup_id: supergroup.id
+
+    #then
+    assert_equal count + 1, Group.count
+    assert_redirected_to group_path(assigns(:group))
+  end
+
+  test 'should be able to read group from his supergroup when can_manage_groups is true' do
+    #given
+    sign_in users(:master_zg)
+    user = users(:master_zg)
+    supergroup = groups(:district_zg)
+    assert user.can_manage_group(supergroup)
+    count = Group.count
+
+    #when
+    get :show, id: supergroup.subgroups.first.to_param
+
+    #then
+    assert_response :success
+  end
+
+
+  test 'should be able to update group from his supergroup when can_manage_groups is true' do
+    #given
+    sign_in users(:master_zg)
+    user = users(:master_zg)
+    supergroup = groups(:district_zg)
+    subgroup = supergroup.subgroups.first
+    assert user.can_manage_group(supergroup)
+    count = Group.count
+
+    #when
+    put :update, id: subgroup.to_param, group: subgroup.attributes
+
+    #then
+    assert_redirected_to group_path()
+  end
+
+  test 'should be able to delete group from his supergroup when can_manage_groups is true' do
     #given
     sign_in users(:master_zg)
     user = users(:master_zg)
