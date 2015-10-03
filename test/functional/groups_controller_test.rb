@@ -47,4 +47,109 @@ class GroupsControllerTest < ActionController::TestCase
 
     assert_redirected_to groups_path
   end
+
+  # ########################
+  # can_manage_groups = true
+  test 'should be able to crud group from his supergroup when can_manage_groups is true' do
+    #given
+    sign_in users(:master_zg)
+    user = users(:master_zg)
+    supergroup = groups(:district_zg)
+    count = Group.count
+    assert user.can_manage_group(supergroup)
+
+    #when
+    delete :destroy, id: supergroup.subgroups.first.to_param
+
+    #then
+    assert_equal count, Group.count + 1
+    assert_redirected_to groups_path
+  end
+
+  test 'should not be able to crud group not from his supergroup when can_manage_groups is true' do
+    #given
+    sign_in users(:master_zg)
+    user = users(:master_zg)
+    supergroup = groups(:district_zg)
+    group = groups(:region_d_m)
+    count = Group.count
+    assert user.can_manage_group(supergroup)
+    assert ! user.can_manage_group(group)
+
+    #when
+    delete :destroy, id: group.to_param
+
+    #then
+    assert_equal count, Group.count
+    assert_redirected_to root_path
+  end
+
+  test 'should not be able to crud his supergroup when can_manage_groups is true' do
+    #given
+    sign_in users(:master_zg)
+    user = users(:master_zg)
+    supergroup = groups(:district_zg)
+    count = Group.count
+    assert user.can_manage_group(supergroup)
+
+    #when
+    delete :destroy, id: supergroup.to_param
+
+    #then
+    assert_equal count, Group.count
+    assert_redirected_to root_path
+  end
+
+  # ########################
+  # can_manage_groups = false
+  test 'should not be able to crud group from his supergroup when can_manage_groups is false' do
+    #given
+    sign_in users(:user_zg)
+    user = users(:user_zg)
+    supergroup = groups(:district_zg)
+    count = Group.count
+    assert ! user.can_manage_group(supergroup)
+
+    #when
+    delete :destroy, id: supergroup.subgroups.first.to_param
+
+    #then
+    assert_equal count, Group.count
+    assert_redirected_to root_path
+  end
+
+  test 'should not be able to crud group not from his supergroup when can_manage_groups is false' do
+    sign_in users(:user_zg)
+    user = users(:user_zg)
+    supergroup = groups(:district_zg)
+    group = groups(:region_d_m)
+    count = Group.count
+    assert ! user.can_manage_group(supergroup)
+    # TODO: check if user is in supergroup(this)
+    # TODO: check if user is not in supergroup(group)
+
+    #when
+    delete :destroy, id: group.to_param
+
+    #then
+    assert_equal count, Group.count
+    assert_redirected_to root_path
+  end
+
+  test 'should not be able to crud his supergroup when can_manage_groups is false' do
+    #given
+    sign_in users(:user_zg)
+    user = users(:user_zg)
+    supergroup = groups(:district_zg)
+    count = Group.count
+    assert ! user.can_manage_group(supergroup)
+    # TODO: check if user is in supergroup
+
+    #when
+    delete :destroy, id: supergroup.to_param
+
+    #then
+    assert_equal count, Group.count
+    assert_redirected_to root_path
+  end
 end

@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     find_groups({ :can_manage_groups => true })
   end
 
+  def can_manage_group(group)
+    Group.find_by_user(self, {:can_manage_groups => true}).include?(group)
+  end
+
   def can_manage_any_unit
     self.is_superadmin || !self.find_units.empty?
   end

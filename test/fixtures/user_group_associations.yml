@@ -7,6 +7,18 @@ master_zg_district_zg:
   user: master_zg
   group: district_zg
   can_view_entries: true
+  can_manage_entries: true
+  can_close_journals: true
+  can_manage_users: true
+  can_manage_units: true
+  can_manage_groups: true
+
+treasurer_zg_district_zg:
+  user: treasurer_zg
+  group: district_zg
+  can_view_entries: true
+  can_manage_entries: true
+  can_close_journals: true
 
 user_zg_district_zg:
   user: user_zg
