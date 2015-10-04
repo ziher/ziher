@@ -1,9 +1,12 @@
 require 'test_helper'
 
 class GroupsControllerTest < ActionController::TestCase
+
   setup do
     sign_in users(:admin)
     @group = groups(:district_zg_m)
+
+    @message_unauthorized = I18n.t(:default, :scope => :unauthorized)
   end
 
   test "should get index" do
@@ -129,23 +132,26 @@ class GroupsControllerTest < ActionController::TestCase
     post :create, group: @group.attributes, supergroup_id: group.find_all_supergroups.first.id
     #then
     assert_equal count, Group.count
-    # TODO add check for error message
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
 
     #when
     get :show, id: group.to_param
     #then
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
 
     #when
     put :update, id: group.to_param, group: group.attributes
     #then
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
 
     #when
     delete :destroy, id: group.to_param
     #then
     assert_equal count, Group.count
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -162,6 +168,7 @@ class GroupsControllerTest < ActionController::TestCase
 
     #then
     assert_equal count, Group.count
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -180,6 +187,7 @@ class GroupsControllerTest < ActionController::TestCase
 
     #then
     assert_equal count, Group.count
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -194,6 +202,7 @@ class GroupsControllerTest < ActionController::TestCase
     get :show, id: supergroup.to_param
 
     #then
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -208,6 +217,7 @@ class GroupsControllerTest < ActionController::TestCase
     get :show, id: supergroup.subgroups.first.to_param
 
     #then
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -225,6 +235,7 @@ class GroupsControllerTest < ActionController::TestCase
     put :update, id: subgroup.to_param, group: subgroup.attributes
 
     #then
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -241,6 +252,7 @@ class GroupsControllerTest < ActionController::TestCase
 
     #then
     assert_equal count, Group.count
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -259,6 +271,7 @@ class GroupsControllerTest < ActionController::TestCase
 
     #then
     assert_equal count, Group.count
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 
@@ -276,6 +289,7 @@ class GroupsControllerTest < ActionController::TestCase
 
     #then
     assert_equal count, Group.count
+    assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
   end
 end
