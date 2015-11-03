@@ -12,7 +12,17 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 #dpkg-reconfigure locales
 
+echo ====================== Instaluje Docker
+apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
 DEBIAN_FRONTEND=noninteractive apt-get update
+
+DEBIAN_FRONTEND=noninteractive apt-get --yes install docker-engine
+usermod -aG docker vagrant
+
+curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
 
 echo ====================== Instaluje RVM
 DEBIAN_FRONTEND=noninteractive apt-get --yes install git curl vim
