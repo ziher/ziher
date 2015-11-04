@@ -1,0 +1,22 @@
+db:
+  image: postgres:9.4.1
+  ports:
+    - "5432:5432"
+
+ziher:
+  build: .
+  command: bundle exec rails s -p 3000 -b '0.0.0.0'
+  volumes:
+    - .:/ziher
+
+ziher-production:
+  extends: ziher
+  ports:
+    - "3001:3000"
+  environment:
+    - RAILS_ENV=production
+    - ZIHER_DB_NAME=my_db_name
+    - ZIHER_DB_USERNAME=my_db_username
+    - ZIHER_DB_PASSWORD=my_db_password
+  links:
+    - db
