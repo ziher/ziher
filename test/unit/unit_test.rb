@@ -83,4 +83,26 @@ class UnitTest < ActiveSupport::TestCase
     end
   end
 
+  test "should return finance balance" do
+    #given
+    troop_1zgm = units(:troop_1zgm)
+    finance_2012 = journals(:finance_2012)
+
+    #when
+    balance = troop_1zgm.finance_balance(2012)
+
+    #then
+    assert_equal finance_2012.initial_balance, balance
+  end
+
+  test "should return nil finance balance when unit has no finance journal" do
+    #given
+    troop_1dwf = units(:troop_1dwf)
+
+    #when
+    balance = troop_1dwf.finance_balance(2012)
+
+    #then
+    assert_equal nil, balance
+  end
 end

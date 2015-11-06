@@ -40,9 +40,17 @@ select *
   # Returns years for which the unit has journals of given type, plus current year.
   # Years are sorted oldest first.
   def find_journal_years(journal_type)
-    result = self.journals.select{|journal| journal.journal_type == journal_type}.map{|journal| journal.year}
+    result = self.journals.where(journal_type_id: journal_type.id).map{|journal| journal.year}
     result << Time.now.year
     result.uniq.sort
   end
 
+  def finance_balance(year)
+    finance_journal = self.journals.where(journal_type_id: JournalType::FINANCE_TYPE_ID, year: year).first
+    if finance_journal.nil?
+      nil
+    else
+      finance_journal.initial_balance
+    end
+  end
 end

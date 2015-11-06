@@ -9,6 +9,7 @@ class UnitsController < ApplicationController
 
     @units = Unit.find_by_user(current_user)
     @years = Journal.find_all_years
+    @selected_year = params[:year] || session[:current_year]
 
     respond_to do |format|
       format.html # index.html.erb
