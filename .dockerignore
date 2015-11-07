@@ -1,0 +1,11 @@
+bootstrap-vagrant.sh
+docker-compose.yml
+Dockerfile
+.dockerignore
+.git
+.gitignore
+import-database.sh
+*.dump
+.travis.yml
+.vagrant
+Vagrantfile
