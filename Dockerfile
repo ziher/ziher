@@ -13,3 +13,6 @@ COPY . /ziher
 RUN rake assets:precompile --trace RAILS_ENV=production
 
 ENTRYPOINT passenger start -p 3000 -a 0.0.0.0
+
+# Very, very, very bad hack for Passenger giving errors I don't care about (as for now)
+RUN ln /bin/echo /bin/ps
