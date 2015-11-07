@@ -3,12 +3,8 @@ db:
   ports:
     - "5432:5432"
 
-ziher:
+app:
   build: .
-  command: passenger start -p 3000 -a 0.0.0.0
-
-ziher-production:
-  extends: ziher
   ports:
     - "3000:3000"
   environment:

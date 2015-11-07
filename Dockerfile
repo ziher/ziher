@@ -11,3 +11,5 @@ RUN bundle install
 
 COPY . /ziher
 RUN rake assets:precompile --trace RAILS_ENV=production
+
+ENTRYPOINT passenger start -p 3000 -a 0.0.0.0
