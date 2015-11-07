@@ -5,12 +5,8 @@ db:
 
 ziher:
   build: .
-  command: passenger start -p 3000 -a 0.0.0.0
-
-ziher-production:
-  extends: ziher
   ports:
-    - "3000:3000"
+    - "3000:80"
   environment:
     - RAILS_ENV=production
     - ZIHER_DB_NAME=my_db_name

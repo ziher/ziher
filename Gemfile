@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby "2.1.2"
+ruby "2.1.6"
 
 gem 'rails', '3.2.22'
 
@@ -42,7 +42,6 @@ gem 'acts_as_list'
 
 # Use unicorn as the web server
 # gem 'unicorn'
-gem 'passenger'
 
 # Deploy with Capistrano
 # gem 'capistrano'
