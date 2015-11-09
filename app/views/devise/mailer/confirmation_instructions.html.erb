@@ -1,5 +1,10 @@
-<p>Welcome <%= @resource.email %>!</p>
+<p>Droga posiadaczko, drogi posiadaczu adresu email <%= @resource.email %>!</p>
 
-<p>You can confirm your account email through the link below:</p>
+<p>Możesz potwierdzić swój adres email klikając w poniższy link:</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<p><%= link_to 'Potwierdź mój adres email', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+
+<p>Czuwaj!</p>
+
+<p>Z uszanowaniem,<br/>
+Zespół ZiHeR</p>
