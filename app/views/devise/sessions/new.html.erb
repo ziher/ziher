@@ -18,12 +18,11 @@
           <%= f.check_box :remember_me %>
           <%= f.label :remember_me, :class=>"checkbox inline" %>
         <% end %>
+        <%= f.submit "Zaloguj się", :class => 'btn btn-primary pull-right' %>
       </div>
 
-      <div class='control-group'>
-        <input type="button" class="btn btn-primary pull-left" value="Wypełnij"
-               onclick="document.getElementById('user_email').value='ziher_to@zhr.pl'; document.getElementById('user_password').value='0xDEADBEEF'" />
-        <%= f.submit "Zaloguj się", :class => 'btn btn-primary pull-right' %>
+      <div class='control-group' style="margin-top: 60px">
+        <%= render "links" %>
       </div>
 
     </div>
@@ -32,4 +31,3 @@
 <% end %>
 <br/>
 
-<%= render "links" %>
