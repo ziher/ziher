@@ -1,9 +1,4 @@
 FROM ruby:2.1.2
-RUN apt-get update && apt-get install -y \
-  build-essential \
-  libpq-dev \
-&& apt-get clean \
-&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir /ziher
 WORKDIR /ziher
@@ -14,6 +9,12 @@ RUN bundle install
 COPY config/initializers/version.rb /ziher/config/initializers/version.rb
 COPY . /ziher
 RUN rake assets:precompile --trace RAILS_ENV=production
+
+RUN apt-get update && apt-get install -y \
+  build-essential \
+  libpq-dev \
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT passenger start -p 3000 -a 0.0.0.0
 
