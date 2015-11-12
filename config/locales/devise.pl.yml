@@ -59,8 +59,8 @@ pl:
       failure: 'Could not authorize you from %{kind} because "%{reason}".'
     mailer:
       confirmation_instructions:
-        subject: 'Confirmation instructions'
+        subject: 'Instrukcja potwierdzenia adresu email'
       reset_password_instructions:
-        subject: 'Reset password instructions'
+        subject: 'Instrukcja zmiany hasła'
       unlock_instructions:
-        subject: 'Unlock Instructions'
+        subject: 'Instrukcja odblokowania konta'
