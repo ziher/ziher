@@ -7,5 +7,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :func
 
-  ZIHER_VERSION = VERSION[0].to_s + "." + VERSION[1].to_s + "." + VERSION[2].to_s + "+" + VERSION[3].to_s
+  ZIHER_VERSION = VERSION[0].to_s + "." + VERSION[1].to_s + "." + VERSION[2].to_s
+  ZIHER_COMMIT = VERSION[3].to_s
 end
