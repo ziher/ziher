@@ -90,7 +90,7 @@ class JournalsController < ApplicationController
 
     respond_to do |format|
       if @journal.save
-        format.html { redirect_to journals_url, notice: 'Książka otwarta.' }
+        format.html { redirect_to journal_path(@journal), notice: 'Książka otwarta.' }
         format.json { render json: @journal, status: :opened, location: @journal }
       else
         format.html { redirect_to journals_url, alert: "Błąd otwierania książki: " + @journal.errors.full_messages.join(', ') }
@@ -105,7 +105,7 @@ class JournalsController < ApplicationController
 
     respond_to do |format|
       if @journal.close
-        format.html { redirect_to journals_url, notice: 'Książka zamknięta.' }
+        format.html { redirect_to journal_path(@journal), notice: 'Książka zamknięta.' }
         format.json { render json: @journal, status: :closed, location: @journal }
       else
         format.html { redirect_to journals_url, alert: "Błąd zamykania książki: " + @journal.errors.values.join(', ') }
