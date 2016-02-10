@@ -45,12 +45,39 @@ select *
     result.uniq.sort
   end
 
-  def finance_balance(year)
+  def initial_finance_balance(year)
     finance_journal = self.journals.where(journal_type_id: JournalType::FINANCE_TYPE_ID, year: year).first
     if finance_journal.nil?
       nil
     else
       finance_journal.initial_balance
+    end
+  end
+
+  def initial_finance_balance_one_percent(year)
+    finance_journal = self.journals.where(journal_type_id: JournalType::FINANCE_TYPE_ID, year: year).first
+    if finance_journal.nil?
+      nil
+    else
+      finance_journal.initial_balance_one_percent
+    end
+  end
+
+  def initial_bank_balance(year)
+    finance_journal = self.journals.where(journal_type_id: JournalType::BANK_TYPE_ID, year: year).first
+    if finance_journal.nil?
+      nil
+    else
+      finance_journal.initial_balance
+    end
+  end
+
+  def initial_bank_balance_one_percent(year)
+    finance_journal = self.journals.where(journal_type_id: JournalType::BANK_TYPE_ID, year: year).first
+    if finance_journal.nil?
+      nil
+    else
+      finance_journal.initial_balance_one_percent
     end
   end
 end

@@ -34,10 +34,10 @@
 <% @units.each do |unit| %>
   <tr>
     <td><%= unit.name %></td>
-    <td class="amount-cell"><%= unit.finance_balance(@selected_year) || '-' %></td>
-    <td class="amount-cell">-</td>
-    <td class="amount-cell">-</td>
-    <td class="amount-cell">-</td>
+    <td class="amount-cell"><%= unit.initial_finance_balance(@selected_year) || '-' %></td>
+    <td class="amount-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
+    <td class="amount-cell"><%= unit.initial_bank_balance(@selected_year) || '-' %></td>
+    <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
     <td class="action-cell"><%= link_to 'Pokaż', unit %></td>
     <td class="action-cell"><%= link_to 'Edytuj', edit_unit_path(unit) %></td>
     <td class="action-cell"><%= link_to 'Usuń', unit, confirm: 'Na pewno usunąć drużynę?', method: :delete %></td>

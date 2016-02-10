@@ -89,7 +89,7 @@ class UnitTest < ActiveSupport::TestCase
     finance_2012 = journals(:finance_2012)
 
     #when
-    balance = troop_1zgm.finance_balance(2012)
+    balance = troop_1zgm.initial_finance_balance(2012)
 
     #then
     assert_equal finance_2012.initial_balance, balance
@@ -100,7 +100,76 @@ class UnitTest < ActiveSupport::TestCase
     troop_1dwf = units(:troop_1dwf)
 
     #when
-    balance = troop_1dwf.finance_balance(2012)
+    balance = troop_1dwf.initial_finance_balance(2012)
+
+    #then
+    assert_equal nil, balance
+  end
+
+  test "should return finance balance one percent" do
+    #given
+    troop_1zgm = units(:troop_1zgm)
+    finance_2012 = journals(:finance_2012)
+
+    #when
+    balance = troop_1zgm.initial_finance_balance_one_percent(2012)
+
+    #then
+    assert_equal finance_2012.initial_balance_one_percent, balance
+  end
+
+  test "should return nil finance balance one percent when unit has no finance journal" do
+    #given
+    troop_1dwf = units(:troop_1dwf)
+
+    #when
+    balance = troop_1dwf.initial_finance_balance_one_percent(2012)
+
+    #then
+    assert_equal nil, balance
+  end
+
+  test "should return bank balance" do
+    #given
+    troop_1zgm = units(:troop_1zgm)
+    bank_2012 = journals(:bank_2012)
+
+    #when
+    balance = troop_1zgm.initial_bank_balance(2012)
+
+    #then
+    assert_equal bank_2012.initial_balance, balance
+  end
+
+  test "should return nil bank balance when unit has no bank journal" do
+    #given
+    troop_1dwf = units(:troop_1dwf)
+
+    #when
+    balance = troop_1dwf.initial_bank_balance(2012)
+
+    #then
+    assert_equal nil, balance
+  end
+
+  test "should return bank balance one percent" do
+    #given
+    troop_1zgm = units(:troop_1zgm)
+    bank_2012 = journals(:bank_2012)
+
+    #when
+    balance = troop_1zgm.initial_bank_balance_one_percent(2012)
+
+    #then
+    assert_equal bank_2012.initial_balance_one_percent, balance
+  end
+
+  test "should return nil bank balance one percent when unit has no bank journal" do
+    #given
+    troop_1dwf = units(:troop_1dwf)
+
+    #when
+    balance = troop_1dwf.initial_bank_balance_one_percent(2012)
 
     #then
     assert_equal nil, balance
