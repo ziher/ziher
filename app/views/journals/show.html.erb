@@ -68,70 +68,72 @@
     </tr>
   </thead>
 
-  <tbody class="border-top-bold">
-  <% i = 0 %>
-  <% @entries.each do |entry| %>
-    <tr>
-      <td>
-        <small>
-          <span style="display: block;"><%= i+=1 =%>.</span>
-          <% if @journal.is_open? %>
-            <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%><% end %>
-            <% if can? :destroy, entry %><%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%><% end %>
-          <% else %>
-            <% if can? :update, entry %><span class="disabled"><i class="icon-pencil" title="Nie można edytować wpisów zamkniętej książki"></i></span><% end %>
-            <% if can? :destroy, entry %><span class="disabled"><i class="icon-trash" title="Nie można usuwać wpisów zamkniętej książki"></i></span><% end %>
-          <% end %>
-        </small>
-      </td>
-      <td><small><%= entry.date %></small></td>
-      <td>
-        <small>
-          <span title='<%= I18n.t('helpers.label.journal.name_tooltip') %>'><%= entry.name %></span>
-          <hr style='margin: 2px 0;'/>
-          <span title='<%= I18n.t('helpers.label.journal.document_number_tooltip') %>'><%= entry.document_number %></span>
-        </small>
-      </td>
-
-      <% @categories_income.each do |category| %>
-        <td class="income income_<%= category.id %> text-right" title="<%=category.name%>">
-          <small><% print_formatted_amount(entry.get_amount_for_category(category)) %></small>
-        </td>
-      <% end %>
-
-      <td class="income income_all text-right" title="<%=t 'helpers.label.journal.income_all'%>">
-        <small>
-        <% if entry.is_expense
-            concat "-"
-           else
-            print_formatted_amount(entry.sum)
-           end
-        %>
-        </small>
-      </td>
-
-      <td class="expense expense_all text-right" title="<%=t 'helpers.label.journal.expense_all'%>">
-        <small>
-        <% if entry.is_expense
-            print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), entry.sum, entry.sum_one_percent)
-           else
-            concat "-"
-           end
-        %>
-        </small>
-      </td>
-
-      <% @categories_expense.each do |category| %>
-        <td class="expense expense_<%= category.id %> text-right" title="<%=category.name%>">
+  <% if @entries.length > 0 %>
+    <tbody class="border-top-bold">
+    <% i = 0 %>
+    <% @entries.each do |entry| %>
+      <tr>
+        <td>
           <small>
-            <% print_formatted_amount_with_one_percent(category.name, entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category)) %>
+            <span style="display: block;"><%= i+=1 =%>.</span>
+            <% if @journal.is_open? %>
+              <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%><% end %>
+              <% if can? :destroy, entry %><%= link_to entry, confirm: 'Na pewno usunąć wpis?', method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%><% end %>
+            <% else %>
+              <% if can? :update, entry %><span class="disabled"><i class="icon-pencil" title="Nie można edytować wpisów zamkniętej książki"></i></span><% end %>
+              <% if can? :destroy, entry %><span class="disabled"><i class="icon-trash" title="Nie można usuwać wpisów zamkniętej książki"></i></span><% end %>
+            <% end %>
           </small>
         </td>
-      <% end %>
+        <td><small><%= entry.date %></small></td>
+        <td>
+          <small>
+            <span title='<%= I18n.t('helpers.label.journal.name_tooltip') %>'><%= entry.name %></span>
+            <hr style='margin: 2px 0;'/>
+            <span title='<%= I18n.t('helpers.label.journal.document_number_tooltip') %>'><%= entry.document_number %></span>
+          </small>
+        </td>
 
-    </tr>
+        <% @categories_income.each do |category| %>
+          <td class="income income_<%= category.id %> text-right" title="<%=category.name%>">
+            <small><% print_formatted_amount(entry.get_amount_for_category(category)) %></small>
+          </td>
+        <% end %>
+
+        <td class="income income_all text-right" title="<%=t 'helpers.label.journal.income_all'%>">
+          <small>
+          <% if entry.is_expense
+              concat "-"
+             else
+              print_formatted_amount(entry.sum)
+             end
+          %>
+          </small>
+        </td>
+
+        <td class="expense expense_all text-right" title="<%=t 'helpers.label.journal.expense_all'%>">
+          <small>
+          <% if entry.is_expense
+              print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), entry.sum, entry.sum_one_percent)
+             else
+              concat "-"
+             end
+          %>
+          </small>
+        </td>
+
+        <% @categories_expense.each do |category| %>
+          <td class="expense expense_<%= category.id %> text-right" title="<%=category.name%>">
+            <small>
+              <% print_formatted_amount_with_one_percent(category.name, entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category)) %>
+            </small>
+          </td>
+        <% end %>
+
+      </tr>
+    <% end %>
+    </tbody>
   <% end %>
-  </tbody>
 
   <!%-- row with sums for each category --%>
   <tfoot class="border-top-bold">
