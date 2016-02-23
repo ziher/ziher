@@ -37,6 +37,7 @@ Ziher::Application.routes.draw do
     post :sort, on: :collection
   end
 
+  match 'inventory_entries/fixed_assets_report' => 'inventory_entries#fixed_assets_report', :via => :get, :as => "fixed_assets_report"
   resources :inventory_entries
 
   resources :units

@@ -39,6 +39,10 @@ module ApplicationHelper
     when :inventory_sources
       "active" if current_page?(inventory_sources_path)
 
+    when :reports_dropdown
+      "active" if
+        current_page?(users_path)
+
     when :administration_dropdown
       "active" if
         current_page?(units_path) or

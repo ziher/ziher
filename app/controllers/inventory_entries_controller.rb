@@ -89,4 +89,19 @@ class InventoryEntriesController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  # GET /inventory_entries/fixed_assets_report
+  def fixed_assets_report
+    unless current_user.is_superadmin
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
+    @inventory_entries = InventoryEntry.all
+
+    render 'fixed_assets_report', :formats => [:csv]
+
+    response.headers['Content-Type'] = 'text/csv"'
+    response.headers['Content-Disposition'] = 'attachment; filename="spis_z_natury.csv"'
+  end
 end
