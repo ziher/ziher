@@ -6,6 +6,11 @@
 </p>
 
 <p>
+    <b>Kod:</b>
+    <%= @unit.code %>
+</p>
+
+<p>
   <b>Przynależność do grup:</b><br/>
   <% if @unit.groups.each do |g| %>
     <%= g.name %><br />

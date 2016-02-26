@@ -15,7 +15,12 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
-  
+
+  <div class="field">
+    <%= f.label :code %><br />
+    <%= f.text_field :code %>
+  </div>
+
   <div class="field">
     <%= f.label :group_ids %>
     <%= f.select :group_ids, @groups.collect { |g| [ g.name, g.id ] }, {}, { :multiple => true } %>

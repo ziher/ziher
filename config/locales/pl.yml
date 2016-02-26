@@ -46,6 +46,7 @@ pl:
         expense_detailed: "Wydatki szczegółowo"
       unit:
         name: "Nazwa jednostki"
+        code: "Kod jednostki"
         group_ids: "Grupy, do których należy jednostka"
         user_ids: "Użytkownicy przypisani do jednostki"
       user:
