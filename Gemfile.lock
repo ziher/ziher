@@ -82,7 +82,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.11.2)
     orm_adapter (0.5.0)
-    passenger (5.0.24)
+    passenger (5.0.25)
       rack
       rake (>= 0.8.1)
     pg (0.18.4)
