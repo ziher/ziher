@@ -6,7 +6,7 @@ class InventoryEntriesController < ApplicationController
       session[:current_unit_id] = params[:unit_id].to_i
     end
 
-    @inventory_entries = InventoryEntry.where(:unit_id => session[:current_unit_id])
+    @inventory_entries = InventoryEntry.where(:unit_id => session[:current_unit_id]).sort_by!{|entry| entry.date}
     @user_units = Unit.find_by_user(current_user)
 
     respond_to do |format|
@@ -97,7 +97,7 @@ class InventoryEntriesController < ApplicationController
       return
     end
 
-    @inventory_entries = InventoryEntry.all
+    @inventory_entries = InventoryEntry.all.sort_by!{|entry| entry.date}
 
     render 'fixed_assets_report', :formats => [:csv]
 
