@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -173,11 +174,11 @@ CREATE TABLE inventory_entries (
     amount integer,
     is_expense boolean,
     total_value numeric(9,2),
-    comment character varying(255),
     unit_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    inventory_source_id integer
+    inventory_source_id integer,
+    remark character varying(255)
 );
 
 
@@ -361,7 +362,8 @@ CREATE TABLE units (
     id integer NOT NULL,
     name character varying(255),
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    code character varying(255)
 );
 
 
@@ -714,6 +716,13 @@ CREATE UNIQUE INDEX index_inventory_sources_on_name ON inventory_sources USING b
 
 
 --
+-- Name: index_units_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_units_on_code ON units USING btree (code);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -832,3 +841,9 @@ INSERT INTO schema_migrations (version) VALUES ('20140106210952');
 INSERT INTO schema_migrations (version) VALUES ('20140331211018');
 
 INSERT INTO schema_migrations (version) VALUES ('20140414195341');
+
+INSERT INTO schema_migrations (version) VALUES ('20160226193215');
+
+INSERT INTO schema_migrations (version) VALUES ('20160226194900');
+
+INSERT INTO schema_migrations (version) VALUES ('20160226210708');

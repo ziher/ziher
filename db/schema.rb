@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160226194900) do
+ActiveRecord::Schema.define(:version => 20160226210708) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -53,12 +53,11 @@ ActiveRecord::Schema.define(:version => 20160226194900) do
     t.integer  "amount"
     t.boolean  "is_expense"
     t.decimal  "total_value",         :precision => 9, :scale => 2
-    t.string   "comment"
     t.integer  "unit_id"
     t.datetime "created_at",                                        :null => false
     t.datetime "updated_at",                                        :null => false
     t.integer  "inventory_source_id"
-    t.string   "description"
+    t.string   "remark"
   end
 
   create_table "inventory_sources", :force => true do |t|
