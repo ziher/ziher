@@ -35,6 +35,10 @@
   <%= @inventory_entry.stock_number %>
 </p>
 
+<p>
+    <b>Opis:</b>
+    <%= @inventory_entry.description %>
+</p>
 
 <%= link_to 'Edytuj', edit_inventory_entry_path(@inventory_entry) %> |
 <%= link_to 'Wstecz', inventory_entries_path %>

@@ -1,5 +1,5 @@
 <%
-concat "Data\tNumer inwentarzowy\tNazwa\tNumer dokumentu\tŹródło\tPrzychód\tRozchód\tCena jednostkowa\tWartość\tJednostka".html_safe
+concat "Data\tNumer inwentarzowy\tNazwa\tNumer dokumentu\tŹródło\tPrzychód\tRozchód\tCena jednostkowa\tWartość\tOpis\tJednostka".html_safe
 
 @inventory_entries.each do |inventory_entry|
   date = inventory_entry.date
@@ -11,8 +11,9 @@ concat "Data\tNumer inwentarzowy\tNazwa\tNumer dokumentu\tŹródło\tPrzychód\t
   expense = inventory_entry.is_expense ? inventory_entry.amount : '0'
   item_value = inventory_entry.total_value / inventory_entry.amount
   value = inventory_entry.total_value * (inventory_entry.is_expense ? -1 : 1)
+  description = inventory_entry.description
   unit = inventory_entry.unit.name
 
-  concat "\n#{date}\t#{stock}\t#{name}\t#{document}\t#{source}\t#{revenue}\t#{expense}\t#{item_value}\t#{value}\t#{unit}".html_safe
+  concat "\n#{date}\t#{stock}\t#{name}\t#{document}\t#{source}\t#{revenue}\t#{expense}\t#{item_value}\t#{value}\t#{description}\t#{unit}".html_safe
 end
 %>
