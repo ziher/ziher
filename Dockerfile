@@ -1,4 +1,4 @@
-FROM ruby:2.1.2
+FROM ruby:2.3.1
 
 RUN mkdir /ziher
 WORKDIR /ziher
@@ -19,4 +19,4 @@ RUN apt-get update && apt-get install -y \
 ENTRYPOINT passenger start -p 3000 -a 0.0.0.0
 
 # Very, very, very bad hack for Passenger giving errors I don't care about (as for now)
-RUN ln /bin/echo /bin/ps
+# RUN ln /bin/echo /bin/ps
