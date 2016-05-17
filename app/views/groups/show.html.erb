@@ -49,7 +49,7 @@
                 <td><%= render_boolean_icon(uga.can_manage_groups) %></td>
                 <td>
                   <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
-                  <% if can? :destroy, uga %><%= link_to 'Usuń', uga, confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %>
+                  <% if can? :destroy, uga %><%= link_to 'Usuń', uga, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
                 </td>
               </tr>
             </tbody>
@@ -161,7 +161,7 @@
   <div class="span2">
     <div class="pull-right">
       <% if can? :destroy, @group %>
-        <%= link_to 'Usuń grupę', @group, confirm: 'Na pewno usunąć grupę?', method: :delete, class: 'btn btn-small btn-danger' %>
+        <%= link_to 'Usuń grupę', @group, data: { confirm: 'Na pewno usunąć grupę?'}, method: :delete, class: 'btn btn-small btn-danger' %>
       <% end %>
     </div>
   </div>

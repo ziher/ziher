@@ -41,7 +41,7 @@
       <td><%= uua.can_manage_users %></td>
       <td>
         <% if can? :update, @unit %> <%= link_to 'Edytuj', edit_user_unit_association_path(uua, :from => "unit") %> <% end %>
-        <% if can? :update, @unit %> <%= link_to 'Usuń', user_unit_association_path(uua, :from => "unit"), confirm: 'Na pewno usunąć powiązanie?', method: :delete %> <% end %>
+        <% if can? :update, @unit %> <%= link_to 'Usuń', user_unit_association_path(uua, :from => "unit"), data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %> <% end %>
       </td>
     </tr>
   <% end.empty? %>

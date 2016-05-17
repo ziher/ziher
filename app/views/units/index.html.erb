@@ -42,7 +42,7 @@
     <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
     <td class="action-cell"><%= link_to 'Pokaż', unit %></td>
     <td class="action-cell"><%= link_to 'Edytuj', edit_unit_path(unit) %></td>
-    <td class="action-cell"><%= link_to 'Usuń', unit, confirm: 'Na pewno usunąć drużynę?', method: :delete %></td>
+    <td class="action-cell"><%= link_to 'Usuń', unit, data: { confirm: 'Na pewno usunąć drużynę?'}, method: :delete %></td>
   </tr>
 <% end %>
 </table>

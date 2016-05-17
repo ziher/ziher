@@ -53,7 +53,7 @@
     <td><%= inventory_entry.total_value * (inventory_entry.is_expense ? -1 : 1)  %></td>
     <td><%= inventory_entry.remark %></td>
     <td><%= link_to 'Edytuj', edit_inventory_entry_path(inventory_entry) %></td>
-    <td><%= link_to 'Usuń', inventory_entry, confirm: 'Na pewno usunąć wpis?', method: :delete %></td>
+    <td><%= link_to 'Usuń', inventory_entry, data: { confirm: 'Na pewno usunąć wpis?'}, method: :delete %></td>
   </tr>
 <% end %>
 </table>
