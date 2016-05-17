@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby "2.3.1"
+ruby "2.1.9"
 
 gem 'rails', '3.2.22'
 
@@ -62,4 +62,4 @@ gem 'devise', '~> 2.2.5'
 gem 'devise-i18n'
 gem 'devise_invitable', '1.1.2'
 
-gem 'cancan'
+gem 'cancancan', '~> 1.10'

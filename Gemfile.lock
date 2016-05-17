@@ -39,7 +39,7 @@ GEM
     bullet (5.0.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
-    cancan (1.6.10)
+    cancancan (1.14.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -156,7 +156,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_list
   bullet
-  cancan
+  cancancan (~> 1.10)
   coffee-rails (~> 3.2.1)
   devise (~> 2.2.5)
   devise-i18n
@@ -179,4 +179,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.2
+   1.12.4
