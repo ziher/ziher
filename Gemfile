@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby "2.1.9"
 
-gem 'rails', '3.2.22'
+gem 'rails', '4.0.13'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -24,9 +24,9 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
 
   gem 'therubyracer'
   gem 'less-rails'
@@ -58,8 +58,11 @@ end
 
 gem 'rails-i18n'
 
-gem 'devise', '~> 2.2.5'
+gem 'devise'
 gem 'devise-i18n'
-gem 'devise_invitable', '1.1.2'
+gem 'devise_invitable'
 
-gem 'cancancan', '~> 1.10'
+gem 'cancancan'
+
+# TODO: wyrzucic te gemy
+gem 'protected_attributes'
