@@ -34,7 +34,7 @@ class EntriesController < ApplicationController
   # POST /entries.json
   # creates Entry and related Items
   def create
-    @entry = Entry.new(params[:entry])
+    @entry = Entry.new(entry_params)
    
     if params[:is_linked]
       linked_entry = Entry.new(params[:linked_entry])
@@ -89,7 +89,7 @@ class EntriesController < ApplicationController
     end
 
     respond_to do |format|
-      if @entry.update_attributes(params[:entry])
+      if @entry.update_attributes(entry_params)
         format.html { redirect_to @journal, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
@@ -140,5 +140,14 @@ class EntriesController < ApplicationController
       linked_entry.is_expense = !entry.is_expense
       linked_entry.document_number = entry.document_number
       return linked_entry
+  end
+
+  private
+
+  def entry_params
+    if params[:entry]
+      params.require(:entry).permit(:date, :name, :document_number, :journal_id, :is_expense, :linked_entry,
+                                    :items_attributes => [:id, :amount, :category_id])
+    end
   end
 end

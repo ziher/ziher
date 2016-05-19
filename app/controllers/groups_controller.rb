@@ -43,7 +43,7 @@ class GroupsController < ApplicationController
     authorize! :update, @group
 
     respond_to do |format|
-      if @group.update_attributes(params[:group])
+      if @group.update_attributes(group_params)
         format.html { redirect_to @group, notice: 'Group was successfully updated.' }
         format.json { head :ok }
       else
@@ -75,7 +75,7 @@ class GroupsController < ApplicationController
     supergroup = Group.find(params[:supergroup_id])
     authorize! :update, supergroup
     
-    @group = Group.new(params[:group])
+    @group = Group.new(group_params)
     if (@group.subgroups.include?(supergroup))
       @group.subgroups.delete(supergroup)
     end
@@ -105,4 +105,11 @@ class GroupsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  def group_params
+    if params[:group]
+      params.require(:group).permit(:name)
+    end
+  end
+
 end

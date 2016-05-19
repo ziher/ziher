@@ -44,7 +44,7 @@ class InventorySourcesController < ApplicationController
   # POST /inventory_sources
   # POST /inventory_sources.json
   def create
-    @inventory_source = InventorySource.new(params[:inventory_source])
+    @inventory_source = InventorySource.new(inventory_source_params)
     authorize! :create, @inventory_source
 
     respond_to do |format|
@@ -65,7 +65,7 @@ class InventorySourcesController < ApplicationController
     authorize! :update, @inventory_source
 
     respond_to do |format|
-      if @inventory_source.update_attributes(params[:inventory_source])
+      if @inventory_source.update_attributes(inventory_source_params)
         format.html { redirect_to @inventory_source, notice: 'Inventory source was successfully updated.' }
         format.json { head :no_content }
       else
@@ -85,6 +85,14 @@ class InventorySourcesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to inventory_sources_url }
       format.json { head :no_content }
+    end
+  end
+
+  private
+
+  def inventory_source_params
+    if params[:inventory_source]
+      params.require(:inventory_source).permit(:is_active, :name)
     end
   end
 end

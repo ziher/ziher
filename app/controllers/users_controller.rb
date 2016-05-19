@@ -23,7 +23,7 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     authorize! :create, @user
     authorize! :set_superadmin, @user if params[:user][:set_superadmin]
 
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
     authorize! :set_superadmin, @user if params[:user][:set_superadmin]
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         format.html { redirect_to @user, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
@@ -138,4 +138,15 @@ class UsersController < ApplicationController
       end
     end
   end
+
+  private
+
+  def user_params
+    if params[:user]
+      params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :is_superadmin,
+                                   :confirmed_at, :confirmation_sent_at, :units, :unit_ids, :groups, :group_ids,
+                                   :is_blocked, :first_name, :last_name, :phone)
+    end
+  end
+
 end

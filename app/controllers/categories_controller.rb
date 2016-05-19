@@ -44,7 +44,7 @@ class CategoriesController < ApplicationController
   # POST /categories
   # POST /categories.json
   def create
-    @category = Category.new(params[:category])
+    @category = Category.new(category_params)
 
     respond_to do |format|
       if @category.save
@@ -63,7 +63,7 @@ class CategoriesController < ApplicationController
     @category = Category.find(params[:id])
 
     respond_to do |format|
-      if @category.update_attributes(params[:category])
+      if @category.update_attributes(category_params)
         format.html { redirect_to @category, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
@@ -92,5 +92,13 @@ class CategoriesController < ApplicationController
       category.save
     end
     render :nothing => true
+  end
+
+  private
+
+  def category_params
+    if params[:category]
+      params.require(:category).permit(:name, :is_expense, :position, :year, :is_one_percent)
+    end
   end
 end

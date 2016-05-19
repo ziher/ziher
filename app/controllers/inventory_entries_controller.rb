@@ -48,7 +48,7 @@ class InventoryEntriesController < ApplicationController
   # POST /inventory_entries.json
   def create
     @unit = Unit.find_by_id(session[:current_unit_id])
-    @inventory_entry = InventoryEntry.new(params[:inventory_entry])
+    @inventory_entry = InventoryEntry.new(inventory_entries_params)
 
     respond_to do |format|
       if @inventory_entry.save
@@ -68,7 +68,7 @@ class InventoryEntriesController < ApplicationController
     @inventory_entry = InventoryEntry.find(params[:id])
 
     respond_to do |format|
-      if @inventory_entry.update_attributes(params[:inventory_entry])
+      if @inventory_entry.update_attributes(inventory_entries_params)
         format.html { redirect_to @inventory_entry, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
@@ -103,5 +103,14 @@ class InventoryEntriesController < ApplicationController
 
     response.headers['Content-Type'] = 'text/csv"'
     response.headers['Content-Disposition'] = 'attachment; filename="spis_z_natury.csv"'
+  end
+
+  private
+
+  def inventory_entries_params
+    if params[:inventory_entry]
+      params.require(:inventory_entry).permit(:date, :stock_number, :name, :document_number, :amount, :is_expense,
+                                              :total_value, :unit_id, :inventory_source_id, :remark)
+    end
   end
 end

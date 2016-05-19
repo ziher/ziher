@@ -43,7 +43,7 @@ class UnitsController < ApplicationController
     authorize! :update, @unit
 
     respond_to do |format|
-      if @unit.update_attributes(params[:unit])
+      if @unit.update_attributes(unit_params)
         format.html { redirect_to @unit, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
@@ -70,7 +70,7 @@ class UnitsController < ApplicationController
   # POST /units
   # POST /units.json
   def create
-    @unit = Unit.new(params[:unit])
+    @unit = Unit.new(unit_params)
     authorize! :create, @unit
 
     respond_to do |format|
@@ -94,6 +94,14 @@ class UnitsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to units_url }
       format.json { head :ok }
+    end
+  end
+
+  private
+
+  def unit_params
+    if params[:unit]
+      params.require(:unit).permit(:name)
     end
   end
 end
