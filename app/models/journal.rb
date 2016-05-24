@@ -101,7 +101,7 @@ class Journal < ActiveRecord::Base
   end
 
   def find_next_year_journal
-    return Journal.first(:conditions => {:year => self.year + 1, :unit_id => self.unit_id, :journal_type_id => self.journal_type.id})
+    return Journal.where(year: self.year + 1, unit_id: self.unit_id, journal_type_id: self.journal_type.id).first
   end
 
   # Returns one journal of given year and type, or nil if not found

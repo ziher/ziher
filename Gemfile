@@ -52,8 +52,8 @@ gem 'passenger'
 
 group :test do
   # Pretty printed test output
-  gem "turn", "~> 0.9.6", :require => false
-  #gem "minitest", "~> 5.0.7"
+  gem "turn"
+  gem "minitest"
 end
 
 gem 'rails-i18n'

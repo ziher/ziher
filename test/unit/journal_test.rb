@@ -289,15 +289,15 @@ class JournalTest < ActiveSupport::TestCase
   private
 
   def count_sum_for_category(journal, category)
-      entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
-      items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
-      return items_for_category.sum(&:amount)
+      entries_for_category = Entry.where(journal: journal).map(&:id)
+      items_for_category = Item.where(['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
+      return items_for_category.to_a.sum(&:amount)
   end
 
   def count_sum_one_percent_for_category(journal, category)
-    entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
-    items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?) and amount_one_percent IS NOT NULL', category.id, entries_for_category])
-    return items_for_category.sum(&:amount_one_percent)
+    entries_for_category = Entry.where(journal: journal).map(&:id)
+    items_for_category = Item.where(['category_id = ? AND entry_id IN (?) and amount_one_percent IS NOT NULL', category.id, entries_for_category])
+    return items_for_category.to_a.sum(&:amount_one_percent)
   end
 
 end
