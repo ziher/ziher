@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby "2.1.9"
+ruby '2.1.9'
 
 gem 'rails', '4.0.13'
 
@@ -19,6 +19,12 @@ end
 
 # production is set on Heroku right now which needs PostgreSQL
 group :production do
+# Use unicorn as the web server
+# gem 'unicorn'
+  gem 'passenger'
+
+# Deploy with Capistrano
+# gem 'capistrano'
 end
 
 # Gems used only for assets and not required
@@ -40,20 +46,13 @@ gem 'acts_as_list'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
-# Use unicorn as the web server
-# gem 'unicorn'
-gem 'passenger'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :test do
   # Pretty printed test output
-  gem "turn"
-  gem "minitest"
+  gem 'turn'
+  gem 'minitest'
 end
 
 gem 'rails-i18n'
