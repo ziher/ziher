@@ -102,7 +102,7 @@ class JournalTest < ActiveSupport::TestCase
 
   test "should get default journal for current year" do
     year_2015 = Time.parse('2015-05-05')
-    pretend_now_is(year_2015) do
+    Timecop.travel(year_2015) do
       journal_2015 = journals(:finance_2015)
       assert_equal journal_2015, Journal.get_default(journal_types(:finance), users(:master_1zgm))
     end
@@ -110,7 +110,7 @@ class JournalTest < ActiveSupport::TestCase
 
   test "should get default journal for previous year" do
     year_2016 = Time.parse('2016-06-06')
-    pretend_now_is(year_2016) do
+    Timecop.travel(year_2016) do
       journal_2015 = journals(:finance_2015)
       assert_equal journal_2015, Journal.get_default(journal_types(:finance), users(:master_1zgm))
     end

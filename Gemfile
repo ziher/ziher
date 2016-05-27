@@ -2,16 +2,12 @@ source 'http://rubygems.org'
 
 ruby '2.1.9'
 
-gem 'rails', '4.0.13'
+gem 'rails', '~> 4.1.0'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-
-group :development, :test do
-  gem 'time-warp'
-end
 
 group :development do
   gem 'bullet'
@@ -49,8 +45,9 @@ gem 'acts_as_list'
 
 group :test do
   # Pretty printed test output
-  gem 'turn'
-  gem 'minitest'
+  #gem 'turn'
+  #gem 'minitest'
+  gem 'timecop'
 end
 
 gem 'rails-i18n'
