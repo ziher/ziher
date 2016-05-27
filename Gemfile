@@ -27,17 +27,15 @@ group :production do
 # gem 'capistrano'
 end
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'uglifier'
 
-  gem 'therubyracer'
-  gem 'less-rails'
-  gem 'twitter-bootstrap-rails', '2.2.8'
-end
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'uglifier'
+
+gem 'therubyracer'
+gem 'less-rails'
+gem 'twitter-bootstrap-rails', '2.2.8'
+
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
@@ -64,4 +62,4 @@ gem 'devise_invitable'
 gem 'cancancan'
 
 # TODO: wyrzucic te gemy
-gem 'protected_attributes'
+#gem 'protected_attributes'

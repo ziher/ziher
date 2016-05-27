@@ -35,9 +35,6 @@ Ziher::Application.configure do
 
   config.i18n.available_locales = :pl
 
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
-
   # log potential performance problems to bullet.log
   config.after_initialize do
     Bullet.enable = true
