@@ -15,7 +15,7 @@ class CategoriesControllerTest < ActionController::TestCase
     get :index
     years = Category.get_all_years()
     years.each do |year|
-      assert_select "select option[value=#{year}]"
+      assert_select "select option[value='#{year}']"
     end
   end
 

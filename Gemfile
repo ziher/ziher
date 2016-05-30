@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby '2.2.5'
 
-gem 'rails', '~> 4.1.0'
+gem 'rails', '~> 4.2.0'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -11,6 +11,7 @@ gem 'pg'
 
 group :development do
   gem 'bullet'
+  gem 'web-console'
 end
 
 # production is set on Heroku right now which needs PostgreSQL
