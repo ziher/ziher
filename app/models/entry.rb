@@ -119,10 +119,10 @@ class Entry < ActiveRecord::Base
     is_expense = false
     is_income = false
     items.each do |item|
-      if item.amount and item.amount > 0
+      if item.amount && item.amount > 0
         is_expense = true if item.category.is_expense
         is_income = true unless item.category.is_expense
-        if is_expense and is_income
+        if is_expense && is_income
           errors[:base] << "Wpis nie może być jednocześnie wpływem i wydatkiem"
         end
       end
@@ -163,7 +163,7 @@ class Entry < ActiveRecord::Base
   def sum_one_percent
     result = 0
     items.each do |item|
-      if !self.is_expense and item.category.is_one_percent and item.amount_one_percent
+      if !self.is_expense && item.category.is_one_percent && item.amount_one_percent
         result += item.amount_one_percent
       elsif item.amount_one_percent
         result += item.amount_one_percent

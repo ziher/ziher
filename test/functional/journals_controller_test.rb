@@ -35,10 +35,13 @@ class JournalsControllerTest < ActionController::TestCase
     assert_select "td.expense", "-"
   end
 
-  test "scoutmaster cannot create journals" do
+  test "scoutmaster cannot get new journals" do
     get :new
     assert_unauthorized
+  end
 
+  test "scoutmaster cannot create journals" do
+    get :new
     post :create, journal: @new_journal.attributes
     assert_unauthorized
   end

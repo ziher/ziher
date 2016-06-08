@@ -30,7 +30,7 @@ class Journal < ActiveRecord::Base
   def cannot_have_duplicated_type
     if self.journal_type
       found = Journal.find_by_unit_and_year_and_type(self.unit, self.year, self.journal_type)
-      if found and found != self
+      if found && found != self
         add_error_for_duplicated_type
       end
     end

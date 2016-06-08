@@ -97,7 +97,7 @@ class InventoryEntriesController < ApplicationController
       return
     end
 
-    @inventory_entries = InventoryEntry.all.sort_by!{|entry| entry.date}
+    @inventory_entries = InventoryEntry.all.to_a.sort_by!{|entry| entry.date}
 
     render 'fixed_assets_report', :formats => [:csv]
 
