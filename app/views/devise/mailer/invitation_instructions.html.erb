@@ -2,7 +2,7 @@
 
 <p>Ta wiadomość jest zaproszeniem do aplikacji ZiHeR znajdującej się pod adresem <%= root_url %>. Aby zaakceptować zaproszenie, kliknij w link poniżej:</p>
 
-<p><%= link_to 'Akceptuję zaproszenie, bo wiem jak ważne jest poprawne wypełnianie książki finansowej drużyny', accept_invitation_url(@resource, :invitation_token => @resource.invitation_token) %></p>
+<p><%= link_to 'Akceptuję zaproszenie, bo wiem jak ważne jest poprawne wypełnianie książki finansowej drużyny', accept_invitation_url(@resource, :invitation_token => @token) %></p>
 
 <p>Jeśli nie chcesz akceptować zaproszenia, nie chcesz poczuć radości płynącej z poprawnego wypełniania tabelek, albo po prostu porozumiewasz się w języku innym niż polski, nie klikaj w powyższy link.</p>
 
