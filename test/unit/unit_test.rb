@@ -38,7 +38,7 @@ class UnitTest < ActiveSupport::TestCase
   test "should return all journal years including current" do
     #given
     year_2025 = Time.parse('2025-05-05')
-    pretend_now_is(year_2025) do
+    Timecop.travel(year_2025) do
       troop_1zgm = units(:troop_1zgm)
       finance_type = journal_types(:finance)
 
@@ -56,7 +56,7 @@ class UnitTest < ActiveSupport::TestCase
   test "should return journal years sorted" do
     #given
     year_2005 = Time.parse('2005-05-05')
-    pretend_now_is(year_2005) do
+    Timecop.travel(year_2005) do
       troop_1zgm = units(:troop_1zgm)
       finance_type = journal_types(:finance)
 
@@ -71,7 +71,7 @@ class UnitTest < ActiveSupport::TestCase
   test "should not return duplicate years" do
     #given
     year_2012 = Time.parse('2012-05-05')
-    pretend_now_is(year_2012) do
+    Timecop.travel(year_2012) do
       troop_1zgm = units(:troop_1zgm)
       finance_type = journal_types(:finance)
 

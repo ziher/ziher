@@ -171,7 +171,7 @@ class EntryTest < ActiveSupport::TestCase
     entry = entries(:expense_one)
 
     expected_sum = 0
-    Item.find_all_by_entry_id(entry.id).each do |item|
+    Item.where(entry: entry).each do |item|
       expected_sum += item.amount
     end
 

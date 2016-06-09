@@ -42,7 +42,7 @@ class JournalTypesController < ApplicationController
   # POST /journal_types
   # POST /journal_types.json
   def create
-    @journal_type = JournalType.new(params[:journal_type])
+    @journal_type = JournalType.new(journal_type_params)
 
     respond_to do |format|
       if @journal_type.save
@@ -61,7 +61,7 @@ class JournalTypesController < ApplicationController
     @journal_type = JournalType.find(params[:id])
 
     respond_to do |format|
-      if @journal_type.update_attributes(params[:journal_type])
+      if @journal_type.update_attributes(journal_type_params)
         format.html { redirect_to @journal_type, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
@@ -80,6 +80,14 @@ class JournalTypesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to journal_types_url }
       format.json { head :ok }
+    end
+  end
+
+  private
+
+  def journal_type_params
+    if params[:journal_type]
+      params.require(:journal_type).permit(:name)
     end
   end
 end

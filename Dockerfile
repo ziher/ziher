@@ -1,4 +1,4 @@
-FROM ruby:2.1.9
+FROM ruby:2.3.1
 
 RUN mkdir /ziher
 WORKDIR /ziher

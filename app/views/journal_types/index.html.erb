@@ -13,7 +13,7 @@
     <td><%= journal_type.name %></td>
     <td><%= link_to 'Pokaż', journal_type %></td>
     <td><%= link_to 'Edytuj', edit_journal_type_path(journal_type) %></td>
-    <td><%= link_to 'Usuń', journal_type, confirm: 'Na pewno usunąć rodzaj książki?', method: :delete %></td>
+    <td><%= link_to 'Usuń', journal_type, data: { confirm: 'Na pewno usunąć rodzaj książki?'}, method: :delete %></td>
   </tr>
 <% end %>
 </table>

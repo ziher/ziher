@@ -102,7 +102,7 @@ class JournalTest < ActiveSupport::TestCase
 
   test "should get default journal for current year" do
     year_2015 = Time.parse('2015-05-05')
-    pretend_now_is(year_2015) do
+    Timecop.travel(year_2015) do
       journal_2015 = journals(:finance_2015)
       assert_equal journal_2015, Journal.get_default(journal_types(:finance), users(:master_1zgm))
     end
@@ -110,7 +110,7 @@ class JournalTest < ActiveSupport::TestCase
 
   test "should get default journal for previous year" do
     year_2016 = Time.parse('2016-06-06')
-    pretend_now_is(year_2016) do
+    Timecop.travel(year_2016) do
       journal_2015 = journals(:finance_2015)
       assert_equal journal_2015, Journal.get_default(journal_types(:finance), users(:master_1zgm))
     end
@@ -289,15 +289,15 @@ class JournalTest < ActiveSupport::TestCase
   private
 
   def count_sum_for_category(journal, category)
-      entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
-      items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
-      return items_for_category.sum(&:amount)
+      entries_for_category = Entry.where(journal: journal).map(&:id)
+      items_for_category = Item.where(['category_id = ? AND entry_id IN (?)', category.id, entries_for_category])
+      return items_for_category.to_a.sum(&:amount)
   end
 
   def count_sum_one_percent_for_category(journal, category)
-    entries_for_category = Entry.find_all_by_journal_id(journal.id).map(&:id)
-    items_for_category = Item.find(:all, :conditions => ['category_id = ? AND entry_id IN (?) and amount_one_percent IS NOT NULL', category.id, entries_for_category])
-    return items_for_category.sum(&:amount_one_percent)
+    entries_for_category = Entry.where(journal: journal).map(&:id)
+    items_for_category = Item.where(['category_id = ? AND entry_id IN (?) and amount_one_percent IS NOT NULL', category.id, entries_for_category])
+    return items_for_category.to_a.sum(&:amount_one_percent)
   end
 
 end

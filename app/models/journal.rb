@@ -30,7 +30,7 @@ class Journal < ActiveRecord::Base
   def cannot_have_duplicated_type
     if self.journal_type
       found = Journal.find_by_unit_and_year_and_type(self.unit, self.year, self.journal_type)
-      if found and found != self
+      if found && found != self
         add_error_for_duplicated_type
       end
     end
@@ -101,7 +101,7 @@ class Journal < ActiveRecord::Base
   end
 
   def find_next_year_journal
-    return Journal.first(:conditions => {:year => self.year + 1, :unit_id => self.unit_id, :journal_type_id => self.journal_type.id})
+    return Journal.where(year: self.year + 1, unit_id: self.unit_id, journal_type_id: self.journal_type.id).first
   end
 
   # Returns one journal of given year and type, or nil if not found

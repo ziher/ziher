@@ -57,7 +57,7 @@
       <td><%= uga.can_manage_groups %></td>
       <td>
         <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
-        <% if can? :destroy, uga %><%= link_to 'Usuń', uga, confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %>
+        <% if can? :destroy, uga %><%= link_to 'Usuń', uga, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
       </td>
     </tr>
   <% end.empty? %>
@@ -88,7 +88,7 @@
       <td><%= uua.can_manage_users %></td>
       <td>
         <% if can? :update, uua %><%= link_to 'Edytuj', edit_user_unit_association_path(uua) %><% end %>
-        <% if can? :destroy, uua %><%= link_to 'Usuń', uua, confirm: 'Na pewno usunąć powiązanie?', method: :delete %><% end %>
+        <% if can? :destroy, uua %><%= link_to 'Usuń', uua, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
       </td>
     </tr>
   <% end.empty? %>
@@ -103,19 +103,19 @@
   <% if can? :update, @user %><%= link_to 'Edytuj', edit_user_path(@user), :accesskey => 'e' %> |<% end %>
   <% if can? :update, @user %>
     <% if @user.is_blocked %>
-      <%= link_to  'Odblokuj', unblock_user_path(@user), :confirm => 'Czy chcesz pozwolić użytkownikowi na zalogowanie się?', :title => 'Umożliwia użytkownikowi zalogowanie się' %> |
+      <%= link_to  'Odblokuj', unblock_user_path(@user), data: { confirm: 'Czy chcesz pozwolić użytkownikowi na zalogowanie się?'}, :title => 'Umożliwia użytkownikowi zalogowanie się' %> |
     <% else %>
-      <%= link_to 'Zablokuj', block_user_path(@user), :confirm => 'Czy chcez zablokować możliwość zalogowania się?', :title => 'Pozbawia użytkownika możliwości zalogowania się' %> |
+      <%= link_to 'Zablokuj', block_user_path(@user), data: { confirm: 'Czy chcez zablokować możliwość zalogowania się?'}, :title => 'Pozbawia użytkownika możliwości zalogowania się' %> |
     <% end %>
   <% end %>
   <% if current_user.is_superadmin %>
     <% if @user.is_superadmin %>
-      <%= link_to 'Zdegraduj', demote_user_path(@user), :confirm => 'Pozbawić użytkownika roli superadmina?', :title => 'Pozbawia użytkownika roli superadmina' %> |
+      <%= link_to 'Zdegraduj', demote_user_path(@user), data: { confirm: 'Pozbawić użytkownika roli superadmina?'}, :title => 'Pozbawia użytkownika roli superadmina' %> |
     <% else %>
-      <%= link_to 'Awansuj', promote_user_path(@user), :confirm => 'Awansować użytkownika do roli superadmina?', :title => 'Awansuje użytkownika do roli superadmina' %> |
+      <%= link_to 'Awansuj', promote_user_path(@user), data: { confirm: 'Awansować użytkownika do roli superadmina?'}, :title => 'Awansuje użytkownika do roli superadmina' %> |
     <% end %>
   <% end %>
-  <% if can? :destroy, @user %><%= link_to 'Usuń', @user, confirm: 'Na pewno usunąć użytkownika?', method: :delete %><% end %>
+  <% if can? :destroy, @user %><%= link_to 'Usuń', @user, data: { confirm: 'Na pewno usunąć użytkownika?'}, method: :delete %><% end %>
 </p>
 
 <p>
