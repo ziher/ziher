@@ -46,38 +46,44 @@ select *
   end
 
   def initial_finance_balance(year)
-    finance_journal = self.journals.where(journal_type_id: JournalType::FINANCE_TYPE_ID, year: year).first
-    if finance_journal.nil?
+    journal = get_journal_by_type_and_year(JournalType::FINANCE_TYPE_ID, year)
+    if journal.nil?
       nil
     else
-      finance_journal.initial_balance
+      journal.initial_balance
     end
   end
 
   def initial_finance_balance_one_percent(year)
-    finance_journal = self.journals.where(journal_type_id: JournalType::FINANCE_TYPE_ID, year: year).first
-    if finance_journal.nil?
+    journal = get_journal_by_type_and_year(JournalType::FINANCE_TYPE_ID, year)
+    if journal.nil?
       nil
     else
-      finance_journal.initial_balance_one_percent
+      journal.initial_balance_one_percent
     end
   end
 
   def initial_bank_balance(year)
-    finance_journal = self.journals.where(journal_type_id: JournalType::BANK_TYPE_ID, year: year).first
-    if finance_journal.nil?
+    journal = get_journal_by_type_and_year(JournalType::BANK_TYPE_ID, year)
+    if journal.nil?
       nil
     else
-      finance_journal.initial_balance
+      journal.initial_balance
     end
   end
 
   def initial_bank_balance_one_percent(year)
-    finance_journal = self.journals.where(journal_type_id: JournalType::BANK_TYPE_ID, year: year).first
-    if finance_journal.nil?
+    journal = get_journal_by_type_and_year(JournalType::BANK_TYPE_ID, year)
+    if journal.nil?
       nil
     else
-      finance_journal.initial_balance_one_percent
+      journal.initial_balance_one_percent
     end
+  end
+
+  private
+
+  def get_journal_by_type_and_year(type, year)
+    return self.journals.where(journal_type_id: type, year: year).first
   end
 end
