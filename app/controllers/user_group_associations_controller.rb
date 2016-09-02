@@ -16,8 +16,10 @@ class UserGroupAssociationsController < ApplicationController
     authorize! :update, @user_group_association
 
     respond_to do |format|
-      if @user_group_association.update_attributes(params[:user_group_association])
-        format.html { redirect_to params[:from] == "group" ? @user_group_association.group : @user_group_association.user, notice: 'Zmiany zapisane.' }
+      if @user_group_association.update_attributes(uga_params)
+        target = params[:from] == "group" ? @user_group_association.group : @user_group_association.user
+
+        format.html { redirect_to target, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -40,12 +42,14 @@ class UserGroupAssociationsController < ApplicationController
   end
 
   def create
-    @user_group_association = UserGroupAssociation.new(params[:user_group_association])
+    @user_group_association = UserGroupAssociation.new(uga_params)
     authorize! :create, @user_group_association
     
     respond_to do |format|
       if @user_group_association.save
-        format.html { redirect_to params[:from] == "group" ? @user_group_association.group : @user_group_association.user, notice: 'Użytkownik przypisany do grupy.' }
+        target = params[:from] == "group" ? @user_group_association.group : @user_group_association.user
+
+        format.html { redirect_to target, notice: 'Użytkownik przypisany do grupy.' }
         format.json { render json: @user_group_association, status: :created, location: @user_group_association }
       else
         format.html { render action: "new" }
@@ -58,12 +62,23 @@ class UserGroupAssociationsController < ApplicationController
     @user_group_association = UserGroupAssociation.find(params[:id])
     authorize! :destroy, @user_group_association
 
-    user = @user_group_association.user
     @user_group_association.destroy
 
     respond_to do |format|
-      format.html { redirect_to params[:from] == "group" ? group : user }
+      target = params[:from] == "group" ? group : @user_group_association.user
+
+      format.html { redirect_to target}
       format.json { head :ok }
+    end
+  end
+
+  private
+
+  def uga_params
+    if params[:user_group_association]
+      params.require(:user_group_association).permit(:user_id, :group_id, :can_view_entries, :can_manage_entries,
+                                                     :can_close_journals, :can_manage_users, :can_manage_units,
+                                                     :can_manage_groups)
     end
   end
 end

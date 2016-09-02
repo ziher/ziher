@@ -16,8 +16,10 @@ class UserUnitAssociationsController < ApplicationController
     authorize! :update, @user_unit_association
 
     respond_to do |format|
-      if @user_unit_association.update_attributes(params[:user_unit_association])
-        format.html { redirect_to params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user, notice: 'Zmiany zapisane.' }
+      if @user_unit_association.update_attributes(uua_params)
+        target = params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user
+
+        format.html { redirect_to target, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -40,12 +42,14 @@ class UserUnitAssociationsController < ApplicationController
   end
 
   def create
-    @user_unit_association = UserUnitAssociation.new(params[:user_unit_association])
+    @user_unit_association = UserUnitAssociation.new(uua_params)
     authorize! :create, @user_unit_association
-    
+
     respond_to do |format|
       if @user_unit_association.save
-        format.html { redirect_to params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user, notice: 'Użytkownik przypisany do jednostki.' }
+        target = params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user
+
+        format.html { redirect_to target, notice: 'Użytkownik przypisany do jednostki.' }
         format.json { render json: @user_unit_association, status: :created, location: @user_unit_association }
       else
         format.html { render action: "new" }
@@ -63,8 +67,19 @@ class UserUnitAssociationsController < ApplicationController
     @user_unit_association.destroy
 
     respond_to do |format|
-      format.html { redirect_to params[:from] == "unit" ? unit : user }
+      target = params[:from] == "unit" ? unit : user
+
+      format.html { redirect_to target }
       format.json { head :ok }
+    end
+  end
+
+  private
+
+  def uua_params
+    if params[:user_unit_association]
+      params.require(:user_unit_association).permit(:user_id, :unit_id, :can_view_entries, :can_manage_entries,
+                                                    :can_close_journals, :can_manage_users)
     end
   end
 end
