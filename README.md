@@ -6,6 +6,7 @@ Open source book of account platform used by the scouts teams from [Związek Har
 [![Build Status](https://travis-ci.org/zhr/ziher.png?branch=master)](https://travis-ci.org/zhr/ziher)
 [![Code Climate](https://codeclimate.com/github/zhr/ziher.png)](https://codeclimate.com/github/zhr/ziher)
 [![Coverage Status](https://coveralls.io/repos/zhr/ziher/badge.png)](https://coveralls.io/r/zhr/ziher)
+[![Stories in Backlog](https://badge.waffle.io/zhr/ziher.png?label=backlog)](https://waffle.io/zhr/ziher)
 [![Stories in Ready](https://badge.waffle.io/zhr/ziher.png?label=ready)](https://waffle.io/zhr/ziher)
 
 ## Getting started
