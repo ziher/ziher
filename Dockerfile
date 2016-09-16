@@ -1,5 +1,8 @@
 FROM ruby:2.3.1
 
+ENV RAILS_RELATIVE_URL_ROOT=/
+ENV RAILS_ENV=production
+
 RUN mkdir /ziher
 WORKDIR /ziher
 COPY Gemfile /ziher/Gemfile
@@ -8,7 +11,7 @@ RUN bundle install
 
 COPY config/initializers/version.rb /ziher/config/initializers/version.rb
 COPY . /ziher
-RUN RAILS_RELATIVE_URL_ROOT=/ RAILS_ENV=production rake assets:precompile --trace
+RUN rake assets:precompile --trace
 
 RUN apt-get update && apt-get install -y \
   build-essential \
