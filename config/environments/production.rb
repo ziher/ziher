@@ -1,6 +1,8 @@
 Ziher::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  config.assets.prefix = ENV["RAILS_RELATIVE_URL_ROOT"]
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
