@@ -6,7 +6,7 @@
 
 MAJOR=${MAJOR_VERSION:-2}
 MINOR=${MINOR_VERSION:-1}
-PATCH=${PATCH_VERSION:-2}
+PATCH=${PATCH_VERSION:-3}
 BUILD=${BUILD_VERSION:-`git describe --always`}
 
 VERSION_FILE="config/initializers/version.rb"
