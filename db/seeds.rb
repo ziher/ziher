@@ -205,73 +205,56 @@ dchhek = Group.create!(name: 'Dolnośląska Chorągiew Harcerek', subgroups: [wr
 dlnsl.subgroups.push(dchhy, dchhek)
 
 user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
-user.confirm!
 
 druzynowy_dukt = User.create!(email: 'druzynowy_dukt@zhr.com', password: 'druzynowy_dukt@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-druzynowy_dukt.confirm!
 UserUnitAssociation.create!(user: druzynowy_dukt, unit: dukt, can_view_entries: true, can_manage_entries: true)
 UserUnitAssociation.create!(user: druzynowy_dukt, unit: pajaki, can_view_entries: true)
 
 druzynowy_pajaki = User.create!(email: 'druzynowy_pajaki@zhr.com', password: 'druzynowy_pajaki@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-druzynowy_pajaki.confirm!
 UserUnitAssociation.create!(user: druzynowy_pajaki, unit: pajaki, can_view_entries: true, can_manage_entries: true)
 
 druzynowa_wiklina = User.create!(email: 'druzynowa_wiklina@zhr.com', password: 'druzynowa_wiklina@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-druzynowa_wiklina.confirm!
 UserUnitAssociation.create!(user: druzynowa_wiklina, unit: wiklina, can_view_entries: true, can_manage_entries: true)
 
 druzynowa_orleta = User.create!(email: 'druzynowa_orleta@zhr.com', password: 'druzynowa_orleta@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-druzynowa_orleta.confirm!
 UserUnitAssociation.create!(user: druzynowa_orleta, unit: orleta, can_view_entries: true, can_manage_entries: true)
 
 druzynowa_wigryk = User.create!(email: 'druzynowa_wigryk@zhr.com', password: 'druzynowa_wigryk@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-druzynowa_wigryk.confirm!
 UserUnitAssociation.create!(user: druzynowa_wigryk, unit: wigryk, can_view_entries: true, can_manage_entries: true)
 
 hufcowyzg = User.create!(email: 'hufcowy_zg@zhr.com', password: 'hufcowy_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-hufcowyzg.confirm!
 UserGroupAssociation.create!(user: hufcowyzg, group: zhhy, can_view_entries: true)
 UserUnitAssociation.create!(user: hufcowyzg, unit: dukt, can_view_entries: true, can_manage_entries: true)
 
 hufcowazg = User.create!(email: 'hufcowa_zg@zhr.com', password: 'hufcowa_zg@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-hufcowazg.confirm!
 UserGroupAssociation.create!(user: hufcowazg, group: zhhek, can_view_entries: true)
 UserUnitAssociation.create!(user: hufcowazg, unit: orleta, can_view_entries: true, can_manage_entries: true)
 
 skarbnik_wlp = User.create!(email: 'skarbnik_wlp@zhr.com', password: 'skarbnik_wlp@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-skarbnik_wlp.confirm!
 UserGroupAssociation.create!(user: skarbnik_wlp, group: wlp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 druzynowy_wrch1 = User.create!(email: 'druzynowy_wrch1@zhr.com', password: 'druzynowy_wrch1@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
-druzynowy_wrch1.confirm!
 UserUnitAssociation.create!(user: druzynowy_wrch1, unit: wrch1, can_view_entries: true, can_manage_entries: true)
 
 druzynowy_wrch2 = User.create!(email: 'druzynowy_wrch2@zhr.com', password: 'druzynowy_wrch2@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
-druzynowy_wrch2.confirm!
 UserUnitAssociation.create!(user: druzynowy_wrch2, unit: wrch2, can_view_entries: true, can_manage_entries: true)
 
 druzynowa_wrdz1 = User.create!(email: 'druzynowa_wrdz1@zhr.com', password: 'druzynowa_wrdz1@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
-druzynowa_wrdz1.confirm!
 UserUnitAssociation.create!(user: druzynowa_wrdz1, unit: wrdz1, can_view_entries: true, can_manage_entries: true)
 
 druzynowa_wrdz2 = User.create!(email: 'druzynowa_wrdz2@zhr.com', password: 'druzynowa_wrdz2@zhr.com', confirmed_at: '2013-08-26 01:01:01', confirmation_sent_at: '2013-08-26 20:00:00')
-druzynowa_wrdz2.confirm!
 UserUnitAssociation.create!(user: druzynowa_wrdz2, unit: wrdz2, can_view_entries: true, can_manage_entries: true)
 
 hufcowywr = User.create!(email: 'hufcowy_wr@zhr.com', password: 'hufcowy_wr@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-hufcowywr.confirm!
 UserGroupAssociation.create!(user: hufcowywr, group: wrhhy, can_view_entries: true)
 
 hufcowawr = User.create!(email: 'hufcowa_wr@zhr.com', password: 'hufcowa_wr@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-hufcowawr.confirm!
 UserGroupAssociation.create!(user: hufcowawr, group: wrhhek, can_view_entries: true)
 
 skarbnik_dlnsl = User.create!(email: 'skarbnik_dlnsl@zhr.com', password: 'skarbnik_dlnsl@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-skarbnik_dlnsl.confirm!
 UserGroupAssociation.create!(user: skarbnik_dlnsl, group: dlnsl, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
 skarbnik_zachodu = User.create!(email: 'skarbnik_zachodu@zhr.com', password: 'skarbnik_zachodu@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
-skarbnik_zachodu.confirm!
 UserGroupAssociation.create!(user: skarbnik_zachodu, group: wlp, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: false, can_manage_groups: false)
 UserGroupAssociation.create!(user: skarbnik_zachodu, group: dlnsl, can_view_entries: true, can_manage_entries: true, can_close_journals: true, can_manage_users: true, can_manage_units: true, can_manage_groups: true)
 
