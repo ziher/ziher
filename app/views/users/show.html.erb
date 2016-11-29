@@ -112,10 +112,9 @@
     <% if @user.is_superadmin %>
       <%= link_to 'Zdegraduj', demote_user_path(@user), data: { confirm: 'Pozbawić użytkownika roli superadmina?'}, :title => 'Pozbawia użytkownika roli superadmina' %> |
     <% else %>
-      <%= link_to 'Awansuj', promote_user_path(@user), data: { confirm: 'Awansować użytkownika do roli superadmina?'}, :title => 'Awansuje użytkownika do roli superadmina' %> |
+      <%= link_to 'Awansuj', promote_user_path(@user), data: { confirm: 'Awansować użytkownika do roli superadmina?'}, :title => 'Awansuje użytkownika do roli superadmina' %>
     <% end %>
   <% end %>
-  <% if can? :destroy, @user %><%= link_to 'Usuń', @user, data: { confirm: 'Na pewno usunąć użytkownika?'}, method: :delete %><% end %>
 </p>
 
 <p>
