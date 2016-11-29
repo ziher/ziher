@@ -25,7 +25,7 @@ To get ZiHeR up and running on your local machine:
 
 ## Copyright / License
 
-Copyright 2013 Andrzej Stencel, Magda Stożek, Marcin Stożek
+Copyright 2013 Marcin Stożek, Magda Stożek, Andrzej Stencel
 
 Licensed under the GNU General Public License Version 2.0 (or later);
 you may not use this work except in compliance with the License.
