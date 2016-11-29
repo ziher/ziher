@@ -204,7 +204,7 @@ dchhy = Group.create!(name: 'Dolnośląska Chorągiew Harcerzy', subgroups: [wrh
 dchhek = Group.create!(name: 'Dolnośląska Chorągiew Harcerek', subgroups: [wrhhek])
 dlnsl.subgroups.push(dchhy, dchhek)
 
-user = User.create!(email: 'ziher_to@zhr.pl', password: '0xDEADBEEF', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
+user = User.create!(email: 'dev@zhr.pl', password: 'dev@zhr.pl', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
 
 druzynowy_dukt = User.create!(email: 'druzynowy_dukt@zhr.com', password: 'druzynowy_dukt@zhr.com', confirmed_at: '2013-02-23 20:02:00', confirmation_sent_at: '2013-02-23 20:00:00')
 UserUnitAssociation.create!(user: druzynowy_dukt, unit: dukt, can_view_entries: true, can_manage_entries: true)
