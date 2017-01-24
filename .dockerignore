@@ -1,11 +1,15 @@
 bootstrap-vagrant.sh
 docker-compose.yml
 Dockerfile
+docker/
 .dockerignore
 .git
 .gitignore
+.idea
 import-database.sh
 *.dump
 .travis.yml
 .vagrant
 Vagrantfile
+build.sh
+update-version.sh

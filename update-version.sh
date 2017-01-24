@@ -12,5 +12,6 @@ BUILD=${BUILD_VERSION:-`git describe --always`}
 VERSION_FILE="config/initializers/version.rb"
 VERSION_STRING="VERSION = [\"${MAJOR}\", \"${MINOR}\", \"${PATCH}\", \"${BUILD}\"]"
 
-echo $VERSION_STRING
 echo $VERSION_STRING > $VERSION_FILE
+
+echo ${MAJOR}.${MINOR}.${PATCH}-${BUILD}
