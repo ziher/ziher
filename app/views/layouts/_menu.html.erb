@@ -26,8 +26,6 @@
             <% if current_user.can_manage_any_group %><li class="<%= menu_active?(:groups) %>"> <%= link_to "Grupy", groups_path %> </li><% end %>
             <% if can? :manage, Journal or can? :manage, JournalType or can? :manage, Category or can? :manage, InventorySource %>
                 <li class="divider"></li>
-                <% if can? :manage, Journal %><li class="<%= menu_active?(:journals) %>"> <%= link_to "Książki", journals_path %> </li><% end %>
-                <% if can? :manage, JournalType %><li class="<%= menu_active?(:journal_types) %>"> <%= link_to "Rodzaje książek", journal_types_path %> </li><% end %>
                 <% if can? :manage, Category %><li class="<%= menu_active?(:categories) %>"> <%= link_to "Plan kont", categories_path %> </li><% end %>
                 <% if can? :manage, InventorySource %><li class="<%= menu_active?(:inventory_sources) %>"> <%= link_to "Źródła inwentarza", inventory_sources_path %> </li><% end %>
             <% end %>
