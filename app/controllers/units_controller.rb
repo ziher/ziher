@@ -58,7 +58,6 @@ class UnitsController < ApplicationController
   def new
     @unit = Unit.new
     @groups = Group.find_by_user(current_user, { :can_manage_units => true })
-    @unit.groups.push(@groups.first)
     authorize! :create, @unit
 
     respond_to do |format|
