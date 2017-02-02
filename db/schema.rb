@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20160226210708) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "categories", force: true do |t|
+  create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.boolean  "is_expense"
     t.datetime "created_at"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20160226210708) do
     t.boolean  "is_one_percent", default: false
   end
 
-  create_table "entries", force: true do |t|
+  create_table "entries", force: :cascade do |t|
     t.date     "date"
     t.string   "name"
     t.string   "document_number"
@@ -37,18 +37,18 @@ ActiveRecord::Schema.define(version: 20160226210708) do
     t.integer  "linked_entry_id"
   end
 
-  create_table "groups", force: true do |t|
+  create_table "groups", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "groups_units", force: true do |t|
+  create_table "groups_units", force: :cascade do |t|
     t.integer "group_id"
     t.integer "unit_id"
   end
 
-  create_table "inventory_entries", force: true do |t|
+  create_table "inventory_entries", force: :cascade do |t|
     t.date     "date"
     t.string   "stock_number"
     t.string   "name"
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20160226210708) do
     t.string   "remark"
   end
 
-  create_table "inventory_sources", force: true do |t|
+  create_table "inventory_sources", force: :cascade do |t|
     t.string   "name"
     t.boolean  "is_active"
     t.datetime "created_at"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20160226210708) do
 
   add_index "inventory_sources", ["name"], name: "index_inventory_sources_on_name", unique: true, using: :btree
 
-  create_table "items", force: true do |t|
+  create_table "items", force: :cascade do |t|
     t.decimal  "amount",             precision: 9, scale: 2
     t.decimal  "amount_one_percent", precision: 9, scale: 2
     t.integer  "entry_id"
@@ -81,14 +81,14 @@ ActiveRecord::Schema.define(version: 20160226210708) do
     t.datetime "updated_at"
   end
 
-  create_table "journal_types", force: true do |t|
+  create_table "journal_types", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_default", default: false
   end
 
-  create_table "journals", force: true do |t|
+  create_table "journals", force: :cascade do |t|
     t.integer  "year"
     t.integer  "unit_id"
     t.integer  "journal_type_id"
@@ -99,12 +99,12 @@ ActiveRecord::Schema.define(version: 20160226210708) do
     t.decimal  "initial_balance_one_percent", precision: 9, scale: 2, default: 0.0, null: false
   end
 
-  create_table "subgroups", id: false, force: true do |t|
+  create_table "subgroups", id: false, force: :cascade do |t|
     t.integer "group_id"
     t.integer "subgroup_id"
   end
 
-  create_table "units", force: true do |t|
+  create_table "units", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 20160226210708) do
 
   add_index "units", ["code"], name: "index_units_on_code", unique: true, using: :btree
 
-  create_table "user_group_associations", force: true do |t|
+  create_table "user_group_associations", force: :cascade do |t|
     t.integer  "group_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 20160226210708) do
     t.boolean  "can_manage_groups",  default: false
   end
 
-  create_table "user_unit_associations", force: true do |t|
+  create_table "user_unit_associations", force: :cascade do |t|
     t.integer "unit_id"
     t.integer "user_id"
     t.boolean "can_view_entries",   default: false
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 20160226210708) do
     t.boolean "can_manage_users",   default: false
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                             default: "",    null: false
     t.string   "encrypted_password",                default: ""
     t.string   "reset_password_token"

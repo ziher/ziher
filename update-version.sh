@@ -4,9 +4,10 @@
 # Updates VERSION. Use MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, BUILD_VERSION to override defaults
 
 
-MAJOR=${MAJOR_VERSION:-2}
-MINOR=${MINOR_VERSION:-1}
-PATCH=${PATCH_VERSION:-3}
+MAJOR=2
+MINOR=1
+PATCH=4
+
 BUILD=${BUILD_VERSION:-`git describe --always`}
 
 VERSION_FILE="config/initializers/version.rb"
