@@ -20,6 +20,3 @@ RUN apt-get update && apt-get install -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT passenger start -p 3000 -a 0.0.0.0
-
-# Very, very, very bad hack for Passenger giving errors I don't care about (as for now)
-# RUN ln /bin/echo /bin/ps
