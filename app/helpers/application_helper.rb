@@ -41,7 +41,7 @@ module ApplicationHelper
 
     when :reports_dropdown
       "active" if
-        current_page?(users_path)
+        false
 
     when :administration_dropdown
       "active" if
