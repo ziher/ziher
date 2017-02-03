@@ -14,3 +14,9 @@ en:
     mailer:
       invitation_instructions:
         subject: 'Invitation instructions'
+    registrations:
+      edit:
+        title: 'Change user settings'
+        submit_button: 'Save'
+        new_password_info: "leave blank if you don't want to change it"
+        current_password_info: 'we need your current password to confirm your changes'

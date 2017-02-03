@@ -14,3 +14,9 @@ pl:
     mailer:
       invitation_instructions:
         subject: "Zaproszenie do ZiHeR"
+    registrations:
+      edit:
+        title: 'Zmień ustawienia konta'
+        submit_button: 'Zapisz'
+        new_password_info: 'pozostaw puste, jeśli nie chcesz wprowadzać zmian'
+        current_password_info: 'potrzebujemy Twojego bieżącego hasła, aby potwierdzić zmiany'
