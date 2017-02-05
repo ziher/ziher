@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         @user.invite!(current_user)
-        format.html { redirect_to @user, notice: 'Uzytkownik utworzony.' }
+        format.html { redirect_to @user, notice: 'Użytkownik utworzony - wysłano email z zaproszeniem.' }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
