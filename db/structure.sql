@@ -35,10 +35,10 @@ SET default_with_oids = false;
 
 CREATE TABLE categories (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     is_expense boolean,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     "position" integer,
     year integer,
     is_one_percent boolean DEFAULT false
@@ -71,10 +71,10 @@ ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
 CREATE TABLE entries (
     id integer NOT NULL,
     date date,
-    name character varying(255),
-    document_number character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    name character varying,
+    document_number character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     journal_id integer,
     is_expense boolean,
     linked_entry_id integer
@@ -106,9 +106,9 @@ ALTER SEQUENCE entries_id_seq OWNED BY entries.id;
 
 CREATE TABLE groups (
     id integer NOT NULL,
-    name character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    name character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -168,17 +168,17 @@ ALTER SEQUENCE groups_units_id_seq OWNED BY groups_units.id;
 CREATE TABLE inventory_entries (
     id integer NOT NULL,
     date date,
-    stock_number character varying(255),
-    name character varying(255),
-    document_number character varying(255),
+    stock_number character varying,
+    name character varying,
+    document_number character varying,
     amount integer,
     is_expense boolean,
     total_value numeric(9,2),
     unit_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     inventory_source_id integer,
-    remark character varying(255)
+    remark character varying
 );
 
 
@@ -207,10 +207,10 @@ ALTER SEQUENCE inventory_entries_id_seq OWNED BY inventory_entries.id;
 
 CREATE TABLE inventory_sources (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     is_active boolean,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -243,8 +243,8 @@ CREATE TABLE items (
     amount_one_percent numeric(9,2),
     entry_id integer,
     category_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -273,9 +273,9 @@ ALTER SEQUENCE items_id_seq OWNED BY items.id;
 
 CREATE TABLE journal_types (
     id integer NOT NULL,
-    name character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    name character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     is_default boolean DEFAULT false
 );
 
@@ -308,10 +308,10 @@ CREATE TABLE journals (
     year integer,
     unit_id integer,
     journal_type_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     is_open boolean,
-    initial_balance numeric(9,2) DEFAULT 0.0 NOT NULL,
+    initial_balance numeric(9,2) DEFAULT 0 NOT NULL,
     initial_balance_one_percent numeric(9,2) DEFAULT 0.0 NOT NULL
 );
 
@@ -340,7 +340,7 @@ ALTER SEQUENCE journals_id_seq OWNED BY journals.id;
 --
 
 CREATE TABLE schema_migrations (
-    version character varying(255) NOT NULL
+    version character varying NOT NULL
 );
 
 
@@ -360,10 +360,10 @@ CREATE TABLE subgroups (
 
 CREATE TABLE units (
     id integer NOT NULL,
-    name character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    code character varying(255)
+    name character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    code character varying
 );
 
 
@@ -394,8 +394,8 @@ CREATE TABLE user_group_associations (
     id integer NOT NULL,
     group_id integer,
     user_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     can_view_entries boolean DEFAULT false,
     can_manage_entries boolean DEFAULT false,
     can_close_journals boolean DEFAULT false,
@@ -429,13 +429,13 @@ ALTER SEQUENCE user_group_associations_id_seq OWNED BY user_group_associations.i
 --
 
 CREATE TABLE user_unit_associations (
-    id integer NOT NULL,
     unit_id integer,
     user_id integer,
     can_view_entries boolean DEFAULT false,
     can_manage_entries boolean DEFAULT false,
     can_close_journals boolean DEFAULT false,
-    can_manage_users boolean DEFAULT false
+    can_manage_users boolean DEFAULT false,
+    id integer NOT NULL
 );
 
 
@@ -464,33 +464,34 @@ ALTER SEQUENCE user_unit_associations_id_seq OWNED BY user_unit_associations.id;
 
 CREATE TABLE users (
     id integer NOT NULL,
-    email character varying(255) DEFAULT ''::character varying NOT NULL,
-    encrypted_password character varying(255) DEFAULT ''::character varying,
-    reset_password_token character varying(255),
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying,
+    reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
     sign_in_count integer DEFAULT 0,
     current_sign_in_at timestamp without time zone,
     last_sign_in_at timestamp without time zone,
-    current_sign_in_ip character varying(255),
-    last_sign_in_ip character varying(255),
-    confirmation_token character varying(255),
+    current_sign_in_ip character varying,
+    last_sign_in_ip character varying,
+    confirmation_token character varying,
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
-    unconfirmed_email character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    invitation_token character varying(60),
+    unconfirmed_email character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    invitation_token character varying,
     invitation_sent_at timestamp without time zone,
     invitation_accepted_at timestamp without time zone,
     invitation_limit integer,
     invited_by_id integer,
-    invited_by_type character varying(255),
+    invited_by_type character varying,
     is_superadmin boolean DEFAULT false,
     is_blocked boolean DEFAULT false,
-    first_name character varying(255),
-    last_name character varying(255),
-    phone character varying(255)
+    first_name character varying,
+    last_name character varying,
+    phone character varying,
+    invitation_created_at timestamp without time zone
 );
 
 
@@ -847,3 +848,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160226193215');
 INSERT INTO schema_migrations (version) VALUES ('20160226194900');
 
 INSERT INTO schema_migrations (version) VALUES ('20160226210708');
+
+INSERT INTO schema_migrations (version) VALUES ('20170205203915');
+
