@@ -58,12 +58,20 @@ class User < ActiveRecord::Base
     can_view_unit_entries(journal.unit)
   end
   
-  def can_manage_entries(journal)
-    rights_to(journal.unit)["can_manage_entries"] == "t"
+  def can_manage_unit_entries(unit)
+    rights_to(unit)["can_manage_entries"] == "t"
   end
-  
+
+  def can_manage_entries(journal)
+    can_manage_unit_entries(journal.unit)
+  end
+
+  def can_close_unit_journals(unit)
+    rights_to(unit)["can_close_journals"] == "t"
+  end
+
   def can_close_journal(journal)
-    rights_to(journal.unit)["can_close_journals"] == "t"
+    can_close_unit_journals(journal.unit)
   end
 
   def rights_to(unit)

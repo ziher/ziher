@@ -43,11 +43,23 @@ class Ability
         user.can_close_journal(journal)
       end
 
+# Inventory
+      can :read, InventoryEntry do |inventory|
+        user.can_view_unit_entries(inventory.unit)
+      end
+
+      can [:create, :update, :delete], InventoryEntry do |inventory|
+        user.can_manage_unit_entries(inventory.unit)
+      end
+
 # Unit
       can :manage, Unit do |unit|
         !(unit.groups & user.find_groups({ :can_manage_units => true })).empty?
       end
-      
+
+      can :view_unit_entries, Unit do |unit|
+        user.can_view_unit_entries(unit)
+      end
 # User
 
       alias_action :read, :destroy, :to => :crud

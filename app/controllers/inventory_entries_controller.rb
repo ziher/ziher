@@ -2,12 +2,26 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries
   # GET /inventory_entries.json
   def index
+    @user_units = Unit.find_by_user(current_user)
+
+    if @user_units.empty?
+      redirect_to inventory_entries_no_units_path
+      return
+    end
+
     if (params[:unit_id])
       session[:current_unit_id] = params[:unit_id].to_i
     end
 
-    @inventory_entries = InventoryEntry.where(:unit_id => session[:current_unit_id]).to_a.sort_by!{|entry| entry.date}
-    @user_units = Unit.find_by_user(current_user)
+    if (session[:current_unit_id])
+      @unit = Unit.find(session[:current_unit_id])
+    else
+      @unit = @user_units.first
+    end
+
+    authorize! :view_unit_entries, @unit
+
+    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).to_a.sort_by!{|entry| entry.date}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -19,6 +33,7 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries/1.json
   def show
     @inventory_entry = InventoryEntry.find(params[:id])
+    authorize! :read, @inventory_entry
 
     respond_to do |format|
       format.html # show.html.erb
@@ -32,6 +47,10 @@ class InventoryEntriesController < ApplicationController
     @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.new(:is_expense => params[:is_expense])
 
+    @inventory_entry.unit = @unit
+
+    authorize! :create, @inventory_entry
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @inventory_entry }
@@ -42,6 +61,8 @@ class InventoryEntriesController < ApplicationController
   def edit
     @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.find(params[:id])
+
+    authorize! :update, @inventory_entry
   end
 
   # POST /inventory_entries
@@ -49,6 +70,7 @@ class InventoryEntriesController < ApplicationController
   def create
     @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.new(inventory_entries_params)
+    authorize! :create, @inventory_entry
 
     respond_to do |format|
       if @inventory_entry.save
@@ -67,6 +89,8 @@ class InventoryEntriesController < ApplicationController
     @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.find(params[:id])
 
+    authorize! :update, @inventory_entry
+
     respond_to do |format|
       if @inventory_entry.update_attributes(inventory_entries_params)
         format.html { redirect_to @inventory_entry, notice: 'Zmiany zapisane.' }
@@ -82,6 +106,8 @@ class InventoryEntriesController < ApplicationController
   # DELETE /inventory_entries/1.json
   def destroy
     @inventory_entry = InventoryEntry.find(params[:id])
+    authorize! :delete, @inventory_entry
+
     @inventory_entry.destroy
 
     respond_to do |format|
@@ -103,6 +129,14 @@ class InventoryEntriesController < ApplicationController
 
     response.headers['Content-Type'] = 'text/csv"'
     response.headers['Content-Disposition'] = 'attachment; filename="spis_z_natury.csv"'
+  end
+
+  def no_units_to_show
+    flash.now[:info] = "Nie masz przypisanej żadnej jednostki, skontaktuj się z administratorem."
+
+    respond_to do |format|
+      format.html # no_units_to_show.html.erb
+    end
   end
 
   private

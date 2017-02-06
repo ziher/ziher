@@ -37,6 +37,7 @@ Ziher::Application.routes.draw do
   end
 
   get 'inventory_entries/fixed_assets_report' => 'inventory_entries#fixed_assets_report', :via => :get, :as => "fixed_assets_report"
+  get 'inventory_entries/no_units' => 'inventory_entries#no_units_to_show'
   resources :inventory_entries
 
   resources :units
