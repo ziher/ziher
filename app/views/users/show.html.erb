@@ -1,102 +1,108 @@
 <h1>Użytkownik <%= @user.email %></h1>
 
-<p>
-  <b>Adres e-mail:</b>
-  <%= @user.email if @user.email %>
-</p>
-
-<p>
-  <b>Imię:</b>
-  <%= @user.first_name %>
-</p>
-
-<p>
-  <b>Nazwisko:</b>
-  <%= @user.last_name %>
-</p>
-
-<p>
-  <b>Telefon:</b>
-  <%= @user.phone %>
-</p>
-
-<% if can? :set_superadmin, @user %>
+<div class="well">
   <p>
-    <b>Superadmin:</b>
-    <%= @user.is_superadmin ? "Tak" : "Nie" %>
+    <b>Adres e-mail:</b>
+    <%= @user.email if @user.email %>
   </p>
-<% end %>
 
-<p>
-  <b>Zablokowany:</b>
-  <%= @user.is_blocked ? "Tak" : "Nie" %>
-</p>
+  <p>
+    <b>Imię:</b>
+    <%= @user.first_name %>
+  </p>
 
-<p>
-  <b>Przypisane grupy:</b><br/>
-  <table>
-  <% if !@user.user_group_associations.empty? %>
-    <tr>
-      <th>Grupa</th>
-      <th>Przeglądanie książki</th>
-      <th>Edycja książki</th>
-      <th>Zamykanie książki</th>
-      <th>Zarządzanie użytkownikami</th>
-      <th>Zarządzanie jednostkami</th>
-      <th>Zarządzanie grupami</th>
-    </tr>
-  <% end %>
-  <% if @user.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
-    <tr>
-      <td><%= uga.group.name %></td>
-      <td><%= uga.can_view_entries %></td>
-      <td><%= uga.can_manage_entries %></td>
-      <td><%= uga.can_close_journals %></td>
-      <td><%= uga.can_manage_users %></td>
-      <td><%= uga.can_manage_units %></td>
-      <td><%= uga.can_manage_groups %></td>
-      <td>
-        <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
-        <% if can? :destroy, uga %><%= link_to 'Usuń', uga, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
-      </td>
-    </tr>
-  <% end.empty? %>
-    <tr><td colspan="7">Brak przypisanych grup</td></tr>
-  <% end %>
-  </table>
-  <% if can? :create, UserGroupAssociation %><%= link_to 'Przypisz grupę', new_user_group_association_path(:user_id => @user.id) %><% end %>
-</p>
+  <p>
+    <b>Nazwisko:</b>
+    <%= @user.last_name %>
+  </p>
 
-<p>
-  <b>Przypisane drużyny:</b><br/>
-  <table>
-  <% if !@user.user_unit_associations.empty? %>
-    <tr>
-      <th>Drużyna</th>
-      <th>Przeglądanie książki</th>
-      <th>Edycja książki</th>
-      <th>Zamykanie książki</th>
-      <th>Zarządzanie użytkownikami</th>
-    </tr>
+  <p>
+    <b>Telefon:</b>
+    <%= @user.phone %>
+  </p>
+
+  <% if can? :set_superadmin, @user %>
+    <p>
+      <b>Superadmin:</b>
+      <%= @user.is_superadmin ? "Tak" : "Nie" %>
+    </p>
   <% end %>
-  <% if @user.user_unit_associations.sort {|uua1, uua2| uua1.unit.name <=> uua2.unit.name }.each do |uua| %>
-    <tr>
-      <td><%= uua.unit.name %></td>
-      <td><%= uua.can_view_entries %></td>
-      <td><%= uua.can_manage_entries %></td>
-      <td><%= uua.can_close_journals %></td>
-      <td><%= uua.can_manage_users %></td>
-      <td>
-        <% if can? :update, uua %><%= link_to 'Edytuj', edit_user_unit_association_path(uua) %><% end %>
-        <% if can? :destroy, uua %><%= link_to 'Usuń', uua, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
-      </td>
-    </tr>
-  <% end.empty? %>
-    <tr><td colspan="5">Brak przypisanych drużyn</td></tr>
-  <% end %>
-  </table>
-  <% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz jednostkę', new_user_unit_association_path(:user_id => @user.id) %><% end %>
-</p>
+
+  <p>
+    <b>Zablokowany:</b>
+    <%= @user.is_blocked ? "Tak" : "Nie" %>
+  </p>
+</div>
+
+<div class="well">
+  <p>
+    <b>Przypisane grupy:</b><br/>
+    <table class="table table-condensed top-buffer-20 text-center">
+    <% if !@user.user_group_associations.empty? %>
+      <tr>
+        <th>Grupa</th>
+        <th>Przeglądanie książki</th>
+        <th>Edycja książki</th>
+        <th>Zamykanie książki</th>
+        <th>Zarządzanie użytkownikami</th>
+        <th>Zarządzanie jednostkami</th>
+        <th>Zarządzanie grupami</th>
+      </tr>
+    <% end %>
+    <% if @user.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
+      <tr>
+        <td><%= uga.group.name %></td>
+        <td><%= uga.can_view_entries ? "TAK" : "nie" %></td>
+        <td><%= uga.can_manage_entries ? "TAK" : "nie" %></td>
+        <td><%= uga.can_close_journals ? "TAK" : "nie" %></td>
+        <td><%= uga.can_manage_users ? "TAK" : "nie" %></td>
+        <td><%= uga.can_manage_units ? "TAK" : "nie" %></td>
+        <td><%= uga.can_manage_groups ? "TAK" : "nie" %></td>
+        <td>
+          <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
+          <% if can? :destroy, uga %><%= link_to 'Usuń', uga, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
+        </td>
+      </tr>
+    <% end.empty? %>
+      <tr><td colspan="7">Brak przypisanych grup</td></tr>
+    <% end %>
+    </table>
+    <% if can? :create, UserGroupAssociation %><%= link_to 'Przypisz grupę', new_user_group_association_path(:user_id => @user.id) %><% end %>
+  </p>
+</div>
+
+<div class="well">
+  <p>
+    <b>Przypisane drużyny:</b><br/>
+    <table class="table table-condensed top-buffer-20 text-center">
+    <% if !@user.user_unit_associations.empty? %>
+      <tr>
+        <th>Drużyna</th>
+        <th>Przeglądanie książki</th>
+        <th>Edycja książki</th>
+        <th>Zamykanie książki</th>
+        <th>Zarządzanie użytkownikami</th>
+      </tr>
+    <% end %>
+    <% if @user.user_unit_associations.sort {|uua1, uua2| uua1.unit.name <=> uua2.unit.name }.each do |uua| %>
+      <tr>
+        <td><%= uua.unit.name %></td>
+        <td><%= uua.can_view_entries ? "TAK" : "nie" %></td>
+        <td><%= uua.can_manage_entries ? "TAK" : "nie" %></td>
+        <td><%= uua.can_close_journals ? "TAK" : "nie" %></td>
+        <td><%= uua.can_manage_users ? "TAK" : "nie" %></td>
+        <td>
+          <% if can? :update, uua %><%= link_to 'Edytuj', edit_user_unit_association_path(uua) %><% end %>
+          <% if can? :destroy, uua %><%= link_to 'Usuń', uua, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
+        </td>
+      </tr>
+    <% end.empty? %>
+      <tr><td colspan="5">Brak przypisanych drużyn</td></tr>
+    <% end %>
+    </table>
+    <% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz jednostkę', new_user_unit_association_path(:user_id => @user.id) %><% end %>
+  </p>
+</div>
 
 <!--%= debug @user %-->
 <p>

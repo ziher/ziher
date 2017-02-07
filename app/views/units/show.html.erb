@@ -1,56 +1,60 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Nazwa:</b>
-  <%= @unit.name %>
-</p>
+<div class="well well-small">
+  <p>
+    <b>Nazwa:</b>
+    <%= @unit.name %>
+  </p>
+  <p>
+      <b>Kod:</b>
+      <%= @unit.code %>
+  </p>
+</div>
 
-<p>
-    <b>Kod:</b>
-    <%= @unit.code %>
-</p>
+<div class="well well-small">
+  <p>
+    <b>Przynależność do grup:</b><br/>
+    <% if @unit.groups.each do |g| %>
+      <%= g.name %><br />
+    <% end.empty? %>
+      Brak przypisanych grup
+    <% end %>
+  </p>
+</div>
 
-<p>
-  <b>Przynależność do grup:</b><br/>
-  <% if @unit.groups.each do |g| %>
-    <%= g.name %><br />
-  <% end.empty? %>
-    Brak przypisanych grup
-  <% end %>
-</p>
-
-<p>
-  <b>Przypisani użytkownicy:</b><br/>
-  <table>
-  <% if !@unit.user_unit_associations.empty? %>
-  	<tr>
-  	  <th>Użytkownik</th>
-  	  <th>Przeglądanie książki</th>
-  	  <th>Edycja książki</th>
-  	  <th>Zamykanie książki</th>
-  	  <th>Zarządzanie użytkownikami</th>
-  	  <th></th>
-  	</tr>
-  <% end %>
-  <% if @unit.user_unit_associations.sort {|uua1, uua2| uua1.user.email <=> uua2.user.email }.each do |uua| %>
-    <tr>
-      <td><%= uua.user.email %></td>
-      <td><%= uua.can_view_entries %></td>
-      <td><%= uua.can_manage_entries %></td>
-      <td><%= uua.can_close_journals %></td>
-      <td><%= uua.can_manage_users %></td>
-      <td>
-        <% if can? :update, @unit %> <%= link_to 'Edytuj', edit_user_unit_association_path(uua, :from => "unit") %> <% end %>
-        <% if can? :update, @unit %> <%= link_to 'Usuń', user_unit_association_path(uua, :from => "unit"), data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %> <% end %>
-      </td>
-    </tr>
-  <% end.empty? %>
-    <tr><td colspan="5">Brak przypisanych użytkowników</td></tr>
-  <% end %>
-  </table>
-  <% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz użytkownika', new_user_unit_association_path(:unit_id => @unit.id, :from => "unit") %><% end %>
-</p>
-
+<div class="well well-small">
+  <p>
+    <b>Przypisani użytkownicy:</b><br/>
+    <table class="table table-condensed top-buffer-20 text-center">
+    <% if !@unit.user_unit_associations.empty? %>
+      <tr>
+        <th>Użytkownik</th>
+        <th>Przeglądanie książki</th>
+        <th>Edycja książki</th>
+        <th>Zamykanie książki</th>
+        <th>Zarządzanie użytkownikami</th>
+        <th></th>
+      </tr>
+    <% end %>
+    <% if @unit.user_unit_associations.sort {|uua1, uua2| uua1.user.email <=> uua2.user.email }.each do |uua| %>
+      <tr>
+        <td><%= uua.user.email %></td>
+        <td><%= uua.can_view_entries ? "TAK" : "nie" %></td>
+        <td><%= uua.can_manage_entries ? "TAK" : "nie" %></td>
+        <td><%= uua.can_close_journals ? "TAK" : "nie" %></td>
+        <td><%= uua.can_manage_users ? "TAK" : "nie" %></td>
+        <td>
+          <% if can? :update, @unit %> <%= link_to 'Edytuj', edit_user_unit_association_path(uua, :from => "unit") %> <% end %>
+          <% if can? :update, @unit %> <%= link_to 'Usuń', user_unit_association_path(uua, :from => "unit"), data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %> <% end %>
+        </td>
+      </tr>
+    <% end.empty? %>
+      <tr><td colspan="5">Brak przypisanych użytkowników</td></tr>
+    <% end %>
+    </table>
+    <% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz użytkownika', new_user_unit_association_path(:unit_id => @unit.id, :from => "unit") %><% end %>
+  </p>
+</div>
 
 <%= link_to 'Edytuj', edit_unit_path(@unit) %> |
 <%= link_to 'Lista', units_path %>
