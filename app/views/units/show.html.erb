@@ -15,7 +15,7 @@
   <p>
     <b>Przynależność do grup:</b><br/>
     <% if @unit.groups.each do |g| %>
-      <%= g.name %><br />
+      <%= link_to g.name, g %><br />
     <% end.empty? %>
       Brak przypisanych grup
     <% end %>
@@ -38,7 +38,7 @@
     <% end %>
     <% if @unit.user_unit_associations.sort {|uua1, uua2| uua1.user.email <=> uua2.user.email }.each do |uua| %>
       <tr>
-        <td><%= uua.user.email %></td>
+        <td><%= link_to uua.user.email, uua.user %></td>
         <td><%= uua.can_view_entries ? "TAK" : "nie" %></td>
         <td><%= uua.can_manage_entries ? "TAK" : "nie" %></td>
         <td><%= uua.can_close_journals ? "TAK" : "nie" %></td>

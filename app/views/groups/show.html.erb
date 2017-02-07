@@ -40,7 +40,7 @@
           <% if @group.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
             <tbody>
               <tr>
-                <td><%= uga.user.email %></td>
+                <td><%= link_to uga.user.email, uga.user %></td>
                 <td><%= render_boolean_icon(uga.can_view_entries) %></td>
                 <td><%= render_boolean_icon(uga.can_manage_entries) %></td>
                 <td><%= render_boolean_icon(uga.can_close_journals) %></td>

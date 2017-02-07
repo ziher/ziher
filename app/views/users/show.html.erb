@@ -51,7 +51,7 @@
     <% end %>
     <% if @user.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
       <tr>
-        <td><%= uga.group.name %></td>
+        <td><%= link_to uga.group.name, uga.group %></td>
         <td><%= uga.can_view_entries ? "TAK" : "nie" %></td>
         <td><%= uga.can_manage_entries ? "TAK" : "nie" %></td>
         <td><%= uga.can_close_journals ? "TAK" : "nie" %></td>
@@ -86,7 +86,7 @@
     <% end %>
     <% if @user.user_unit_associations.sort {|uua1, uua2| uua1.unit.name <=> uua2.unit.name }.each do |uua| %>
       <tr>
-        <td><%= uua.unit.name %></td>
+        <td><%= link_to uua.unit.name, uua.unit %></td>
         <td><%= uua.can_view_entries ? "TAK" : "nie" %></td>
         <td><%= uua.can_manage_entries ? "TAK" : "nie" %></td>
         <td><%= uua.can_close_journals ? "TAK" : "nie" %></td>
