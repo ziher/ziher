@@ -16,18 +16,6 @@
     <%= f.text_field :name, class: "span6" %>
   </div>
 
-  <% if @group.new_record? %>
-    <div class="field">
-      Grupa nadrzędna<br />
-      <%= select_tag(:supergroup_id, options_for_select(@supergroups.collect { |g| [ g.name, g.id ] }, @supergroup.id), class: "span6") %>
-    </div>
-  <% end %>
-  
-  <div class="row-fluid top-buffer-20">
-    <%= f.label :subgroup_ids %>
-    <%= f.select :subgroup_ids, @subgroups.collect { |g| [ g.name, g.id ] }, { :include_blank => "(Brak przypisanych podgrup)" }, :multiple => true, class: "span6" %>
-  </div>
-
   <div class="row-fluid top-buffer-20">
     <%= f.label :unit_ids %>
     <%= f.select :unit_ids, @units.collect { |u| [ u.name, u.id ] }, { :include_blank => "(Brak przypisanych drużyn)" }, :multiple => true, class: "span6" %>

@@ -51,9 +51,27 @@ class GroupsControllerTest < ActionController::TestCase
     assert_redirected_to groups_path
   end
 
-  # ########################
-  # can_manage_groups = true
-  test 'should be able to create group in his supergroup when can_manage_groups is true' do
+  # TODO #60: creating super/subgroups is disabled for now
+  # # ########################
+  # # can_manage_groups = true
+  # test 'should be able to create group in his supergroup when can_manage_groups is true' do
+  #   #given
+  #   sign_in users(:master_zg)
+  #   user = users(:master_zg)
+  #   supergroup = groups(:district_zg)
+  #   assert user.can_manage_group(supergroup)
+  #   count = Group.count
+  #
+  #   #when
+  #   post :create, group: @group.attributes, supergroup_id: supergroup.id
+  #
+  #   #then
+  #   assert_equal count + 1, Group.count
+  #   assert_redirected_to group_path(assigns(:group))
+  # end
+
+  # TODO #60: creating super/subgroups is disabled for now
+  test 'should not be able to create subgroup' do
     #given
     sign_in users(:master_zg)
     user = users(:master_zg)
@@ -61,12 +79,15 @@ class GroupsControllerTest < ActionController::TestCase
     assert user.can_manage_group(supergroup)
     count = Group.count
 
+    @group = groups(:district_po_m)
+
     #when
     post :create, group: @group.attributes, supergroup_id: supergroup.id
 
     #then
-    assert_equal count + 1, Group.count
-    assert_redirected_to group_path(assigns(:group))
+    assert_equal count, Group.count
+    assert_not_includes supergroup.subgroups, @group
+    assert_redirected_to root_path()
   end
 
   test 'should be able to read group from his supergroup when can_manage_groups is true' do

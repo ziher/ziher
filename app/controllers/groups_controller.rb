@@ -72,17 +72,14 @@ class GroupsController < ApplicationController
   # POST /groups
   # POST /groups.json
   def create
-    supergroup = Group.find(params[:supergroup_id])
-    authorize! :update, supergroup
-    
     @group = Group.new(group_params)
-    if (@group.subgroups.include?(supergroup))
-      @group.subgroups.delete(supergroup)
-    end
-    
+    authorize! :update, @group
+
+    # TODO #60: dodawanie podgrup na razie zablokowane w #59
+    @group.subgroups.clear
+
     respond_to do |format|
       if @group.save
-        supergroup.subgroups << @group
         format.html { redirect_to @group, notice: 'Group was successfully created.' }
         format.json { render json: @group, status: :created, location: @group }
       else
