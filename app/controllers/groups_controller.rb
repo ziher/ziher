@@ -105,7 +105,7 @@ class GroupsController < ApplicationController
 
   def group_params
     if params[:group]
-      params.require(:group).permit(:name)
+      params.require(:group).permit(:name, :unit_ids => [])
     end
   end
 
