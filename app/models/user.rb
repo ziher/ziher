@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
     return "User(#{self.id}, #{self.email})"
   end
 
+  def name
+    return self.first_name.to_s + " " + self.last_name.to_s
+  end
+
   def status
     if self.confirmed_at == nil
       :invited

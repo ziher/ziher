@@ -1,39 +1,42 @@
-<h1>Grupy jednostek</h1>
+<h3>Administracja > Grupy jednostek</h3>
 
 <div class="row top-buffer-40">
   <div class="span12">
-    <b>Grupy nadrzędne:</b><br/>
-    <% if Group.find_all_supergroups().each do |g| %>
-      <%= link_to g.name, g %><br />
-    <% end.empty? %>
-      Brak grup.
-    <% end %>
+    <table class="table table-hover ">
+      <thead>
+        <tr>
+          <th>Nazwa grupy</th>
+          <th>Ilość jednostek</th>
+          <th>Ilość użytkowników</th>
+        </tr>
+      </thead>
+      <tbody>
+    <% if @groups.each do |group| %>
+          <tr>
+            <td><div class="text-center"><%= link_to group.name, group %></div></td>
+            <td>
+              <div class="text-center" title="<%= group.units.map { |unit| unit.name }.join("\n") %>">
+                <%= group.units.count %>
+              </div>
+            </td>
+            <td>
+              <div class="text-center" title="<%= group.users.map { |user| user.name }.join("\n") %>">
+                <%= group.users.count %>
+              </div>
+            </td>
+          </tr>
+      <% end.empty? %>
+        <tr>
+          <td colspan="3">Brak grup.</td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <div class="row top-buffer-40">
   <div class="span12">
     <%= link_to 'Utwórz nową grupę', new_group_path, class: "btn btn-small btn-primary" %>
-  </div>
-</div>
-
-<div class="row top-buffer-40">
-  <div class="accordion span4" id="accordion-allgroups">
-    <div class="accordion-group">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-allgroups" href="#collapseAllGroups">
-          Wszystkie grupy
-        </a>
-      </div>
-      <div id="collapseAllGroups" class="accordion-body collapse">
-        <div class="accordion-inner muted">
-          <% if @groups.each do |group| %>
-            <%= link_to group.name, group, :class => "muted" %><br />
-          <% end.empty? %>
-            Brak grup.
-          <% end %>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
