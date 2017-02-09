@@ -15,7 +15,7 @@ $(document).ready(function(){
         complete: function(request){
           $(event.target).effect('highlight');
         },
-        url: '/categories/sort'})
+        url: '/<%=ENV["RAILS_RELATIVE_URL_ROOT"] %>/categories/sort'})
     }
   });
 });
