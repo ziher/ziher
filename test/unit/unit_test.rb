@@ -103,7 +103,7 @@ class UnitTest < ActiveSupport::TestCase
     balance = troop_1dwf.initial_finance_balance(2012)
 
     #then
-    assert_equal nil, balance
+    assert_nil balance
   end
 
   test "should return finance balance one percent" do
@@ -126,7 +126,7 @@ class UnitTest < ActiveSupport::TestCase
     balance = troop_1dwf.initial_finance_balance_one_percent(2012)
 
     #then
-    assert_equal nil, balance
+    assert_nil balance
   end
 
   test "should return bank balance" do
@@ -149,7 +149,7 @@ class UnitTest < ActiveSupport::TestCase
     balance = troop_1dwf.initial_bank_balance(2012)
 
     #then
-    assert_equal nil, balance
+    assert_nil balance
   end
 
   test "should return bank balance one percent" do
@@ -172,6 +172,6 @@ class UnitTest < ActiveSupport::TestCase
     balance = troop_1dwf.initial_bank_balance_one_percent(2012)
 
     #then
-    assert_equal nil, balance
+    assert_nil balance
   end
 end
