@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-  acts_as_list
+  acts_as_list(top_of_list: 0)
   default_scope { order('position ASC')}
 
   validates :year, :presence => {:message => "Kategoria musi byc przypisana do roku"}
