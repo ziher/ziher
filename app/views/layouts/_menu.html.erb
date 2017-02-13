@@ -23,7 +23,7 @@
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Administracja <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <% if current_user.can_manage_any_user %><li class="<%= menu_active?(:users) %>"> <%= link_to "Użytkownicy", users_path %> </li><% end %>
-            <% if current_user.can_manage_any_unit %><li class="<%= menu_active?(:units) %>"> <%= link_to "Drużyny", units_path %> </li><% end %>
+            <% if current_user.can_manage_any_unit %><li class="<%= menu_active?(:units) %>"> <%= link_to "Jednostki", units_path %> </li><% end %>
             <% if current_user.can_manage_any_group %><li class="<%= menu_active?(:groups) %>"> <%= link_to "Grupy", groups_path %> </li><% end %>
             <% if can? :manage, Category or can? :manage, InventorySource %>
                 <li class="divider"></li>
