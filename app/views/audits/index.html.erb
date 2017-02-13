@@ -1,0 +1,27 @@
+<h1>Audit log</h1>
+
+<table class="table table-condensed top-buffer-20">
+  <tr>
+    <th>user_id</th>
+    <th>username</th>
+    <th>action</th>
+    <th>audited_changes</th>
+    <th>version</th>
+    <th>remote_address</th>
+    <th>created_at</th>
+  </tr>
+
+  <% @audits.each do |audit| %>
+      <tr>
+        <td><%= audit.user_id %></td>
+        <td><%= audit.username %></td>
+        <td><%= audit.action %></td>
+        <td><%= audit.audited_changes %></td>
+        <td><%= audit.version %></td>
+        <td><%= audit.remote_address %></td>
+        <td><%= audit.created_at %></td>
+      </tr>
+  <% end %>
+</table>
+
+

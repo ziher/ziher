@@ -45,6 +45,8 @@ Ziher::Application.routes.draw do
 
   get "home/index"
 
+  get "audits/index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
