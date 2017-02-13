@@ -3,8 +3,7 @@ class AuditsController < ApplicationController
 
   # GET /audits
   def index
-
-    @audits = Audit.descending
+    @audits = Audit.descending.page(params[:page])
   end
 
 end

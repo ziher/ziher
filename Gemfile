@@ -60,6 +60,7 @@ gem 'devise_invitable'
 gem 'cancancan'
 
 gem 'audited', '~> 4.3'
+gem 'will_paginate', '~> 3.1.1'
 
 # TODO: wyrzucic te gemy
 #gem 'protected_attributes'
