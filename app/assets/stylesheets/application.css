@@ -10,3 +10,37 @@
 #navbar {
     margin-top: 10px;
 }
+
+th.text-left {
+  text-align: left;
+}
+th.text-center {
+  text-align: center;
+}
+th.text-right {
+  text-align: right;
+}
+
+th {
+  text-align: left;
+}
+
+.table td.text-left {
+  text-align: left;
+}
+.table td.text-center {
+  text-align: center;
+}
+.table td.text-right {
+  text-align: right;
+}
+
+td.text-left {
+  text-align: left;
+}
+td.text-center {
+  text-align: center;
+}
+td.text-right {
+  text-align: right;
+}

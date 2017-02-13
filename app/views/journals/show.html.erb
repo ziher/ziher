@@ -60,10 +60,10 @@
 
     <tr>
       <% @categories_income.each do |category| %>
-        <th class="income_<%= category.id %>"><small><small><%= category.name %></small></small></th>
+        <th class="income_<%= category.id %> text-center"><small><small><%= category.name %></small></small></th>
       <% end %>
       <% @categories_expense.each do |category| %>
-        <th class="expense_<%= category.id %>"><small><small><%= category.name %></small></small></th>
+        <th class="expense_<%= category.id %> text-center"><small><small><%= category.name %></small></small></th>
       <% end %>
     </tr>
   </thead>

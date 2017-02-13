@@ -10,7 +10,9 @@
   </div>
   <div class="span2">
     <div class="pull-right top-buffer-20">
-    <%= link_to 'Nowa jednostka', new_unit_path, class: "btn btn-small btn-primary" %>
+      <% if can? :create, Unit %>
+        <%= link_to 'Nowa jednostka', new_unit_path, class: "btn btn-small btn-primary" %>
+      <% end %>
     </div>
   </div>
 </div>
@@ -19,7 +21,7 @@
   <tr>
     <th rowspan="3">Kod</th>
     <th class="name-cell" rowspan="3">Nazwa</th>
-    <th colspan="4">Saldo początkowe
+    <th class="text-center" colspan="4">Saldo początkowe
       <select class="span1 no-margin" onchange="reloadForYear(this.value)">
           <% @years.each do |year| %>
               <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
@@ -28,8 +30,8 @@
     </th>
   </tr>
     <tr>
-      <th colspan="2">finansowe</th>
-      <th colspan="2">bankowe</th>
+      <th class="text-center" colspan="2">finansowe</th>
+      <th class="text-center" colspan="2">bankowe</th>
     </tr>
     <tr>
         <th>&nbsp;</th>
@@ -40,8 +42,8 @@
 
 <% @units.each do |unit| %>
   <tr>
-    <td><div class="text-center"><%= link_to unit.code || "", unit %></div></td>
-    <td><div class="text-center"><%= link_to unit.name, unit %></div></td>
+    <td><%= link_to unit.code || "", unit %></td>
+    <td><%= link_to unit.name, unit %></td>
     <td class="amount-cell"><%= unit.initial_finance_balance(@selected_year) || '-' %></td>
     <td class="amount-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
     <td class="amount-cell"><%= unit.initial_bank_balance(@selected_year) || '-' %></td>
