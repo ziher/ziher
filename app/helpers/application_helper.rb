@@ -39,6 +39,9 @@ module ApplicationHelper
     when :inventory_sources
       "active" if current_page?(inventory_sources_path)
 
+    when :audits
+      "active" if current_page?(audits_index_path)
+
     when :reports_dropdown
       "active" if
         false
@@ -51,7 +54,8 @@ module ApplicationHelper
         current_page?(journals_path) or
         current_page?(journal_types_path) or
         current_page?(users_path) or
-        current_page?(inventory_sources_path)
+        current_page?(inventory_sources_path) or
+        current_page?(audits_index_path)
     end
   end
 
