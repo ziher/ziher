@@ -24,13 +24,13 @@
   <% if can? :set_superadmin, @user %>
     <p>
       <b>Superadmin:</b>
-      <%= @user.is_superadmin ? "Tak" : "Nie" %>
+      <%= render_boolean_icon(@user.is_superadmin) %>
     </p>
   <% end %>
 
   <p>
     <b>Zablokowany:</b>
-    <%= @user.is_blocked ? "Tak" : "Nie" %>
+      <%= render_boolean_icon(@user.is_blocked) %>
   </p>
 </div>
 
@@ -52,12 +52,12 @@
     <% if @user.user_group_associations.sort {|uga1, uga2| uga1.group.name <=> uga2.group.name }.each do |uga| %>
       <tr>
         <td><%= link_to uga.group.name, uga.group %></td>
-        <td><%= uga.can_view_entries ? "TAK" : "nie" %></td>
-        <td><%= uga.can_manage_entries ? "TAK" : "nie" %></td>
-        <td><%= uga.can_close_journals ? "TAK" : "nie" %></td>
-        <td><%= uga.can_manage_users ? "TAK" : "nie" %></td>
-        <td><%= uga.can_manage_units ? "TAK" : "nie" %></td>
-        <td><%= uga.can_manage_groups ? "TAK" : "nie" %></td>
+        <td><%= render_boolean_icon_centered(uga.can_view_entries) %></td>
+        <td><%= render_boolean_icon_centered(uga.can_manage_entries) %></td>
+        <td><%= render_boolean_icon_centered(uga.can_close_journals) %></td>
+        <td><%= render_boolean_icon_centered(uga.can_manage_users) %></td>
+        <td><%= render_boolean_icon_centered(uga.can_manage_units) %></td>
+        <td><%= render_boolean_icon_centered(uga.can_manage_groups) %></td>
         <td>
           <% if can? :update, uga %><%= link_to 'Edytuj', edit_user_group_association_path(uga) %><% end %>
           <% if can? :destroy, uga %><%= link_to 'Usuń', uga, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>

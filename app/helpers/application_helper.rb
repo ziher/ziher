@@ -56,6 +56,11 @@ module ApplicationHelper
   end
 
   def render_boolean_icon(value)
-    return value ? "<i class='icon-ok'>".html_safe : "<i class='icon-minus'>".html_safe
+    return value ? "<i class='icon-ok'></i>".html_safe : "<i class='icon-minus'></i>".html_safe
   end
+
+  def render_boolean_icon_centered(value)
+    return ("<div class='text-center'>" + render_boolean_icon(value) + "</div>").html_safe
+  end
+
 end
