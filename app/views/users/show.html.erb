@@ -87,10 +87,10 @@
     <% if @user.user_unit_associations.sort {|uua1, uua2| uua1.unit.name <=> uua2.unit.name }.each do |uua| %>
       <tr>
         <td><%= link_to uua.unit.name, uua.unit %></td>
-        <td><%= uua.can_view_entries ? "TAK" : "nie" %></td>
-        <td><%= uua.can_manage_entries ? "TAK" : "nie" %></td>
-        <td><%= uua.can_close_journals ? "TAK" : "nie" %></td>
-        <td><%= uua.can_manage_users ? "TAK" : "nie" %></td>
+        <td><%= render_boolean_icon_centered(uua.can_view_entries) %></td>
+        <td><%= render_boolean_icon_centered(uua.can_manage_entries) %></td>
+        <td><%= render_boolean_icon_centered(uua.can_close_journals) %></td>
+        <td><%= render_boolean_icon_centered(uua.can_manage_users) %></td>
         <td>
           <% if can? :update, uua %><%= link_to 'Edytuj', edit_user_unit_association_path(uua) %><% end %>
           <% if can? :destroy, uua %><%= link_to 'Usuń', uua, data: { confirm: 'Na pewno usunąć powiązanie?'}, method: :delete %><% end %>
