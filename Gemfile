@@ -59,5 +59,7 @@ gem 'devise_invitable'
 
 gem 'cancancan'
 
+gem 'audited', '~> 4.3'
+
 # TODO: wyrzucic te gemy
 #gem 'protected_attributes'

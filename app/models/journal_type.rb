@@ -1,4 +1,5 @@
 class JournalType < ActiveRecord::Base
+  audited
 
   FINANCE_TYPE_ID = 1
   BANK_TYPE_ID = 2

@@ -1,4 +1,6 @@
 class Unit < ActiveRecord::Base
+  audited
+
   has_and_belongs_to_many :groups
   has_many :user_unit_associations
   has_many :users, through: :user_unit_associations

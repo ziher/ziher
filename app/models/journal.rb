@@ -1,4 +1,6 @@
 class Journal < ActiveRecord::Base
+  audited
+
   belongs_to :journal_type
   belongs_to :unit
   has_many :entries

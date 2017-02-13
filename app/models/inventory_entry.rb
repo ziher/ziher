@@ -1,4 +1,6 @@
 class InventoryEntry < ActiveRecord::Base
+  audited
+
   belongs_to :unit
   belongs_to :inventory_source
 

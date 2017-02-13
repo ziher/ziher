@@ -2,6 +2,7 @@
 # TODO: wywalic stringi do I18n
 class Entry < ActiveRecord::Base
   include ActiveModel::Validations
+  audited
 
   has_many :items, dependent: :destroy
   belongs_to :journal
