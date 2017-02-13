@@ -18,3 +18,4 @@ pickle-email-*.html
 .idea
 ziher.iml
 postgres*dump
+*.swp
