@@ -2,6 +2,8 @@
 
 <table class="table table-condensed top-buffer-20">
   <tr>
+    <th>auditable_id</th>
+    <th>auditable_type</th>
     <th>user_id</th>
     <th>username</th>
     <th>action</th>
@@ -13,6 +15,8 @@
 
   <% @audits.each do |audit| %>
       <tr>
+        <td><%= audit.auditable_id %></td>
+        <td><%= audit.auditable_type %></td>
         <td><%= audit.user_id %></td>
         <td><%= audit.username %></td>
         <td><%= audit.action %></td>

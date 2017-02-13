@@ -1,7 +1,7 @@
 Audit = Audited.audit_class
 
 class Audit
-  scope :today, -> do
-    where("created_at >= ?", Time.zone.today.midnight).reorder(:created_at)
+  scope :newest_first, -> do
+    reorder("created_at DESC")
   end
 end
