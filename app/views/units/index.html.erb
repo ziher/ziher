@@ -4,7 +4,16 @@
   }
 </script>
 
-<h3>Administracja &gt; Jednostki</h3>
+<div class="row">
+  <div class="span10">
+    <h3>Administracja &gt; Jednostki</h3>
+  </div>
+  <div class="span2">
+    <div class="pull-right top-buffer-20">
+    <%= link_to 'Nowa drużyna', new_unit_path, class: "btn btn-small btn-primary" %>
+    </div>
+  </div>
+</div>
 
 <table class="table table-condensed top-buffer-20">
   <tr>
@@ -49,4 +58,3 @@
 
 <br />
 
-<%= link_to 'Nowa drużyna', new_unit_path %>
