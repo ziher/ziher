@@ -108,12 +108,9 @@ class JournalTest < ActiveSupport::TestCase
     end
   end
 
-  test "should get default journal for previous year" do
-    year_2016 = Time.parse('2016-06-06')
-    Timecop.travel(year_2016) do
-      journal_2015 = journals(:finance_2015)
-      assert_equal journal_2015, Journal.get_default(journal_types(:finance), users(:master_1zgm))
-    end
+  test "should not get journal for not own units" do
+    journal = Journal.get_default(journal_types(:finance), users(:master_1zgm), units(:troop_2dwf).id, 2018)
+    assert_not journal
   end
 
   test "should count sum for category" do

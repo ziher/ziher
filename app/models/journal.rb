@@ -116,21 +116,32 @@ class Journal < ActiveRecord::Base
 
   # Returns the most recent journal for given type, that the given user has access to
   def Journal.get_default(type, user, unit_id = nil, year = nil)
-    journals = Journal.find_by_type_and_user(type, user)
+    user_units = Unit.find_by_user(user)
 
-    #if there was the unit and year passed - use them to find the proper journal
-    if (unit_id != nil && year != nil)
-      if journals.any?{|journal| journal.unit.id == unit_id && journal.year == year}
-        return journals.find{|journal| journal.unit.id == unit_id && journal.year == year}
-      else
-        # if the journal was not found it means it doesn't exist -
-        # journal probably existed for the unit and year but different journal type -
-        # in such case just create the journal for the type
-        return Journal.create!(:journal_type_id => type.id, :unit_id => unit_id, :year => year, :is_open => true)
+    if unit_id.nil?
+      unit = user_units.first
+    else
+      if unit_id.in? user_units.map { |unit| unit.id }
+        unit = user_units.find{ |unit| unit.id == unit_id }
       end
     end
 
-    return journals.first
+    if unit.nil?
+      return
+    end
+
+    journal_year = year || Time.now.year
+
+    journal = Journal.find_by_unit_and_year_and_type(unit, journal_year, type)
+
+    # if the journal was not found it means it doesn't exist -
+    # journal probably existed for the unit and year but different journal type -
+    # in such case just create the journal for the type
+    if journal.nil?
+      journal = Journal.create!(:journal_type_id => type.id, :unit_id => unit.id, :year => journal_year, :is_open => true)
+    end
+
+    return journal
   end
 
   # Returns all journals of the specified type that the specified user has access to.
