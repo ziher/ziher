@@ -5,13 +5,13 @@
 </script>
 
 <div class="row">
-  <div class="span10">
+  <div class="col-md-10">
     <h3>Administracja &gt; Jednostki</h3>
   </div>
-  <div class="span2">
+  <div class="col-md-2">
     <div class="pull-right top-buffer-20">
       <% if can? :create, Unit %>
-        <%= link_to 'Nowa jednostka', new_unit_path, class: "btn btn-small btn-primary" %>
+        <%= link_to 'Nowa jednostka', new_unit_path, class: "btn btn-sm btn-success" %>
       <% end %>
     </div>
   </div>
@@ -22,30 +22,30 @@
     <th rowspan="3">Kod</th>
     <th class="name-cell" rowspan="3">Nazwa</th>
     <th class="text-center" colspan="4">Saldo początkowe
-      <select class="span1 no-margin" onchange="reloadForYear(this.value)">
-          <% @years.each do |year| %>
-              <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
-          <% end %>
+      <select class="no-margin" onchange="reloadForYear(this.value)">
+        <% @years.each do |year| %>
+          <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
+        <% end %>
       </select>
     </th>
   </tr>
-    <tr>
-      <th class="text-center" colspan="2">finansowe</th>
-      <th class="text-center" colspan="2">bankowe</th>
-    </tr>
-    <tr>
-        <th>&nbsp;</th>
-        <th class="text-right">1%</th>
-        <th>&nbsp;</th>
-        <th class="text-right">1%</th>
-    </tr>
+  <tr>
+    <th class="text-center" colspan="2">finansowe</th>
+    <th class="text-center" colspan="2">bankowe</th>
+  </tr>
+  <tr>
+    <th>&nbsp;</th>
+    <th class="text-right">1%</th>
+    <th>&nbsp;</th>
+    <th class="text-right">1%</th>
+  </tr>
 
 <% @units.each do |unit| %>
   <tr>
     <td><%= link_to unit.code || "", unit %></td>
     <td><%= link_to unit.name, unit %></td>
     <td class="amount-cell"><%= unit.initial_finance_balance(@selected_year) || '-' %></td>
-    <td class="amount-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
+    <td class="amoun  t-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
     <td class="amount-cell"><%= unit.initial_bank_balance(@selected_year) || '-' %></td>
     <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
   </tr>

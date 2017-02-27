@@ -3,19 +3,19 @@ table.users tr.invited td { color: #aaa; }
 </style>
 
 <div class="row">
-  <div class="span10">
+  <div class="col-md-10">
     <h3>Administracja &gt; Użytkownicy</h3>
   </div>
-  <div class="span2">
+  <div class="col-md-2">
     <div class="pull-right top-buffer-20">
       <% if can? :create, User %>
-        <%= link_to 'Nowy użytkownik', new_user_path, class: "btn btn-small btn-primary" %>
+        <%= link_to 'Nowy użytkownik', new_user_path, class: "btn btn-sm btn-success" %>
       <% end %>
     </div>
   </div>
 </div>
 
-<table class="users table table-condensed top-buffer-20">
+<table class="table table-condensed top-buffer-20">
   <tr>
     <th>E-mail</th>
     <th>Imię</th>
@@ -29,7 +29,7 @@ table.users tr.invited td { color: #aaa; }
   </tr>
 
 <% @users.each do |user| %>
-  <tr class="<%= user.status %>">
+  <tr>
     <td><%= link_to user.email, user %></td>
     <td><%= user.first_name %></td>
     <td><%= user.last_name %></td>

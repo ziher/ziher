@@ -1,22 +1,20 @@
 <div class="row top-buffer-40">
-  <div class="span6">
+  <div class="col-md-6">
     <small>
       <% if can? :update, @inventory_entry %>
-        <%= link_to new_inventory_entry_path(:is_expense => false), class: 'btn btn-small btn-primary' do %>
+        <%= link_to new_inventory_entry_path(:is_expense => false), class: 'btn btn-sm btn-success' do %>
           <i class="icon-plus"></i>&nbsp;&nbsp;Nowy przychód
         <% end %>
       <% end %>
       <% if can? :update, @inventory_entry %>
-        <%= link_to new_inventory_entry_path(:is_expense => true), class: 'btn btn-small btn-primary' do %>
+        <%= link_to new_inventory_entry_path(:is_expense => true), class: 'btn btn-sm btn-success' do %>
           <i class="icon-minus"></i>&nbsp;&nbsp;Nowy rozchód
         <% end %>
       <% end %>
     </small>
   </div>
-  <div class="span6">
-    <div class="pull-right">
-      <%= render "shared/inventory_entries_select" %>
-    </div>
+  <div class="col-md-6">
+    <%= render "shared/inventory_entries_select" %>
   </div>
 </div>
 

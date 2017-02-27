@@ -1,8 +1,7 @@
-<div class="navbar" id="navbar">
-  <div class="navbar-inner">
-    <ul class="nav">
-      <li class=""><%= link_to root_path do %> <i class='icon-home'></i> ZiHeR <% end %></li>
+<div class="navbar navbar-default" id="navbar">
+  <div class="navbar-brand"><%= link_to root_path do %> <span class='glyphicon glyphicon-home'></span> ZiHeR <% end %></div>
 
+  <ul class="nav navbar-nav">
       <% if user_signed_in? %>
         <li class="<%= menu_active?(:journal_finance) %>"><%= link_to "Książka finansowa", default_finance_journal_path %></li>
         <li class="<%= menu_active?(:journal_bank) %>"><%= link_to "Książka bankowa", default_bank_journal_path %></li>
@@ -38,7 +37,7 @@
     </ul>
 
     <% if user_signed_in? %>
-      <ul class="nav pull-right">
+      <ul class="nav navbar-nav pull-right">
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= current_user.email %> <b class="caret"></b></a>
           <ul class="dropdown-menu">
@@ -48,6 +47,4 @@
         </li>
       </ul>
     <% end %>
-
-  </div>
 </div>

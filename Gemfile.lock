@@ -47,7 +47,7 @@ GEM
     bullet (5.5.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.10.0)
-    cancancan (1.15.0)
+    cancancan (1.16.0)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.2.x)
@@ -65,8 +65,8 @@ GEM
       responders
       warden (~> 1.2.3)
     devise-i18n (1.1.1)
-    devise_invitable (1.7.0)
-      actionmailer (>= 4.0.0)
+    devise_invitable (1.7.1)
+      actionmailer (>= 4.1.0)
       devise (>= 4.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -161,10 +161,10 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.6)
     timecop (0.8.1)
-    twitter-bootstrap-rails (2.2.8)
+    twitter-bootstrap-rails (3.2.2)
       actionpack (>= 3.1)
-      execjs
-      rails (>= 3.1)
+      execjs (>= 2.2.2, >= 2.2)
+      less-rails (>= 2.5.0)
       railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -201,7 +201,7 @@ DEPENDENCIES
   sass-rails
   therubyracer
   timecop
-  twitter-bootstrap-rails (= 2.2.8)
+  twitter-bootstrap-rails (~> 3.2.0)
   uglifier
   web-console
   will_paginate (~> 3.1.1)
@@ -210,4 +210,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.14.3
+   1.14.4

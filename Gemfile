@@ -4,9 +4,6 @@ ruby '2.3.1'
 
 gem 'rails', '~> 4.2.0'
 
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
 gem 'pg'
 
 group :development do
@@ -14,14 +11,9 @@ group :development do
   gem 'web-console'
 end
 
-# production is set on Heroku right now which needs PostgreSQL
 group :production do
-# Use unicorn as the web server
-# gem 'unicorn'
+# Use passenger as the web server
   gem 'passenger'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 end
 
 
@@ -31,7 +23,7 @@ gem 'uglifier'
 
 gem 'therubyracer'
 gem 'less-rails'
-gem 'twitter-bootstrap-rails', '2.2.8'
+gem 'twitter-bootstrap-rails', '~>3.2.0'
 
 
 gem 'jquery-rails'
@@ -61,6 +53,3 @@ gem 'cancancan'
 
 gem 'audited', '~> 4.3'
 gem 'will_paginate', '~> 3.1.1'
-
-# TODO: wyrzucic te gemy
-#gem 'protected_attributes'

@@ -16,10 +16,10 @@
   <ul class="categories unstyled">
   <% categories[:data].each do |category| %>
     <li id="category_<%= category.id %>">
-      <span class="handle"><i class="icon-align-justify" title="Chwyć i przenieś"></i></span>
+      <span class="handle"><span class="glyphicon glyphicon-align-justify" title="Chwyć i przenieś"></span></span>
         <% if category.is_one_percent %><small>[1%]</small><% end %>
         <%= category.name %>
-        <%= link_to edit_category_path(category) do %><i class="icon-pencil"></i><% end %>
+        <%= link_to edit_category_path(category) do %><span class="glyphicon glyphicon-pencil"></span><% end %>
     </li>
   <% end %>
   </ul>

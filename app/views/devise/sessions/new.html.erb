@@ -1,33 +1,26 @@
 <div class="row">
-  <h2 class="span3 offset4 pull-left">Zaloguj się</h2>
-</div>
+  <div class="col-md-3 col-md-offset-4">
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-horizontal' }) do |f| %>
+        <div class='form-group'>
+          <%= f.email_field :email, :placeholder => I18n.t('helpers.label.user.email'), :class => "form-control" %>
+        </div>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-horizontal' }) do |f| %>
-  <div class="row">
-    <div class='span3 offset4'>
-      <div class='control-group'>
-        <%= f.email_field :email, :placeholder => I18n.t('helpers.label.user.email'), :class=>"span3" %>
-      </div>
+        <div class='form-group'>
+          <%= f.password_field :password, :placeholder => I18n.t('helpers.label.user.password'), :class => "form-control" %>
+        </div>
 
-      <div class='control-group'>
-        <%= f.password_field :password, :placeholder => I18n.t('helpers.label.user.password'), :class=>"span3" %>
-      </div>
+        <div class="form-group">
+            <% if devise_mapping.rememberable? %>
+              <%= f.check_box :remember_me %>
+              <%= f.label :remember_me, :class=>"checkbox-inline" %>
+            <% end %>
+            <%= f.submit "Zaloguj się", :class => 'btn btn-success pull-right' %>
+          </div>
 
-      <div class='control-group'>
-        <% if devise_mapping.rememberable? %>
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me, :class=>"checkbox inline" %>
-        <% end %>
-        <%= f.submit "Zaloguj się", :class => 'btn btn-primary pull-right' %>
-      </div>
-
-      <div class='control-group' style="margin-top: 60px">
-        <%= render "links" %>
-      </div>
-
-    </div>
+        <div class='form-group' style="margin-top: 60px">
+          <%= render "links" %>
+        </div>
+    <% end %>
   </div>
-
-<% end %>
+</div>
 <br/>
-

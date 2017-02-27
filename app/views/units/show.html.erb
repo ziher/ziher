@@ -1,12 +1,10 @@
-<p id="notice"><%= notice %></p>
-
 <div class="well well-small">
   <div class="pull-right">
     <% if can? :update, @unit %>
-      <%= link_to "Edytuj", edit_unit_path(@unit), class: 'btn btn-small btn-primary' %>
+      <%= link_to "Edytuj", edit_unit_path(@unit), class: 'btn btn-sm btn-success' %>
     <% end %>
     <% if can? :destroy, @unit %>
-      <%= link_to 'Usuń jednostkę', @unit, data: { confirm: 'Na pewno usunąć jednostkę?'}, method: :delete, class: 'btn btn-small btn-danger' %>
+      <%= link_to 'Usuń jednostkę', @unit, data: { confirm: 'Na pewno usunąć jednostkę?'}, method: :delete, class: 'btn btn-sm btn-danger' %>
     <% end %>
   </div>
   <p>
@@ -60,12 +58,12 @@
       <tr><td colspan="5">Brak przypisanych użytkowników</td></tr>
     <% end %>
     </table>
-    <% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz użytkownika', new_user_unit_association_path(:unit_id => @unit.id, :from => "unit"), class: 'btn btn-small btn-primary'  %><% end %>
+    <% if can? :create, UserUnitAssociation %><%= link_to 'Przypisz użytkownika', new_user_unit_association_path(:unit_id => @unit.id, :from => "unit"), class: 'btn btn-sm btn-success'  %><% end %>
   </p>
 </div>
 
 <div class="row">
-  <div class="span12">
-    <%= link_to 'Powrót do listy', units_path, class: 'btn btn-small' %>
+  <div class="col-md-12">
+    <%= link_to 'Powrót do listy', units_path, class: 'btn btn-sm btn-default' %>
   </div>
 </div>

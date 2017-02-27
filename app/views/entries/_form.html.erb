@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="row">
-    <div class="span6">
+    <div class="col-md-6">
       <div class="field">
         <%= f.label :data %>
         <%= f.text_field :date %>
@@ -30,14 +30,14 @@
         <div class="row">
           <% category_name = item_fields.object.category.name %>
 
-          <div class="span3">
+          <div class="col-md-3">
             <% #item amount %>
             <%= item_fields.label :amount, category_name %>
             <%= item_fields.text_field :amount, :class=>"category" %>
           </div>
 
           <% if @entry.is_expense then %>
-            <div class="span3">
+            <div class="col-md-3">
               <% #item amount one percent %>
               <%= item_fields.label :amount_one_percent, "1%" %>
               <%= item_fields.text_field :amount_one_percent, :class=>"category" %>
@@ -54,7 +54,7 @@
 
     <!%-- przenoszenie kwot miedzy ksiazkami na razie wstrzymane --%>
     <% if false && @entry.is_expense %>
-      <div class="span6">
+      <div class="col-md-6">
         <%= check_box_tag :is_linked, :is_linked, @linked_entry.id, :onclick => "showOrHideLinkedEntry()" %>
         <label for="is_linked">Przenieś do innej książki</label>
 

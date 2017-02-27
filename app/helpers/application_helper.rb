@@ -60,7 +60,9 @@ module ApplicationHelper
   end
 
   def render_boolean_icon(value)
-    return value ? "<i class='icon-ok'></i>".html_safe : "<i class='icon-minus'></i>".html_safe
+    return value ?
+        "<span class='glyphicon glyphicon-ok'></span>".html_safe :
+        "<i class='glyphicon glyphicon-minus'></i>".html_safe
   end
 
   def render_boolean_icon_centered(value)

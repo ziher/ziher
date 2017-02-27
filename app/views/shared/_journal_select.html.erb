@@ -1,18 +1,27 @@
-<script type="text/javascript">
- function selectedUnitChanged(unitId) {
-   document.location.href = "<%= journals_path %>?unit_id=" + unitId.toString() + "&journal_type_id=<%= @journal.journal_type.id %>&year=<%= session[:current_year] %>";
- }
- function selectedYearChanged(year) {
-   document.location.href = "<%= journals_path %>?unit_id=<%= session[:current_unit_id] %>&journal_type_id=<%= @journal.journal_type.id %>&year=" + year;
- }
-</script>
-<select onchange="selectedUnitChanged(this.value)" class="span4">
-  <% @user_units.each do |unit| %>
-    <option value="<%= unit.id %>" <%= unit.id == session[:current_unit_id] ? "selected='selected'" : "" %>><%= unit.name %></option>
-  <% end %>
-</select>
-<select onchange="selectedYearChanged(this.value)" class="span1">
-  <% @years.each do |year| %>
-    <option value="<%= year %>" <%= year == session[:current_year] ? "selected='selected'" : "" %>><%= year %></option>
-  <% end %>
-</select>
+<div class="row">
+  <script type="text/javascript">
+   function selectedUnitChanged(unitId) {
+     document.location.href = "<%= journals_path %>?unit_id=" + unitId.toString() + "&journal_type_id=<%= @journal.journal_type.id %>&year=<%= session[:current_year] %>";
+   }
+   function selectedYearChanged(year) {
+     document.location.href = "<%= journals_path %>?unit_id=<%= session[:current_unit_id] %>&journal_type_id=<%= @journal.journal_type.id %>&year=" + year;
+   }
+  </script>
+
+  <!--<div class="input-group">-->
+    <div class="col-md-10">
+      <select onchange="selectedUnitChanged(this.value)" style="padding: 0; width:100%;">
+        <% @user_units.each do |unit| %>
+          <option value="<%= unit.id %>" <%= unit.id == session[:current_unit_id] ? "selected='selected'" : "" %>><%= unit.name %></option>
+        <% end %>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select onchange="selectedYearChanged(this.value)" style="padding: 0; width:100%;">
+        <% @years.each do |year| %>
+          <option value="<%= year %>" <%= year == session[:current_year] ? "selected='selected'" : "" %>><%= year %></option>
+        <% end %>
+      </select>
+    </div>
+  <!--</div>-->
+</div>
