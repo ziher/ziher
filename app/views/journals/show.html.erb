@@ -4,12 +4,12 @@
       <small>
         <% if can? :update, @journal %>
           <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false), class: 'btn btn-sm btn-success' do%>
-            <i class="icon-plus"></i>&nbsp;&nbsp;Nowy wpływ
+            <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ
           <% end %>
         <% end %>
         <% if can? :update, @journal %>
           <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true), class: 'btn btn-sm btn-success' do%>
-            <i class="icon-minus"></i>&nbsp;&nbsp;Nowy wydatek
+            <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek
           <% end %>
         <% end %>
         <% if can? :close, @journal %>
@@ -75,11 +75,11 @@
           <small>
             <span style="display: block;"><%= i+=1 =%>.</span>
             <% if @journal.is_open? %>
-              <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><i class="icon-pencil" title="Edytuj"></i><%end%><% end %>
-              <% if can? :destroy, entry %><%= link_to entry, data: { confirm: 'Na pewno usunąć wpis?'}, method: :delete do%><i class="icon-trash" title="Usuń"></i><%end%><% end %>
+              <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><span class="glyphicon glyphicon-pencil" title="Edytuj"></span><%end%><% end %>
+              <% if can? :destroy, entry %><%= link_to entry, data: { confirm: 'Na pewno usunąć wpis?'}, method: :delete do%><span class="glyphicon glyphicon-trash" title="Usuń"></span><%end%><% end %>
             <% else %>
-              <% if can? :update, entry %><span class="disabled"><i class="icon-pencil" title="Nie można edytować wpisów zamkniętej książki"></i></span><% end %>
-              <% if can? :destroy, entry %><span class="disabled"><i class="icon-trash" title="Nie można usuwać wpisów zamkniętej książki"></i></span><% end %>
+              <% if can? :update, entry %><span class="glyphicon glyphicon-pencil text-muted" title="Nie można edytować wpisów zamkniętej książki"></span><% end %>
+              <% if can? :destroy, entry %><span class="glyphicon glyphicon-trash text-muted" title="Nie można usuwać wpisów zamkniętej książki"></span><% end %>
             <% end %>
           </small>
         </td>
