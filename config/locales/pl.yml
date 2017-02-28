@@ -41,7 +41,7 @@ pl:
         name_tooltip: "Nazwa dokumentu"
         document_number_tooltip: "Numer dokumentu"
         income_all: "Wpływy razem"
-        income_detailed: "Wypływy szczegółowo"
+        income_detailed: "Wpływy szczegółowo"
         expense_all: "Wydatki razem"
         expense_detailed: "Wydatki szczegółowo"
       unit:
