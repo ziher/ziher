@@ -6,4 +6,8 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Wstecz', journal_path(@journal) %>
+<div class="row top-buffer-20">
+  <div class="col-md-12">
+    <%= link_to 'Powrót do książki', journal_path(@journal), class: "btn btn-sm btn-default" %>
+  </div>
+</div>

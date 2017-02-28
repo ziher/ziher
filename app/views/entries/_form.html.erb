@@ -13,34 +13,40 @@
 
   <div class="row">
     <div class="col-md-6">
-      <div class="field">
-        <%= f.label :data %>
-        <%= f.text_field :date %>
-      </div>
-      <div class="field">
-        <%= f.label :Treść %>
-        <%= f.text_field :name %>
-      </div>
-      <div class="field">
-        <%= f.label :Numer_dokumentu %>
-        <%= f.text_field :document_number %>
+      <div class="well">
+        <div class="row">
+          <div class="col-md-3">
+            <%= f.label :data %>
+            <%= f.text_field :date, class: "form-control" %>
+          </div>
+          <div class="col-md-6 col-md-offset-3">
+            <%= f.label :Numer_dokumentu %>
+            <%= f.text_field :document_number, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row top-buffer-20">
+          <div class="col-md-12">
+            <%= f.label :Opis %>
+            <%= f.text_field :name, class: "form-control" %>
+          </div>
+        </div>
       </div>
 
       <%= f.fields_for :items, @sorted_items do |item_fields| %>
-        <div class="row">
+        <div class="row top-buffer-20">
           <% category_name = item_fields.object.category.name %>
 
           <div class="col-md-3">
             <% #item amount %>
             <%= item_fields.label :amount, category_name %>
-            <%= item_fields.text_field :amount, :class=>"category" %>
+            <%= item_fields.text_field :amount, :class=>"category form-control" %>
           </div>
 
           <% if @entry.is_expense then %>
             <div class="col-md-3">
               <% #item amount one percent %>
-              <%= item_fields.label :amount_one_percent, "1%" %>
-              <%= item_fields.text_field :amount_one_percent, :class=>"category" %>
+              <%= item_fields.label :amount_one_percent, "W tym 1%" %>
+              <%= item_fields.text_field :amount_one_percent, :class=>"category form-control" %>
             </div>
           <% end %>
 
@@ -73,8 +79,10 @@
     <% end %>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Zapisz"%>
+  <div class="row top-buffer-20">
+    <div class="col-md-12">
+      <%= f.submit "Zapisz", class: "btn btn-sm btn-success"%>
+    </div>
   </div>
 <% end %>
 <script type="text/JavaScript">

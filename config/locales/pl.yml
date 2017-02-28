@@ -38,7 +38,7 @@ pl:
         year: "Rok"
         journal_type: "Rodzaj"
         one_percent_tooltip: "Środki wydane z 1 procenta"
-        name_tooltip: "Nazwa dokumentu"
+        name_tooltip: "Opis dokumentu"
         document_number_tooltip: "Numer dokumentu"
         income_all: "Wpływy razem"
         income_detailed: "Wpływy szczegółowo"
