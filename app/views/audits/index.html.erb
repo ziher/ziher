@@ -3,7 +3,6 @@
 <table class="table table-condensed top-buffer-20">
   <tr>
     <th>Obiekt</th>
-    <th>user_id</th>
     <th>Użytkownik</th>
     <th>Rodzaj zmiany</th>
     <th>Zmiana</th>
@@ -13,9 +12,13 @@
 
   <% @audits.each do |audit| %>
       <tr>
-        <td><%= audit.auditable_type %>(id: <%= audit.auditable_id%>)</td>
-        <td><%= audit.user_id %></td>
-        <td><%= audit.username %></td>
+        <td><%= audit.auditable_type %>(id: <%= audit.auditable_id %>)</td>
+        <% if audit.user_id.nil? %>
+            <td></td>
+        <% else %>
+            <% user = User.find(audit.user_id) %>
+            <td><%= link_to user.name, User.find(audit.user_id) %> </td>
+        <% end %>
         <td><%= audit.action %></td>
         <td><%= audit.audited_changes %></td>
         <td><%= audit.remote_address %></td>
