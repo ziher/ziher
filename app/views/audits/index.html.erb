@@ -17,7 +17,11 @@
             <td></td>
         <% else %>
             <% user = User.find(audit.user_id) %>
-            <td><%= link_to user.name, User.find(audit.user_id) %> </td>
+            <% if user.name == ' ' %>
+                <td><%= link_to user, user %> </td>
+            <% else %>
+                <td><%= link_to user.name, user %> </td>
+            <% end %>
         <% end %>
         <td><%= audit.action %></td>
         <td><%= audit.audited_changes %></td>
