@@ -12,21 +12,35 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.label :name %><br />
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+    </div>
   </div>
 
   <div class="field">
-    <%= f.label :code %><br />
-    <%= f.text_field :code %>
+    <div class="row top-buffer-20">
+      <div class="col-md-2">
+        <%= f.label :code %><br />
+        <%= f.text_field :code , class: "form-control"%>
+      </div>
+    </div>
   </div>
 
+
   <div class="field">
-    <%= f.label :group_ids %>
-    <%= f.select :group_ids, @groups.collect { |g| [ g.name, g.id ] }, {}, { :multiple => true } %>
+    <div class="row top-buffer-20">
+      <div class="col-md-6">
+        <%= f.label :group_ids %><br />
+        <%= f.select :group_ids, @groups.collect { |g| [ g.name, g.id ] }, {}, { :multiple => true, class: "form-control" }%>
+      </div>
+    </div>
   </div>
 
   <div class="actions">
-    <%= f.submit "Zapisz"%>
+    <%= f.submit "Zapisz", :class => "btn btn-sm btn-success top-buffer-20" %>
   </div>
+
 <% end %>
