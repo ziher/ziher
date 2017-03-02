@@ -56,10 +56,11 @@ sudo -H -u vagrant -i bash -c "git config --global color.ui true"
 #sudo -H -u vagrant -i bash -c "cd /vagrant; git checkout 1e00c66a45b723d"
 
 echo ====================== Sciagam gemy i uzupelniam baze danych
+DEBIAN_FRONTEND=noninteractive apt-get --yes install g++
 sudo -H -u vagrant -i bash -c "gem install bundle"
 sudo -H -u vagrant -i bash -c "cd /vagrant; bundle install"
 sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:create:all"
-sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:reset"
+sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:setup"
 
 echo '====================== ZiHeR jest gotowy do zabawy!'
 echo '====================== Aby zalogowac sie na maszyne wpisz'
@@ -73,4 +74,4 @@ echo '====================== $ rails server -b 0.0.0.0 <enter>'
 echo '======================'
 echo '====================== Po wykonaniu tych komend twoj wlasny i niepowtarzalny ZiHeR czeka na Ciebie :]'
 echo '====================== W przegladarce wpisz: http://192.168.33.10:3000'
-echo '====================== (uzytkownik: dev@zhr.pl, haslo: dev@zhr.pl)'
+echo '====================== (uzytkownik: admin@ziher, haslo: admin@ziher)'
