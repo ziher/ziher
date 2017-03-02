@@ -12,8 +12,8 @@ class JournalsControllerTest < ActionController::TestCase
 
   test "should get index" do
     get :index
-    assert_response :success
-    assert_not_nil assigns(:journals)
+    assert_response :redirect
+    assert_redirected_to "/ksiazka_finansowa"
   end
 
   test "index should redirect to journal" do

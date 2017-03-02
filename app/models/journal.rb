@@ -154,6 +154,18 @@ class Journal < ActiveRecord::Base
     journal = Journal.where("unit_id = ? AND journal_type_id = ? AND year <= ?", unit.id, type.id, year).order("year DESC").first
   end
 
+  # Returns journal for unit and type for previous year
+  def Journal.get_previous_for_type(unit_id, type_id)
+    previous_year = Time.now.year - 1
+    journal = Journal.where(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year).first
+
+    if (journal == nil)
+      journal = Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year, :is_open => true)
+    end
+
+    return journal
+  end
+
   # Returns journal for unit and type current year
   def Journal.get_current_for_type(unit_id, type_id)
     journal = Journal.where(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year).first

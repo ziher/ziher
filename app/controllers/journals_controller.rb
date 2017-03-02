@@ -11,22 +11,22 @@ class JournalsController < ApplicationController
     if (params[:unit_id] && params[:journal_type_id] && params[:year])
       journal = Journal.find_by_unit_and_year_and_type(Unit.find(params[:unit_id]), params[:year], JournalType.find(params[:journal_type_id]))
       if journal.nil?
-        # if there is no such Journal - just get the current year one
-        journal = Journal.get_current_for_type(params[:unit_id], params[:journal_type_id])
+        # if there is no such Journal - just create one
+
+        if current_user.is_superadmin && params[:year].to_i == Time.now.year - 1
+          # only superadmin can create journal for the previous year
+          journal = Journal.get_previous_for_type(params[:unit_id], params[:journal_type_id])
+        else
+          journal = Journal.get_current_for_type(params[:unit_id], params[:journal_type_id])
+        end
       end
       session[:current_unit_id] = journal.unit.id
       session[:current_year] = journal.year
       redirect_to journal
       return
-    elsif (params[:journal_type_id])
-      @journals = Journal.where(:journal_type_id => params[:journal_type_id])
     else
-      @journals = Journal.all
-    end
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @journals }
+      redirect_to default_finance_journal_path
+      return
     end
   end
 
@@ -41,6 +41,13 @@ class JournalsController < ApplicationController
     @entries = @journal.entries.to_a.sort_by!{|entry| entry.date}
     @user_units = Unit.find_by_user(current_user)
     @years = @journal.unit.find_journal_years(@journal.journal_type)
+
+    if current_user.is_superadmin
+      @years << Time.now.year - 1
+      @years.uniq!
+    end
+
+    @years.sort!
 
     session[:current_year] = @journal.year
     session[:current_unit_id] = @journal.unit.id
