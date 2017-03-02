@@ -53,7 +53,6 @@ service postgresql restart
 # Na razie zakladam, ze uzytkownik sciagnal sobie kod wczesniej i z katalogu glownego odpala Vagranta.
 #sudo -H -u vagrant -i git clone https://github.com/zhr/ziher.git /vagrant/
 sudo -H -u vagrant -i bash -c "git config --global color.ui true"
-#sudo -H -u vagrant -i bash -c "cd /vagrant; git checkout 1e00c66a45b723d"
 
 echo ====================== Sciagam gemy i uzupelniam baze danych
 DEBIAN_FRONTEND=noninteractive apt-get --yes install g++
@@ -61,6 +60,7 @@ sudo -H -u vagrant -i bash -c "gem install bundle"
 sudo -H -u vagrant -i bash -c "cd /vagrant; bundle install"
 sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:create:all"
 sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:setup"
+sudo -H -u vagrant -i bash -c "cd /vagrant; rake db:migrate RAILS_ENV=test"
 
 echo '====================== ZiHeR jest gotowy do zabawy!'
 echo '====================== Aby zalogowac sie na maszyne wpisz'
