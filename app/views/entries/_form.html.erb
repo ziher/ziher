@@ -1,3 +1,5 @@
+<%= content_tag(:div, "", id: 'journal-year', data: {source: @journal.year}) %>
+
 <%= form_for(@entry) do |f| %>
   <% if @entry.errors.any? %>
     <div id="error_explanation">
