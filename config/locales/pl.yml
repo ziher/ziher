@@ -4,7 +4,7 @@ pl:
       entry:
         date: "Data"
         document_number: "Numer dokumentu"
-        name: "Nazwa"
+        name: "Opis"
         journal: ""
         items: ""
     errors:
@@ -16,7 +16,7 @@ pl:
             document_number:
               blank: "nie może być pusty"
             name:
-              blank: "nie może być pusta"
+              blank: "nie może być pusty"
             journal:
               blank: "Wpis musi być przypisany do książki"
             items:
