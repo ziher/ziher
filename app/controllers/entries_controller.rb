@@ -45,10 +45,12 @@ class EntriesController < ApplicationController
     authorize! :create, @entry
 
     respond_to do |format|
-      if @entry.save!
+      if @entry.save
         format.html { redirect_to @entry.journal, notice: 'Wpis utworzony' }
         format.json { render json: @entry, status: :created, location: @entry }
       else
+        @journal = @entry.journal
+
         format.html { render action: "new" }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
@@ -93,6 +95,9 @@ class EntriesController < ApplicationController
         format.html { redirect_to @journal, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
+        create_empty_items(@entry, @journal.year)
+        @sorted_items = @entry.items.sort_by {|item| item.category.position.to_s}
+
         format.html { render action: "edit" }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
