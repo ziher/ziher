@@ -25,7 +25,7 @@ four:
 five:
   amount: 100
   entry: expense_three
-  category: six
+  category: income_2011_1
 
 # TODO: Adding anything for category two breaks the tests - needs to be checked out
 #six:

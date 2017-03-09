@@ -30,6 +30,7 @@ class Entry < ActiveRecord::Base
   before_destroy :should_not_change_if_journal_is_closed
 
   after_save :recalculate_initial_balance
+  after_destroy :recalculate_initial_balance
 
   def get_amount_for_category(category)
     result = self.items.find_all { |item| item.category == category }

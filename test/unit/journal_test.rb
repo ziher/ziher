@@ -236,9 +236,11 @@ class JournalTest < ActiveSupport::TestCase
     later = journals(:finance_2012)
     balance_before = later.initial_balance
 
+    difference = 20
+
     #when
     #an entry is added to earlier journal
-    item = Item.new(:amount => 20, :category => categories(:nine_income_2011))
+    item = Item.new(:amount => difference, :category => categories(:income_2011_2))
     entry = Entry.new(:items => [item], :journal_id => earlier.id, :date => "2011-01-01", :name => "name", :document_number => "document number")
     entry.save!
 
@@ -246,7 +248,51 @@ class JournalTest < ActiveSupport::TestCase
     #later journal's balance is recalculated
     later.reload
     balance_after = later.initial_balance
-    assert_equal(balance_before + 20, balance_after)
+
+    assert_equal(balance_before + difference, balance_after)
+  end
+
+  test "should recalculate balance when editing entry" do
+    #given
+    #two open journals
+    earlier = journals(:finance_2011)
+    later = journals(:finance_2012)
+    balance_before = later.initial_balance
+    entry = earlier.entries.first
+    item = entry.items.first
+
+    difference = 15
+
+    #when
+    item.amount += difference
+    item.save!
+
+    #then
+    entry.save!
+    later.reload
+    balance_after = later.initial_balance
+
+    assert_equal(balance_before + difference, balance_after)
+  end
+
+  test "should recalculate balance when deleting entry" do
+    #given
+    #two open journals
+    earlier = journals(:finance_2011)
+    later = journals(:finance_2012)
+    balance_before = later.initial_balance
+    entry = earlier.entries.first
+
+    amount = entry.sum
+
+    #when
+    entry.destroy
+
+    #then
+    later.reload
+    balance_after = later.initial_balance
+
+    assert_equal(balance_before - amount, balance_after)
   end
 
   test "should return only current year for linked entry" do

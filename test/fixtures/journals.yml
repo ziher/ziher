@@ -11,7 +11,7 @@ finance_2012:
   year: 2012
   journal_type_id: 1
   is_open: true
-  initial_balance: 100
+  initial_balance: 200
   unit: troop_1zgm
 
 bank_2012:

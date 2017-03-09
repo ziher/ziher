@@ -15,7 +15,7 @@ expense_two:
   is_expense: true
 
 expense_three:
-  date: 2012-03-24
+  date: 2011-03-24
   name: EntryThree
   document_number: MyString
   journal: finance_2011
