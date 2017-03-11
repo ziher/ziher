@@ -24,7 +24,7 @@
         <% end %>
         <td><%= audit.auditable_type %>(id: <%= audit.auditable_id %>)</td>
         <td><%= audit.action %></td>
-        <td><%= audit.audited_changes %></td>
+        <td><%= audit.formatted_changes %></td>
         <td><%= audit.remote_address %></td>
         <td><%= audit.created_at %></td>
       </tr>
