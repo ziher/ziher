@@ -83,3 +83,6 @@ pl:
   incomes: "Wpływy"
   unauthorized:
     default: "Próbowałeś/łaś obejrzeć coś, czego nie wolno ci oglądać."
+  will_paginate:
+    previous_label: "Poprzednia"
+    next_label: "Następna"
