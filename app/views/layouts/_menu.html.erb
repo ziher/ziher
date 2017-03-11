@@ -29,7 +29,7 @@
                 <% if can? :manage, Category %><li class="<%= menu_active?(:categories) %>"> <%= link_to "Plan kont", categories_path %> </li><% end %>
                 <% if can? :manage, InventorySource %><li class="<%= menu_active?(:inventory_sources) %>"> <%= link_to "Źródła inwentarza", inventory_sources_path %> </li><% end %>
             <% end %>
-            <% if current_user.is_superadmin %><li class="<%= menu_active?(:audits) %>"> <%= link_to "Audit log", audits_index_path %> </li><% end %>
+            <% if current_user.is_superadmin %><li class="<%= menu_active?(:audits) %>"> <%= link_to "Dziennik zmian", audits_index_path %> </li><% end %>
           </ul>
         </li>
         <% end %>
