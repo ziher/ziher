@@ -2,8 +2,8 @@
 
 <table class="table table-condensed top-buffer-20">
   <tr>
-    <th>Obiekt</th>
     <th>Użytkownik</th>
+    <th>Obiekt</th>
     <th>Rodzaj zmiany</th>
     <th>Zmiana</th>
     <th>IP</th>
@@ -12,7 +12,6 @@
 
   <% @audits.each do |audit| %>
       <tr>
-        <td><%= audit.auditable_type %>(id: <%= audit.auditable_id %>)</td>
         <% if audit.user_id.nil? %>
             <td></td>
         <% else %>
@@ -23,6 +22,7 @@
                 <td><%= link_to user.name, user %> </td>
             <% end %>
         <% end %>
+        <td><%= audit.auditable_type %>(id: <%= audit.auditable_id %>)</td>
         <td><%= audit.action %></td>
         <td><%= audit.audited_changes %></td>
         <td><%= audit.remote_address %></td>
