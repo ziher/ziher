@@ -37,6 +37,8 @@ select *
     else
       units = Unit.order("name").find_all_by_user(user).select{|unit| user.can_view_unit_entries(unit)}
     end
+
+    units.sort_by { |unit| unit.code.to_i }
   end
 
   # Returns years for which the unit has journals of given type, plus current year.
