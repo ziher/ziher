@@ -40,22 +40,12 @@ class Journal < ActiveRecord::Base
 
   # returns sum of all entries in this journal for given category
   def get_sum_for_category(category)
-    sum = 0
-    self.entries.each do |entry|
-      sum += entry.get_amount_for_category(category)
-    end
-
-    return sum
+    Item.where(:entry => self.entries, :category => category).sum(:amount)
   end
 
   # returns sum one percent of all entries in this journal for given category
   def get_sum_one_percent_for_category(category)
-    sum = 0
-    self.entries.each do |entry|
-      sum += entry.get_amount_one_percent_for_category(category)
-    end
-
-    return sum
+    Item.where(:entry => self.entries, :category => category).sum(:amount_one_percent)
   end
 
   # returns sum of all expense entries
