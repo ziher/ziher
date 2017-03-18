@@ -10,7 +10,7 @@
   </div>
   <div class="col-md-2">
     <div class="pull-right top-buffer-20">
-      <% if can? :create, Unit %>
+      <% if can? :create, Unit.new %>
         <%= link_to 'Nowa jednostka', new_unit_path, class: "btn btn-sm btn-success" %>
       <% end %>
     </div>
