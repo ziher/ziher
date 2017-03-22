@@ -142,18 +142,10 @@ class InventoryEntriesController < ApplicationController
   private
 
   def inventory_entries_params
-
-    normalize_value_input
-
     if params[:inventory_entry]
       params.require(:inventory_entry).permit(:date, :stock_number, :name, :document_number, :amount, :is_expense,
                                               :total_value, :unit_id, :inventory_source_id, :remark)
     end
   end
 
-  def normalize_value_input
-    if params[:inventory_entry][:total_value]
-      params[:inventory_entry][:total_value].gsub!(/[,\s+]/, ',' => '.', '\s+' => '')
-    end
-  end
 end

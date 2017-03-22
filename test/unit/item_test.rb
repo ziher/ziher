@@ -96,4 +96,29 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal(item.amount, amount)
     assert_not_equal(item.amount_one_percent, item.amount)
   end
+
+  test "should normalize amount" do
+    #given
+    item = items(:one)
+    item.amount = "1 234,56"
+
+    #when
+    item.save!
+
+    #then
+    assert_equal(item.amount, 1234.56)
+    end
+
+  test "should normalize amount one percent" do
+    #given
+    item = items(:four)
+    item.amount_one_percent = "1 23,45"
+
+    #when
+    item.save!
+
+    #then
+    assert_equal(item.amount_one_percent, 123.45)
+  end
+
 end

@@ -150,25 +150,9 @@ class EntriesController < ApplicationController
   private
 
   def entry_params
-
-    normalize_amount_input
-
     if params[:entry]
       params.require(:entry).permit(:date, :name, :document_number, :journal_id, :is_expense, :linked_entry,
                                     :items_attributes => [:id, :amount, :amount_one_percent, :category_id])
     end
-  end
-
-  def normalize_amount_input
-    params[:entry][:items_attributes].values.each do |item|
-      if item[:amount]
-        item[:amount].gsub!(/[,\s+]/, ',' => '.', '\s+' => '')
-      end
-
-      if item[:amount_one_percent]
-        item[:amount_one_percent].gsub!(/[,\s+]/, ',' => '.', '\s+' => '')
-      end
-
-    end if params[:entry] and params[:entry][:items_attributes]
   end
 end
