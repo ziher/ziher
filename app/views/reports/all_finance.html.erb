@@ -1,0 +1,85 @@
+<h1>Reports#all_finance_report</h1>
+<p>Find me in app/views/reports/all_finance_report.html.erb</p>
+
+
+Suma wpływów: <%= @income_sum %><br/>
+Suma wydatków: <%= @expense_sum %><br/>
+
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Suma finanse</th>
+          <th>1%</th>
+          <th>Suma bank</th>
+          <th>1%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Saldo początkowe</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <% @categories.where(:is_expense => false).each do |category| %>
+            <tr>
+              <td><%= category.name %></td>
+              <td><%= @finance_hash[category.name][0] %></td>
+              <td><%= @finance_hash[category.name][1] %></td>
+              <td><%= @bank_hash[category.name][0] %></td>
+              <td><%= @bank_hash[category.name][1] %></td>
+            </tr>
+        <% end %>
+      </tbody>
+      <tfoot class="border-top-bold" style="font-weight: bold">
+        <tr>
+          <td>Razem wpływy</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="col-md-6">
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Suma finanse</th>
+        <th>1%</th>
+        <th>Suma bank</th>
+        <th>1%</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @categories.where(:is_expense => true).each do |category| %>
+            <tr>
+              <td><%= category.name %></td>
+              <td><%= @finance_hash[category.name][0] %></td>
+              <td><%= @finance_hash[category.name][1] %></td>
+              <td><%= @bank_hash[category.name][0] %></td>
+              <td><%= @bank_hash[category.name][1] %></td>
+            </tr>
+        <% end %>
+      </tbody>
+      <tfoot class="border-top-bold" style="font-weight: bold">
+      <tr>
+        <td>Razem wydatki</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+

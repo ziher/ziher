@@ -12,6 +12,7 @@
           <li class="dropdown <%= menu_active?(:reports_dropdown) %>">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Raporty <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li class="<%= menu_active?(:reports) %>"> <%= link_to "Całościowe sprawozdanie finansowe", all_finance_report_path %> </li>
               <li class="<%= menu_active?(:reports) %>"> <%= link_to "Spis z natury", fixed_assets_report_path %> </li>
             </ul>
           </li>
