@@ -1,0 +1,146 @@
+<script type="text/javascript">
+    function reloadForYear(year) {
+        document.location.href = "<%= all_finance_report_path %>?year=" + year;
+    }
+</script>
+
+<div class="row">
+  <div class="col-md-10">
+    <h3>Administracja &gt; Raport całościowy</h3>
+  </div>
+  <div class="col-md-2">
+    <div class="pull-right top-buffer-20">
+      Rok: <select class="no-margin" onchange="reloadForYear(this.value)">
+        <% @years.each do |year| %>
+            <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="row top-buffer-20">
+  <div class="col-md-6">
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Wpływy</th>
+          <th>Suma finanse</th>
+          <th>1%</th>
+          <th>Suma bank</th>
+          <th>1%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Saldo początkowe</td>
+          <td><%= @finance_hash[@initial_balance_key][0] %></td>
+          <td><%= @finance_hash[@initial_balance_key][1] %></td>
+          <td><%= @bank_hash[@initial_balance_key][0] %></td>
+          <td><%= @bank_hash[@initial_balance_key][1] %></td>
+        </tr>
+        <% @categories.where(:is_expense => false).each do |category| %>
+            <tr>
+              <td><%= category.name %></td>
+              <td><%= @finance_hash[category.name][0] %></td>
+              <td><%= @finance_hash[category.name][1] %></td>
+              <td><%= @bank_hash[category.name][0] %></td>
+              <td><%= @bank_hash[category.name][1] %></td>
+            </tr>
+        <% end %>
+      </tbody>
+      <tfoot class="border-top-bold" style="font-weight: bold">
+        <tr>
+          <td>Razem wpływy</td>
+          <td><%= @finance_hash[@total_balance_income_key][0] %></td>
+          <td><%= @finance_hash[@total_balance_income_key][1] %></td>
+          <td><%= @bank_hash[@total_balance_income_key][0] %></td>
+          <td><%= @bank_hash[@total_balance_income_key][1] %></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="col-md-6">
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>Wydatki</th>
+        <th>Suma finanse</th>
+        <th>1%</th>
+        <th>Suma bank</th>
+        <th>1%</th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @categories.where(:is_expense => true).each do |category| %>
+            <tr>
+              <td><%= category.name %></td>
+              <td><%= @finance_hash[category.name][0] %></td>
+              <td><%= @finance_hash[category.name][1] %></td>
+              <td><%= @bank_hash[category.name][0] %></td>
+              <td><%= @bank_hash[category.name][1] %></td>
+            </tr>
+        <% end %>
+      </tbody>
+      <tfoot class="border-top-bold" style="font-weight: bold">
+      <tr>
+        <td>Razem wydatki</td>
+        <td><%= @finance_hash[@total_balance_expense_key][0] %></td>
+        <td><%= @finance_hash[@total_balance_expense_key][1] %></td>
+        <td><%= @bank_hash[@total_balance_expense_key][0] %></td>
+        <td><%= @bank_hash[@total_balance_expense_key][1] %></td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<div class="row top-buffer-20">
+  <div class="col-md-12">
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Wpływy</th>
+          <th>Wpływy 1%</th>
+          <th>Wydatki</th>
+          <th>Wydatki 1%</th>
+          <th>Saldo</th>
+          <th>Saldo 1%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Książki finansowe</td>
+          <td><%= @finance_hash[@total_balance_income_key][0] %></td>
+          <td><%= @finance_hash[@total_balance_income_key][1] %></td>
+          <td><%= @finance_hash[@total_balance_expense_key][0] %></td>
+          <td><%= @finance_hash[@total_balance_expense_key][1] %></td>
+          <td><%= @total_hash[:finance_sum] %></td>
+          <td><%= @total_hash[:finance_sum_one_percent] %></td>
+        </tr>
+        <tr>
+          <td>Książki bankowe</td>
+          <td><%= @bank_hash[@total_balance_income_key][0] %></td>
+          <td><%= @bank_hash[@total_balance_income_key][1] %></td>
+          <td><%= @bank_hash[@total_balance_expense_key][0] %></td>
+          <td><%= @bank_hash[@total_balance_expense_key][1] %></td>
+          <td><%= @total_hash[:bank_sum] %></td>
+          <td><%= @total_hash[:bank_sum_one_percent] %></td>
+        </tr>
+      </tbody>
+      <tfoot class="border-top-bold" style="font-weight: bold">
+        <tr>
+          <td>Razem</td>
+          <td><%= @total_hash[:income] %></td>
+          <td><%= @total_hash[:income_one_percent] %></td>
+          <td><%= @total_hash[:expense] %></td>
+          <td><%= @total_hash[:expense_one_percent] %></td>
+          <td><%= @total_hash[:sum] %></td>
+          <td><%= @total_hash[:sum_one_percent] %></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
