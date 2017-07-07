@@ -1,30 +1,47 @@
 class ReportsController < ApplicationController
 
+  def all_finance_one_percent
+    unless current_user.is_superadmin
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
+    @report_header = "Administracja > Raport całościowy dla 1%"
+
+    @selected_year = params[:year] || session[:current_year]
+
+    create_hashes_for(@selected_year, :amount_one_percent, :initial_balance_one_percent)
+
+    render 'report_template'
+
+  end
+
   def all_finance
     unless current_user.is_superadmin
       redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
       return
     end
 
-    @initial_balance_key = "initial_balance"
-    @total_balance_income_key = "total_balance_income"
-    @total_balance_expense_key = "total_balance_outcome"
+    @report_header = "Administracja > Raport całościowy"
 
-    @years = Journal.find_all_years
     @selected_year = params[:year] || session[:current_year]
-
-    @categories = Category.where(:year => @selected_year)
 
     create_hashes_for(@selected_year, :amount, :initial_balance)
 
-    respond_to do |format|
-      format.html # all_finance.html.erb
-    end
+    render 'report_template'
   end
 
   private
 
   def create_hashes_for(year, amount_type, initial_balance_type)
+    @years = Journal.find_all_years
+    @categories = Category.where(:year => @selected_year)
+
+    @initial_balance_key = "initial_balance"
+    @total_balance_income_key = "total_balance_income"
+    @total_balance_expense_key = "total_balance_outcome"
+
+
     @finance_hash = create_hash_for_amount_type(JournalType::FINANCE_TYPE_ID,
                                                 @selected_year,
                                                 amount_type,
