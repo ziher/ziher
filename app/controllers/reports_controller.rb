@@ -97,9 +97,9 @@ class ReportsController < ApplicationController
 
     categories.each do |category|
       if category.is_expense then
-        expense += account_hash[category.name]
+        expense += account_hash[category.id]
       else
-        income += account_hash[category.name]
+        income += account_hash[category.id]
       end
     end
 
@@ -133,7 +133,7 @@ class ReportsController < ApplicationController
 
       sum = items.sum(amount_type)
 
-      hash[category.name] = sum
+      hash[category.id] = sum
     end
 
     return hash

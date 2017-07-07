@@ -38,8 +38,8 @@
         <% @categories.where(:is_expense => false).each do |category| %>
             <tr>
               <td><%= category.name %></td>
-              <td><%= @finance_hash[category.name] %></td>
-              <td><%= @bank_hash[category.name] %></td>
+              <td><%= @finance_hash[category.id] %></td>
+              <td><%= @bank_hash[category.id] %></td>
             </tr>
         <% end %>
       </tbody>
@@ -66,8 +66,8 @@
         <% @categories.where(:is_expense => true).each do |category| %>
             <tr>
               <td><%= category.name %></td>
-              <td><%= @finance_hash[category.name] %></td>
-              <td><%= @bank_hash[category.name] %></td>
+              <td><%= @finance_hash[category.id] %></td>
+              <td><%= @bank_hash[category.id] %></td>
             </tr>
         <% end %>
       </tbody>
