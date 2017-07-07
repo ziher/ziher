@@ -7,6 +7,7 @@ class ReportsController < ApplicationController
     end
 
     @report_header = "Administracja > Raport całościowy dla 1%"
+    @report_link = all_finance_one_percent_report_path
 
     @selected_year = params[:year] || session[:current_year]
 
@@ -23,6 +24,7 @@ class ReportsController < ApplicationController
     end
 
     @report_header = "Administracja > Raport całościowy"
+    @report_link = all_finance_report_path
 
     @selected_year = params[:year] || session[:current_year]
 
