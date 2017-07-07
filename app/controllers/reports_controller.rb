@@ -1,4 +1,5 @@
 class ReportsController < ApplicationController
+
   def all_finance
     unless current_user.is_superadmin
       redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
@@ -12,18 +13,9 @@ class ReportsController < ApplicationController
     @years = Journal.find_all_years
     @selected_year = params[:year] || session[:current_year]
 
-    @finance_hash = get_categories_hash(JournalType::FINANCE_TYPE_ID, @selected_year)
-    @bank_hash = get_categories_hash(JournalType::BANK_TYPE_ID, @selected_year)
-
     @categories = Category.where(:year => @selected_year)
 
-    @finance_hash.merge!(get_initial_balances(JournalType::FINANCE_TYPE_ID, @selected_year))
-    @bank_hash.merge!(get_initial_balances(JournalType::BANK_TYPE_ID, @selected_year))
-
-    @finance_hash.merge!(get_total_balances(@finance_hash, @selected_year))
-    @bank_hash.merge!(get_total_balances(@bank_hash, @selected_year))
-
-    @total_hash = get_totals()
+    create_hashes_for(@selected_year, :amount, :initial_balance)
 
     respond_to do |format|
       format.html # all_finance.html.erb
@@ -32,85 +24,88 @@ class ReportsController < ApplicationController
 
   private
 
-  def get_totals()
+  def create_hashes_for(year, amount_type, initial_balance_type)
+    @finance_hash = create_hash_for_amount_type(JournalType::FINANCE_TYPE_ID,
+                                                @selected_year,
+                                                amount_type,
+                                                initial_balance_type)
+
+    @bank_hash = create_hash_for_amount_type(JournalType::BANK_TYPE_ID,
+                                             @selected_year,
+                                             amount_type,
+                                             initial_balance_type)
+
+    @total_hash = get_totals(@finance_hash, @bank_hash)
+  end
+
+  def create_hash_for_amount_type(journal_type, year, amount_type, initial_balance_type)
+    hash = get_categories_hash(journal_type, year, amount_type)
+
+    hash.merge!(get_initial_balances(journal_type, year, initial_balance_type))
+
+    hash.merge!(get_total_balances(hash, year))
+
+    return hash
+  end
+
+  def get_totals(finance_hash, bank_hash)
     hash = Hash.new
 
-    income = @finance_hash[@total_balance_income_key][0].to_d + @bank_hash[@total_balance_income_key][0].to_d
-    income_one_percent = @finance_hash[@total_balance_income_key][1].to_d + @bank_hash[@total_balance_income_key][1].to_d
-
-    expense = @finance_hash[@total_balance_expense_key][0].to_d + @bank_hash[@total_balance_expense_key][0].to_d
-    expense_one_percent = @finance_hash[@total_balance_expense_key][1].to_d + @bank_hash[@total_balance_expense_key][1].to_d
+    income = finance_hash[@total_balance_income_key] + bank_hash[@total_balance_income_key]
+    expense = finance_hash[@total_balance_expense_key] + bank_hash[@total_balance_expense_key]
 
     hash[:income] = income
-    hash[:income_one_percent] = income_one_percent
     hash[:expense] = expense
-    hash[:expense_one_percent] = expense_one_percent
 
-    finance_sum = @finance_hash[@total_balance_income_key][0].to_d - @finance_hash[@total_balance_expense_key][0].to_d
-    finance_sum_one_percent = @finance_hash[@total_balance_income_key][1].to_d - @finance_hash[@total_balance_expense_key][1].to_d
-    bank_sum = @bank_hash[@total_balance_income_key][0].to_d - @bank_hash[@total_balance_expense_key][0].to_d
-    bank_sum_one_percent = @bank_hash[@total_balance_income_key][1].to_d - @bank_hash[@total_balance_expense_key][1].to_d
+    finance_sum = finance_hash[@total_balance_income_key] - finance_hash[@total_balance_expense_key]
+    bank_sum = bank_hash[@total_balance_income_key] - bank_hash[@total_balance_expense_key]
 
     hash[:finance_sum] = finance_sum
-    hash[:finance_sum_one_percent] = finance_sum_one_percent
     hash[:bank_sum] = bank_sum
-    hash[:bank_sum_one_percent] = bank_sum_one_percent
 
     sum = income - expense
-    sum_one_percent = income_one_percent - expense_one_percent
 
     hash[:sum] = sum
-    hash[:sum_one_percent] = sum_one_percent
 
     return hash
   end
 
   def get_total_balances(account_hash, year)
-    hash = Hash.new{|hsh,key| hsh[key] = [] }
+    hash = Hash.new
 
     categories = Category.where(:year => year)
 
     income = 0
-    income_one_percent = 0
     expense = 0
-    expense_one_percent = 0
 
     categories.each do |category|
       if category.is_expense then
-        expense += account_hash[category.name][0]
-        expense_one_percent += account_hash[category.name][1]
+        expense += account_hash[category.name]
       else
-        income += account_hash[category.name][0]
-        income_one_percent += account_hash[category.name][1]
+        income += account_hash[category.name]
       end
     end
 
-    income += account_hash[@initial_balance_key][0]
-    income_one_percent += account_hash[@initial_balance_key][1]
+    income += account_hash[@initial_balance_key]
 
-    hash[@total_balance_income_key].push income
-    hash[@total_balance_income_key].push income_one_percent
-
-    hash[@total_balance_expense_key].push expense
-    hash[@total_balance_expense_key].push expense_one_percent
+    hash[@total_balance_income_key] = income
+    hash[@total_balance_expense_key] = expense
 
     return hash
   end
 
-  def get_initial_balances(journal_type, year)
-    hash = Hash.new{|hsh,key| hsh[key] = [] }
+  def get_initial_balances(journal_type, year, balance_type)
+    hash = Hash.new
 
-    balance = Journal.where(:year => year, :journal_type => journal_type).sum(:initial_balance)
-    balance_one_percent = Journal.where(:year => year, :journal_type => journal_type).sum(:initial_balance_one_percent)
+    sum = Journal.where(:year => year, :journal_type => journal_type).sum(balance_type)
 
-    hash[@initial_balance_key].push balance
-    hash[@initial_balance_key].push balance_one_percent
+    hash[@initial_balance_key] = sum
 
     return hash
   end
 
-  def get_categories_hash(journal_type, year)
-    hash = Hash.new{|hsh,key| hsh[key] = [] }
+  def get_categories_hash(journal_type, year, amount_type)
+    hash = Hash.new
 
     categories = Category.where(:year => year)
     journals = Journal.where(:year => year, :journal_type => journal_type)
@@ -119,11 +114,9 @@ class ReportsController < ApplicationController
     categories.each do |category|
       items = Item.where(:category => category, :entry => entries)
 
-      amount_sum = items.sum(:amount)
-      one_percent_sum = items.sum(:amount_one_percent)
+      sum = items.sum(amount_type)
 
-      hash[category.name].push amount_sum
-      hash[category.name].push one_percent_sum
+      hash[category.name] = sum
     end
 
     return hash
