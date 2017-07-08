@@ -1,17 +1,19 @@
 class ReportsController < ApplicationController
 
+  INITIAL_BALANCE_KEY = "initial_balance"
+  TOTAL_BALANCE_INCOME_KEY="total_balance_income"
+  TOTAL_BALANCE_EXPENSE_KEY="total_balance_expense"
+
   def all_finance_one_percent
     unless current_user.is_superadmin
       redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
       return
     end
 
-    @report_header = "Administracja > Raport całościowy dla 1%"
+    @report_header = "Administracja > Całościowy raport finansowy dla 1%"
     @report_link = all_finance_one_percent_report_path
 
-    @selected_year = params[:year] || session[:current_year]
-
-    create_hashes_for(@selected_year, :amount_one_percent, :initial_balance_one_percent)
+    create_hashes_for(:amount_one_percent, :initial_balance_one_percent)
 
     render 'report_template'
 
@@ -23,25 +25,25 @@ class ReportsController < ApplicationController
       return
     end
 
-    @report_header = "Administracja > Raport całościowy"
+    @report_header = "Administracja > Całościowy raport finansowy"
     @report_link = all_finance_report_path
 
-    @selected_year = params[:year] || session[:current_year]
-
-    create_hashes_for(@selected_year, :amount, :initial_balance)
+    create_hashes_for(:amount, :initial_balance)
 
     render 'report_template'
   end
 
   private
 
-  def create_hashes_for(year, amount_type, initial_balance_type)
+  def create_hashes_for(amount_type, initial_balance_type)
+    @selected_year = params[:year] || session[:current_year]
+
     @years = Journal.find_all_years
     @categories = Category.where(:year => @selected_year)
 
-    @initial_balance_key = "initial_balance"
-    @total_balance_income_key = "total_balance_income"
-    @total_balance_expense_key = "total_balance_outcome"
+    @initial_balance_key = INITIAL_BALANCE_KEY
+    @total_balance_income_key = TOTAL_BALANCE_INCOME_KEY
+    @total_balance_expense_key = TOTAL_BALANCE_EXPENSE_KEY
 
 
     @finance_hash = create_hash_for_amount_type(JournalType::FINANCE_TYPE_ID,
@@ -70,14 +72,14 @@ class ReportsController < ApplicationController
   def get_totals(finance_hash, bank_hash)
     hash = Hash.new
 
-    income = finance_hash[@total_balance_income_key] + bank_hash[@total_balance_income_key]
-    expense = finance_hash[@total_balance_expense_key] + bank_hash[@total_balance_expense_key]
+    income = finance_hash[TOTAL_BALANCE_INCOME_KEY] + bank_hash[TOTAL_BALANCE_INCOME_KEY]
+    expense = finance_hash[TOTAL_BALANCE_EXPENSE_KEY] + bank_hash[TOTAL_BALANCE_EXPENSE_KEY]
 
     hash[:income] = income
     hash[:expense] = expense
 
-    finance_sum = finance_hash[@total_balance_income_key] - finance_hash[@total_balance_expense_key]
-    bank_sum = bank_hash[@total_balance_income_key] - bank_hash[@total_balance_expense_key]
+    finance_sum = finance_hash[TOTAL_BALANCE_INCOME_KEY] - finance_hash[TOTAL_BALANCE_EXPENSE_KEY]
+    bank_sum = bank_hash[TOTAL_BALANCE_INCOME_KEY] - bank_hash[TOTAL_BALANCE_EXPENSE_KEY]
 
     hash[:finance_sum] = finance_sum
     hash[:bank_sum] = bank_sum
@@ -105,10 +107,10 @@ class ReportsController < ApplicationController
       end
     end
 
-    income += account_hash[@initial_balance_key]
+    income += account_hash[INITIAL_BALANCE_KEY]
 
-    hash[@total_balance_income_key] = income
-    hash[@total_balance_expense_key] = expense
+    hash[TOTAL_BALANCE_INCOME_KEY] = income
+    hash[TOTAL_BALANCE_EXPENSE_KEY] = expense
 
     return hash
   end
@@ -118,7 +120,7 @@ class ReportsController < ApplicationController
 
     sum = Journal.where(:year => year, :journal_type => journal_type).sum(balance_type)
 
-    hash[@initial_balance_key] = sum
+    hash[INITIAL_BALANCE_KEY] = sum
 
     return hash
   end
