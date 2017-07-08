@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    function reloadForYear(year) {
+        document.location.href = "<%= @report_link %>?year=" + year;
+    }
+
+    function reloadForUnit(unit_id) {
+        document.location.href = "<%= @report_link %>?unit_id=" + unit_id;
+    }
+</script>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3><%= @report_header %></h3>
+  </div>
+  <div class="col-md-5">
+    <div class="pull-right top-buffer-20">
+      <select class="no-margin" onchange="reloadForUnit(this.value)">
+      <% @user_units.each do |unit| %>
+          <option value="<%= unit.id %>" <%= unit.id.to_s == @selected_unit_id.to_s ? 'selected=selected' : '' %>><%= unit.name %></option>
+      <% end %>
+    </select>
+    </div>
+  </div>
+  <div class="col-md-1">
+    <div class="pull-right top-buffer-20">
+      <select class="no-margin" onchange="reloadForYear(this.value)">
+      <% @years.each do |year| %>
+          <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
+      <% end %>
+    </select>
+    </div>
+  </div>
+</div>
+
+<%= render 'finance_template' %>

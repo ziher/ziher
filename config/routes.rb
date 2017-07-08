@@ -36,6 +36,8 @@ Ziher::Application.routes.draw do
     post :sort, on: :collection
   end
 
+  get 'reports/finance_report' => 'reports#finance', :via => :get, :as => 'finance_report'
+  get 'reports/finance_one_percent_report' => 'reports#finance_one_percent', :via => :get, :as => 'finance_one_percent_report'
   get 'reports/all_finance_report' => 'reports#all_finance', :via => :get, :as => 'all_finance_report'
   get 'reports/all_finance_one_percent_report' => 'reports#all_finance_one_percent', :via => :get, :as => 'all_finance_one_percent_report'
 

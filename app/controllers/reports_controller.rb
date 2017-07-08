@@ -4,19 +4,46 @@ class ReportsController < ApplicationController
   TOTAL_BALANCE_INCOME_KEY="total_balance_income"
   TOTAL_BALANCE_EXPENSE_KEY="total_balance_expense"
 
-  def all_finance_one_percent
+  def finance
     unless current_user.is_superadmin
       redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
       return
     end
 
-    @report_header = "Administracja > Całościowy raport finansowy dla 1%"
-    @report_link = all_finance_one_percent_report_path
+    @report_header = "Raporty > Sprawozdanie finansowe"
+    @report_link = finance_report_path
 
-    create_hashes_for(:amount_one_percent, :initial_balance_one_percent)
+    @user_units = Unit.find_by_user(current_user)
 
-    render 'report_template'
+    @selected_unit_id = params[:unit_id] || session[:current_unit_id]
+    session[:current_unit_id] = @selected_unit_id.to_i
 
+    create_hashes_for(:amount,
+                      :initial_balance,
+                      @selected_unit_id)
+
+    render 'finance'
+  end
+
+  def finance_one_percent
+    unless current_user.is_superadmin
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
+    @report_header = "Raporty > Sprawozdanie finansowe dla 1%"
+    @report_link = finance_one_percent_report_path
+
+    @user_units = Unit.find_by_user(current_user)
+
+    @selected_unit_id = params[:unit_id] || session[:current_unit_id]
+    session[:current_unit_id] = @selected_unit_id.to_i
+
+    create_hashes_for(:amount_one_percent,
+                      :initial_balance_one_percent,
+                      @selected_unit_id)
+
+    render 'finance'
   end
 
   def all_finance
@@ -25,18 +52,34 @@ class ReportsController < ApplicationController
       return
     end
 
-    @report_header = "Administracja > Całościowy raport finansowy"
+    @report_header = "Raporty > Całościowe sprawozdanie finansowe"
     @report_link = all_finance_report_path
 
     create_hashes_for(:amount, :initial_balance)
 
-    render 'report_template'
+    render 'all_finance'
   end
 
+  def all_finance_one_percent
+    unless current_user.is_superadmin
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
+    @report_header = "Raporty > Całościowe sprawozdanie finansowe dla 1%"
+    @report_link = all_finance_one_percent_report_path
+
+    create_hashes_for(:amount_one_percent, :initial_balance_one_percent)
+
+    render 'all_finance'
+
+  end
+  
   private
 
-  def create_hashes_for(amount_type, initial_balance_type)
+  def create_hashes_for(amount_type, initial_balance_type, unit_id = nil)
     @selected_year = params[:year] || session[:current_year]
+    session[:current_year] = @selected_year
 
     @years = Journal.find_all_years
     @categories = Category.where(:year => @selected_year)
@@ -49,20 +92,22 @@ class ReportsController < ApplicationController
     @finance_hash = create_hash_for_amount_type(JournalType::FINANCE_TYPE_ID,
                                                 @selected_year,
                                                 amount_type,
-                                                initial_balance_type)
+                                                initial_balance_type,
+                                                unit_id)
 
     @bank_hash = create_hash_for_amount_type(JournalType::BANK_TYPE_ID,
                                              @selected_year,
                                              amount_type,
-                                             initial_balance_type)
+                                             initial_balance_type,
+                                             unit_id)
 
     @total_hash = get_totals(@finance_hash, @bank_hash)
   end
 
-  def create_hash_for_amount_type(journal_type, year, amount_type, initial_balance_type)
-    hash = get_categories_hash(journal_type, year, amount_type)
+  def create_hash_for_amount_type(journal_type, year, amount_type, initial_balance_type, unit_id = nil)
+    hash = get_categories_hash(journal_type, year, amount_type, unit_id)
 
-    hash.merge!(get_initial_balances(journal_type, year, initial_balance_type))
+    hash.merge!(get_initial_balances(journal_type, year, initial_balance_type, unit_id))
 
     hash.merge!(get_total_balances(hash, year))
 
@@ -115,21 +160,29 @@ class ReportsController < ApplicationController
     return hash
   end
 
-  def get_initial_balances(journal_type, year, balance_type)
+  def get_initial_balances(journal_type, year, balance_type, unit_id = nil)
     hash = Hash.new
 
-    sum = Journal.where(:year => year, :journal_type => journal_type).sum(balance_type)
+    if unit_id.nil?
+      sum = Journal.where(:year => year, :journal_type => journal_type).sum(balance_type)
+    else
+      sum = Journal.where(:year => year, :journal_type => journal_type, :unit_id => unit_id).sum(balance_type)
+    end
 
     hash[INITIAL_BALANCE_KEY] = sum
 
     return hash
   end
 
-  def get_categories_hash(journal_type, year, amount_type)
+  def get_categories_hash(journal_type, year, amount_type, unit_id = nil)
     hash = Hash.new
 
     categories = Category.where(:year => year)
-    journals = Journal.where(:year => year, :journal_type => journal_type)
+    if unit_id.nil?
+      journals = Journal.where(:year => year, :journal_type => journal_type)
+    else
+      journals = Journal.where(:year => year, :journal_type => journal_type, :unit_id => unit_id)
+    end
     entries = Entry.where(:journal => journals)
 
     categories.each do |category|
