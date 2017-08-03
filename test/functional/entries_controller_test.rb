@@ -101,23 +101,43 @@ class EntriesControllerTest < ActionController::TestCase
     assert_redirected_to journal_path(@entry.journal)
   end
 
-  test "should not save empty items" do
-    # remove amount from one of the items
-    assert_difference('Item.count') do
-      @entry.items[0].amount = 0
-      new_hash = @entry.attributes
-      items_hash = Hash.new
-      i = 0
-      @entry.items.each do |item|
-        items_hash[i.to_s] = item.attributes
-        items_hash[i.to_s]["id"] = nil
-        i += 1
-      end
-      new_hash["items_attributes"] = items_hash
-      new_hash["id"] = nil
 
-      post :create, entry: new_hash
-    end
+  test 'should not save empty entry' do
+    # given
+    entries_count_before = Entry.count
+    empty_entry = copy_to_new_hash(@entry)
+    reset_amounts(empty_entry)
+
+    # when
+    post :create, entry: empty_entry
+
+    #then
+    entries_count_after = Entry.count
+    assert_equal(entries_count_before, entries_count_after)
+  end
+
+  test "should update item amount to 0 correctly" do
+    # given
+    item1 = items(:one)
+    item2 = items(:two)
+    # item2.amount = 0
+
+    puts "#{@entry.items.count}, sum #{@entry.sum}, #{@entry.items[0].to_json} #{@entry.items[1].to_json}"
+
+    # when
+    put :update, id: @entry.to_param, entry: #@entry.attributes
+        {"date" => "2012-10-11", "document_number" => "3", "name" => "asdf",
+         "items_attributes" =>
+             {"0" => {"amount" => "0", "amount_one_percent" => "", "category_id" => item1.category.id, "id" => item1.id},
+              # {"0" => item1.attributes,
+              # "1" => {"amount" => "100.0", "amount_one_percent" => "", "category_id" => "82", "id" => @entry.items[1].id}},
+              "1" => item2.attributes},
+         "journal_id" => "5", "is_expense" => "true"}
+
+    puts "#{@entry.items.count}, sum #{@entry.sum}, #{@entry.items[0].to_json} #{@entry.items[1].to_json}"
+
+    # then
+    assert_equal(item1.amount, @entry.sum)
   end
 
   test "should delete items associated with entry" do
@@ -125,5 +145,25 @@ class EntriesControllerTest < ActionController::TestCase
     assert_difference('Item.count', items_count * -1) do
       delete :destroy, id: @entry.to_param
     end
+  end
+
+  def copy_to_new_hash(entry)
+    new_hash = entry.attributes
+    items_hash = Hash.new
+    i = 0
+    entry.items.each do |item|
+      items_hash[i.to_s] = item.attributes
+      items_hash[i.to_s]['id'] = nil
+      i += 1
+    end
+    new_hash['items_attributes'] = items_hash
+    new_hash['id'] = nil
+    new_hash
+  end
+
+  def reset_amounts(entry)
+    (0 .. entry['items_attributes'].length - 1).each {|i|
+      entry['items_attributes'][i.to_s]['amount'] = 0
+    }
   end
 end

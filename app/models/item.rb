@@ -8,8 +8,6 @@ class Item < ActiveRecord::Base
 
   before_save :set_same_values_for_one_percent_category
 
-  validates :amount, :presence => true
-
   validate :cannot_have_amount_one_percent_greater_than_amount
   validate :cannot_have_amount_one_percent_if_amount_is_nil
 

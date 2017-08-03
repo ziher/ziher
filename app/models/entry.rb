@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
   belongs_to :journal
   has_one :linked_entry, :class_name => "Entry", :foreign_key => "linked_entry_id"
 
-  accepts_nested_attributes_for :items, :reject_if => :reject_empty_items
+  accepts_nested_attributes_for :items
   accepts_nested_attributes_for :linked_entry
 
   validates :items, :presence => true
@@ -145,10 +145,6 @@ class Entry < ActiveRecord::Base
         errors[:linked_entry] << "Połączony wpis musi być odwrotnego typu"
       end
     end
-  end
-
-  def reject_empty_items(attributed)
-    return attributed['amount'] == nil || attributed['amount'].to_i == 0
   end
 
   def sum
