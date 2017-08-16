@@ -116,30 +116,6 @@ class EntriesControllerTest < ActionController::TestCase
     assert_equal(entries_count_before, entries_count_after)
   end
 
-  test "should update item amount to 0 correctly" do
-    # given
-    item1 = items(:one)
-    item2 = items(:two)
-    # item2.amount = 0
-
-    puts "#{@entry.items.count}, sum #{@entry.sum}, #{@entry.items[0].to_json} #{@entry.items[1].to_json}"
-
-    # when
-    put :update, id: @entry.to_param, entry: #@entry.attributes
-        {"date" => "2012-10-11", "document_number" => "3", "name" => "asdf",
-         "items_attributes" =>
-             {"0" => {"amount" => "0", "amount_one_percent" => "", "category_id" => item1.category.id, "id" => item1.id},
-              # {"0" => item1.attributes,
-              # "1" => {"amount" => "100.0", "amount_one_percent" => "", "category_id" => "82", "id" => @entry.items[1].id}},
-              "1" => item2.attributes},
-         "journal_id" => "5", "is_expense" => "true"}
-
-    puts "#{@entry.items.count}, sum #{@entry.sum}, #{@entry.items[0].to_json} #{@entry.items[1].to_json}"
-
-    # then
-    assert_equal(item1.amount, @entry.sum)
-  end
-
   test "should delete items associated with entry" do
     items_count = @entry.items.count
     assert_difference('Item.count', items_count * -1) do
