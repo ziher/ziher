@@ -11,22 +11,22 @@
       <tbody>
         <tr>
           <td>Saldo początkowe</td>
-          <td><%= @finance_hash[@initial_balance_key] %></td>
-          <td><%= @bank_hash[@initial_balance_key] %></td>
+          <td><%= number_with_precision(@finance_hash[@initial_balance_key], :precision => 2) %></td>
+          <td><%= number_with_precision(@bank_hash[@initial_balance_key], :precision => 2) %></td>
         </tr>
         <% @categories.where(:is_expense => false).each do |category| %>
             <tr>
               <td><%= category.name %></td>
-              <td><%= @finance_hash[category.id] %></td>
-              <td><%= @bank_hash[category.id] %></td>
+              <td><%= number_with_precision(@finance_hash[category.id], :precision => 2) %></td>
+              <td><%= number_with_precision(@bank_hash[category.id], :precision => 2) %></td>
             </tr>
         <% end %>
       </tbody>
       <tfoot class="border-top-bold" style="font-weight: bold">
         <tr>
           <td>Razem wpływy</td>
-          <td><%= @finance_hash[@total_balance_income_key] %></td>
-          <td><%= @bank_hash[@total_balance_income_key] %></td>
+          <td><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %></td>
+          <td><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %></td>
         </tr>
       </tfoot>
     </table>
@@ -45,16 +45,16 @@
         <% @categories.where(:is_expense => true).each do |category| %>
             <tr>
               <td><%= category.name %></td>
-              <td><%= @finance_hash[category.id] %></td>
-              <td><%= @bank_hash[category.id] %></td>
+              <td><%= number_with_precision(@finance_hash[category.id], :precision => 2) %></td>
+              <td><%= number_with_precision(@bank_hash[category.id], :precision => 2) %></td>
             </tr>
         <% end %>
       </tbody>
       <tfoot class="border-top-bold" style="font-weight: bold">
       <tr>
         <td>Razem wydatki</td>
-        <td><%= @finance_hash[@total_balance_expense_key] %></td>
-        <td><%= @bank_hash[@total_balance_expense_key] %></td>
+        <td><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %></td>
+        <td><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %></td>
       </tr>
       </tfoot>
     </table>
@@ -75,23 +75,23 @@
       <tbody>
         <tr>
           <td>Książki finansowe</td>
-          <td><%= @finance_hash[@total_balance_income_key] %></td>
-          <td><%= @finance_hash[@total_balance_expense_key] %></td>
-          <td><%= @total_hash[:finance_sum] %></td>
+          <td><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %></td>
+          <td><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %></td>
+          <td><%= number_with_precision(@total_hash[:finance_sum], :precision => 2) %></td>
         </tr>
         <tr>
           <td>Książki bankowe</td>
-          <td><%= @bank_hash[@total_balance_income_key] %></td>
-          <td><%= @bank_hash[@total_balance_expense_key] %></td>
-          <td><%= @total_hash[:bank_sum] %></td>
+          <td><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %></td>
+          <td><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %></td>
+          <td><%= number_with_precision(@total_hash[:bank_sum], :precision => 2) %></td>
         </tr>
       </tbody>
       <tfoot class="border-top-bold" style="font-weight: bold">
         <tr>
           <td>Razem</td>
-          <td><%= @total_hash[:income] %></td>
-          <td><%= @total_hash[:expense] %></td>
-          <td><%= @total_hash[:sum] %></td>
+          <td><%= number_with_precision(@total_hash[:income], :precision => 2) %></td>
+          <td><%= number_with_precision(@total_hash[:expense], :precision => 2) %></td>
+          <td><%= number_with_precision(@total_hash[:sum], :precision => 2) %></td>
         </tr>
       </tfoot>
     </table>
