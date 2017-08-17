@@ -3,14 +3,14 @@
     <table class="table table-condensed table-striped table-bordered">
       <thead>
         <tr>
-          <th>Wpływy</th>
-          <th>Suma finanse</th>
-          <th>Suma bank</th>
+          <th class="text-center">Wpływy</th>
+          <th class="text-center">ks. finansowa</th>
+          <th class="text-center">ks. bankowa</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Saldo początkowe</td>
+          <td>Saldo początkowe z dnia <%= @report_start_date %></td>
           <td class="text-right"><%= number_with_precision(@finance_hash[@initial_balance_key], :precision => 2) %></td>
           <td class="text-right"><%= number_with_precision(@bank_hash[@initial_balance_key], :precision => 2) %></td>
         </tr>
@@ -36,9 +36,9 @@
     <table class="table table-condensed table-striped table-bordered">
       <thead>
       <tr>
-        <th>Wydatki</th>
-        <th>Suma finanse</th>
-        <th>Suma bank</th>
+        <th class="text-center">Wydatki</th>
+        <th class="text-center">ks. finansowa</th>
+        <th class="text-center">ks. bankowa</th>
       </tr>
       </thead>
       <tbody>
@@ -62,36 +62,36 @@
 </div>
 
 <div class="row top-buffer-20">
-  <div class="col-md-12">
+  <div class="col-md-8 col-md-offset-2">
     <table class="table table-condensed table-striped table-bordered">
       <thead>
         <tr>
           <th></th>
-          <th>Wpływy</th>
-          <th>Wydatki</th>
-          <th>Saldo</th>
+          <th class="text-center">Wpływy</th>
+          <th class="text-center">Wydatki</th>
+          <th class="text-center">Saldo na dzień <%= @report_end_date %></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Książki finansowe</td>
-          <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@total_hash[:finance_sum], :precision => 2) %></td>
+          <td>ks. finansowa</td>
+          <td class="text-center"><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %></td>
+          <td class="text-center"><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %></td>
+          <td class="text-center"><%= number_with_precision(@total_hash[:finance_sum], :precision => 2) %></td>
         </tr>
         <tr>
-          <td>Książki bankowe</td>
-          <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@total_hash[:bank_sum], :precision => 2) %></td>
+          <td>ks. bankowa</td>
+          <td class="text-center"><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %></td>
+          <td class="text-center"><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %></td>
+          <td class="text-center"><%= number_with_precision(@total_hash[:bank_sum], :precision => 2) %></td>
         </tr>
       </tbody>
       <tfoot class="border-top-bold" style="font-weight: bold">
         <tr>
           <td>Razem</td>
-          <td class="text-right"><%= number_with_precision(@total_hash[:income], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@total_hash[:expense], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@total_hash[:sum], :precision => 2) %></td>
+          <td class="text-center"><%= number_with_precision(@total_hash[:income], :precision => 2) %></td>
+          <td class="text-center"><%= number_with_precision(@total_hash[:expense], :precision => 2) %></td>
+          <td class="text-center"><%= number_with_precision(@total_hash[:sum], :precision => 2) %></td>
         </tr>
       </tfoot>
     </table>

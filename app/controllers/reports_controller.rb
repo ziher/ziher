@@ -79,6 +79,8 @@ class ReportsController < ApplicationController
 
   def create_hashes_for(amount_type, initial_balance_type, unit_id = nil)
     @selected_year = params[:year] || session[:current_year]
+    @report_start_date = @selected_year.to_s + '-01-01'
+    @report_end_date = get_report_end_date(@selected_year)
     session[:current_year] = @selected_year
 
     @years = Journal.find_all_years
@@ -194,5 +196,13 @@ class ReportsController < ApplicationController
     end
 
     return hash
+  end
+
+  def get_report_end_date(report_year)
+    if report_year.to_i == Time.now.year.to_i
+      return Time.now.strftime("%Y-%m-%d")
+    else
+      return report_year.to_s + '-12-31'
+    end
   end
 end
