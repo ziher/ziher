@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170213203638) do
+ActiveRecord::Schema.define(version: 20170817201829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20170213203638) do
     t.string   "document_number"
     t.integer  "amount"
     t.boolean  "is_expense"
-    t.decimal  "total_value",         precision: 9, scale: 2
+    t.money    "total_value",         scale: 2
     t.integer  "unit_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(version: 20170213203638) do
   add_index "inventory_sources", ["name"], name: "index_inventory_sources_on_name", unique: true, using: :btree
 
   create_table "items", force: :cascade do |t|
-    t.decimal  "amount",             precision: 9, scale: 2
-    t.decimal  "amount_one_percent", precision: 9, scale: 2
+    t.money    "amount",             scale: 2
+    t.money    "amount_one_percent", scale: 2
     t.integer  "entry_id"
     t.integer  "category_id"
     t.datetime "created_at"
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(version: 20170213203638) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_open"
-    t.decimal  "initial_balance",             precision: 9, scale: 2, default: 0.0, null: false
-    t.decimal  "initial_balance_one_percent", precision: 9, scale: 2, default: 0.0, null: false
+    t.money    "initial_balance",             scale: 2, default: 0.0, null: false
+    t.money    "initial_balance_one_percent", scale: 2, default: 0.0, null: false
   end
 
   create_table "subgroups", id: false, force: :cascade do |t|

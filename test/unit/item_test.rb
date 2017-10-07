@@ -121,4 +121,25 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal(item.amount_one_percent, 123.45)
   end
 
+  test 'should reject invalid amount' do
+    #given
+    item = items(:three)
+    item.amount = 'abc1,567'
+
+    #expect
+    assert_raise(ActiveRecord::RecordInvalid){
+      item.save!
+    }
+  end
+
+  test 'should reject amount with 3 decimal places' do
+    #given
+    item = items(:three)
+    item.amount = '10,567'
+
+    #expect
+    assert_raise(ActiveRecord::RecordInvalid){
+      item.save!
+    }
+  end
 end

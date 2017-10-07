@@ -15,6 +15,7 @@
 development:
   adapter: postgresql
   encoding: unicode
+  lc_monetary: pl_PL
   database: ziher_development
   pool: 5
   host: localhost
