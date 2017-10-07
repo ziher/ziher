@@ -21,7 +21,7 @@ class InventoryEntriesController < ApplicationController
 
     authorize! :view_unit_entries, @unit
 
-    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).to_a.sort_by!{|entry| entry.date}
+    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).order('date').paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.html # index.html.erb

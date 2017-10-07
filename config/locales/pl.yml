@@ -84,5 +84,6 @@ pl:
   unauthorized:
     default: "Próbowałeś/łaś obejrzeć coś, czego nie wolno ci oglądać."
   will_paginate:
-    previous_label: "Poprzednia"
-    next_label: "Następna"
+    previous_label: "Poprzednie"
+    next_label: "Następne"
+    page_gap: "..."
