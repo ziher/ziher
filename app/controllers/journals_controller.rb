@@ -38,7 +38,7 @@ class JournalsController < ApplicationController
 
     @categories_expense = Category.find_by_year_and_type(@journal.year, true)
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
-    @entries = @journal.entries.to_a.sort_by!{|entry| entry.date}
+    @entries = @journal.entries.order('date').paginate(:page => params[:page], :per_page => 10)
     @user_units = Unit.find_by_user(current_user)
     @years = @journal.unit.find_journal_years(@journal.journal_type)
 
