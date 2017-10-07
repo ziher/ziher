@@ -86,3 +86,4 @@ pl:
   will_paginate:
     previous_label: "Poprzednia"
     next_label: "Następna"
+    page_gap: "..."
