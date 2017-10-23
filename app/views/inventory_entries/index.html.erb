@@ -1,12 +1,12 @@
 <div class="row top-buffer-40">
   <div class="col-md-6">
     <small>
-      <% if can? :update, @inventory_entry %>
+      <% if can? :manage_unit_entries, @unit %>
         <%= link_to new_inventory_entry_path(:is_expense => false), class: 'btn btn-sm btn-success' do %>
           <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy przychód
         <% end %>
       <% end %>
-      <% if can? :update, @inventory_entry %>
+      <% if can? :manage_unit_entries, @unit %>
         <%= link_to new_inventory_entry_path(:is_expense => true), class: 'btn btn-sm btn-success' do %>
           <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy rozchód
         <% end %>
