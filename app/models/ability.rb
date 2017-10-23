@@ -60,6 +60,10 @@ class Ability
       can :view_unit_entries, Unit do |unit|
         user.can_view_unit_entries(unit)
       end
+
+      can :manage_unit_entries, Unit do |unit|
+        user.can_manage_unit_entries(unit)
+      end
 # User
 
       alias_action :read, :destroy, :to => :crud
