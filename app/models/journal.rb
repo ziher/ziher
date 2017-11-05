@@ -150,7 +150,7 @@ class Journal < ActiveRecord::Base
     journal = Journal.where(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year).first
 
     if (journal == nil)
-      journal = Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year, :is_open => true)
+      journal = Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year, :is_open => false)
     end
 
     return journal
