@@ -5,6 +5,9 @@ class JournalTest < ActiveSupport::TestCase
   fixtures :journals
   fixtures :categories
   fixtures :units
+  
+  # TODO: should create opened journal for current year
+  # TODO: should create closed journal for not current year
 
   test "should prevent creating two journals of the same type for the same year" do
     assert_raise(ActiveRecord::RecordInvalid){

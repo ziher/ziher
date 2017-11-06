@@ -126,9 +126,16 @@ class Journal < ActiveRecord::Base
 
     # if the journal was not found it means it doesn't exist -
     # journal probably existed for the unit and year but different journal type -
-    # in such case just create the journal for the type
+    # in such case just create the open journal for the type if it's current year
+    # or closed one if it's previous year
     if journal.nil?
-      journal = Journal.create!(:journal_type_id => type.id, :unit_id => unit.id, :year => journal_year, :is_open => true)
+      if journal_year == Time.now.year
+        journal_open = true
+      else
+        journal_open = false
+      end
+
+      journal = Journal.create!(:journal_type_id => type.id, :unit_id => unit.id, :year => journal_year, :is_open => journal_open)
     end
 
     return journal
