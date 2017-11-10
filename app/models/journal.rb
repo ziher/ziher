@@ -216,11 +216,25 @@ class Journal < ActiveRecord::Base
     return result
   end
 
+  def verify_inventory
+    result = true
+
+    inventoryVerifier = InventoryEntryVerifier.new(self.unit)
+    years_to_verify = [self.year]
+    unless inventoryVerifier.verify(years_to_verify)
+      errors[:inventory] << '<br/>' + inventoryVerifier.errors.values.join("<br/><br/>")
+      result = false
+    end
+
+    return result
+  end
+
   def verify_journal
     result = true
     result = false unless verify_final_balance_one_percent_not_less_than_zero
     result = false unless verify_final_balance_one_percent_no_more_than_sum
     result = false unless verify_entries
+    result = false unless verify_inventory
     return result
   end
 

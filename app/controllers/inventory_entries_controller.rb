@@ -23,6 +23,13 @@ class InventoryEntriesController < ApplicationController
 
     @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).order('date').paginate(:page => params[:page], :per_page => 10)
 
+    inventoryVerifier = InventoryEntryVerifier.new(@unit)
+    years_to_verify = (2005..Time.now.year).to_a
+    unless inventoryVerifier.verify(years_to_verify)
+      flash.now[:alert] = inventoryVerifier.errors.values.join("<br/><br/>")
+      puts inventoryVerifier.errors.values
+    end
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @inventory_entries }
