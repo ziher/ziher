@@ -41,7 +41,7 @@ class InventoryEntryVerifier
     end
 
     entries_by_type.each do |type, entries|
-      inventory_sum = entries.sum(&:amount)
+      inventory_sum = entries.sum(&:total_value)
       inventory_sums[type.id] = inventory_sum
     end
 
