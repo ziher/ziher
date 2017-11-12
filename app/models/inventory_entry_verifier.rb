@@ -76,7 +76,7 @@ class InventoryEntryVerifier
 
         @errors[finance_tag + year.to_s] << "Proszę o poprawienie książki inwentarzowej dla roku #{year}<br/>" +
             "Kwota wydatków na wyposażenie dla #{finance_tag} <b>(#{finance_sum.to_s})</b> " +
-            "jest inna niż suma przychodów książki inwentarzowej dla źródła #{inventory_tag} <b>(#{inventory_sum.to_s})</b>"
+            "jest inna niż suma wartości przychodów książki inwentarzowej dla źródła #{inventory_tag} <b>(#{inventory_sum.to_s})</b>"
 
         result = false
       end
