@@ -2,6 +2,9 @@ require 'test_helper'
 
 class InventoryEntryTest < ActiveSupport::TestCase
 
+  # TODO: should not use inactive source
+  # TODO: should check if finance or bank source is active in entry year
+
   test "should normalize total value" do
     #given
     entry = inventory_entries(:one)

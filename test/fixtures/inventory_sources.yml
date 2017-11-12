@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  name: MyString
-  is_active: false
+  name: ks. finansowa
+  is_active: true
 
 two:
-  name: MyStringTwo
-  is_active: false
+  name: ks. bankowa
+  is_active: true
+
+three:
+  name: spis z natury
+  is_active: true

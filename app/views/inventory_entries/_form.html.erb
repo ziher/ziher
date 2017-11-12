@@ -35,7 +35,7 @@
       </div>
       <div class="field">
         <%= f.label :Źródło %>
-        <%= collection_select(:inventory_entry, :inventory_source_id, InventorySource.all, :id, :name, prompt: true) %>
+        <%= collection_select(:inventory_entry, :inventory_source_id, InventorySource.where(:is_active => true), :id, :name, prompt: true) %>
       </div>
       <div class="field">
         <%= f.label :numer_inwentarzowy %>

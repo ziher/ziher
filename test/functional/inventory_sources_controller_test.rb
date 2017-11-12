@@ -6,6 +6,9 @@ class InventorySourcesControllerTest < ActionController::TestCase
     @inventory_source = inventory_sources(:one)
   end
 
+  # TODO: should not delete source if has linked entries
+  # TODO: should not update finance nor bank source
+
   test "should get index" do
     get :index
     assert_response :success
@@ -42,7 +45,7 @@ class InventorySourcesControllerTest < ActionController::TestCase
 
   test "should destroy inventory_source" do
     assert_difference('InventorySource.count', -1) do
-      delete :destroy, id: @inventory_source
+      delete :destroy, id: inventory_sources(:three)
     end
 
     assert_redirected_to inventory_sources_path
