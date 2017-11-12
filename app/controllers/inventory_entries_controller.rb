@@ -21,7 +21,7 @@ class InventoryEntriesController < ApplicationController
 
     authorize! :view_unit_entries, @unit
 
-    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).order('date').paginate(:page => params[:page], :per_page => 10)
+    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).order('date', 'id').paginate(:page => params[:page], :per_page => 10)
 
     inventoryVerifier = InventoryEntryVerifier.new(@unit)
     years_to_verify = (2005..Time.now.year).to_a
