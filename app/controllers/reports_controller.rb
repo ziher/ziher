@@ -23,7 +23,14 @@ class ReportsController < ApplicationController
                       :initial_balance,
                       @selected_unit_id)
 
-    render 'finance'
+    respond_to do |format|
+      format.html { # finance.html.erb
+        @display_pdf_link = true
+      }
+      format.pdf {
+        render pdf: 'raport'
+      }
+    end
   end
 
   def finance_one_percent
@@ -76,7 +83,7 @@ class ReportsController < ApplicationController
     render 'all_finance'
 
   end
-  
+
   private
 
   def create_hashes_for(amount_type, initial_balance_type, unit_id = nil)
@@ -84,6 +91,12 @@ class ReportsController < ApplicationController
     @report_start_date = @selected_year.to_s + '-01-01'
     @report_end_date = get_report_end_date(@selected_year)
     session[:current_year] = @selected_year
+
+    @user_units.each do |unit|
+      if unit.id.to_s == @selected_unit_id.to_s
+        @selected_unit_name = unit.name
+      end
+    end
 
     @years = Journal.find_all_years
     @categories = Category.where(:year => @selected_year)
