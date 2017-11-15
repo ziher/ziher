@@ -6,6 +6,7 @@ class InventoryEntry < ActiveRecord::Base
 
   before_save :inventory_source_is_active
   before_save :finance_source_is_active
+  before_destroy :finance_source_is_active
 
   validates :unit, :presence => true
   validates :date, :presence => true
