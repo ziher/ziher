@@ -12,7 +12,7 @@ concat "Data\tNumer inwentarzowy\tNazwa\tNumer dokumentu\tŹródło\tPrzychód\t
   item_value = inventory_entry.total_value / inventory_entry.amount
   value = inventory_entry.total_value * (inventory_entry.is_expense ? -1 : 1)
   remark = inventory_entry.remark.strip
-  unit = inventory_entry.unit.name
+  unit = "#{inventory_entry.unit.code} - #{inventory_entry.unit.name}"
 
   concat "\n#{date}\t#{stock}\t#{name}\t#{document}\t#{source}\t#{revenue}\t#{expense}\t#{item_value}\t#{value}\t#{remark}\t#{unit}".html_safe
 end
