@@ -57,3 +57,11 @@
     </table>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-md-12">
+    Sporządził: <%= current_user.first_name %> <%= current_user.last_name %>
+    <br/>
+    <%= @generation_time.strftime ('%Y-%m-%d %H:%M:%S') %>
+  </div>
+</div>

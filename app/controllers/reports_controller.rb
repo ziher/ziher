@@ -28,7 +28,8 @@ class ReportsController < ApplicationController
         @display_pdf_link = true
       }
       format.pdf {
-        render pdf: 'RaportFinansowy' + Time.now.strftime('%Y%m%d%H%M%S')
+        @generation_time = Time.now()
+        render pdf: 'RaportFinansowy' + @generation_time.strftime('%Y%m%d%H%M%S')
       }
     end
   end
