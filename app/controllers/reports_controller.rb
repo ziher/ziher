@@ -5,17 +5,18 @@ class ReportsController < ApplicationController
   TOTAL_BALANCE_EXPENSE_KEY="total_balance_expense"
 
   def finance
-    unless current_user.is_superadmin
-      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
-      return
-    end
-
     @report_header = "Raporty > Sprawozdanie finansowe"
     @report_link = finance_report_path
 
     @user_units = Unit.find_by_user(current_user)
 
     @selected_unit_id = params[:unit_id] || session[:current_unit_id]
+
+    unless current_user.is_superadmin || current_user.can_view_unit_entries(Unit.find(@selected_unit_id))
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
     session[:current_unit_id] = @selected_unit_id.to_i
 
     create_hashes_for(:amount,
@@ -26,17 +27,18 @@ class ReportsController < ApplicationController
   end
 
   def finance_one_percent
-    unless current_user.is_superadmin
-      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
-      return
-    end
-
     @report_header = "Raporty > Sprawozdanie finansowe dla 1%"
     @report_link = finance_one_percent_report_path
 
     @user_units = Unit.find_by_user(current_user)
 
     @selected_unit_id = params[:unit_id] || session[:current_unit_id]
+
+    unless current_user.is_superadmin || current_user.can_view_unit_entries(Unit.find(@selected_unit_id))
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
     session[:current_unit_id] = @selected_unit_id.to_i
 
     create_hashes_for(:amount_one_percent,
