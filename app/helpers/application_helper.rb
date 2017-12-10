@@ -42,9 +42,24 @@ module ApplicationHelper
     when :audits
       "active" if current_page?(audits_index_path)
 
+    when :finance_report
+      "active" if current_page?(finance_report_path)
+
+    when :finance_one_percent_report
+      "active" if current_page?(finance_one_percent_report_path)
+
+    when :all_finance_report
+      "active" if current_page?(all_finance_report_path)
+
+    when :all_finance_one_percent_report
+      "active" if current_page?(all_finance_one_percent_report_path)
+
     when :reports_dropdown
       "active" if
-        false
+          current_page?(finance_report_path) or
+          current_page?(finance_one_percent_report_path) or
+          current_page?(all_finance_report_path) or
+          current_page?(all_finance_one_percent_report_path)
 
     when :administration_dropdown
       "active" if
