@@ -19,8 +19,12 @@
   </div>
 </div>
 
-<br/>
-<div><%= link_to 'Pobierz jako pdf', @pdf_report_link, class: 'btn btn=sm btn-success' %>
+<div class="row">
+  <div class="col-md-2 col-md-offset-10">
+    <div class="pull-right top-buffer-20">
+      <%= link_to 'Pobierz jako pdf', @pdf_report_link, class: 'btn btn=sm btn-success' %>
+    </div>
+  </div>
 </div>
 
 <%= render 'finance_template' %>

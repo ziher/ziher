@@ -15,25 +15,29 @@
   <div class="col-md-5">
     <div class="pull-right top-buffer-20">
       <select class="no-margin" onchange="reloadForUnit(this.value)">
-      <% @user_units.each do |unit| %>
+        <% @user_units.each do |unit| %>
           <option value="<%= unit.id %>" <%= unit.id.to_s == @selected_unit_id.to_s ? 'selected=selected' : '' %>><%= unit.name %></option>
-      <% end %>
-    </select>
+        <% end %>
+      </select>
     </div>
   </div>
   <div class="col-md-1">
     <div class="pull-right top-buffer-20">
       <select class="no-margin" onchange="reloadForYear(this.value)">
-      <% @years.each do |year| %>
+        <% @years.each do |year| %>
           <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
-      <% end %>
-    </select>
+        <% end %>
+      </select>
     </div>
   </div>
 </div>
 
-<br/>
-<div><%= link_to 'Pobierz jako pdf', @pdf_report_link, class: 'btn btn=sm btn-success' %>
+<div class="row">
+  <div class="col-md-2 col-md-offset-10">
+    <div class="pull-right top-buffer-20">
+      <%= link_to 'Pobierz jako pdf', @pdf_report_link, class: 'btn btn=sm btn-success' %>
+    </div>
+  </div>
 </div>
 
 <%= render 'finance_template' %>
