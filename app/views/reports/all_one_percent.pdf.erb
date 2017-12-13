@@ -16,11 +16,8 @@
     <table class="table table-condensed table-bordered">
       <tr>
         <td class="text-center" style="font-size: small"><b>
-          <span class="text-uppercase">Sprawozdanie finansowe za okres od <%= @report_start_date %> do <%= @report_end_date %></span>
+          <span class="text-uppercase">Całościowe sprawozdanie finansowe ze środków z tytułu 1% podatku dochodowego od osób fizycznych za okres od <%= @report_start_date %> do <%= @report_end_date %></span>
           <br/>
-            <span class="text-uppercase">dla</span>
-            <br/>
-            <%= @selected_unit_name %>
         </b>
         </td>
       </tr>
@@ -34,20 +31,9 @@
   <div class="col-md-12">
     <table class="table table-condensed table-bordered">
       <tr>
-        <td>Nr konta / nr książeczki oszczędnościowej
-          <hr/>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-condensed table-bordered">
-      <tr>
         <td class="text-center">
-          Oświadczam, że w złożonym sprawozdaniu finansowym zostały ujęte (zgodnie z posiadanymi przez jednostkę dowodami księgowymi) wszystkie przychody i rozchody związane z działalnością statutową wymienionej powyżej jednostki organizacyjnej. Potwierdzam posiadanie kwoty salda na dzień <%= @report_end_date %>
+          Oświadczam, że w sprawozdaniu zostały ujęte wszystkie wpływy środków z tytułu 1% i wydatki tych środków, dokonane
+w okresie sprawozdawczym, zgodnie z posiadanymi przez jednostkę dowodami źródłowymi
           <hr/>
           <i>(data, imię, nazwisko i podpis komendanta (opiekuna) jednostki składającej sprawozdanie)</i>
         </td>

@@ -1,8 +1,8 @@
 class ReportsController < ApplicationController
 
   INITIAL_BALANCE_KEY = "initial_balance"
-  TOTAL_BALANCE_INCOME_KEY="total_balance_income"
-  TOTAL_BALANCE_EXPENSE_KEY="total_balance_expense"
+  TOTAL_BALANCE_INCOME_KEY = "total_balance_income"
+  TOTAL_BALANCE_EXPENSE_KEY = "total_balance_expense"
 
   def finance
     @report_header = 'Raporty > Sprawozdanie finansowe'
@@ -24,13 +24,12 @@ class ReportsController < ApplicationController
                       @selected_unit_id)
 
     respond_to do |format|
-      format.html {  # finance.html.erb
+      format.html {# finance.html.erb
         @pdf_report_link = finance_report_path(:format => :pdf)
       }
       format.pdf {
         @generation_time = Time.now
-        @report_title = "Sprawozdanie finansowe"
-        render pdf: 'sprawozdanie_finansowe_' + get_time_postfix
+        render pdf: 'sprawozdanie_finansowe_' + get_time_postfix, template: 'reports/finance'
       }
     end
   end
@@ -61,8 +60,7 @@ class ReportsController < ApplicationController
       }
       format.pdf {
         @generation_time = Time.now
-        @report_title = "Sprawozdanie finansowe ze środków z tytułu 1% podatku dochodowego od osób fizycznych"
-        render pdf: 'sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/finance'
+        render pdf: 'sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/one_percent'
       }
     end
   end
@@ -85,8 +83,7 @@ class ReportsController < ApplicationController
       }
       format.pdf {
         @generation_time = Time.now
-        @report_title = "Całościowe sprawozdanie finansowe"
-        render pdf: 'calosciowe_sprawozdanie_finansowe_' + get_time_postfix, template: 'reports/finance'
+        render pdf: 'calosciowe_sprawozdanie_finansowe_' + get_time_postfix, template: 'reports/all_finance'
       }
     end
   end
@@ -109,8 +106,7 @@ class ReportsController < ApplicationController
       }
       format.pdf {
         @generation_time = Time.now
-        @report_title = "Całościowe sprawozdanie finansowe ze środków z tytułu 1% podatku dochodowego od osób fizycznych"
-        render pdf: 'calosciowe_sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/finance'
+        render pdf: 'calosciowe_sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/all_one_percent'
       }
     end
 
