@@ -53,3 +53,5 @@ gem 'cancancan'
 
 gem 'audited', '~> 4.3'
 gem 'will_paginate', '~> 3.1.1'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'

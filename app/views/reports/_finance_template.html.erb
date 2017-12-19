@@ -11,22 +11,22 @@
       <tbody>
         <tr>
           <td>Saldo początkowe z dnia <%= @report_start_date %></td>
-          <td class="text-right"><%= number_with_precision(@finance_hash[@initial_balance_key], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@bank_hash[@initial_balance_key], :precision => 2) %></td>
+          <td class="text-right"><%= number_with_precision(@finance_hash[@initial_balance_key], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@bank_hash[@initial_balance_key], :precision => 2) %> zł</td>
         </tr>
         <% @categories.where(:is_expense => false).each do |category| %>
             <tr>
               <td><%= category.name %></td>
-              <td class="text-right"><%= number_with_precision(@finance_hash[category.id], :precision => 2) %></td>
-              <td class="text-right"><%= number_with_precision(@bank_hash[category.id], :precision => 2) %></td>
+              <td class="text-right"><%= number_with_precision(@finance_hash[category.id], :precision => 2) %> zł</td>
+              <td class="text-right"><%= number_with_precision(@bank_hash[category.id], :precision => 2) %> zł</td>
             </tr>
         <% end %>
       </tbody>
       <tfoot class="border-top-bold" style="font-weight: bold">
         <tr>
           <td>Razem wpływy</td>
-          <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %></td>
-          <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %></td>
+          <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %> zł</td>
         </tr>
       </tfoot>
     </table>
@@ -45,16 +45,16 @@
         <% @categories.where(:is_expense => true).each do |category| %>
             <tr>
               <td><%= category.name %></td>
-              <td class="text-right"><%= number_with_precision(@finance_hash[category.id], :precision => 2) %></td>
-              <td class="text-right"><%= number_with_precision(@bank_hash[category.id], :precision => 2) %></td>
+              <td class="text-right"><%= number_with_precision(@finance_hash[category.id], :precision => 2) %> zł</td>
+              <td class="text-right"><%= number_with_precision(@bank_hash[category.id], :precision => 2) %> zł</td>
             </tr>
         <% end %>
       </tbody>
       <tfoot class="border-top-bold" style="font-weight: bold">
       <tr>
         <td>Razem wydatki</td>
-        <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %></td>
-        <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %></td>
+        <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %> zł</td>
+        <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %> zł</td>
       </tr>
       </tfoot>
     </table>
@@ -75,23 +75,23 @@
       <tbody>
         <tr>
           <td>ks. finansowa</td>
-          <td class="text-center"><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %></td>
-          <td class="text-center"><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %></td>
-          <td class="text-center"><%= number_with_precision(@total_hash[:finance_sum], :precision => 2) %></td>
+          <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_income_key], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@finance_hash[@total_balance_expense_key], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@total_hash[:finance_sum], :precision => 2) %> zł</td>
         </tr>
         <tr>
           <td>ks. bankowa</td>
-          <td class="text-center"><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %></td>
-          <td class="text-center"><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %></td>
-          <td class="text-center"><%= number_with_precision(@total_hash[:bank_sum], :precision => 2) %></td>
+          <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_income_key], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@bank_hash[@total_balance_expense_key], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@total_hash[:bank_sum], :precision => 2) %> zł</td>
         </tr>
       </tbody>
       <tfoot class="border-top-bold" style="font-weight: bold">
         <tr>
           <td>Razem</td>
-          <td class="text-center"><%= number_with_precision(@total_hash[:income], :precision => 2) %></td>
-          <td class="text-center"><%= number_with_precision(@total_hash[:expense], :precision => 2) %></td>
-          <td class="text-center"><%= number_with_precision(@total_hash[:sum], :precision => 2) %></td>
+          <td class="text-right"><%= number_with_precision(@total_hash[:income], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@total_hash[:expense], :precision => 2) %> zł</td>
+          <td class="text-right"><%= number_with_precision(@total_hash[:sum], :precision => 2) %> zł</td>
         </tr>
       </tfoot>
     </table>

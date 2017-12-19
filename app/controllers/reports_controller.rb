@@ -1,11 +1,11 @@
 class ReportsController < ApplicationController
 
   INITIAL_BALANCE_KEY = "initial_balance"
-  TOTAL_BALANCE_INCOME_KEY="total_balance_income"
-  TOTAL_BALANCE_EXPENSE_KEY="total_balance_expense"
+  TOTAL_BALANCE_INCOME_KEY = "total_balance_income"
+  TOTAL_BALANCE_EXPENSE_KEY = "total_balance_expense"
 
   def finance
-    @report_header = "Raporty > Sprawozdanie finansowe"
+    @report_header = 'Raporty > Sprawozdanie finansowe'
     @report_link = finance_report_path
 
     @user_units = Unit.find_by_user(current_user)
@@ -23,11 +23,19 @@ class ReportsController < ApplicationController
                       :initial_balance,
                       @selected_unit_id)
 
-    render 'finance'
+    respond_to do |format|
+      format.html {# finance.html.erb
+        @pdf_report_link = finance_report_path(:format => :pdf)
+      }
+      format.pdf {
+        @generation_time = Time.now
+        render pdf: 'sprawozdanie_finansowe_' + get_time_postfix, template: 'reports/finance'
+      }
+    end
   end
 
   def finance_one_percent
-    @report_header = "Raporty > Sprawozdanie finansowe dla 1%"
+    @report_header = 'Raporty > Sprawozdanie finansowe dla 1%'
     @report_link = finance_one_percent_report_path
 
     @user_units = Unit.find_by_user(current_user)
@@ -45,7 +53,16 @@ class ReportsController < ApplicationController
                       :initial_balance_one_percent,
                       @selected_unit_id)
 
-    render 'finance'
+    respond_to do |format|
+      format.html {
+        @pdf_report_link = finance_one_percent_report_path(:format => :pdf)
+        render 'finance'
+      }
+      format.pdf {
+        @generation_time = Time.now
+        render pdf: 'sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/one_percent'
+      }
+    end
   end
 
   def all_finance
@@ -54,12 +71,21 @@ class ReportsController < ApplicationController
       return
     end
 
-    @report_header = "Raporty > Całościowe sprawozdanie finansowe"
+    @report_header = 'Raporty > Całościowe sprawozdanie finansowe'
     @report_link = all_finance_report_path
 
     create_hashes_for(:amount, :initial_balance)
 
-    render 'all_finance'
+    respond_to do |format|
+      format.html {
+        @pdf_report_link = all_finance_report_path(:format => :pdf)
+        render 'all_finance'
+      }
+      format.pdf {
+        @generation_time = Time.now
+        render pdf: 'calosciowe_sprawozdanie_finansowe_' + get_time_postfix, template: 'reports/all_finance'
+      }
+    end
   end
 
   def all_finance_one_percent
@@ -68,15 +94,24 @@ class ReportsController < ApplicationController
       return
     end
 
-    @report_header = "Raporty > Całościowe sprawozdanie finansowe dla 1%"
+    @report_header = 'Raporty > Całościowe sprawozdanie finansowe dla 1%'
     @report_link = all_finance_one_percent_report_path
 
     create_hashes_for(:amount_one_percent, :initial_balance_one_percent)
 
-    render 'all_finance'
+    respond_to do |format|
+      format.html {
+        @pdf_report_link = all_finance_one_percent_report_path(:format => :pdf)
+        render 'all_finance'
+      }
+      format.pdf {
+        @generation_time = Time.now
+        render pdf: 'calosciowe_sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/all_one_percent'
+      }
+    end
 
   end
-  
+
   private
 
   def create_hashes_for(amount_type, initial_balance_type, unit_id = nil)
@@ -84,6 +119,14 @@ class ReportsController < ApplicationController
     @report_start_date = @selected_year.to_s + '-01-01'
     @report_end_date = get_report_end_date(@selected_year)
     session[:current_year] = @selected_year
+
+    if unit_id != nil
+      @user_units.each do |unit|
+        if unit.id.to_s == @selected_unit_id.to_s
+          @selected_unit_name = unit.name
+        end
+      end
+    end
 
     @years = Journal.find_all_years
     @categories = Category.where(:year => @selected_year)
@@ -206,5 +249,9 @@ class ReportsController < ApplicationController
     else
       return report_year.to_s + '-12-31'
     end
+  end
+
+  def get_time_postfix
+    @generation_time.strftime('%Y%m%d%H%M%S')
   end
 end

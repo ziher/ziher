@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'/>
+  <%= wicked_pdf_stylesheet_link_tag "application" -%>
+  <%= wicked_pdf_stylesheet_link_tag wicked_pdf_asset_base64("application") %>
+  <style type="text/css">
+    div {
+      font-size: smaller
+    }
+  </style>
+</head>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <td class="text-center" style="font-size: small"><b>
+          <span class="text-uppercase">Całościowe sprawozdanie finansowe ze środków z tytułu 1% podatku dochodowego od osób fizycznych za okres od <%= @report_start_date %>
+            do <%= @report_end_date %></span>
+          <br/>
+        </b>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<%= render 'reports/finance_template.html.erb' %>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <td class="text-center">
+          Oświadczam, że w sprawozdaniu zostały ujęte wszystkie wpływy środków z tytułu 1% i wydatki tych środków,
+          dokonane w okresie sprawozdawczym, zgodnie z posiadanymi przez jednostkę dowodami źródłowymi
+          <hr/>
+          <i>(data, imię, nazwisko i podpis komendanta (opiekuna) jednostki składającej sprawozdanie)</i>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 top-buffer-100">
+    Sporządził: <%= current_user.first_name %> <%= current_user.last_name %>
+    <br/>
+    <%= @generation_time.strftime ('%Y-%m-%d %H:%M:%S') %>
+  </div>
+</div>
