@@ -70,12 +70,12 @@
 
   <% if @entries.length > 0 %>
     <tbody class="border-top-bold">
-    <% i = 0 %>
+    <% position = @start_position %>
     <% @entries.each do |entry| %>
       <tr>
         <td>
           <small>
-            <span style="display: block;"><%= i+=1 =%>.</span>
+            <span style="display: block;"><%= position+=1 =%>.</span>
             <% if @journal.is_open? %>
               <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><span class="glyphicon glyphicon-pencil" title="Edytuj"></span><%end%><% end %>
               <% if can? :destroy, entry %><%= link_to entry, data: { confirm: 'Na pewno usunąć wpis?'}, method: :delete do%><span class="glyphicon glyphicon-trash" title="Usuń"></span><%end%><% end %>
