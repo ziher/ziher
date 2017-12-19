@@ -16,7 +16,8 @@
     <table class="table table-condensed table-bordered">
       <tr>
         <td class="text-center" style="font-size: small"><b>
-          <span class="text-uppercase">Całościowe sprawozdanie finansowe ze środków z tytułu 1% podatku dochodowego od osób fizycznych za okres od <%= @report_start_date %> do <%= @report_end_date %></span>
+          <span class="text-uppercase">Całościowe sprawozdanie finansowe ze środków z tytułu 1% podatku dochodowego od osób fizycznych za okres od <%= @report_start_date %>
+            do <%= @report_end_date %></span>
           <br/>
         </b>
         </td>
@@ -32,8 +33,8 @@
     <table class="table table-condensed table-bordered">
       <tr>
         <td class="text-center">
-          Oświadczam, że w sprawozdaniu zostały ujęte wszystkie wpływy środków z tytułu 1% i wydatki tych środków, dokonane
-w okresie sprawozdawczym, zgodnie z posiadanymi przez jednostkę dowodami źródłowymi
+          Oświadczam, że w sprawozdaniu zostały ujęte wszystkie wpływy środków z tytułu 1% i wydatki tych środków,
+          dokonane w okresie sprawozdawczym, zgodnie z posiadanymi przez jednostkę dowodami źródłowymi
           <hr/>
           <i>(data, imię, nazwisko i podpis komendanta (opiekuna) jednostki składającej sprawozdanie)</i>
         </td>
@@ -43,7 +44,7 @@ w okresie sprawozdawczym, zgodnie z posiadanymi przez jednostkę dowodami źród
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 top-buffer-100">
     Sporządził: <%= current_user.first_name %> <%= current_user.last_name %>
     <br/>
     <%= @generation_time.strftime ('%Y-%m-%d %H:%M:%S') %>
