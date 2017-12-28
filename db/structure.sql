@@ -150,7 +150,8 @@ CREATE TABLE groups (
     id integer NOT NULL,
     name character varying,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    code character varying
 );
 
 
@@ -944,4 +945,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160226210708');
 INSERT INTO schema_migrations (version) VALUES ('20170205203915');
 
 INSERT INTO schema_migrations (version) VALUES ('20170213203638');
+
+INSERT INTO schema_migrations (version) VALUES ('20171228193859');
 
