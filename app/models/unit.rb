@@ -7,6 +7,9 @@ class Unit < ActiveRecord::Base
   has_many :journals
   has_many :inventory_entries
 
+  # validates :name, :presence => true
+  # validates :code, :presence => true
+
   def Unit.find_all_by_user(user)
     if (user.is_superadmin)
       units = Unit.order("name")
