@@ -6,6 +6,9 @@ class Group < ActiveRecord::Base
   has_many :users, through: :user_group_associations
   has_and_belongs_to_many :subgroups, :join_table => "subgroups", :class_name => "Group", :association_foreign_key => :subgroup_id
 
+  # validates :name, :presence => true
+  # validates :code, :presence => true
+
   def Group.find_by_user(user, privileges = {})
     if (user.is_superadmin)
       groups = Group.order("name")

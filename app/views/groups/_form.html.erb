@@ -14,13 +14,27 @@
   <% end %>
 
   <div class="row top-buffer-20">
-    <div class="col-md-6">
-      <%= f.label :name %><br/>
-      <%= f.text_field :name, class: "col-md-12"%>
-    </div>
-    <div class="col-md-1 col-md-offset-5">
+    <div class="col-md-1 col-md-offset-11">
       <div class="actions">
         <%= f.submit "Zapisz", class: "btn btn-sm btn-success" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="row top-buffer-20">
+      <div class="col-md-6">
+        <%= f.label :name %><br/>
+        <%= f.text_field :name, class: "form-control"%>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="row top-buffer-20">
+      <div class="col-md-2">
+        <%= f.label :code %><br />
+        <%= f.text_field :code , class: "form-control"%>
       </div>
     </div>
   </div>

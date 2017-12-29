@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :user_unit_associations
   has_many :units, through: :user_unit_associations
 
+  # validates :email, :presence => true
+
   def to_s
     return "User(#{self.id}, #{self.email})"
   end
