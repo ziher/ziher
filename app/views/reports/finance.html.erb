@@ -35,7 +35,7 @@
 <div class="row">
   <div class="col-md-2 col-md-offset-10">
     <div class="pull-right top-buffer-20">
-      <%= link_to 'Pobierz jako pdf', @pdf_report_link, class: 'btn btn-sm btn-success' %>
+      <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj".html_safe, '#', onclick: 'alert("Generowanie plików pdf dostępne wkrótce")', class: 'btn btn-sm btn-default' %>
     </div>
   </div>
 </div>
