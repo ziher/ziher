@@ -38,7 +38,8 @@ class JournalsController < ApplicationController
 
     @categories_expense = Category.find_by_year_and_type(@journal.year, true)
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
-    @entries = @journal.entries.order('date', 'id').paginate(:page => params[:page], :per_page => 10)
+    all_entries = @journal.entries.order('date', 'id')
+    @entries = all_entries.paginate(:page => params[:page], :per_page => 10)
     page = params[:page].to_i
     @start_position = page < 1 ? 0 : (page.to_i - 1) * 10
     @user_units = Unit.find_by_user(current_user)
@@ -64,9 +65,10 @@ class JournalsController < ApplicationController
       }
       format.json { render json: @journal }
       format.pdf {
+        @entries = all_entries
         @generation_time = Time.now
         render pdf: "#{journal_type_prefix(@journal.journal_type)}_#{get_time_postfix}", template: 'journals/show', orientation: 'Landscape',
-               footer: {left: "Sporządził #{current_user.first_name} #{current_user.last_name}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
+               footer: {left: "#{current_user.email}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
                         center: "ziher.zhr.pl#{ENV['RAILS_RELATIVE_URL_ROOT']}",
                         right: 'Strona [page] z [topage]',
                         font_size: 8

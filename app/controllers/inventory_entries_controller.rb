@@ -89,7 +89,7 @@ class InventoryEntriesController < ApplicationController
                footer: { left: "#{current_user.email}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
                          center: "ziher.zhr.pl#{ENV['RAILS_RELATIVE_URL_ROOT']}",
                          right: 'Strona [page] z [topage]',
-                         font_size: 9
+                         font_size: 8
                }
       }
     end

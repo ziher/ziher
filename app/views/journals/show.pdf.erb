@@ -3,8 +3,7 @@
 <head>
   <meta charset='utf-8'/>
 
-  <%= wicked_pdf_stylesheet_link_tag "application" %>
-  <%= wicked_pdf_stylesheet_link_tag wicked_pdf_asset_base64("application") %>
+  <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" %>
 
   <style type="text/css">
     div {
@@ -24,6 +23,14 @@
     tr {
       page-break-inside: avoid;
       page-break-after: auto;
+    }
+
+    .hover{
+      background-color:#f5f5f5;
+    }
+
+    .hover_dim {
+      background-color:#ddd;
     }
 
   </style>
@@ -72,10 +79,10 @@
       <th colspan="<%= @categories_income.count %>" class="text-center">
         <small><%= t 'helpers.label.journal.income_detailed' %></small>
       </th>
-      <th rowspan="2" class="income income_all text-center" style="vertical-align: middle">
+      <th rowspan="2" class="hover income income_all text-center" style="vertical-align: middle">
         <small><%= t 'helpers.label.journal.income_all' %></small>
       </th>
-      <th rowspan="2" class="expense expense_all text-center" style="vertical-align: middle">
+      <th rowspan="2" class="hover expense expense_all text-center" style="vertical-align: middle">
         <small><%= t 'helpers.label.journal.expense_all' %></small>
       </th>
       <th colspan="<%= @categories_expense.count %>" class="text-center">
@@ -128,7 +135,7 @@
             </td>
           <% end %>
 
-          <td class="income income_all text-right" title="<%= t 'helpers.label.journal.income_all' %>">
+          <td class="hover income income_all text-right" title="<%= t 'helpers.label.journal.income_all' %>">
             <small>
               <% if entry.is_expense
                    concat "-"
@@ -139,7 +146,7 @@
             </small>
           </td>
 
-          <td class="expense expense_all text-right" title="<%= t 'helpers.label.journal.expense_all' %>">
+          <td class="hover expense expense_all text-right" title="<%= t 'helpers.label.journal.expense_all' %>">
             <small>
               <% if entry.is_expense
                    print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), entry.sum, entry.sum_one_percent)
@@ -165,31 +172,31 @@
 
     <!%-- row with sums for each category --%>
     <tr>
-      <td colspan="3"><strong>
+      <td colspan="3" class="hover"><strong>
         <small>Suma</small>
       </strong></td>
 
       <% @categories_income.each do |category| %>
-        <td class="income income_<%= category.id %> text-right" title="<%= category.name %>">
+        <td class="hover income income_<%= category.id %> text-right" title="<%= category.name %>">
           <small>
             <% print_formatted_amount(@journal.get_sum_for_category(category)) %>
           </small>
         </td>
       <% end %>
 
-      <td class="income income_all text-right" title="<%= t 'helpers.label.journal.income_all' %>">
+      <td class="hover income income_all text-right" title="<%= t 'helpers.label.journal.income_all' %>">
         <small>
           <% print_formatted_amount(@journal.get_income_sum) %>
         </small>
       </td>
-      <td class="expense expense_all text-right" title="<%= t 'helpers.label.journal.expense_all' %>">
+      <td class="hover expense expense_all text-right" title="<%= t 'helpers.label.journal.expense_all' %>">
         <small>
           <% print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), @journal.get_expense_sum, @journal.get_expense_sum_one_percent) %>
         </small>
       </td>
 
       <% @categories_expense.each do |category| %>
-        <td class="expense expense_<%= category.id %> text-right" title="<%= category.name %>">
+        <td class="hover expense expense_<%= category.id %> text-right" title="<%= category.name %>">
           <small>
             <% print_formatted_amount_with_one_percent(category.name, @journal.get_sum_for_category(category), @journal.get_sum_one_percent_for_category(category)) %>
           </small>
