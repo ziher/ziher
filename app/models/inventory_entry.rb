@@ -21,6 +21,13 @@ class InventoryEntry < ActiveRecord::Base
     write_attribute :total_value, val.to_s.gsub(/[,\s+]/, ',' => '.', '\s+' => '')
   end
 
+  def self.by_year(year)
+    dt = DateTime.new(year)
+    boy = dt.beginning_of_year
+    eoy = dt.end_of_year
+    where("date >= ? and date <= ?", boy, eoy)
+  end
+
   private
 
   def inventory_source_is_active

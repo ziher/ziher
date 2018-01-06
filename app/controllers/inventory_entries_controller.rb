@@ -9,7 +9,7 @@ class InventoryEntriesController < ApplicationController
       return
     end
 
-    if (params[:unit_id])
+    if (! params[:unit_id].blank?)
       session[:current_unit_id] = params[:unit_id].to_i
     end
 
@@ -19,12 +19,27 @@ class InventoryEntriesController < ApplicationController
       @unit = @user_units.first
     end
 
+    if (! params[:year].blank?)
+      session[:current_year] = params[:year].to_i
+    end
+
+    if (session[:current_year])
+      current_year = session[:current_year].to_i
+    else
+      current_year = Time.now.year
+    end
+
+    journal_type = JournalType.find(JournalType::FINANCE_TYPE_ID)
+    @years = @unit.find_journal_years(journal_type).sort!
+
     authorize! :view_unit_entries, @unit
 
-    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).order('date', 'id').paginate(:page => params[:page], :per_page => 10)
+    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).by_year(current_year).order('date', 'id').paginate(:page => params[:page], :per_page => 10)
+
+    oldest_ziher_year = 2005
 
     inventoryVerifier = InventoryEntryVerifier.new(@unit)
-    years_to_verify = (2005..Time.now.year).to_a
+    years_to_verify = (oldest_ziher_year..Time.now.year).to_a
     unless inventoryVerifier.verify(years_to_verify)
       flash.now[:alert] = inventoryVerifier.errors.values.join("<br/><br/>")
       puts inventoryVerifier.errors.values
