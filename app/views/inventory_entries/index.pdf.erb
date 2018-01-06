@@ -1,25 +1,33 @@
-<div class="row top-buffer-40">
-  <div class="col-md-6">
-    <small>
-      <% if can? :manage_unit_entries, @unit %>
-        <%= link_to new_inventory_entry_path(:is_expense => false), class: 'btn btn-sm btn-success' do %>
-          <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy przychód
-        <% end %>
-      <% end %>
-      <% if can? :manage_unit_entries, @unit %>
-        <%= link_to new_inventory_entry_path(:is_expense => true), class: 'btn btn-sm btn-success' do %>
-          <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy rozchód
-        <% end %>
-      <% end %>
-      <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj rok".html_safe, @pdf_inventory_link, class: 'btn btn-sm btn-default' %>
-      <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj wszystko".html_safe, @pdf_all_inventory_link, class: 'btn btn-sm btn-default' %>
-    </small>
-  </div>
-  <div class="col-md-6">
-    <%= render "shared/inventory_entries_select" %>
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'/>
+  <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" %>
+  <style type="text/css">
+    div   { font-size: 10px }
+    table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
+  </style>
+</head>
+<body>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <td class="text-center" style="font-size: small"><b>
+          <span class="text-uppercase">Książka inwentarzowa na <%= @years_label %> dla <%= @unit.code %> - <%= @unit.name %></span>
+          <br/>
+        </b>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>
 
+<div>
 <table class="table table-condensed top-buffer-20 text-center">
   <tr>
     <th rowspan="2" class="valign_middle text-center">#</th>
@@ -32,8 +40,6 @@
     <th rowspan="2" class="valign_middle text-center">Cena<br/>jednostkowa</th>
     <th rowspan="2" class="valign_middle text-center">Wartość</th>
     <th rowspan="2" class="valign_middle text-center">Opis</th>
-    <th rowspan="2"></th>
-    <th rowspan="2"></th>
   </tr>
 
   <tr>
@@ -41,8 +47,8 @@
     <th>Rozchód</th>
   </tr>
 
-  <% position = @start_position %>
-  <% @inventory_entries.each do |inventory_entry| %>
+<% position = @start_position %>
+<% @inventory_entries.each do |inventory_entry| %>
   <tr>
     <td><%= position += 1 %>.</td>
     <td><%= inventory_entry.date %></td>
@@ -55,17 +61,16 @@
     <td><%= number_with_precision(inventory_entry.unit_price, :precision => 2) %></td>
     <td><%= number_with_precision(inventory_entry.signed_total_value, :precision => 2)  %></td>
     <td><%= inventory_entry.remark %></td>
-    <td><%= link_to 'Edytuj', edit_inventory_entry_path(inventory_entry) %></td>
-    <td><%= link_to 'Usuń', inventory_entry, data: { confirm: 'Na pewno usunąć wpis?'}, method: :delete %></td>
   </tr>
-  <% end %>
+<% end %>
 
   <tr>
     <td class="text-right" colspan="9"><b>Razem: </b></td>
     <td><b><%= number_with_precision(@sum_total_value, :precision => 2) %></b></td>
     <td colspan="3"></td>
   </tr>
-
 </table>
+</div>
 
-<%= will_paginate @inventory_entries %>
+</body>
+</html>

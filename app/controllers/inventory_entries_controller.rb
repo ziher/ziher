@@ -17,6 +17,7 @@ class InventoryEntriesController < ApplicationController
       @unit = Unit.find(session[:current_unit_id])
     else
       @unit = @user_units.first
+      session[:current_unit_id] = @unit.id
     end
 
     if (! params[:year].blank?)
@@ -27,6 +28,7 @@ class InventoryEntriesController < ApplicationController
       current_year = session[:current_year].to_i
     else
       current_year = Time.now.year
+      session[:current_year] = current_year
     end
 
     journal_type = JournalType.find(JournalType::FINANCE_TYPE_ID)
@@ -34,7 +36,21 @@ class InventoryEntriesController < ApplicationController
 
     authorize! :view_unit_entries, @unit
 
+    show_all = false
+    if current_year == 0 then
+      show_all = true
+      current_year = Time.now.year
+      session[:current_year] = current_year
+    end
+
+    @inventory_entries_all = InventoryEntry.where(:unit_id => @unit.id).order('date', 'id')
+    @inventory_entries_current_year = InventoryEntry.where(:unit_id => @unit.id).by_year(current_year).order('date', 'id')
     @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).by_year(current_year).order('date', 'id').paginate(:page => params[:page], :per_page => 10)
+
+    @sum_total_value = @inventory_entries_current_year.map(&:signed_total_value).sum
+
+    page = params[:page].to_i
+    @start_position = page < 1 ? 0 : (page.to_i - 1) * 10
 
     oldest_ziher_year = 2005
 
@@ -46,8 +62,36 @@ class InventoryEntriesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @inventory_entries }
+      format.html {
+        @pdf_inventory_link = inventory_entries_path(:format => :pdf, :year => current_year)
+        @pdf_all_inventory_link = inventory_entries_path(:format => :pdf, :year => "0")
+
+        render 'index'
+      }
+      format.pdf {
+        @generation_time = Time.now
+
+        if (show_all)
+          @inventory_entries = @inventory_entries_all
+          @sum_total_value = @inventory_entries_all.map(&:signed_total_value).sum
+          year_from = @inventory_entries_all.first.date.year
+          year_to = @inventory_entries_all.last.date.year
+          @years_label = "lata #{year_from}-#{year_to}"
+        else
+          @inventory_entries = @inventory_entries_current_year
+          @years_label = "#{current_year} rok"
+        end
+
+        render pdf: "ksiazka_inwentarzowa_#{current_year.to_s}_#{get_time_postfix}",
+               template: 'inventory_entries/index',
+               show_as_html: false,
+               orientation: 'Landscape',
+               footer: { left: "Sporządził #{current_user.first_name} #{current_user.last_name}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
+                         center: "ziher.zhr.pl/#{ENV['RAILS_RELATIVE_URL_ROOT']}",
+                         right: 'Strona [page] z [topage]',
+                         font_size: 9
+               }
+      }
     end
   end
 
@@ -168,6 +212,10 @@ class InventoryEntriesController < ApplicationController
       params.require(:inventory_entry).permit(:date, :stock_number, :name, :document_number, :amount, :is_expense,
                                               :total_value, :unit_id, :inventory_source_id, :remark)
     end
+  end
+
+  def get_time_postfix
+    @generation_time.strftime('%Y%m%d%H%M%S')
   end
 
 end

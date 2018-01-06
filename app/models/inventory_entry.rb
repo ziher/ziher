@@ -28,6 +28,14 @@ class InventoryEntry < ActiveRecord::Base
     where("date >= ? and date <= ?", boy, eoy)
   end
 
+  def unit_price
+    self.total_value / self.amount
+  end
+
+  def signed_total_value
+    self.total_value * (self.is_expense ? -1 : 1)
+  end
+
   private
 
   def inventory_source_is_active
