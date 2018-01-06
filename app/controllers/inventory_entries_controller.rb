@@ -86,8 +86,8 @@ class InventoryEntriesController < ApplicationController
                template: 'inventory_entries/index',
                show_as_html: false,
                orientation: 'Landscape',
-               footer: { left: "Sporządził #{current_user.first_name} #{current_user.last_name}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
-                         center: "ziher.zhr.pl/#{ENV['RAILS_RELATIVE_URL_ROOT']}",
+               footer: { left: "#{current_user.email}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
+                         center: "ziher.zhr.pl#{ENV['RAILS_RELATIVE_URL_ROOT']}",
                          right: 'Strona [page] z [topage]',
                          font_size: 9
                }
