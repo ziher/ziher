@@ -59,8 +59,19 @@ class JournalsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { # show.html.erb
+        @pdf_report_link = journal_path(:format => :pdf)
+      }
       format.json { render json: @journal }
+      format.pdf {
+        @generation_time = Time.now
+        render pdf: "#{journal_type_prefix(@journal.journal_type)}_#{get_time_postfix}", template: 'journals/show', orientation: 'Landscape',
+               footer: {left: "Sporządził #{current_user.first_name} #{current_user.last_name}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
+                        center: "ziher.zhr.pl#{ENV['RAILS_RELATIVE_URL_ROOT']}",
+                        right: 'Strona [page] z [topage]',
+                        font_size: 8
+               }
+      }
     end
   end
 
@@ -149,5 +160,15 @@ class JournalsController < ApplicationController
         format.json { render json: @journal.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  private
+
+  def get_time_postfix
+    @generation_time.strftime('%Y%m%d%H%M%S')
+  end
+
+  def journal_type_prefix(journal_type)
+    'ksiazka_' + journal_type.to_s.split(' ')[1]
   end
 end

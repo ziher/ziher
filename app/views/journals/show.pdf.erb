@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'/>
+
+  <%= wicked_pdf_stylesheet_link_tag "application" %>
+  <%= wicked_pdf_stylesheet_link_tag wicked_pdf_asset_base64("application") %>
+
+  <style type="text/css">
+    div {
+      font-size: 10px;
+    }
+
+    .category-label {
+      -webkit-transform: rotate(270deg);
+      -webkit-backface-visibility: hidden;
+      height: 70px;
+    }
+
+    table {
+      page-break-inside: auto;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+
+  </style>
+</head>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <td class="text-center" style="font-size: small"><b>
+          <span class="text-uppercase"><%= @journal.journal_type %> na <%= @journal.year %> rok dla <%= @journal.unit.code %>
+            - <%= @journal.unit.name %>
+          </span>
+          <br/>
+        </b>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div>
+  <table class="table table-condensed table-bordered top-buffer-20">
+    <tr>
+      <th colspan="<%= @categories_income.count + 3 %>" class="balance-label">
+        <span class="pull-right text-muted" style="white-space: nowrap"><small>Saldo początkowe (w tym 1%):</small></span>
+      </th>
+      <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance">
+        <span class="pull-left" style="white-space: nowrap"><small>
+          <%= number_with_precision(@journal.initial_balance, :precision => 2) %> zł
+          (<%= number_with_precision(@journal.initial_balance_one_percent, :precision => 2) %> zł)
+        </small></span>
+      </th>
+    </tr>
+
+    <tr class="border-top-bold">
+      <th rowspan="2" style="vertical-align: middle">
+        <small>#</small>
+      </th>
+      <th rowspan="2" class="text-center" style="vertical-align: middle">
+        <small>Data</small>
+      </th>
+      <th rowspan="2" class="text-center"style="vertical-align: middle">
+        <small>Opis<br/>Numer dokumentu</small>
+      </th>
+      <th colspan="<%= @categories_income.count %>" class="text-center">
+        <small><%= t 'helpers.label.journal.income_detailed' %></small>
+      </th>
+      <th rowspan="2" class="income income_all text-center" style="vertical-align: middle">
+        <small><%= t 'helpers.label.journal.income_all' %></small>
+      </th>
+      <th rowspan="2" class="expense expense_all text-center" style="vertical-align: middle">
+        <small><%= t 'helpers.label.journal.expense_all' %></small>
+      </th>
+      <th colspan="<%= @categories_expense.count %>" class="text-center">
+        <small><%= t 'helpers.label.journal.expense_detailed' %></small>
+      </th>
+    </tr>
+
+    <tr>
+      <% @categories_income.each do |category| %>
+        <th class="income_<%= category.id %> text-center category-label">
+          <small>
+            <small><br/><br/><%= category.name %></small>
+          </small>
+        </th>
+      <% end %>
+      <% @categories_expense.each do |category| %>
+        <th class="expense_<%= category.id %> text-center category-label" style="white-space: nowrap">
+          <small>
+            <small><br/><br/><%= category.name %></small>
+          </small>
+        </th>
+      <% end %>
+    </tr>
+
+    <% if @entries.length > 0 %>
+      <tbody class="border-top-bold">
+      <% position = @start_position %>
+      <% @entries.each do |entry| %>
+        <tr>
+          <td>
+            <small>
+              <span style="display: block;"><%= position += 1 %>.</span>
+            </small>
+          </td>
+          <td style="white-space: nowrap">
+            <small><%= entry.date %></small>
+          </td>
+          <td>
+            <small>
+              <span title='<%= I18n.t('helpers.label.journal.name_tooltip') %>'><%= entry.name %></span>
+              <hr style='margin: 2px 0;'/>
+              <span title='<%= I18n.t('helpers.label.journal.document_number_tooltip') %>'><%= entry.document_number %></span>
+            </small>
+          </td>
+
+          <% @categories_income.each do |category| %>
+            <td class="income income_<%= category.id %> text-right" title="<%= category.name %>">
+              <small>
+                <% print_formatted_amount(entry.get_amount_for_category(category)) %></small>
+            </td>
+          <% end %>
+
+          <td class="income income_all text-right" title="<%= t 'helpers.label.journal.income_all' %>">
+            <small>
+              <% if entry.is_expense
+                   concat "-"
+                 else
+                   print_formatted_amount(entry.sum)
+                 end
+              %>
+            </small>
+          </td>
+
+          <td class="expense expense_all text-right" title="<%= t 'helpers.label.journal.expense_all' %>">
+            <small>
+              <% if entry.is_expense
+                   print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), entry.sum, entry.sum_one_percent)
+                 else
+                   concat "-"
+                 end
+              %>
+            </small>
+          </td>
+
+          <% @categories_expense.each do |category| %>
+            <td class="expense expense_<%= category.id %> text-right" title="<%= category.name %>">
+              <small>
+                <% print_formatted_amount_with_one_percent(category.name, entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category)) %>
+              </small>
+            </td>
+          <% end %>
+
+        </tr>
+      <% end %>
+      </tbody>
+    <% end %>
+
+    <!%-- row with sums for each category --%>
+    <tr>
+      <td colspan="3"><strong>
+        <small>Suma</small>
+      </strong></td>
+
+      <% @categories_income.each do |category| %>
+        <td class="income income_<%= category.id %> text-right" title="<%= category.name %>">
+          <small>
+            <% print_formatted_amount(@journal.get_sum_for_category(category)) %>
+          </small>
+        </td>
+      <% end %>
+
+      <td class="income income_all text-right" title="<%= t 'helpers.label.journal.income_all' %>">
+        <small>
+          <% print_formatted_amount(@journal.get_income_sum) %>
+        </small>
+      </td>
+      <td class="expense expense_all text-right" title="<%= t 'helpers.label.journal.expense_all' %>">
+        <small>
+          <% print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), @journal.get_expense_sum, @journal.get_expense_sum_one_percent) %>
+        </small>
+      </td>
+
+      <% @categories_expense.each do |category| %>
+        <td class="expense expense_<%= category.id %> text-right" title="<%= category.name %>">
+          <small>
+            <% print_formatted_amount_with_one_percent(category.name, @journal.get_sum_for_category(category), @journal.get_sum_one_percent_for_category(category)) %>
+          </small>
+        </td>
+      <% end %>
+    </tr>
+
+    <tr>
+      <th colspan="3"></th>
+      <th colspan="<%= @categories_income.count %>" class="balance-label"><span class="pull-right text-muted" style="white-space: nowrap"><small>Saldo końcowe (w tym 1%):</small></span>
+      </th>
+      <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance">
+        <span class="pull-left" style="white-space: nowrap"><small>
+          <%= number_with_precision(@journal.get_final_balance, :precision => 2) %> zł
+          (<%= number_with_precision(@journal.get_final_balance_one_percent, :precision => 2) %> zł)
+        </small></span>
+      </th>
+    </tr>
+  </table>
+</div>

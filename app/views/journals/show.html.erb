@@ -26,7 +26,7 @@
         <% end %>
       <% end %>
     <% end %>
-    <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj".html_safe, '#', onclick: 'alert("Generowanie plików pdf dostępne wkrótce")', class: 'btn btn-sm btn-default' %>
+    <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj".html_safe, @pdf_report_link, class: 'btn btn-sm btn-default' %>
   </div>
   <div class="col-md-6">
     <%= render "shared/journal_select" %>
