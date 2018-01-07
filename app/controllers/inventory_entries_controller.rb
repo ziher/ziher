@@ -74,8 +74,8 @@ class InventoryEntriesController < ApplicationController
         if (show_all)
           @inventory_entries = @inventory_entries_all
           @sum_total_value = @inventory_entries_all.map(&:signed_total_value).sum
-          year_from = @inventory_entries_all.first.date.year
-          year_to = @inventory_entries_all.last.date.year
+          year_from = @years.first
+          year_to = current_year
           @years_label = "lata #{year_from}-#{year_to}"
         else
           @inventory_entries = @inventory_entries_current_year
