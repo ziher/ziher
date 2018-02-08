@@ -197,12 +197,16 @@ class Journal < ActiveRecord::Base
   end
 
   def verify_final_balance_one_percent_no_more_than_sum
-    if self.get_final_balance_one_percent > self.get_final_balance
-      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => get_final_balance_one_percent, :sum => get_final_balance, :scope => :journal)
-      return false
-    else
+    if self.get_final_balance_one_percent == 0 or self.get_final_balance_one_percent <= self.get_final_balance
       return true
     end
+
+    if self.get_final_balance < 0
+      errors[:one_percent] << I18n.t(:sum_one_percent_negative_with_one_percent_left, :sum_one_percent => get_final_balance_one_percent, :sum => get_final_balance, :scope => :journal)
+    else
+      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => get_final_balance_one_percent, :sum => get_final_balance, :scope => :journal)
+    end
+    return false
   end
 
   def verify_entries

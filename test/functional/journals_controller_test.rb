@@ -79,7 +79,7 @@ class JournalsControllerTest < ActionController::TestCase
     get :show, id: @journal.to_param
 
     #then
-    expected_message = I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => sum_one_percent, :sum => sum, :scope => :journal)
+    expected_message = I18n.t(:sum_one_percent_negative_with_one_percent_left, :sum_one_percent => sum_one_percent, :sum => sum, :scope => :journal)
     assert_equal expected_message, flash[:alert]
   end
 
