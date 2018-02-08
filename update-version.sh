@@ -6,7 +6,7 @@
 
 MAJOR=2
 MINOR=5
-PATCH=6
+PATCH=7
 
 BUILD=${BUILD_VERSION:-`git describe --always`}
 
