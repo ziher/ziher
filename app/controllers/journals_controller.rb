@@ -67,7 +67,10 @@ class JournalsController < ApplicationController
       format.pdf {
         @entries = all_entries
         @generation_time = Time.now
-        render pdf: "#{journal_type_prefix(@journal.journal_type)}_#{get_time_postfix}", template: 'journals/show', orientation: 'Landscape',
+        render pdf: "#{journal_type_prefix(@journal.journal_type)}_#{get_time_postfix}",
+               template: 'journals/show',
+               orientation: 'Landscape',
+               show_as_html: false,
                footer: {left: "#{current_user.email}, #{Time.now.strftime ('%Y-%m-%d %H:%M:%S')}",
                         center: "ziher.zhr.pl#{ENV['RAILS_RELATIVE_URL_ROOT']}",
                         right: 'Strona [page] z [topage]',
