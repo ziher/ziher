@@ -123,7 +123,7 @@ class ReportsController < ApplicationController
     if unit_id != nil
       @user_units.each do |unit|
         if unit.id.to_s == @selected_unit_id.to_s
-          @selected_unit_name = unit.name
+          @selected_unit_name = unit.code.blank? ? "#{unit.name}" : "#{unit.code} - #{unit.name}"
         end
       end
     end
