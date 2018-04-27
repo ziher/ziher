@@ -3,10 +3,18 @@ class CategoriesController < ApplicationController
   # GET /categories.json
   def index
     @years = Category.get_all_years()
-    @year = params[:year]
-    unless @year
-      @year = @years.first
+
+    unless params[:year].blank?
+      @year = params[:year].to_i
+    else
+      @year = session[:current_year]
     end
+
+    unless @year and @years.include?(@year)
+      @year = @years.last
+    end
+
+    session[:current_year] = @year
 
     respond_to do |format|
       format.html # index.html.erb
@@ -30,6 +38,12 @@ class CategoriesController < ApplicationController
   def new
     @category = Category.new
 
+    unless params[:is_expense].blank?
+      @category.is_expense = params[:is_expense].eql?("true")
+    end
+
+    @category.year = session[:current_year]
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @category }
@@ -48,7 +62,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to @category, notice: 'Kategoria utworzona.' }
+        format.html { redirect_to categories_url, notice: 'Kategoria utworzona.' }
         format.json { render json: @category, status: :created, location: @category }
       else
         format.html { render action: "new" }
@@ -64,7 +78,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.update_attributes(category_params)
-        format.html { redirect_to @category, notice: 'Zmiany zapisane.' }
+        format.html { redirect_to categories_url, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

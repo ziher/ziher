@@ -19,11 +19,6 @@ class CategoriesControllerTest < ActionController::TestCase
     end
   end
 
-  test "index should have search button" do
-    get :index
-    assert_select "input[type=submit][value=#{I18n.t('search')}]"
-  end
-
   test "selected criteria should stay selected" do
     get :index, year: 2012
     assert_select "select[name='year'] option[selected][value='2012']"
@@ -39,7 +34,7 @@ class CategoriesControllerTest < ActionController::TestCase
       post :create, category: @category.attributes
     end
 
-    assert_redirected_to category_path(assigns(:category))
+    assert_redirected_to categories_path
   end
 
   test "should show category" do
@@ -54,7 +49,7 @@ class CategoriesControllerTest < ActionController::TestCase
 
   test "should update category" do
     put :update, id: @category.to_param, category: @category.attributes
-    assert_redirected_to category_path(assigns(:category))
+    assert_redirected_to categories_path
   end
 
   test "should destroy category" do

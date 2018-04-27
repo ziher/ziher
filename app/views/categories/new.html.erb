@@ -1,5 +1,10 @@
-<h1>Nowa kategoria</h1>
+<% category_label =  @category.is_expense ? "wydatku" : "wpływu" %>
+<h1>Nowa kategoria <%= category_label %> dla roku <%= @category.year %></h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Wstecz', categories_path %>
+<div class="row top-buffer-20">
+  <div class="col-md-12">
+    <%= link_to 'Wstecz', categories_path %>
+  </div>
+</div>

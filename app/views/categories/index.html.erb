@@ -1,31 +1,51 @@
-<h1>Kategorie</h1>
+<script type="text/javascript">
+    function reloadForYear(year) {
+        document.location.href = "<%= @categories_link %>?year=" + year;
+    }
+</script>
 
-<form method="GET">
-  <%= select_tag "year", options_for_select(@years, @year) %>
-  <%= submit_tag I18n.t('search') %>
-</form>
-
-<br/>
+<div class="row">
+  <div class="col-md-10">
+    <h3>Kategorie</h3>
+  </div>
+  <div class="col-md-2">
+    <div class="pull-right top-buffer-20">
+      <%= select_tag "year", options_for_select(@years, @year), :onchange => 'reloadForYear(this.value)', :class => 'no-margin' %>
+    </div>
+  </div>
+</div>
 
 <% expenses = {:label => I18n.t(:expenses), :data => Category.find_by_year_and_type(@year, true)} %>
 <% incomes = {:label => I18n.t(:incomes), :data => Category.find_by_year_and_type(@year, false)} %>
 
-<% [incomes, expenses].each do |categories| %>
-<div>
-  <%= categories[:label] %>
-  <ul class="categories unstyled">
-  <% categories[:data].each do |category| %>
-    <li id="category_<%= category.id %>">
-      <span class="handle"><span class="glyphicon glyphicon-align-justify" title="Chwyć i przenieś"></span></span>
-        <% if category.is_one_percent %><small>[1%]</small><% end %>
-        <%= category.name %>
-        <%= link_to edit_category_path(category) do %><span class="glyphicon glyphicon-pencil"></span><% end %>
-    </li>
+<div class="row">
+  <% [incomes, expenses].each do |categories| %>
+    <div class="col-md-3">
+      <div class="well">
+        <b><%= categories[:label] %></b><br /><br/>
+        <ul class="categories unstyled">
+          <% categories[:data].each do |category| %>
+            <li id="category_<%= category.id %>">
+              <span class="handle"><span class="glyphicon glyphicon-align-justify" title="Chwyć i przenieś"></span></span>
+              <% if category.is_one_percent %>
+                <small>[1%]</small>
+              <% end %>
+              <%= category.name %>
+              <%= link_to edit_category_path(category) do %><span class="glyphicon glyphicon-pencil"></span>
+              <% end %>
+              <!--<%= link_to category, data: {confirm: 'Na pewno usunąć kategorię?'}, method: :delete do %><span class="glyphicon glyphicon-trash"></span>
+              <% end %>-->
+            </li>
+          <% end %>
+        </ul>
+
+        <br/>
+        <%= link_to new_category_path(:is_expense => categories[:label].eql?("Wydatki")), class: 'btn btn-sm btn-success' do %>
+          <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowa kategoria
+        <% end %>
+      </div>
+    </div>
   <% end %>
-  </ul>
 </div>
-<% end %>
 
-<br />
-
-<%= link_to 'Nowa kategoria', new_category_path %>
+<br/>

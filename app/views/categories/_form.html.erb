@@ -1,7 +1,7 @@
 <%= form_for(@category) do |f| %>
   <% if @category.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
+      <h2>Wystąpiły błędy podczas próby zapisu:</h2>
 
       <ul>
       <% @category.errors.full_messages.each do |msg| %>
@@ -11,23 +11,28 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div><br />
-  <div class="field">
-    <%= f.label :year %>
-    <%= f.text_field :year %>
-  </div><br />
-  <div class="field">
-    <%= f.label :is_expense %>
-    <%= f.check_box :is_expense %>
-  </div><br />
-  <div class="field">
-    <%= f.label :is_one_percent %>
-    <%= f.check_box :is_one_percent %>
-  </div><br />
-  <div class="actions">
-    <%= f.submit I18n.t(:save)%>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="field">
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </div><br />
+
+      <% if @category.is_expense == false %>
+        <div class="field">
+          <%= f.label :is_one_percent %>
+          <%= f.check_box :is_one_percent %>
+        </div><br />
+      <% end %>
+    </div>
+  </div>
+
+  <%= f.hidden_field :year, :value => @category.year %>
+  <%= f.hidden_field :is_expense, :value => @category.is_expense %>
+
+  <div class="row top-buffer-20">
+    <div class="col-md-12">
+      <%= f.submit "Zapisz", class: "btn btn-sm btn-success"%>
+    </div>
   </div>
 <% end %>
