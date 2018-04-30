@@ -4,7 +4,7 @@
       <%= link_to "Edytuj", edit_unit_path(@unit), class: 'btn btn-sm btn-success' %>
     <% end %>
     <% if can? :destroy, @unit %>
-      <%= link_to 'Usuń jednostkę', @unit, data: { confirm: 'Na pewno usunąć jednostkę?'}, method: :delete, class: 'btn btn-sm btn-danger' %>
+      <% #= link_to 'Usuń jednostkę', @unit, data: { confirm: 'Na pewno usunąć jednostkę?'}, method: :delete, class: 'btn btn-sm btn-danger' %>
     <% end %>
   </div>
   <p>

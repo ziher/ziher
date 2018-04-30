@@ -40,8 +40,8 @@ class UnitsControllerTest < ActionController::TestCase
     assert_redirected_to unit_path(assigns(:unit))
   end
 
-  test "should destroy unit" do
-    assert_difference('Unit.count', -1) do
+  test "should not destroy unit" do
+    assert_difference('Unit.count', 0) do
       delete :destroy, id: @unit.to_param
     end
 

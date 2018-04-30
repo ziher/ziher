@@ -88,7 +88,8 @@ class UnitsController < ApplicationController
   def destroy
     @unit = Unit.find(params[:id])
     authorize! :destroy, @unit
-    @unit.destroy
+    # TODO: Unit must not be destroyed if that would change the past years  balance
+    # @unit.destroy
 
     respond_to do |format|
       format.html { redirect_to units_url }
