@@ -12,22 +12,26 @@
   <div class="col-md-6">
     <h3><%= @report_header %></h3>
   </div>
-  <div class="col-md-5">
-    <div class="pull-right top-buffer-20">
-      <select class="no-margin" onchange="reloadForUnit(this.value)">
-        <% @user_units.each do |unit| %>
-          <option value="<%= unit.id %>" <%= unit.id.to_s == @selected_unit_id.to_s ? 'selected=selected' : '' %>><%= unit.full_name %></option>
-        <% end %>
-      </select>
-    </div>
-  </div>
-  <div class="col-md-1">
-    <div class="pull-right top-buffer-20">
-      <select class="no-margin" onchange="reloadForYear(this.value)">
-        <% @years.each do |year| %>
-          <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
-        <% end %>
-      </select>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-10">
+        <div class="top-buffer-20">
+          <select style="padding: 0; width:100%;" onchange="reloadForUnit(this.value)">
+            <% @user_units.each do |unit| %>
+              <option value="<%= unit.id %>" <%= unit.id.to_s == @selected_unit_id.to_s ? 'selected=selected' : '' %>><%= unit.full_name %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="pull-right top-buffer-20">
+          <select style="padding: 0; width:100%;" onchange="reloadForYear(this.value)">
+            <% @years.each do |year| %>
+              <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 </div>
