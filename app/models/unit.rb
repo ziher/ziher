@@ -88,6 +88,10 @@ select *
     end
   end
 
+  def full_name
+    return self.code.blank? ? "#{self.name}" : "#{self.code} - #{self.name}"
+  end
+
   private
 
   def get_journal_by_type_and_year(type, year)
