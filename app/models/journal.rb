@@ -193,6 +193,14 @@ class Journal < ActiveRecord::Base
     return Journal.where(:year => year, is_open: true)
   end
 
+  def Journal.close_old_open(older_than)
+    Journal.find_old_open(older_than).each {|journal| journal.close}
+  end
+
+  def Journal.close_all_by_year(year)
+    Journal.find_open_by_year(year).each {|journal| journal.close}
+  end
+
   def journals_for_linked_entry
     return Journal.where("year = ? AND id <> ?", self.year, self.id)
   end

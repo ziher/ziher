@@ -23,6 +23,8 @@ Ziher::Application.routes.draw do
   resources :cash_entries
 
   get 'journals/default' => 'journals#default', :defaults => { :journal_type_id => JournalType::FINANCE_TYPE_ID }
+  get 'journals/close_old' => 'journals#close_old', :as => :close_old
+  get 'journals/close_current' => 'journals#close_current', :as => :close_current
   resources :journals
   get 'journals/:id/open' => 'journals#open', :as => :open_journal
   get 'journals/:id/close' => 'journals#close', :as => :close_journal

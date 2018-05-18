@@ -139,6 +139,24 @@ class JournalsController < ApplicationController
     end
   end
 
+  # GET /journals/close_old
+  def close_old
+    respond_to do |format|
+      Journal.close_old_open(session[:current_year].to_i)
+
+      format.html { redirect_to all_finance_report_path}
+    end
+  end
+
+  # GET /journals/close_current
+  def close_current
+    respond_to do |format|
+      Journal.close_all_by_year(session[:current_year].to_i)
+
+      format.html { redirect_to all_finance_report_path}
+    end
+  end
+
   # POST /journals
   # POST /journals.json
   def create

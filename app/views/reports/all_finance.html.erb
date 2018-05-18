@@ -32,18 +32,24 @@
 <div class="row top-buffer-20">
   <% if not @open_current_journals.empty? %>
     <div class="col-md-6">
-      <h4>Otwarte książki z roku <%= @selected_year %></h4>
-      <% @open_current_journals.each do |journal| %>
-        <%= link_to "#{journal.journal_type} - #{journal.unit.full_name}", journal %><br/>
-      <% end %>
+      <div class="well">
+        <h4>Otwarte książki z roku <%= @selected_year %></h4>
+        <% @open_current_journals.each do |journal| %>
+          <%= link_to "#{journal.journal_type} - #{journal.unit.full_name}", journal %><br/>
+        <% end %>
+        <td><%= link_to 'Zamknij wszystkie', close_current_url, data: { confirm: 'Czy na pewno chcesz zamknąć wszystkie książki z aktualnego roku? '}, class: 'btn btn-sm btn-danger top-buffer-20' %></td>
+      </div>
     </div>
   <% end %>
   <% if not @open_old_journals.empty? %>
     <div class="col-md-6">
-      <h4>Otwarte książki starsze niż <%= @selected_year %></h4>
-      <% @open_old_journals.each do |journal| %>
-        <%= link_to "#{journal.year} - #{journal.journal_type} - #{journal.unit.full_name}", journal %><br/>
-      <% end %>
+      <div class="well">
+        <h4>Otwarte książki starsze niż <%= @selected_year %></h4>
+        <% @open_old_journals.each do |journal| %>
+          <%= link_to "#{journal.year} - #{journal.journal_type} - #{journal.unit.full_name}", journal %><br/>
+        <% end %>
+        <td><%= link_to 'Zamknij wszystkie', close_old_url, data: { confirm: 'Czy na pewno chcesz zamknąć wszystkie książki z poprzednich lat? '}, class: 'btn btn-sm btn-danger top-buffer-20' %></td>
+      </div>
     </div>
   <% end %>
 </div>
