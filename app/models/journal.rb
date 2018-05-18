@@ -183,6 +183,16 @@ class Journal < ActiveRecord::Base
     Journal.all.map { |journal| journal.year}.uniq.sort
   end
 
+  def Journal.find_old_open(older_than)
+    journal_years_column = Journal.arel_table[:year]
+    journal_years_older_than_current = journal_years_column.lt(older_than)
+    return Journal.where(:is_open => true).where(journal_years_older_than_current).order("year")
+  end
+
+  def Journal.find_open_by_year(year)
+    return Journal.where(:year => year, is_open: true)
+  end
+
   def journals_for_linked_entry
     return Journal.where("year = ? AND id <> ?", self.year, self.id)
   end

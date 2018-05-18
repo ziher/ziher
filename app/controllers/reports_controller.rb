@@ -76,6 +76,9 @@ class ReportsController < ApplicationController
 
     create_hashes_for(:amount, :initial_balance)
 
+    @open_old_journals = Journal.find_old_open(@selected_year)
+    @open_current_journals = Journal.find_open_by_year(@selected_year)
+
     respond_to do |format|
       format.html {
         @pdf_report_link = all_finance_report_path(:format => :pdf)
@@ -98,6 +101,9 @@ class ReportsController < ApplicationController
     @report_link = all_finance_one_percent_report_path
 
     create_hashes_for(:amount_one_percent, :initial_balance_one_percent)
+
+    @open_old_journals = Journal.find_old_open(@selected_year)
+    @open_current_journals = Journal.find_open_by_year(@selected_year)
 
     respond_to do |format|
       format.html {

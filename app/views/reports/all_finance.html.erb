@@ -28,3 +28,22 @@
 </div>
 
 <%= render 'finance_template' %>
+
+<div class="row top-buffer-20">
+  <% if not @open_current_journals.empty? %>
+    <div class="col-md-6">
+      <h4>Otwarte książki z roku <%= @selected_year %></h4>
+      <% @open_current_journals.each do |journal| %>
+        <%= link_to "#{journal.journal_type} - #{journal.unit.full_name}", journal %><br/>
+      <% end %>
+    </div>
+  <% end %>
+  <% if not @open_old_journals.empty? %>
+    <div class="col-md-6">
+      <h4>Otwarte książki starsze niż <%= @selected_year %></h4>
+      <% @open_old_journals.each do |journal| %>
+        <%= link_to "#{journal.year} - #{journal.journal_type} - #{journal.unit.full_name}", journal %><br/>
+      <% end %>
+    </div>
+  <% end %>
+</div>
