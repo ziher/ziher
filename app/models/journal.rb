@@ -106,15 +106,7 @@ class Journal < ActiveRecord::Base
 
   # Returns the most recent journal for given type, that the given user has access to
   def Journal.get_default(type, user, unit_id = nil, year = nil)
-    user_units = Unit.find_by_user(user)
-
-    if unit_id.nil?
-      unit = user_units.first
-    else
-      if unit_id.in? user_units.map { |unit| unit.id }
-        unit = user_units.find{ |unit| unit.id == unit_id }
-      end
-    end
+    unit = Unit.get_default_unit(user, unit_id)
 
     if unit.nil?
       return

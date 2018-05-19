@@ -3,8 +3,18 @@
     <% if can? :update, @unit %>
       <%= link_to "Edytuj", edit_unit_path(@unit), class: 'btn btn-sm btn-success' %>
     <% end %>
-    <% if can? :destroy, @unit %>
-      <% #= link_to 'Usuń jednostkę', @unit, data: { confirm: 'Na pewno usunąć jednostkę?'}, method: :delete, class: 'btn btn-sm btn-danger' %>
+    <% if can? :disable, @unit %>
+      <% if @unit.is_active %>
+        <%= link_to 'Zablokuj jednostkę', disable_unit_path(@unit),
+                    data: {confirm: 'Czy na pewno zablokować jednostkę?'},
+                    :title => 'Umożliwia zablokowanie jednostki',
+                    :class => "btn btn-sm btn-danger" %>
+      <% else %>
+        <%= link_to 'Odblokuj jednostkę', enable_unit_path(@unit),
+                    data: {confirm: 'Czy na pewno odblokować jednostkę?'},
+                    :title => 'Umożliwia odblokowanie jednostki',
+                    :class => "btn btn-sm btn-danger" %>
+      <% end %>
     <% end %>
   </div>
   <p>

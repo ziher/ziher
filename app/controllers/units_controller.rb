@@ -8,6 +8,8 @@ class UnitsController < ApplicationController
     end
 
     @units = Unit.find_by_user(current_user)
+    @inactive_units = Unit.find_by_user(current_user, false)
+
     @years = Journal.find_all_years
     @selected_year = params[:year] || session[:current_year]
 
@@ -79,6 +81,36 @@ class UnitsController < ApplicationController
       else
         format.html { render action: "new" }
         format.json { render json: @unit.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # GET /units/1/enable
+  def enable
+    @unit = Unit.find(params[:id])
+    authorize! :enable, @unit
+
+    @unit.is_active = true
+
+    respond_to do |format|
+      if @unit.save
+        format.html { redirect_to @unit, notice: 'Jednostka włączona.' }
+      else
+        format.html { redirect_to @unit, alert: 'Podczas włączania jednostki nastąpił błąd: ' + @unit.errors }
+      end
+    end
+  end
+
+  # GET /units/1/disable
+  def disable
+    @unit = Unit.find(params[:id])
+    authorize! :disable, @unit
+
+    respond_to do |format|
+      if @unit.disable
+        format.html { redirect_to @unit, notice: 'Jednostka wyłączona.' }
+      else
+        format.html { redirect_to @unit, alert: 'Podczas wyłączania nastąpił błąd: ' + @unit.errors.values.join(', ')}
       end
     end
   end

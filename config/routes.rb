@@ -47,7 +47,12 @@ Ziher::Application.routes.draw do
   get 'inventory_entries/no_units' => 'inventory_entries#no_units_to_show'
   resources :inventory_entries
 
-  resources :units
+  resources :units do
+    member do
+      get :enable
+      get :disable
+    end
+  end
   resources :user_unit_associations
 
   get "home/index"

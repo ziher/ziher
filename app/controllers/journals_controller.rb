@@ -36,6 +36,11 @@ class JournalsController < ApplicationController
     #override CanCan's auto-fetched journal
     @journal = Journal.includes(:entries => :items).find_by_id(@journal.id)
 
+    if @journal.nil? or @journal.unit.is_active == false
+      flash.keep
+      redirect_to default_finance_journal_path
+    end
+
     @categories_expense = Category.find_by_year_and_type(@journal.year, true)
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
     all_entries = @journal.entries.order('date', 'id')

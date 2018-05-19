@@ -50,6 +50,26 @@
     <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
   </tr>
 <% end %>
+
+<% if not @inactive_units.empty? %>
+  <tr>
+    <td colspan="6">
+      <span class="btn btn-small btn-default top-buffer-20" data-toggle="collapse" data-target="#inactive">Pokaż / ukryj nieaktywne</span>
+    </td>
+  </tr>
+<% end %>
+<tbody id="inactive" class="collapse">
+  <% @inactive_units.each do |unit| %>
+    <tr class="active text-muted">
+      <td><%= link_to unit.code || "", unit, class: "text-muted" %></td>
+      <td><%= link_to unit.name, unit, class: "text-muted" %></td>
+      <td class="amount-cell"><%= unit.initial_finance_balance(@selected_year) || '-' %></td>
+      <td class="amount-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
+      <td class="amount-cell"><%= unit.initial_bank_balance(@selected_year) || '-' %></td>
+      <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
+    </tr>
+  <% end %>
+</tbody>
 </table>
 
 <br />

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171228193859) do
+ActiveRecord::Schema.define(version: 20180519143237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20171228193859) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "code"
+    t.boolean  "is_active",  default: true, null: false
   end
 
   add_index "units", ["code"], name: "index_units_on_code", unique: true, using: :btree
