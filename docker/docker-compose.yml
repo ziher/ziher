@@ -1,10 +1,15 @@
 version: '2'
 services:
-  db:
+  postgres:
     container_name: postgres
     image: postgres:9.4.1
     ports:
       - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
   app:
     container_name: ziher
     build: ../
@@ -13,10 +18,10 @@ services:
       - "3000:3000"
     environment:
       - RAILS_ENV=production
-      - ZIHER_DB_HOST=db
+      - ZIHER_DB_HOST=postgres
       - ZIHER_DB_NAME=my_db_name
       - ZIHER_DB_USERNAME=my_db_username
       - ZIHER_DB_PASSWORD=my_db_password
       - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
     links:
-      - db
+      - postgres
