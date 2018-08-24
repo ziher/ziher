@@ -278,6 +278,9 @@ UserGroupAssociation.create!(user: skarbnik_zachodu, group: dlnsl, can_view_entr
 finance = JournalType.create!(id: JournalType::FINANCE_TYPE_ID, name: "Książka finansowa", is_default: true)
 bank = JournalType.create!(id: JournalType::BANK_TYPE_ID, name: "Książka bankowa")
 
+finance_inventory_source = InventorySource.create!(name: 'książka finansowa', is_active: true)
+bank_inventory_source = InventorySource.create!(name: 'książka bankowa', is_active: true)
+
 dukt2010f = Journal.create!(year: 2010, journal_type: finance, unit: dukt, is_open: false, initial_balance: 9.00, initial_balance_one_percent: 9.00)
 dukt2010b = Journal.create!(year: 2010, journal_type: bank, unit: dukt, is_open: false)
 dukt2011f = Journal.create!(year: 2011, journal_type: finance, unit: dukt, is_open: false)
