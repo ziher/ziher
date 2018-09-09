@@ -13,7 +13,7 @@ end
 
 group :production do
 # Use passenger as the web server
-  gem 'passenger'
+  gem "passenger", "5.2.3"
 end
 
 

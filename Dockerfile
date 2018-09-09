@@ -7,7 +7,7 @@ RUN mkdir /ziher
 WORKDIR /ziher
 COPY Gemfile /ziher/Gemfile
 COPY Gemfile.lock /ziher/Gemfile.lock
-RUN bundle install
+RUN gem install bundler && bundle install
 
 COPY config/initializers/version.rb /ziher/config/initializers/version.rb
 COPY . /ziher
@@ -23,4 +23,4 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENTRYPOINT passenger start -p 3000 -a 0.0.0.0
+ENTRYPOINT ["passenger", "start", "-p", "3000", "-a", "0.0.0.0"]
