@@ -33,8 +33,8 @@
               <%= category.name %>
               <%= link_to edit_category_path(category) do %><span class="glyphicon glyphicon-pencil"></span>
               <% end %>
-              <!--<%= link_to category, data: {confirm: 'Na pewno usunąć kategorię?'}, method: :delete do %><span class="glyphicon glyphicon-trash"></span>
-              <% end %>-->
+              <%= link_to category, data: {confirm: 'Na pewno usunąć kategorię?'}, method: :delete do %><span class="glyphicon glyphicon-trash"></span>
+              <% end %>
             </li>
           <% end %>
         </ul>

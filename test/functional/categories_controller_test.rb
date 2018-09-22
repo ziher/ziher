@@ -52,9 +52,21 @@ class CategoriesControllerTest < ActionController::TestCase
     assert_redirected_to categories_path
   end
 
-  test "should destroy category" do
+  test "should destroy not used category" do
+    category = categories(:not_used)
+
+    assert_difference('Category.count', -1) do
+      delete :destroy, id: category.to_param
+    end
+
+    assert_redirected_to categories_path
+  end
+
+  test "should not destroy used category" do
+    category = categories(:five)
+
     assert_difference('Category.count', 0) do
-      delete :destroy, id: @category.to_param
+      delete :destroy, id: category.to_param
     end
 
     assert_redirected_to categories_path

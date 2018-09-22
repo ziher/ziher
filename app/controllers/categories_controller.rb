@@ -97,9 +97,14 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1
   # DELETE /categories/1.json
   def destroy
-    #@category = Category.find(params[:id])
-    #authorize! :destroy, @category
-    #@category.destroy
+    @category = Category.find(params[:id])
+    authorize! :destroy, @category
+    @category.destroy
+
+    if not @category.errors.values.blank?
+      flash.now[:category] = @category.errors.values.join("<br/>")
+    end
+    flash.keep
 
     respond_to do |format|
       format.html { redirect_to categories_url }

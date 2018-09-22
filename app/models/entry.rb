@@ -184,4 +184,8 @@ class Entry < ActiveRecord::Base
     one_percent_category_item_should_have_same_amount_values
   end
 
+  def link_to_edit
+    "<a href='/entries/#{self.to_param}/edit'>#{self.date.to_s} - #{self.journal.unit.name}</a>"
+  end
+
 end

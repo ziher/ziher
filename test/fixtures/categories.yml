@@ -69,3 +69,8 @@ ten:
   name: CategoryTen
   is_expense: false
   year: 2012
+
+not_used:
+  name: NotUsedCategory
+  is_expense: false
+  year: 2012
