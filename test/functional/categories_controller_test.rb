@@ -53,7 +53,7 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   test "should destroy category" do
-    assert_difference('Category.count', -1) do
+    assert_difference('Category.count', 0) do
       delete :destroy, id: @category.to_param
     end
 
