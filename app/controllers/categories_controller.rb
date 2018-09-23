@@ -2,6 +2,8 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
+    authorize! :manage, Category
+
     @years = Category.get_all_years()
 
     unless params[:year].blank?
@@ -26,6 +28,7 @@ class CategoriesController < ApplicationController
   # GET /categories/1.json
   def show
     @category = Category.find(params[:id])
+    authorize! :show, @category
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,6 +40,7 @@ class CategoriesController < ApplicationController
   # GET /categories/new.json
   def new
     @category = Category.new
+    authorize! :create, @category
 
     unless params[:is_expense].blank?
       @category.is_expense = params[:is_expense].eql?("true")
@@ -53,12 +57,14 @@ class CategoriesController < ApplicationController
   # GET /categories/1/edit
   def edit
     @category = Category.find(params[:id])
+    authorize! :update, @category
   end
 
   # POST /categories
   # POST /categories.json
   def create
     @category = Category.new(category_params)
+    authorize! :create, @category
 
     respond_to do |format|
       if @category.save
@@ -75,6 +81,7 @@ class CategoriesController < ApplicationController
   # PUT /categories/1.json
   def update
     @category = Category.find(params[:id])
+    authorize! :update, @category
 
     respond_to do |format|
       if @category.update_attributes(category_params)
@@ -91,6 +98,7 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1.json
   def destroy
     #@category = Category.find(params[:id])
+    #authorize! :destroy, @category
     #@category.destroy
 
     respond_to do |format|
@@ -100,11 +108,14 @@ class CategoriesController < ApplicationController
   end
 
   def sort
+    authorize! :manage, Category
+
     params['category'].each_with_index do |category_id, position|
       category = Category.find(category_id)
       category.position = position
       category.save
     end
+
     render :nothing => true
   end
 
