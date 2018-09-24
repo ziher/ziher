@@ -17,7 +17,7 @@ group :production do
 end
 
 
-gem 'sass-rails'
+gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 
