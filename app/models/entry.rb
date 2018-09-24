@@ -185,7 +185,7 @@ class Entry < ActiveRecord::Base
   end
 
   def link_to_edit
-    "<a href='/entries/#{self.to_param}/edit'>#{self.date.to_s} - #{self.journal.unit.name}</a>"
+    "<a href='#{ENV['RAILS_RELATIVE_URL_ROOT']}/entries/#{self.to_param}/edit'>#{self.date.to_s} - #{self.journal.unit.name}</a>"
   end
 
 end
