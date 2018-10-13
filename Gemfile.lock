@@ -63,7 +63,7 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
-    devise-i18n (1.6.4)
+    devise-i18n (1.6.5)
       devise (>= 4.4)
     devise_invitable (1.7.4)
       actionmailer (>= 4.1.0)
@@ -99,7 +99,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
     passenger (5.2.3)
