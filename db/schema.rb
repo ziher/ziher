@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180519143237) do
+ActiveRecord::Schema.define(version: 20181013130335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20180519143237) do
     t.boolean  "is_open"
     t.decimal  "initial_balance",             precision: 9, scale: 2, default: 0.0, null: false
     t.decimal  "initial_balance_one_percent", precision: 9, scale: 2, default: 0.0, null: false
+    t.date     "blocked_to"
   end
 
   create_table "subgroups", id: false, force: :cascade do |t|

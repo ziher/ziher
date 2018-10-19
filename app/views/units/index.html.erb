@@ -5,13 +5,44 @@
 </script>
 
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-8">
     <h3>Administracja &gt; Jednostki</h3>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-4">
     <div class="pull-right top-buffer-20">
       <% if can? :create, Unit.new %>
         <%= link_to 'Nowa jednostka', new_unit_path, class: "btn btn-sm btn-success" %>
+      <% end %>
+      <% if current_user.is_superadmin %>
+        <%= content_tag(:div, "", :style => "display: none;", id: 'journal-year', data: {source: @selected_year}) %>
+
+        <div class="btn dropdown-toggle btn-danger btn-sm" data-toggle="modal" data-target="#blockAllJournalsModal">Zamknij / otwórz wszystkie...</div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="blockAllJournalsModal" tabindex="-1" role="dialog" aria-labelledby="blockAllJournalsModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="blockAllJournalsModalLabel">Zamknij, otwórz lub zablokuj do wskazanej daty wszystkie książki z roku <%= @selected_year %></h4>
+              </div>
+              <div class="modal-body">
+                <small>
+                  <div id="block_all_journals_to_date" style="margin-left: 30px;"></div>
+                </small>
+              </div>
+              <div class="modal-footer">
+                <%= link_to "Otwórz wszystkie książki", open_current_path, class: 'btn btn-danger pull-left' %>
+                <%= link_to "Zamknij wszystkie książki", close_current_path, class: 'btn btn-danger pull-left' %>
+                <%= form_tag close_to_current_path, style: 'display: inline' do %>
+                  <%= hidden_field_tag :block_all_journals_to_hidden_input, @today %>
+                  <%= submit_tag "Zamknij książkę do wskazanej daty (włącznie)", class: 'btn btn-danger' %>
+                <% end %>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+              </div>
+            </div>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
@@ -21,7 +52,7 @@
   <tr>
     <th rowspan="3">Kod</th>
     <th class="name-cell" rowspan="3">Nazwa</th>
-    <th class="text-center" colspan="4">Saldo początkowe
+    <th class="text-center" colspan="6">Saldo początkowe
       <select class="no-margin" onchange="reloadForYear(this.value)">
         <% @years.each do |year| %>
           <option value="<%= year %>" <%= year.to_s == @selected_year.to_s ? 'selected=selected' : '' %>><%= year %></option>
@@ -30,43 +61,110 @@
     </th>
   </tr>
   <tr>
-    <th class="text-center" colspan="2">finansowe</th>
-    <th class="text-center" colspan="2">bankowe</th>
+    <th class="text-center" colspan="3">finansowe</th>
+    <th class="text-center" colspan="3">bankowe</th>
   </tr>
   <tr>
     <th>&nbsp;</th>
     <th class="text-right">1%</th>
+    <th class="text-right">blokada</th>
     <th>&nbsp;</th>
     <th class="text-right">1%</th>
+    <th class="text-right">blokada</th>
   </tr>
 
 <% @units.each do |unit| %>
-  <tr>
-    <td><%= link_to unit.code || "", unit %></td>
-    <td><%= link_to unit.name, unit %></td>
-    <td class="amount-cell"><%= unit.initial_finance_balance(@selected_year) || '-' %></td>
-    <td class="amount-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
-    <td class="amount-cell"><%= unit.initial_bank_balance(@selected_year) || '-' %></td>
-    <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
-  </tr>
-<% end %>
 
-<% if not @inactive_units.empty? %>
+    <%
+      finance_journal = Journal.find_by_unit_and_year_and_type(unit, @selected_year, JournalType.find(JournalType::FINANCE_TYPE_ID))
+      bank_journal = Journal.find_by_unit_and_year_and_type(unit, @selected_year, JournalType.find(JournalType::BANK_TYPE_ID))
+
+      finance_label = "label-default"
+      bank_label = "label-default"
+      finance_open_info= "Brak książki"
+      bank_open_info = "Brak książki"
+
+      if not finance_journal.nil? then
+        finance_open_info = finance_journal.blocked_to_short_info
+
+        if finance_journal.is_open() then
+          finance_label = "label-danger"
+        end
+      end
+
+      if not bank_journal.nil? then
+        bank_open_info = bank_journal.blocked_to_short_info
+
+        if bank_journal.is_open() then
+          bank_label = "label-danger"
+        end
+      end
+    %>
+
+      <tr>
+        <td><%= link_to unit.code || "", unit %></td>
+        <td><%= link_to unit.name, unit %></td>
+        <td class="amount-cell"><%= unit.initial_finance_balance(@selected_year) || '-' %></td>
+        <td class="amount-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
+        <td class="amount-cell" style="width: 150px;">
+          <%= link_to finance_open_info, finance_journal, :class => "label #{finance_label}", :style => "font-size: 85%;" %>
+        </td>
+        <td class="amount-cell"><%= unit.initial_bank_balance(@selected_year) || '-' %></td>
+        <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
+        <td class="amount-cell" style="width: 150px;">
+          <%= link_to bank_open_info, bank_journal, :class => "label #{bank_label}", :style => "font-size: 85%;" %>
+        </td>
+      </tr>
+    <% end %>
+    <% if not @inactive_units.empty? %>
   <tr>
-    <td colspan="6">
+    <td colspan="8">
       <span class="btn btn-small btn-default top-buffer-20" data-toggle="collapse" data-target="#inactive">Pokaż / ukryj nieaktywne</span>
     </td>
   </tr>
 <% end %>
 <tbody id="inactive" class="collapse">
   <% @inactive_units.each do |unit| %>
+
+  <%
+    finance_journal = Journal.find_by_unit_and_year_and_type(unit, @selected_year, JournalType.find(JournalType::FINANCE_TYPE_ID))
+    bank_journal = Journal.find_by_unit_and_year_and_type(unit, @selected_year, JournalType.find(JournalType::BANK_TYPE_ID))
+
+    finance_label = "label-default"
+    bank_label = "label-default"
+    finance_open_info= "Brak książki"
+    bank_open_info = "Brak książki"
+
+    if not finance_journal.nil? then
+      finance_open_info = finance_journal.blocked_to_short_info
+
+      if finance_journal.is_open() then
+        finance_label = "label-danger"
+      end
+    end
+
+    if not bank_journal.nil? then
+      bank_open_info = bank_journal.blocked_to_short_info
+
+      if bank_journal.is_open() then
+        bank_label = "label-danger"
+      end
+    end
+  %>
+
     <tr class="active text-muted">
       <td><%= link_to unit.code || "", unit, class: "text-muted" %></td>
       <td><%= link_to unit.name, unit, class: "text-muted" %></td>
       <td class="amount-cell"><%= unit.initial_finance_balance(@selected_year) || '-' %></td>
       <td class="amount-cell"><%= unit.initial_finance_balance_one_percent(@selected_year) || '-' %></td>
+      <td class="amount-cell" style="width: 150px;">
+        <%= link_to finance_open_info, finance_journal, :class => "label #{finance_label}", :style => "font-size: 85%;" %>
+      </td>
       <td class="amount-cell"><%= unit.initial_bank_balance(@selected_year) || '-' %></td>
       <td class="amount-cell"><%= unit.initial_bank_balance_one_percent(@selected_year) || '-' %></td>
+      <td class="amount-cell" style="width: 150px;">
+        <%= link_to bank_open_info, bank_journal, :class => "label #{bank_label}", :style => "font-size: 85%;" %>
+      </td>
     </tr>
   <% end %>
 </tbody>

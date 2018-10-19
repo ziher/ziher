@@ -14,7 +14,7 @@ class Journal < ActiveRecord::Base
 
   # returns a user-friendly string representation
   def to_s
-    return "Journal(id:#{self.id}, type:#{self.journal_type}, year:#{self.year}, unit:#{self.unit.name}, open:#{self.is_open ? 'open' : 'closed'}, balance:#{initial_balance}, balance1%:#{initial_balance_one_percent})"
+    return "Journal(id:#{self.id}, type:#{self.journal_type}, year:#{self.year}, unit:#{self.unit.name}, open:#{self.is_open ? 'open' : 'closed'}, balance:#{initial_balance}, balance1%:#{initial_balance_one_percent}, blocked_to:#{self.blocked_to})"
   end
 
   # calculates balance of previous year's journal and sets it as this journal's initial balance
@@ -39,57 +39,71 @@ class Journal < ActiveRecord::Base
   end
 
   # returns sum of all entries in this journal for given category
-  def get_sum_for_category(category)
-    Item.where(:entry => self.entries, :category => category).sum(:amount)
+  def get_sum_for_category(category, to_date = end_of_year)
+    get_category_sum_for(:amount, category, to_date)
   end
 
   # returns sum one percent of all entries in this journal for given category
-  def get_sum_one_percent_for_category(category)
-    Item.where(:entry => self.entries, :category => category).sum(:amount_one_percent)
+  def get_sum_one_percent_for_category(category, to_date = end_of_year)
+    get_category_sum_for(:amount_one_percent, category, to_date)
+  end
+
+  def get_category_sum_for(summable, category, to_date)
+    entries_to_date = self.entries.select { |entry| entry.date <= to_date}
+    Item.where(:entry => entries_to_date, :category => category).sum(summable)
   end
 
   # returns sum of all expense entries
-  def get_expense_sum
+  def get_expense_sum(to_date = end_of_year)
     sum = 0
     Category.where(:year => self.year, :is_expense => true).each do |category|
-      sum += get_sum_for_category(category)
+      sum += get_sum_for_category(category, to_date)
     end
     return sum
   end
 
   # returns sum of all one percent expense entries
-  def get_expense_sum_one_percent
+  def get_expense_sum_one_percent(to_date = end_of_year)
     sum = 0
     Category.where(:year => self.year, :is_expense => true).each do |category|
-      sum += get_sum_one_percent_for_category(category)
+      sum += get_sum_one_percent_for_category(category, to_date)
     end
     return sum
   end
 
   # returns sum of all income entries
-  def get_income_sum
+  def get_income_sum(to_date = end_of_year)
     sum = 0
     Category.where(:year => self.year, :is_expense => false).each do |category|
-      sum += get_sum_for_category(category)
+      sum += get_sum_for_category(category, to_date)
     end
     return sum
   end
 
   # returns sum of all one percent income entries
-  def get_income_sum_one_percent
+  def get_income_sum_one_percent(to_date = end_of_year)
     sum = 0
     Category.where(:year => self.year, :is_expense => false, :is_one_percent => true).each do |category|
-      sum += get_sum_one_percent_for_category(category)
+      sum += get_sum_one_percent_for_category(category, to_date)
     end
     return sum
   end
 
+  def get_balance(to_date = end_of_year)
+    return self.initial_balance + get_income_sum(to_date) - get_expense_sum(to_date)
+
+  end
+
   def get_final_balance
-    return self.initial_balance + get_income_sum - get_expense_sum
+    return get_balance(end_of_year)
+  end
+
+  def get_balance_one_percent(to_date = end_of_year)
+    return self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
   end
 
   def get_final_balance_one_percent
-    return self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
+    return get_balance_one_percent(end_of_year)
   end
 
   def find_next_year_journal
@@ -123,11 +137,13 @@ class Journal < ActiveRecord::Base
     if journal.nil?
       if journal_year == Time.now.year
         journal_open = true
+        journal_blocked_to = nil
       else
         journal_open = false
+        journal_blocked_to = Journal.end_of_year(journal_year)
       end
 
-      journal = Journal.create!(:journal_type_id => type.id, :unit_id => unit.id, :year => journal_year, :is_open => journal_open)
+      journal = Journal.create!(:journal_type_id => type.id, :unit_id => unit.id, :year => journal_year, :is_open => journal_open, :blocked_to => journal_blocked_to)
     end
 
     return journal
@@ -149,7 +165,7 @@ class Journal < ActiveRecord::Base
     journal = Journal.where(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year).first
 
     if (journal == nil)
-      journal = Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year, :is_open => false)
+      journal = Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year, :is_open => false, :blocked_to => Journal.end_of_year(previous_year))
     end
 
     return journal
@@ -168,7 +184,7 @@ class Journal < ActiveRecord::Base
 
   # Creates a new open journal for given journal type and unit and current year.
   def Journal.create_for_current_year(type_id, unit_id)
-    Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year, :is_open => true)
+    Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year, :is_open => true, :blocked_to => nil)
   end
 
   def Journal.find_all_years
@@ -178,48 +194,52 @@ class Journal < ActiveRecord::Base
   def Journal.find_old_open(older_than)
     journal_years_column = Journal.arel_table[:year]
     journal_years_older_than_current = journal_years_column.lt(older_than)
-    return Journal.where(:is_open => true).where(journal_years_older_than_current).order("year")
+    return Journal.where(journal_years_older_than_current).order("year").select {|journal| journal.is_open() }
   end
 
   def Journal.find_open_by_year(year)
-    return Journal.where(:year => year, is_open: true)
+    return Journal.where(:year => year).select {|journal| journal.is_open() }
   end
 
   def Journal.close_old_open(older_than)
     Journal.find_old_open(older_than).each {|journal| journal.close}
   end
 
-  def Journal.close_all_by_year(year)
-    Journal.find_open_by_year(year).each {|journal| journal.close}
+  def Journal.open_all_by_year(year)
+    Journal.where(:year => year).each {|journal| journal.open}
+  end
+
+  def Journal.close_all_by_year(year, blocked_to = Journal.end_of_year(year))
+    Journal.where(:year => year).each {|journal| journal.close(blocked_to)}
   end
 
   def journals_for_linked_entry
     return Journal.where("year = ? AND id <> ?", self.year, self.id)
   end
 
-  def verify_final_balance_one_percent_not_less_than_zero
-    if self.get_final_balance_one_percent < 0
-      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_less_than_zero, :sum_one_percent => get_final_balance_one_percent, :scope => :journal)
+  def verify_balance_one_percent_not_less_than_zero(to_date = end_of_year)
+    if self.get_balance_one_percent(to_date) < 0
+      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_less_than_zero, :sum_one_percent => get_balance_one_percent(to_date), :scope => :journal)
       return false
     else
       return true
     end
   end
 
-  def verify_final_balance_one_percent_no_more_than_sum
-    if self.get_final_balance_one_percent == 0 or self.get_final_balance_one_percent <= self.get_final_balance
+  def verify_balance_one_percent_no_more_than_sum(to_date = end_of_year)
+    if self.get_balance_one_percent(to_date) == 0 or self.get_balance_one_percent(to_date) <= self.get_balance(to_date)
       return true
     end
 
-    if self.get_final_balance < 0
-      errors[:one_percent] << I18n.t(:sum_one_percent_negative_with_one_percent_left, :sum_one_percent => get_final_balance_one_percent, :sum => get_final_balance, :scope => :journal)
+    if self.get_balance(to_date) < 0
+      errors[:one_percent] << I18n.t(:sum_one_percent_negative_with_one_percent_left, :sum_one_percent => get_balance_one_percent(to_date), :sum => get_balance(to_date), :scope => :journal)
     else
-      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => get_final_balance_one_percent, :sum => get_final_balance, :scope => :journal)
+      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => get_balance_one_percent(to_date), :sum => get_balance(to_date), :scope => :journal)
     end
     return false
   end
 
-  def verify_entries
+  def verify_entries(to_date = end_of_year)
     result = true
     self.entries.each do |entry|
       if !entry.verify_entry
@@ -243,26 +263,97 @@ class Journal < ActiveRecord::Base
     return result
   end
 
-  def verify_journal
+  def verify_journal(blocked_to = end_of_year)
     result = true
-    result = false unless verify_final_balance_one_percent_not_less_than_zero
-    result = false unless verify_final_balance_one_percent_no_more_than_sum
-    result = false unless verify_entries
+    result = false unless verify_balance_one_percent_not_less_than_zero(blocked_to)
+    result = false unless verify_balance_one_percent_no_more_than_sum(blocked_to)
+    result = false unless verify_entries(blocked_to)
     result = false unless verify_inventory
     return result
   end
 
-  def close
-    if verify_journal then
-      self.is_open = false
-      return self.save!
-    else
-      return false
+  def close(blocked_to = end_of_year)
+
+    return false unless verify_block_date(blocked_to) and verify_journal(blocked_to)
+
+    blocked_to == end_of_year ? self.is_open = false : self.is_open = true
+    self.blocked_to = blocked_to
+    return self.save!
+  end
+
+  def is_open(as_of_day = end_of_year)
+    if self.blocked_to.nil?
+      return true
     end
+
+    return self.blocked_to < as_of_day
+  end
+
+  def open
+    self.is_open=true
+    self.blocked_to=nil
+
+    return self.save!
+  end
+
+  def opened_from_info
+    case self.blocked_to
+    when nil
+      return "Książka otwarta"
+    when end_of_year
+      return "Książka zamknięta"
+    else
+      open_from = self.blocked_to + 1.day
+      return "Książka otwarta od #{open_from}"
+    end
+  end
+
+  def blocked_to_info
+    case self.blocked_to
+    when nil
+      return "Książka otwarta"
+    when end_of_year
+      return "Książka zamknięta"
+    else
+      return "Książka zamknięta do #{self.blocked_to} (włącznie)"
+    end
+  end
+
+  def blocked_to_short_info
+    case self.blocked_to
+    when nil
+      return "Otwarta"
+    when end_of_year
+      return "Zamknięta"
+    else
+      return "Do #{self.blocked_to}"
+    end
+  end
+
+  def set_blocked_to!
+    self.blocked_to = Date.new(self.year).end_of_year
+    return save!
   end
 
   private
   def add_error_for_duplicated_type
     errors[:journal_type] << I18n.t(:journal_for_this_year_and_type_already_exists, :year => self.year, :type => self.journal_type.name, :scope => :journal)
+  end
+
+  def Journal.end_of_year(year)
+    return Date.new(year).end_of_year
+  end
+
+  def end_of_year
+    return Date.new(self.year).end_of_year
+  end
+
+  def verify_block_date(date)
+    if date.year != self.year or date.blank? or not date.is_a?(Date)
+      errors[:blocked_to] << "Błędna data zamknięcia książki"
+      return false
+    end
+
+    return true
   end
 end

@@ -110,7 +110,7 @@ class Entry < ActiveRecord::Base
 
   def should_not_change_if_journal_is_closed
     if journal
-      unless journal.is_open?
+      unless journal.is_open(self.date)
         errors[:journal] << "Aby zmieniać wpisy książka musi być otwarta"
         return false
       end

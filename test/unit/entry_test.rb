@@ -138,6 +138,7 @@ class EntryTest < ActiveSupport::TestCase
   test "should not save entry when the journal is closed" do
     entry = entries(:expense_one)
     entry.journal.is_open = false
+    entry.journal.blocked_to = Date.new(entry.journal.year).end_of_year
 
     assert_raise(ActiveRecord::RecordInvalid){
       entry.save!
@@ -161,6 +162,7 @@ class EntryTest < ActiveSupport::TestCase
     entry = entries(:expense_one)
     journal = entry.journal
     journal.is_open = false
+    journal.blocked_to = Date.new(journal.year).end_of_year
 
     assert_no_difference('journal.entries.count') {
       entry.destroy
