@@ -87,9 +87,9 @@ class JournalsController < ApplicationController
 
   def default
     # get default journal
-    journal_type = JournalType.find(params[:journal_type_id])
+    journal_type = JournalType.find(params[:journal_type_id].to_i)
 
-    @journal = Journal.get_default(journal_type, current_user, session[:current_unit_id], session[:current_year])
+    @journal = Journal.get_default(journal_type, current_user, session[:current_unit_id].to_i, session[:current_year].to_i)
     unless @journal.nil?
       flash.keep
       redirect_to journal_path(@journal)
@@ -103,10 +103,9 @@ class JournalsController < ApplicationController
   # GET /journals/1/open
   def open
     @journal = Journal.find(params[:id])
-    @journal.is_open = true
 
     respond_to do |format|
-      if @journal.save
+      if @journal.open
         format.html { redirect_to journal_path(@journal), notice: 'Książka otwarta.' }
         format.json { render json: @journal, status: :opened, location: @journal }
       else
@@ -131,6 +130,25 @@ class JournalsController < ApplicationController
     end
   end
 
+  # POST /journals/1/close_to
+  def close_to
+    @journal = Journal.find(params[:id])
+    blocked_to = params[:journal_blocked_to_hidden_input].to_date
+
+    if blocked_to.blank? then
+      redirect_to @journal
+      return
+    end
+
+    respond_to do |format|
+      if @journal.close(blocked_to)
+        format.html { redirect_to journal_path(@journal), notice: 'Książka zamknięta.' }
+      else
+        format.html { redirect_to journals_url, alert: "Błąd zamykania książki: " + @journal.errors.values.join(', ') }
+      end
+    end
+  end
+
   # GET /journals/close_old
   def close_old
     respond_to do |format|
@@ -140,12 +158,38 @@ class JournalsController < ApplicationController
     end
   end
 
+  # GET /journals/open_current
+  def open_current
+    respond_to do |format|
+      Journal.open_all_by_year(session[:current_year].to_i)
+
+      format.html { redirect_to :back}
+    end
+  end
+
   # GET /journals/close_current
   def close_current
     respond_to do |format|
       Journal.close_all_by_year(session[:current_year].to_i)
 
-      format.html { redirect_to all_finance_report_path}
+      format.html { redirect_to :back}
+    end
+  end
+
+
+  # POST /journals/close_to
+  def close_to_current
+    current_year = session[:current_year].to_i
+    blocked_to = params[:block_all_journals_to_hidden_input].to_date
+
+    if blocked_to.blank? then
+      redirect_to :back
+      return
+    end
+
+    respond_to do |format|
+      Journal.close_all_by_year(current_year, blocked_to)
+      format.html { redirect_to :back}
     end
   end
 

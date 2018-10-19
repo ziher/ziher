@@ -39,7 +39,7 @@ class Ability
         user.can_manage_entries(journal)
       end
       
-      can [:close, :open], Journal do |journal|
+      can [:open, :close_to, :close], Journal do |journal|
         user.can_close_journal(journal)
       end
 

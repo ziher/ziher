@@ -11,7 +11,15 @@ class UnitsController < ApplicationController
     @inactive_units = Unit.find_by_user(current_user, false)
 
     @years = Journal.find_all_years
-    @selected_year = params[:year] || session[:current_year]
+
+    unless params[:year].blank?
+      @selected_year = params[:year].to_i
+    else
+      @selected_year = session[:current_year]
+    end
+    session[:current_year] = @selected_year
+
+    @today = Date.today
 
     respond_to do |format|
       format.html # index.html.erb

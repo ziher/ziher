@@ -1,4 +1,5 @@
 <%= content_tag(:div, "", id: 'journal-year', data: {source: @journal.year}) %>
+<%= hidden_field_tag :journal_blocked_to, @journal.blocked_to %>
 
 <%= form_for(@entry) do |f| %>
   <% if @entry.errors.any? %>

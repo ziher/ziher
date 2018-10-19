@@ -25,9 +25,12 @@ Ziher::Application.routes.draw do
   get 'journals/default' => 'journals#default', :defaults => { :journal_type_id => JournalType::FINANCE_TYPE_ID }
   get 'journals/close_old' => 'journals#close_old', :as => :close_old
   get 'journals/close_current' => 'journals#close_current', :as => :close_current
+  post 'journals/close_to_current' => 'journals#close_to_current', :as => :close_to_current
+  get 'journals/open_current' => 'journals#open_current', :as => :open_current
   resources :journals
   get 'journals/:id/open' => 'journals#open', :as => :open_journal
   get 'journals/:id/close' => 'journals#close', :as => :close_journal
+  post 'journals/:id/close_to' => 'journals#close_to', :as => :close_to_journal
   get 'journals/type/:journal_type_id' => 'journals#index'
   get 'ksiazka_finansowa' => 'journals#default', :defaults => { :journal_type_id => JournalType::FINANCE_TYPE_ID }, :as => :default_finance_journal
   get 'ksiazka_bankowa' =>  'journals#default', :defaults => { :journal_type_id => JournalType::BANK_TYPE_ID }, :as => :default_bank_journal

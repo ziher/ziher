@@ -329,7 +329,7 @@ class JournalTest < ActiveSupport::TestCase
 
     #then
     assert_equal current_year, new_journal.year
-    assert new_journal.is_open
+    assert new_journal.is_not_blocked
   end
 
   private

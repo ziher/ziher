@@ -54,7 +54,7 @@ class InventoryEntry < ActiveRecord::Base
 
     type = JournalType.find(inventory_source.id)
     journal = Journal.find_by_unit_and_year_and_type(unit, date.year, type)
-    if (not journal.nil?) && journal.is_open
+    if (not journal.nil?) && journal.is_not_blocked(self.date)
       return true
     end
 

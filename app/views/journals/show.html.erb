@@ -1,46 +1,83 @@
 <div class="row top-buffer-40">
   <div class="col-md-6">
-    <% if @journal.is_open? %>
-      <small>
-        <% if can? :update, @journal %>
-          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false), class: 'btn btn-sm btn-success' do%>
-            <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ
-          <% end %>
+    <% if @journal.is_not_blocked() %>
+      <% if can? :update, @journal %>
+        <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false), class: 'btn btn-sm btn-success' do %>
+          <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ
         <% end %>
-        <% if can? :update, @journal %>
-          <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true), class: 'btn btn-sm btn-success' do%>
-            <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek
-          <% end %>
+      <% else %>
+        <div class="btn btn-sm btn-default" disabled><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ</div>
+      <% end %>
+      <% if can? :update, @journal %>
+        <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true), class: 'btn btn-sm btn-success' do %>
+          <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek
         <% end %>
-        <% if can? :close, @journal %>
-          <%= link_to close_journal_path, class: 'btn btn-sm btn-danger' do%>
-            Zamknij książkę
-          <% end %>
-        <% end %>
-      </small>
+      <% else %>
+        <div class="btn btn-sm btn-default" disabled><span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek</div>
+      <% end %>
     <% else %>
-      <span class="label label-info">Książka zamknięta</span>
-      <% if can? :open, @journal %>
-        <%= link_to open_journal_path, class: 'btn btn-sm btn-danger' do%>
-          Otwórz książkę
+      <%= link_to "/#",
+                  :onClick => "alert('Książka jest zablokowana')",
+                  :title => 'Książka jest zablokowana',
+                  :class => "btn btn-sm btn-default" do %>
+          <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ
         <% end %>
+      <%= link_to "/#",
+                  :onClick => "alert('Książka jest zablokowana')",
+                  :title => 'Książka jest zablokowana',
+                  :class => "btn btn-sm btn-default" do %>
+        <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek
       <% end %>
     <% end %>
-    <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj".html_safe, @pdf_report_link, class: 'btn btn-sm btn-default' %>
+    <% if can? :open, :close, @journal %>
+      <%= content_tag(:div, "", :style => "display: none;", id: 'journal-year', data: {source: @journal.year}) %>
+
+      <div class="btn dropdown-toggle btn-danger btn-sm" data-toggle="modal" data-target="#blockJournalModal">Zamknij / otwórz...</div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="blockJournalModal" tabindex="-1" role="dialog" aria-labelledby="blockJournalModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="blockJournalModalLabel">Aktualny status: <%= @journal.blocked_to_info %></h4>
+            </div>
+            <div class="modal-body">
+              <small>
+                <div id="journal_blocked_to_date" style="margin-left: 30px;"></div>
+              </small>
+            </div>
+            <div class="modal-footer">
+              <%= link_to "Otwórz całą książkę", open_journal_path, class: 'btn btn-danger pull-left' %>
+              <%= link_to "Zamknij całą książkę", close_journal_path, class: 'btn btn-danger pull-left' %>
+              <%= form_tag close_to_journal_path, style: 'display: inline' do %>
+                <%= hidden_field_tag :journal_blocked_to_hidden_input, @journal.blocked_to %>
+                <%= submit_tag "Zamknij książkę do wskazanej daty (włącznie)", class: 'btn btn-danger' %>
+              <% end %>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <% end %>
+    <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj".html_safe, @pdf_report_link, class: 'btn btn-sm btn-primary' %>
   </div>
   <div class="col-md-6">
     <%= render "shared/journal_select" %>
   </div>
+
 </div>
 
 <%= will_paginate @entries %>
-
 <table class="table table-condensed top-buffer-20">
 
   <thead>
     <tr>
-      <th colspan="3" title="<%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%>"></th>
-      <th colspan="<%= @categories_income.count %>" class="balance-label"><span class="pull-right text-muted"><small>Saldo początkowe (w tym 1%):</small></span></th>
+      <th colspan="<%= @categories_income.count + 3 %>" class="balance-label" title="<%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%>">
+        <span class="pull-left label label-default" style="font-size: 85%;"><%= @journal.opened_from_info %></span>
+        <span class="pull-right text-muted"><small>Saldo początkowe (w tym 1%):</small></span>
+      </th>
       <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance">
         <span class="pull-left"><small>
           <%= number_with_precision(@journal.initial_balance, :precision => 2) %> zł
@@ -77,7 +114,7 @@
         <td>
           <small>
             <span style="display: block;"><%= position+=1 %>.</span>
-            <% if @journal.is_open? %>
+            <% if @journal.is_not_blocked(entry.date) %>
               <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><span class="glyphicon glyphicon-pencil" title="Edytuj"></span><%end%><% end %>
               <% if can? :destroy, entry %><%= link_to entry, data: { confirm: 'Na pewno usunąć wpis?'}, method: :delete do%><span class="glyphicon glyphicon-trash" title="Usuń"></span><%end%><% end %>
             <% else %>
