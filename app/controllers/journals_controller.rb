@@ -100,19 +100,6 @@ class JournalsController < ApplicationController
     end
   end
 
-  # GET /journals/new
-  # GET /journals/new.json
-  def new
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @journal }
-    end
-  end
-
-  # GET /journals/1/edit
-  def edit
-  end
-
   # GET /journals/1/open
   def open
     @journal = Journal.find(params[:id])
@@ -159,34 +146,6 @@ class JournalsController < ApplicationController
       Journal.close_all_by_year(session[:current_year].to_i)
 
       format.html { redirect_to all_finance_report_path}
-    end
-  end
-
-  # POST /journals
-  # POST /journals.json
-  def create
-    respond_to do |format|
-      if @journal.save
-        format.html { redirect_to @journal, notice: 'Książka  utworzona.' }
-        format.json { render json: @journal, status: :created, location: @journal }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @journal.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /journals/1
-  # PUT /journals/1.json
-  def update
-    respond_to do |format|
-      if @journal.update_attributes(params[:journal])
-        format.html { redirect_to @journal, notice: 'Zmiany zapisane.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @journal.errors, status: :unprocessable_entity }
-      end
     end
   end
 
