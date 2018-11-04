@@ -90,7 +90,7 @@ class Unit < ActiveRecord::Base
   def unit_has_open_journals
     open_journals = self.journals.where(is_open: true)
     if open_journals.count > 0
-      errors[:journal] << "jednostka posiada niezamknięte książki " + open_journals.map(&:id).join(', ')
+      errors[:journal] << "jednostka posiada niezamknięte książki w latach: " + open_journals.map(&:year).uniq().join(', ')
       return false
     end
 
