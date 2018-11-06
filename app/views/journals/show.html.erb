@@ -16,14 +16,12 @@
         <div class="btn btn-sm btn-default" disabled><span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek</div>
       <% end %>
     <% else %>
-      <%= link_to "/#",
-                  :onClick => "alert('Książka jest zablokowana')",
+      <%= link_to "javascript:alert('Książka jest zablokowana')",
                   :title => 'Książka jest zablokowana',
                   :class => "btn btn-sm btn-default" do %>
           <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ
         <% end %>
-      <%= link_to "/#",
-                  :onClick => "alert('Książka jest zablokowana')",
+      <%= link_to "javascript:alert('Książka jest zablokowana')",
                   :title => 'Książka jest zablokowana',
                   :class => "btn btn-sm btn-default" do %>
         <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek
