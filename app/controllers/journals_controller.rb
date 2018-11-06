@@ -89,7 +89,13 @@ class JournalsController < ApplicationController
     # get default journal
     journal_type = JournalType.find(params[:journal_type_id].to_i)
 
-    @journal = Journal.get_default(journal_type, current_user, session[:current_unit_id].to_i, session[:current_year].to_i)
+    current_unit_id = session[:current_unit_id].to_i
+    current_unit_id = nil if current_unit_id == 0
+
+    current_year = session[:current_year].to_i
+    current_year = nil if current_year == 0
+
+    @journal = Journal.get_default(journal_type, current_user, current_unit_id, current_year)
     unless @journal.nil?
       flash.keep
       redirect_to journal_path(@journal)
