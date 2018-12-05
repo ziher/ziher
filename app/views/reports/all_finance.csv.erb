@@ -1,0 +1,48 @@
+<%
+  header = "Jednostka\tTyp książki\tSaldo początkowe"
+
+  @categories.where(:is_expense => false).each do |category|
+    header += "\t#{category.name}"
+  end
+
+  header += "\tRazem wpływy"
+
+  @categories.where(:is_expense => true).each do |category|
+    header += "\t#{category.name}"
+  end
+
+  header += "\tRazem wydatki\tSaldo końcowe"
+
+  concat header + "\n"
+
+  @user_units.each do |unit|
+
+    finance_hash = @all_finance_hashes[unit.id]
+    bank_hash = @all_bank_hashes[unit.id]
+
+    journal_types = [finance_hash, bank_hash]
+    journal_types.each_with_index do |hash, index|
+      journal_type = (index == 0) ? "ks. finansowa" : "ks. bankowa"
+
+      row = "#{unit.full_name}\t#{journal_type}"
+
+      row += "\t" + number_with_precision(hash[@initial_balance_key], :precision => 2)
+
+      @categories.where(:is_expense => false).each do |category|
+        row += "\t" + number_with_precision(hash[category.id], :precision => 2)
+      end
+
+      row += "\t" + number_with_precision(hash[@total_balance_income_key], :precision => 2)
+
+      @categories.where(:is_expense => true).each do |category|
+      row += "\t" + number_with_precision(hash[category.id], :precision => 2)
+      end
+
+      row += "\t" + number_with_precision(hash[@total_balance_expense_key], :precision => 2)
+
+      row += "\t" + number_with_precision(@total_hash[:finance_sum], :precision => 2)
+
+      concat row + "\n"
+    end
+  end
+%>

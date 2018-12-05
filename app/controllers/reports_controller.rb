@@ -82,11 +82,29 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html {
         @pdf_report_link = all_finance_report_path(:format => :pdf)
+        @csv_report_link = all_finance_report_path(:format => :csv)
         render 'all_finance'
       }
       format.pdf {
         @generation_time = Time.now
         render pdf: 'calosciowe_sprawozdanie_finansowe_' + get_time_postfix, template: 'reports/all_finance'
+      }
+      format.csv {
+
+        @all_finance_hashes = Hash.new
+        @all_bank_hashes = Hash.new
+
+        @user_units = Unit.find_by_user(current_user)
+        @user_units.each do |unit|
+          create_hashes_for(:amount, :initial_balance, unit.id)
+          @all_finance_hashes[unit.id] = @finance_hash
+          @all_bank_hashes[unit.id] = @bank_hash
+        end
+
+        response.headers['Content-Type'] = 'text/csv"'
+        response.headers['Content-Disposition'] = "attachment; filename=\"ziher_calosciowe_sprawozdanie_finansowe_za_#{session[:current_year]}.csv\""
+
+        render template: 'reports/all_finance'
       }
     end
   end
@@ -108,11 +126,28 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html {
         @pdf_report_link = all_finance_one_percent_report_path(:format => :pdf)
+        @csv_report_link = all_finance_one_percent_report_path(:format => :csv)
         render 'all_finance'
       }
       format.pdf {
         @generation_time = Time.now
         render pdf: 'calosciowe_sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/all_one_percent'
+      }
+      format.csv {
+        @all_finance_hashes = Hash.new
+        @all_bank_hashes = Hash.new
+
+        @user_units = Unit.find_by_user(current_user)
+        @user_units.each do |unit|
+          create_hashes_for(:amount_one_percent, :initial_balance_one_percent, unit.id)
+          @all_finance_hashes[unit.id] = @finance_hash
+          @all_bank_hashes[unit.id] = @bank_hash
+        end
+
+        response.headers['Content-Type'] = 'text/csv"'
+        response.headers['Content-Disposition'] = "attachment; filename=\"ziher_calosciowe_sprawozdanie_finansowe_1_procent_za_#{session[:current_year]}.csv\""
+
+        render template: 'reports/all_finance'
       }
     end
 
