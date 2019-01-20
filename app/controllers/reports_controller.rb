@@ -93,12 +93,14 @@ class ReportsController < ApplicationController
 
         @all_finance_hashes = Hash.new
         @all_bank_hashes = Hash.new
+        @total_hashes = Hash.new
 
         @user_units = Unit.find_by_user(current_user)
         @user_units.each do |unit|
           create_hashes_for(:amount, :initial_balance, unit.id)
           @all_finance_hashes[unit.id] = @finance_hash
           @all_bank_hashes[unit.id] = @bank_hash
+          @total_hashes[unit.id] = @total_hash
         end
 
         response.headers['Content-Type'] = 'text/csv"'
