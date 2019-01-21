@@ -35,7 +35,7 @@ class Item < ActiveRecord::Base
 
   def cannot_have_amount_one_percent_if_amount_is_nil
     if self.amount == nil && self.amount_one_percent != nil && self.amount_one_percent != 0 then
-      raise "Wydarzyło się coś bardzo nieoczekiwanego - zgłoś się do swojego administratora ZiHeRa."
+      errors[:items] << " - podano wartość dla 1% (#{self.amount_one_percent}) bez podania wartości głównej"
     end
   end
   
