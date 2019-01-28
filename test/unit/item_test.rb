@@ -48,7 +48,7 @@ class ItemTest < ActiveSupport::TestCase
     item.amount_one_percent = 2
 
     #then
-    assert_raise(RuntimeError) {
+    assert_raise(ActiveRecord::RecordInvalid) {
       item.save!
     }
   end
