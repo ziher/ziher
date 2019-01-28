@@ -60,6 +60,7 @@
 
     <% end %>
     <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj".html_safe, @pdf_report_link, class: 'btn btn-sm btn-primary' %>
+    <%= link_to "<span class='glyphicon glyphicon glyphicon-list'></span>&nbsp;&nbsp;CSV".html_safe, @csv_report_link, class: 'btn btn-sm btn-primary' %>
   </div>
   <div class="col-md-6">
     <%= render "shared/journal_select" %>

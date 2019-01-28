@@ -67,6 +67,7 @@ class JournalsController < ApplicationController
     respond_to do |format|
       format.html { # show.html.erb
         @pdf_report_link = journal_path(:format => :pdf)
+        @csv_report_link = journal_path(:format => :csv)
       }
       format.json { render json: @journal }
       format.pdf {
@@ -81,6 +82,14 @@ class JournalsController < ApplicationController
                         right: 'Strona [page] z [topage]',
                         font_size: 8
                }
+      }
+      format.csv {
+        @entries = all_entries
+
+        response.headers['Content-Type'] = 'text/csv"'
+        response.headers['Content-Disposition'] = "attachment; filename=\"ZiHeR - #{@journal.unit.full_name} - #{@journal.journal_type} za #{session[:current_year]}.csv\""
+
+        render template: 'journals/show'
       }
     end
   end

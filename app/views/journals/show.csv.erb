@@ -1,0 +1,46 @@
+<%
+
+  header = "Data\tOpis\tNumer dokumentu"
+
+  @categories_income.each do |category|
+    header += "\t#{category.name}"
+  end
+
+  header += "\tWypływy razem\tWydatki razem\tWydatki razem 1%"
+
+  @categories_expense.each do |category|
+    header += "\t#{category.name}\t#{category.name} 1%"
+  end
+
+  concat header + "\n"
+
+  @entries.each do |entry|
+
+    row = "#{entry.date}\t#{entry.name}\t#{entry.document_number}"
+
+    @categories_income.each do |category|
+      row += "\t" + get_formatted_amount(entry.get_amount_for_category(category))
+    end
+
+    if entry.is_expense
+      row += "\t0"
+    else
+      row += "\t" + get_formatted_amount(entry.sum)
+    end
+
+    if entry.is_expense
+      row += "\t" + get_formatted_amount(entry.sum)
+      row += "\t" + get_formatted_amount(entry.sum_one_percent)
+    else
+      row += "\t0"
+      row += "\t0"
+    end
+
+    @categories_expense.each do |category|
+      row += "\t" + get_formatted_amount(entry.get_amount_for_category(category))
+      row += "\t" + get_formatted_amount(entry.get_amount_one_percent_for_category(category))
+    end
+
+    concat row + "\n"
+  end
+%>
