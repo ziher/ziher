@@ -6,7 +6,7 @@
 
 MAJOR=2019
 MINOR=1
-PATCH=28
+PATCH=29
 
 BUILD=${BUILD_VERSION:-`git describe --always`}
 

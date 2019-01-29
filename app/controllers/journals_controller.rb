@@ -86,8 +86,10 @@ class JournalsController < ApplicationController
       format.csv {
         @entries = all_entries
 
-        response.headers['Content-Type'] = 'text/csv"'
-        response.headers['Content-Disposition'] = "attachment; filename=\"ZiHeR - #{@journal.unit.full_name} - #{@journal.journal_type} za #{session[:current_year]}.csv\""
+        filename = "ZiHeR - #{@journal.unit.full_name.gsub('"', '\'')} - #{@journal.journal_type} za #{session[:current_year]}.csv"
+
+        response.headers['Content-Type'] = 'text/csv'
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
 
         render template: 'journals/show'
       }
