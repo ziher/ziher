@@ -12,6 +12,9 @@ class Journal < ActiveRecord::Base
 
   before_create :set_initial_balance
 
+  after_save :recalculate_next_initial_balances
+  after_destroy :recalculate_next_initial_balances
+
   # returns a user-friendly string representation
   def to_s
     return "Journal(id:#{self.id}, type:#{self.journal_type}, year:#{self.year}, unit:#{self.unit.name}, open:#{self.is_open ? 'open' : 'closed'}, balance:#{initial_balance}, balance1%:#{initial_balance_one_percent}, blocked_to:#{self.blocked_to})"
@@ -337,6 +340,17 @@ class Journal < ActiveRecord::Base
   def set_blocked_to!
     self.blocked_to = Date.new(self.year).end_of_year
     return save!
+  end
+
+
+  def recalculate_next_initial_balances
+    next_journal = self.find_next_year_journal
+    while next_journal
+      next_journal.set_initial_balance
+      next_journal.save!
+
+      next_journal = next_journal.find_next_year_journal
+    end
   end
 
   private

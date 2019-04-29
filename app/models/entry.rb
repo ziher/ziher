@@ -173,11 +173,7 @@ class Entry < ActiveRecord::Base
 
   # recalculates initial balance for next year's journal
   def recalculate_initial_balance
-    next_journal = self.journal.find_next_year_journal
-    if next_journal
-      next_journal.set_initial_balance
-      next_journal.save!
-    end
+    self.journal.recalculate_next_initial_balances
   end
 
   def verify_entry
