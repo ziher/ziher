@@ -21,7 +21,7 @@ usermod -aG docker vagrant
 
 echo ====================== Instaluje RVM
 apt-get install --yes git curl vim
-sudo -H -u vagrant -i bash -c "gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3"
+sudo -H -u vagrant -i bash -c "gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=2.5.1"
 sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
 
