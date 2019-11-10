@@ -47,7 +47,7 @@ echo ====================== Sciagam gemy i uzupelniam baze danych
 apt-get install --yes g++
 # pakiety potrzebne dla wkhtmltopdf
 apt-get install --yes libfontconfig1 libxrender1
-sudo -H -u vagrant -i bash -c "gem install bundle"
+sudo -H -u vagrant -i bash -c "gem install bundler"
 sudo -H -u vagrant -i bash -c "cd /ziher; bundle install"
 sudo -H -u vagrant -i bash -c "cd /ziher; rake db:create:all"
 sudo -H -u vagrant -i bash -c "cd /ziher; rake db:setup"
