@@ -99,7 +99,7 @@ GEM
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
-    passenger (5.2.3)
+    passenger (6.0.4)
       rack
       rake (>= 0.8.1)
     pg (0.21.0)
@@ -196,7 +196,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   less-rails
-  passenger (= 5.2.3)
+  passenger (= 6.0.4)
   pg (~> 0.21)
   rails (~> 4.2.0)
   rails-i18n
