@@ -38,8 +38,8 @@ GEM
     acts_as_list (0.9.19)
       activerecord (>= 3.0)
     arel (6.0.4)
-    audited (4.8.0)
-      activerecord (>= 4.0, < 5.3)
+    audited (4.9.0)
+      activerecord (>= 4.2, < 6.1)
     bcrypt (3.1.13)
     builder (3.2.3)
     bullet (6.0.2)
@@ -187,7 +187,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
-  audited (~> 4.3)
+  audited (~> 4.9)
   bullet
   cancancan
   coffee-rails

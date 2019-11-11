@@ -51,7 +51,7 @@ gem 'devise_invitable'
 
 gem 'cancancan'
 
-gem 'audited', '~> 4.3'
+gem 'audited', '~> 4.9'
 gem 'will_paginate', '~> 3.1.1'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
