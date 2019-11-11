@@ -180,7 +180,7 @@ GEM
     wicked_pdf (1.2.2)
       activesupport
     will_paginate (3.1.7)
-    wkhtmltopdf-binary (0.12.4)
+    wkhtmltopdf-binary (0.12.5)
 
 PLATFORMS
   ruby
