@@ -22,7 +22,7 @@ usermod -aG docker vagrant
 echo ====================== Instaluje RVM
 apt-get install --yes git curl vim
 sudo -H -u vagrant -i bash -c "gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
-sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=2.5.1"
+sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=2.5.7"
 sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
 
 # some ruby variables to make ZiHeR a wee bit faster
@@ -47,7 +47,7 @@ echo ====================== Sciagam gemy i uzupelniam baze danych
 apt-get install --yes g++
 # pakiety potrzebne dla wkhtmltopdf
 apt-get install --yes libfontconfig1 libxrender1
-sudo -H -u vagrant -i bash -c "gem install bundle"
+sudo -H -u vagrant -i bash -c "gem install bundler"
 sudo -H -u vagrant -i bash -c "cd /ziher; bundle install"
 sudo -H -u vagrant -i bash -c "cd /ziher; rake db:create:all"
 sudo -H -u vagrant -i bash -c "cd /ziher; rake db:setup"

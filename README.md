@@ -17,7 +17,7 @@ To get ZiHeR up and running on your local machine:
 1. Cd to where you cloned ZiHeR
 1. `vagrant up`
 1. `vagrant ssh`
-1. `cd /vagrant`
+1. `cd /ziher`
 1. `rails server -b 0.0.0.0`
 1. Go to http://192.168.33.10:3000 in your browser
 
