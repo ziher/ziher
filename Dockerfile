@@ -7,11 +7,14 @@ RUN mkdir /ziher
 WORKDIR /ziher
 COPY Gemfile /ziher/Gemfile
 COPY Gemfile.lock /ziher/Gemfile.lock
-RUN gem install bundler && bundle install
+RUN set -x \
+  && gem install bundler \
+  && bundle install
 
 COPY config/initializers/version.rb /ziher/config/initializers/version.rb
 COPY . /ziher
-RUN rake assets:precompile --trace
+RUN set -x \
+ && rake assets:precompile --trace
 
 RUN set -x \
  && apt-get update \
