@@ -22,7 +22,7 @@ usermod -aG docker vagrant
 echo ====================== Instaluje RVM
 apt-get install --yes git curl vim
 sudo -H -u vagrant -i bash -c "gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3"
-sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=2.5.1"
+sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=2.5.7"
 sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
 
 # some ruby variables to make ZiHeR a wee bit faster
