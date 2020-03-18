@@ -102,7 +102,7 @@ GEM
     passenger (5.2.3)
       rack
       rake (>= 0.8.1)
-    pg (0.21.0)
+    pg (1.2.3)
     rack (1.6.13)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -198,7 +198,7 @@ DEPENDENCIES
   jquery-ui-rails
   less-rails
   passenger (= 5.2.3)
-  pg (~> 0.21)
+  pg (~> 1.2)
   rails (~> 4.2.0)
   rails-i18n
   sassc-rails
