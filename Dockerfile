@@ -1,4 +1,4 @@
-FROM ruby:2.6.5
+FROM ruby:2.5.7
 
 ENV RAILS_RELATIVE_URL_ROOT=/
 ENV RAILS_ENV=production
