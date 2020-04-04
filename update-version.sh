@@ -1,18 +1,17 @@
 #!/bin/bash
 
-# http://semver.org/
-# Updates VERSION. Use MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, BUILD_VERSION to override defaults
+# Do not user SemVer and use commit date and hash instead.
+# This is not intended to be used by third parties as a library or an app.
+# The only build number that makes sense for the users is when was the last code change.
 
+COMMIT_DATE=$(git show --no-patch --format=%cd --date=short HEAD)
 
-MAJOR=2019
-MINOR=4
-PATCH=29
+read YEAR MONTH DAY < <(echo ${COMMIT_DATE//-/\ })
 
-BUILD=${BUILD_VERSION:-`git describe --always`}
+GIT_HASH=$(git describe --always)
 
 VERSION_FILE="config/initializers/version.rb"
-VERSION_STRING="VERSION = [\"${MAJOR}\", \"${MINOR}\", \"${PATCH}\", \"${BUILD}\"]"
-
+VERSION_STRING="VERSION = [\"${YEAR}\", \"${MONTH}\", \"${DAY}\", \"${GIT_HASH}\"]"
 echo $VERSION_STRING > $VERSION_FILE
 
-echo ${MAJOR}.${MINOR}.${PATCH}-${BUILD}
+echo ${YEAR}.${MONTH}.${DAY}-${GIT_HASH}
