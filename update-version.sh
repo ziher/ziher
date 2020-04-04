@@ -8,7 +8,7 @@ COMMIT_DATE=$(git show --no-patch --format=%cd --date=short HEAD)
 
 read YEAR MONTH DAY < <(echo ${COMMIT_DATE//-/\ })
 
-GIT_HASH=$(git describe --always)
+GIT_HASH=$(git rev-parse --short HEAD)
 
 VERSION_FILE="config/initializers/version.rb"
 VERSION_STRING="VERSION = [\"${YEAR}\", \"${MONTH}\", \"${DAY}\", \"${GIT_HASH}\"]"
