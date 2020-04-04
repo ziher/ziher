@@ -25,3 +25,23 @@ services:
       - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
     links:
       - postgres
+    read_only: true
+    tmpfs:
+      - /tmp:exec
+      - /usr/local/bundle/gems/passenger-5.2.3/buildout:exec
+      - /ziher/log
+      - /ziher/tmp
+      - /ziher/tmp/pids
+      - /root
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - FOWNER
+      - SETGID
+      - SETUID
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200m"
+        max-file: "3"
