@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -37,13 +36,12 @@ ActiveRecord::Schema.define(version: 20181013130335) do
     t.string   "remote_address"
     t.string   "request_uuid"
     t.datetime "created_at"
+    t.index ["associated_id", "associated_type"], name: "associated_index", using: :btree
+    t.index ["auditable_id", "auditable_type"], name: "auditable_index", using: :btree
+    t.index ["created_at"], name: "index_audits_on_created_at", using: :btree
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
+    t.index ["user_id", "user_type"], name: "user_index", using: :btree
   end
-
-  add_index "audits", ["associated_id", "associated_type"], name: "associated_index", using: :btree
-  add_index "audits", ["auditable_id", "auditable_type"], name: "auditable_index", using: :btree
-  add_index "audits", ["created_at"], name: "index_audits_on_created_at", using: :btree
-  add_index "audits", ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
-  add_index "audits", ["user_id", "user_type"], name: "user_index", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -98,9 +96,8 @@ ActiveRecord::Schema.define(version: 20181013130335) do
     t.boolean  "is_active"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["name"], name: "index_inventory_sources_on_name", unique: true, using: :btree
   end
-
-  add_index "inventory_sources", ["name"], name: "index_inventory_sources_on_name", unique: true, using: :btree
 
   create_table "items", force: :cascade do |t|
     t.decimal  "amount",             precision: 9, scale: 2
@@ -125,8 +122,8 @@ ActiveRecord::Schema.define(version: 20181013130335) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_open"
-    t.decimal  "initial_balance",             precision: 9, scale: 2, default: 0.0, null: false
-    t.decimal  "initial_balance_one_percent", precision: 9, scale: 2, default: 0.0, null: false
+    t.decimal  "initial_balance",             precision: 9, scale: 2, default: "0.0", null: false
+    t.decimal  "initial_balance_one_percent", precision: 9, scale: 2, default: "0.0", null: false
     t.date     "blocked_to"
   end
 
@@ -141,9 +138,8 @@ ActiveRecord::Schema.define(version: 20181013130335) do
     t.datetime "updated_at"
     t.string   "code"
     t.boolean  "is_active",  default: true, null: false
+    t.index ["code"], name: "index_units_on_code", unique: true, using: :btree
   end
-
-  add_index "units", ["code"], name: "index_units_on_code", unique: true, using: :btree
 
   create_table "user_group_associations", force: :cascade do |t|
     t.integer  "group_id"
@@ -196,12 +192,11 @@ ActiveRecord::Schema.define(version: 20181013130335) do
     t.string   "last_name"
     t.string   "phone"
     t.datetime "invitation_created_at"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", using: :btree
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", using: :btree
-  add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
