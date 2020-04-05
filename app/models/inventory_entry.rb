@@ -1,4 +1,4 @@
-class InventoryEntry < ActiveRecord::Base
+class InventoryEntry < ApplicationRecord
   audited
 
   belongs_to :unit

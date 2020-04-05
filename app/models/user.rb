@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   end
 
   def rights_to(unit)
-    rights = ActiveRecord::Base.connection.execute("select
+    rights = ApplicationRecord.connection.execute("select
   bool_or(can_view_entries) as can_view_entries, 
   bool_or(can_manage_entries) as can_manage_entries, 
   bool_or(can_close_journals) as can_close_journals,

@@ -1,4 +1,4 @@
-class Unit < ActiveRecord::Base
+class Unit < ApplicationRecord
   audited
 
   default_scope { order(:code, :name) }

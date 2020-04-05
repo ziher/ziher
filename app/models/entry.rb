@@ -1,6 +1,6 @@
 # encoding: utf-8
 # TODO: wywalic stringi do I18n
-class Entry < ActiveRecord::Base
+class Entry < ApplicationRecord
   include ActiveModel::Validations
   audited
 

@@ -1,4 +1,4 @@
-class UserUnitAssociation < ActiveRecord::Base
+class UserUnitAssociation < ApplicationRecord
   audited
 
   belongs_to :user

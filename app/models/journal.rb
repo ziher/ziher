@@ -1,4 +1,4 @@
-class Journal < ActiveRecord::Base
+class Journal < ApplicationRecord
   audited
 
   belongs_to :journal_type

@@ -1,4 +1,4 @@
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
   acts_as_list(top_of_list: 0)
   default_scope { order('position ASC')}
   audited

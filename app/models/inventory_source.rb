@@ -1,4 +1,4 @@
-class InventorySource < ActiveRecord::Base
+class InventorySource < ApplicationRecord
   audited
 
   has_many :inventory_entries

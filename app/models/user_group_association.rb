@@ -1,4 +1,4 @@
-class UserGroupAssociation < ActiveRecord::Base
+class UserGroupAssociation < ApplicationRecord
   audited
 
   belongs_to :user

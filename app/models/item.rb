@@ -1,6 +1,6 @@
 # encoding: utf-8
 # TODO: wywalic stringi do I18n
-class Item < ActiveRecord::Base
+class Item < ApplicationRecord
   audited
 
   belongs_to :entry

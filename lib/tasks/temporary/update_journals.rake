@@ -4,7 +4,7 @@ namespace :journals do
 	  journals = Journal.where(:is_open => false)
     puts "Going to update #{journals.count} journals"
 
-    ActiveRecord::Base.transaction do
+    ApplicationRecord.transaction do
       journals.each do |journal|
         journal.set_blocked_to!
         print "."

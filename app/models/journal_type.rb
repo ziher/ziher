@@ -1,4 +1,4 @@
-class JournalType < ActiveRecord::Base
+class JournalType < ApplicationRecord
   audited
 
   FINANCE_TYPE_ID = 1

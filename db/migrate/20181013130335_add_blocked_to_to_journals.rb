@@ -1,6 +1,6 @@
 class AddBlockedToToJournals < ActiveRecord::Migration
 
-  class Journal < ActiveRecord::Base
+  class Journal < ApplicationRecord
   end
 
   def change
