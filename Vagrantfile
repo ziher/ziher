@@ -20,5 +20,5 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
   end
 
-  config.vm.provision :shell, :path => "bootstrap-vagrant.sh"
+  config.vm.provision :shell, :path => "vagrant-provision.sh"
 end
