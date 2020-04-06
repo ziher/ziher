@@ -4,7 +4,7 @@ ruby '2.5.7'
 
 gem 'rails', '~> 4.2.0'
 
-gem 'pg', '~> 0.21'
+gem 'pg', '~> 1.2'
 
 group :development do
   gem 'bullet'
