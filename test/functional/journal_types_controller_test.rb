@@ -19,30 +19,30 @@ class JournalTypesControllerTest < ActionController::TestCase
 
   test "should create journal_type" do
     assert_difference('JournalType.count') do
-      post :create, journal_type: @journal_type.attributes
+      post :create, params: {journal_type: @journal_type.attributes}
     end
 
     assert_redirected_to journal_type_path(assigns(:journal_type))
   end
 
   test "should show journal_type" do
-    get :show, id: @journal_type.to_param
+    get :show, params: {id: @journal_type.to_param}
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @journal_type.to_param
+    get :edit, params: {id: @journal_type.to_param}
     assert_response :success
   end
 
   test "should update journal_type" do
-    put :update, id: @journal_type.to_param, journal_type: @journal_type.attributes
+    put :update, params: {id: @journal_type.to_param, journal_type: @journal_type.attributes}
     assert_redirected_to journal_type_path(assigns(:journal_type))
   end
 
   test "should destroy journal_type" do
     assert_difference('JournalType.count', -1) do
-      delete :destroy, id: @journal_type.to_param
+      delete :destroy, params: {id: @journal_type.to_param}
     end
 
     assert_redirected_to journal_types_path

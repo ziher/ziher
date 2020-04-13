@@ -18,36 +18,36 @@ class JournalsControllerTest < ActionController::TestCase
 
   test "index should redirect to journal" do
     journal_2011 = journals(:finance_2011)
-    get :index, {:unit_id => journal_2011.unit.id, :journal_type_id => journal_2011.journal_type.id, :year => journal_2011.year}
+    get :index, params: {:unit_id => journal_2011.unit.id, :journal_type_id => journal_2011.journal_type.id, :year => journal_2011.year}
     assert_redirected_to journal_2011
   end
 
   test "index should create journal if it doesnt exist" do
     assert_difference('Journal.count') do
-      get :index, {:unit_id => @new_journal.unit.id, :journal_type_id => @new_journal.journal_type_id, :year => @new_journal.year}
+      get :index, params: {:unit_id => @new_journal.unit.id, :journal_type_id => @new_journal.journal_type_id, :year => @new_journal.year}
     end
     assert_redirected_to Journal.last
   end
 
   test "should show dashes for empty items when showing all entries" do
-    get :show, id: @journal.to_param
+    get :show, params: {id: @journal.to_param}
     assert_select "td.income", "-"
     assert_select "td.expense", "-"
   end
 
   test "should show journal" do
-    get :show, id: @journal.to_param
+    get :show, params: {id: @journal.to_param}
     assert_response :success
   end
 
   test "should show initial balance" do
-    get :show, id: @journal.to_param
+    get :show, params: { id: @journal.to_param }
     assert_select "#initial-balance", /#{number_with_precision(@journal.initial_balance, :precision => 2)} zł/
     assert_select "#initial-balance", /(#{number_with_precision(@journal.initial_balance_one_percent, :precision => 2)} zł)/
   end
 
   test "should not have access to journal" do
-    get :show, id: journals(:two2012f)
+    get :show, params: {id: journals(:two2012f)}
     assert_unauthorized
   end
 
@@ -60,7 +60,7 @@ class JournalsControllerTest < ActionController::TestCase
     sum = @journal.get_final_balance
 
     #when
-    get :show, id: @journal.to_param
+    get :show, params: {id: @journal.to_param}
 
     #then
     expected_message = I18n.t(:sum_one_percent_negative_with_one_percent_left, :sum_one_percent => sum_one_percent, :sum => sum, :scope => :journal)

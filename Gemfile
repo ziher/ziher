@@ -42,6 +42,7 @@ group :test do
   #gem 'turn'
   #gem 'minitest'
   gem 'timecop'
+  gem 'rails-controller-testing'
 end
 
 gem 'rails-i18n'

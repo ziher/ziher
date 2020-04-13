@@ -20,7 +20,7 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   test "selected criteria should stay selected" do
-    get :index, year: 2012
+    get :index, params: {year: 2012}
     assert_select "select[name='year'] option[selected][value='2012']"
   end
 
@@ -31,24 +31,24 @@ class CategoriesControllerTest < ActionController::TestCase
 
   test "should create category" do
     assert_difference('Category.count') do
-      post :create, category: @category.attributes
+      post :create, params: {category: @category.attributes}
     end
 
     assert_redirected_to categories_path
   end
 
   test "should show category" do
-    get :show, id: @category.to_param
+    get :show, params: {id: @category.to_param}
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @category.to_param
+    get :edit, params: {id: @category.to_param}
     assert_response :success
   end
 
   test "should update category" do
-    put :update, id: @category.to_param, category: @category.attributes
+    put :update, params: {id: @category.to_param, category: @category.attributes}
     assert_redirected_to categories_path
   end
 
@@ -56,7 +56,7 @@ class CategoriesControllerTest < ActionController::TestCase
     category = categories(:not_used)
 
     assert_difference('Category.count', -1) do
-      delete :destroy, id: category.to_param
+      delete :destroy, params: {id: category.to_param}
     end
 
     assert_redirected_to categories_path
@@ -66,7 +66,7 @@ class CategoriesControllerTest < ActionController::TestCase
     category = categories(:five)
 
     assert_difference('Category.count', 0) do
-      delete :destroy, id: category.to_param
+      delete :destroy, params: {id: category.to_param}
     end
 
     assert_redirected_to categories_path

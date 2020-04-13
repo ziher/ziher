@@ -14,21 +14,21 @@ class UsersControllerTest < ActionController::TestCase
   test "should show user" do
     sign_in users(:admin)
     @admin = users(:admin)
-    get :show, id: @admin.to_param
+    get :show, params: {id: @admin.to_param}
     assert_response :success
   end
 
   test "should get edit user" do
     sign_in users(:admin)
     @admin = users(:admin)
-    get :edit, id: @admin.to_param
+    get :edit, params: {id: @admin.to_param}
     assert_response :success
   end
 
   test "should fail getting edit user" do
     sign_in users(:master_1zgm)
     @admin = users(:admin)
-    get :edit, id: @admin.to_param
+    get :edit, params: {id: @admin.to_param}
     assert_unauthorized
   end
 end
