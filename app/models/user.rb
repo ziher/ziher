@@ -58,7 +58,7 @@ class User < ApplicationRecord
   end
 
   def can_view_unit_entries(unit)
-    rights_to(unit)["can_view_entries"] == "t"
+    rights_to(unit)["can_view_entries"] == true
   end
 
   def can_view_entries(journal)
@@ -66,7 +66,7 @@ class User < ApplicationRecord
   end
   
   def can_manage_unit_entries(unit)
-    rights_to(unit)["can_manage_entries"] == "t"
+    rights_to(unit)["can_manage_entries"] == true
   end
 
   def can_manage_entries(journal)
@@ -74,7 +74,7 @@ class User < ApplicationRecord
   end
 
   def can_close_unit_journals(unit)
-    rights_to(unit)["can_close_journals"] == "t"
+    rights_to(unit)["can_close_journals"] == true
   end
 
   def can_close_journal(journal)
