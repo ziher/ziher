@@ -1,18 +1,18 @@
 require 'test_helper'
 
-class CategoriesControllerTest < ActionController::TestCase
+class CategoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
     @category = categories(:one)
   end
 
   test "should get index" do
-    get :index
+    get categories_path
     assert_response :success
   end
 
   test "index should have selecting years" do
-    get :index
+    get categories_path
     years = Category.get_all_years()
     years.each do |year|
       assert_select "select option[value='#{year}']"
@@ -20,35 +20,35 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   test "selected criteria should stay selected" do
-    get :index, params: {year: 2012}
+    get categories_path, params: {year: 2012}
     assert_select "select[name='year'] option[selected][value='2012']"
   end
 
   test "should get new" do
-    get :new
+    get new_category_path
     assert_response :success
   end
 
   test "should create category" do
-    assert_difference('Category.count') do
-      post :create, params: {category: @category.attributes}
+    assert_difference('Category.count', 1) do
+      post categories_url, params: {category: {name: "NewCategory", year: 2014}}
     end
 
     assert_redirected_to categories_path
   end
 
   test "should show category" do
-    get :show, params: {id: @category.to_param}
+    get category_path(@category)
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, params: {id: @category.to_param}
+    get edit_category_path(@category)
     assert_response :success
   end
 
   test "should update category" do
-    put :update, params: {id: @category.to_param, category: @category.attributes}
+    put category_url(@category), params: {category: {name: "updated"}}
     assert_redirected_to categories_path
   end
 
@@ -56,7 +56,7 @@ class CategoriesControllerTest < ActionController::TestCase
     category = categories(:not_used)
 
     assert_difference('Category.count', -1) do
-      delete :destroy, params: {id: category.to_param}
+      delete category_path(category)
     end
 
     assert_redirected_to categories_path
@@ -66,7 +66,7 @@ class CategoriesControllerTest < ActionController::TestCase
     category = categories(:five)
 
     assert_difference('Category.count', 0) do
-      delete :destroy, params: {id: category.to_param}
+      delete category_path(category)
     end
 
     assert_redirected_to categories_path

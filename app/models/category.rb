@@ -53,7 +53,7 @@ class Category < ApplicationRecord
         errors[:category] << "... i inne, razem #{category_items.count} wpisów."
       end
 
-      return false
+      throw(:abort)
     end
 
     self.items.destroy_all
