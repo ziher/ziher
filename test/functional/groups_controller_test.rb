@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GroupsControllerTest < ActionController::TestCase
+class GroupsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     sign_in users(:admin)
@@ -10,42 +10,43 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-    get :index
+    get groups_path
     assert_response :success
     assert_not_nil assigns(:groups)
   end
 
   test "should get new" do
-    get :new
+    get new_group_path
     assert_response :success
   end
 
   test "should create group" do
     assert_difference('Group.count', 1) do
-      post :create, params: {group: @group.attributes, supergroup_id: groups(:district_zg).id}
+      # post groups_url, params: {group: @group.attributes, supergroup_id: groups(:district_zg).id}
+      post groups_url
     end
 
     assert_redirected_to group_path(assigns(:group))
   end
 
   test "should show group" do
-    get :show, params: {id: @group.to_param}
+    get group_path(@group)
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, params: {id: @group.to_param}
+    get edit_group_path(@group)
     assert_response :success
   end
 
   test "should update group" do
-    put :update, params: {id: @group.to_param, group: @group.attributes}
+    put group_url(@group), params: {group: {name: "updated"}}
     assert_redirected_to group_path(assigns(:group))
   end
 
   test "should destroy group" do
     assert_difference('Group.count', -1) do
-      delete :destroy, params: {id: @group.to_param}
+      delete group_path(@group)
     end
 
     assert_redirected_to groups_path
@@ -82,7 +83,7 @@ class GroupsControllerTest < ActionController::TestCase
     @group = groups(:district_po_m)
 
     #when
-    post :create, params: {group: @group.attributes, supergroup_id: supergroup.id}
+    post groups_url, params: {group: {name: "New group", supergroup_id: supergroup.id}}
 
     #then
     assert_equal count, Group.count
@@ -99,7 +100,7 @@ class GroupsControllerTest < ActionController::TestCase
     count = Group.count
 
     #when
-    get :show, params: {id: supergroup.subgroups.first.to_param}
+    get group_path(supergroup.subgroups.first)
 
     #then
     assert_response :success
@@ -116,7 +117,7 @@ class GroupsControllerTest < ActionController::TestCase
     count = Group.count
 
     #when
-    put :update, params: {id: subgroup.to_param, group: subgroup.attributes}
+    put group_url(subgroup), params: {group: {name: "updated"}}
 
     #then
     assert_redirected_to group_path
@@ -131,7 +132,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert user.can_manage_group(supergroup)
 
     #when
-    delete :destroy, params: {id: supergroup.subgroups.first.to_param}
+    delete group_url(supergroup.subgroups.first)
 
     #then
     assert_equal count, Group.count + 1
@@ -150,26 +151,26 @@ class GroupsControllerTest < ActionController::TestCase
     assert ! user.can_manage_group(group.find_all_supergroups.first)
 
     #when
-    post :create, params: {group: @group.attributes, supergroup_id: group.find_all_supergroups.first.id}
+    post groups_url, params: {group: {name: "New group", supergroup_id: group.find_all_supergroups.first.id}}
     #then
     assert_equal count, Group.count
     assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
 
     #when
-    get :show, params: {id: group.to_param}
+    get group_path(group)
     #then
     assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
 
     #when
-    put :update, params: {id: group.to_param, group: group.attributes}
+    put group_url(group), params: {group: {name: "updated"}}
     #then
     assert_equal @message_unauthorized, flash[:alert]
     assert_redirected_to root_path
 
     #when
-    delete :destroy, params: {id: group.to_param}
+    delete group_path(group)
     #then
     assert_equal count, Group.count
     assert_equal @message_unauthorized, flash[:alert]
@@ -185,7 +186,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert user.can_manage_group(supergroup)
 
     #when
-    delete :destroy, params: {id: supergroup.to_param}
+    delete group_path(supergroup)
 
     #then
     assert_equal count, Group.count
@@ -204,7 +205,7 @@ class GroupsControllerTest < ActionController::TestCase
     count = Group.count
 
     #when
-    post :create, params: {group: @group.attributes, supergroup_id: supergroup.id}
+    post groups_url, params: {group: {name: "New group", supergroup_id: supergroup.id}}
 
     #then
     assert_equal count, Group.count
@@ -220,7 +221,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert ! user.can_manage_group(supergroup)
 
     #when
-    get :show, params: {id: supergroup.to_param}
+    get group_path(supergroup)
 
     #then
     assert_equal @message_unauthorized, flash[:alert]
@@ -235,7 +236,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert ! user.can_manage_group(supergroup)
 
     #when
-    get :show, params: {id: supergroup.subgroups.first.to_param}
+    get group_path(supergroup.subgroups.first)
 
     #then
     assert_equal @message_unauthorized, flash[:alert]
@@ -253,7 +254,7 @@ class GroupsControllerTest < ActionController::TestCase
     count = Group.count
 
     #when
-    put :update, params: {id: subgroup.to_param, group: subgroup.attributes}
+    put group_path(subgroup), params: {group: {name: "updated"}}
 
     #then
     assert_equal @message_unauthorized, flash[:alert]
@@ -269,7 +270,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert ! user.can_manage_group(supergroup)
 
     #when
-    delete :destroy, params: {id: supergroup.subgroups.first.to_param}
+    delete group_path(supergroup.subgroups.first)
 
     #then
     assert_equal count, Group.count
@@ -288,7 +289,7 @@ class GroupsControllerTest < ActionController::TestCase
     # TODO: check if user is not in supergroup(group)
 
     #when
-    delete :destroy, params: {id: group.to_param}
+    delete group_path(group)
 
     #then
     assert_equal count, Group.count
@@ -306,7 +307,7 @@ class GroupsControllerTest < ActionController::TestCase
     # TODO: check if user is in supergroup
 
     #when
-    delete :destroy, params: {id: supergroup.to_param}
+    delete group_path(supergroup)
 
     #then
     assert_equal count, Group.count
