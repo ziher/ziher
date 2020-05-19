@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EntriesControllerTest < ActionController::TestCase
+class EntriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:master_1zgm)
     @entry = entries(:expense_one)
@@ -8,7 +8,8 @@ class EntriesControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
-    get :new, params: {journal_id: @entry.journal_id}
+    # get :new, params: {journal_id: @entry.journal_id}
+    get new_entry_path, params: {journal_id: @entry.journal_id}
     assert_response :success
   end
 
@@ -26,14 +27,14 @@ class EntriesControllerTest < ActionController::TestCase
       new_hash["items_attributes"] = items_hash
       new_hash["id"] = nil
 
-      post :create, params: {entry: new_hash}
+      post entries_url, params: {entry: new_hash}
     end
 
     assert_redirected_to journal_path(@entry.journal)
   end
 
   test "should show all possible categories when editing existing expense entry" do
-    get :edit, params: {id: @entry.to_param}
+    get edit_entry_path(@entry)
     assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2
     #przenoszenie kwot miedzy ksiazkami na razie wstrzymane
     #+ Category.where(:year => @entry.journal.year, :is_expense => !@entry.is_expense).count
@@ -43,7 +44,7 @@ class EntriesControllerTest < ActionController::TestCase
   end
 
   test "should show all possible categories when editing existing income entry" do
-    get :edit, params: {id: @entry_income.to_param}
+    get edit_entry_path(@entry_income)
     assert_select "input.category", Category.where(:year => @entry_income.journal.year, :is_expense => @entry_income.is_expense).count
     Category.where(:year => @entry_income.journal.year, :is_expense => @entry_income.is_expense).each do |category|
       assert_select "input.category_id[value='#{category.id}']", true
@@ -51,51 +52,51 @@ class EntriesControllerTest < ActionController::TestCase
   end
 
   test "should not show categories from different years" do
-    get :edit, params: {id: @entry.to_param}
+    get edit_entry_path(@entry)
     Category.where('year <> ?', @entry.journal.year).each do |category|
       assert_select "input.category_id[value='#{category.id}']", false
     end
   end
 
   test "should not show duplicate categories when editing existing expense entry" do
-    get :edit, params: {id: @entry.to_param}
-    put :update, params: {id: @entry.to_param, entry: @entry.attributes}
-    get :edit, params: {id: @entry.to_param}
+    get edit_entry_path(@entry)
+    put entry_url(@entry), params: {entry: {name: "updated"}}
+    get edit_entry_path(@entry)
     assert_select "input.category", Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense).count * 2
     #przenoszenie kwot miedzy ksiazkami na razie wstrzymane
     #+ Category.where(:year => @entry.journal.year, :is_expense => !@entry.is_expense).count
   end
 
   test "should not show duplicate categories when editing existing income entry" do
-    get :edit, params: {id: @entry_income.to_param}
-    put :update, params: {id: @entry_income.to_param, entry: @entry_income.attributes}
-    get :edit, params: {id: @entry_income.to_param}
+    get edit_entry_path(@entry_income)
+    put entry_url(@entry_income), params: {entry: {name: "updated"}}
+    get edit_entry_path(@entry_income)
     assert_select "input.category", Category.where(:year => @entry_income.journal.year, :is_expense => @entry_income.is_expense).count
   end
 
   test "should show entry" do
-    get :show, params: {id: @entry.to_param}
+    get entry_path(@entry)
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, params: {id: @entry.to_param}
+    get edit_entry_path(@entry)
     assert_response :success
   end
 
   test "should edit items when editing entry" do
-    get :edit, params: {id: @entry.to_param}
+    get edit_entry_path(@entry)
     assert_select "input.category"
   end
 
   test "should update entry" do
-    put :update, params: {id: @entry.to_param, entry: @entry.attributes}
+    put entry_url(@entry), params: {entry: {name: "updated"}}
     assert_redirected_to journal_path(assigns(:journal))
   end
 
   test "should destroy entry" do
     assert_difference('Entry.count', -1) do
-      delete :destroy, params: {id: @entry.to_param}
+      delete entry_path(@entry)
     end
 
     assert_redirected_to journal_path(@entry.journal)
@@ -109,7 +110,7 @@ class EntriesControllerTest < ActionController::TestCase
     reset_amounts(empty_entry)
 
     # when
-    post :create, params: {entry: empty_entry}
+    post entries_url, params: {entry: empty_entry}
 
     #then
     entries_count_after = Entry.count
@@ -119,7 +120,7 @@ class EntriesControllerTest < ActionController::TestCase
   test "should delete items associated with entry" do
     items_count = @entry.items.count
     assert_difference('Item.count', items_count * -1) do
-      delete :destroy, params: {id: @entry.to_param}
+      delete entry_path(@entry)
     end
   end
 
