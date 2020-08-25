@@ -1,50 +1,48 @@
 require 'test_helper'
 
-class InventoryEntriesControllerTest < ActionController::TestCase
+class InventoryEntriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:master_1zgm)
     @inventory_entry = inventory_entries(:one)
   end
 
   test "should get index" do
-    get :index
+    get inventory_entries_path
     assert_response :success
     assert_not_nil assigns(:inventory_entries)
   end
 
   test "should get new" do
-    session[:current_unit_id] = @inventory_entry.unit.id
-    get :new
+    get new_inventory_entry_path(:unit_id => @inventory_entry.unit_id)
     assert_response :success
   end
 
   test "should create inventory_entry" do
     assert_difference('InventoryEntry.count') do
-      post :create, params: {inventory_entry: @inventory_entry.attributes}
+      post inventory_entries_url, params: {inventory_entry: @inventory_entry.attributes}
     end
 
     assert_redirected_to inventory_entry_path(assigns(:inventory_entry))
   end
 
   test "should show inventory_entry" do
-    get :show, params: {id: @inventory_entry.to_param}
+    get edit_inventory_entry_path(@inventory_entry)
     assert_response :success
   end
 
   test "should get edit" do
-    session[:current_unit_id] = @inventory_entry.unit.id
-    get :edit, params: {id: @inventory_entry.to_param}
+    get edit_inventory_entry_path(@inventory_entry)
     assert_response :success
   end
 
   test "should update inventory_entry" do
-    put :update, params: {id: @inventory_entry.to_param, inventory_entry: @inventory_entry.attributes}
+    put inventory_entry_url(@inventory_entry), params: {inventory_entry: {name: "updated"}}
     assert_redirected_to inventory_entry_path(assigns(:inventory_entry))
   end
 
   test "should destroy inventory_entry" do
     assert_difference('InventoryEntry.count', -1) do
-      delete :destroy, params: {id: @inventory_entry.to_param}
+      delete inventory_entry_path(@inventory_entry)
     end
 
     assert_redirected_to inventory_entries_path

@@ -110,7 +110,7 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries/new
   # GET /inventory_entries/new.json
   def new
-    @unit = Unit.find_by_id(session[:current_unit_id])
+    @unit = Unit.find_by_id(params[:unit_id] || session[:current_unit_id])
     @inventory_entry = InventoryEntry.new(:is_expense => params[:is_expense])
 
     @inventory_entry.unit = @unit
@@ -125,8 +125,8 @@ class InventoryEntriesController < ApplicationController
 
   # GET /inventory_entries/1/edit
   def edit
-    @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.find(params[:id])
+    @unit = Unit.find_by_id(@inventory_entry.unit_id || session[:current_unit_id])
 
     authorize! :update, @inventory_entry
   end
@@ -152,8 +152,8 @@ class InventoryEntriesController < ApplicationController
   # PUT /inventory_entries/1
   # PUT /inventory_entries/1.json
   def update
-    @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.find(params[:id])
+    @unit = Unit.find_by_id(@inventory_entry.unit_id || session[:current_unit_id])
 
     authorize! :update, @inventory_entry
 
