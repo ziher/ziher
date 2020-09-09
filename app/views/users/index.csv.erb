@@ -1,0 +1,19 @@
+<%
+  header = "e-mail\timię\tnazwisko\ttelefon\tstatus"
+  if can? :set_superadmin, @user
+    header += "\tsuperadmin"
+  end
+  header += "\tzablokowany"
+
+  concat header + "\n"
+
+  @users.each do |user|
+    row = "#{user.email}\t#{user.first_name}\t#{user.last_name}\t#{user.phone}\t#{user.status}"
+    if can? :set_superadmin, @user
+      row += "\t#{user.is_superadmin}"
+    end
+    row += "\t#{user.is_blocked}"
+
+    concat row + "\n"
+  end
+%>

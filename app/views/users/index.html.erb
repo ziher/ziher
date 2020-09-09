@@ -3,14 +3,15 @@ table.users tr.invited td { color: #aaa; }
 </style>
 
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-8">
     <h3>Administracja &gt; Użytkownicy</h3>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-4">
     <div class="pull-right top-buffer-20">
       <% if can? :create, User %>
         <%= link_to 'Nowy użytkownik', new_user_path, class: "btn btn-sm btn-success" %>
       <% end %>
+      <%= link_to "<span class='glyphicon glyphicon glyphicon-list'></span>&nbsp;&nbsp;Eksport do CSV".html_safe, @csv_export_link, class: 'btn btn-sm btn-primary' %>
     </div>
   </div>
 </div>

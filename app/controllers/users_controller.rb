@@ -9,6 +9,22 @@ class UsersController < ApplicationController
     end
 
     @users = current_user.users_to_manage
+
+    respond_to do |format|
+      format.html { # show.html.erb
+        @csv_export_link = users_path(:format => :csv)
+      }
+      format.csv {
+        @users = current_user.users_to_manage
+
+        filename = "ZiHeR_lista_uzytkownikow_#{Time.now.strftime("%Y%m%d")}.csv"
+
+        response.headers['Content-Type'] = 'text/csv'
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
+
+        render template: 'users/index'
+      }
+    end
   end
 
   # GET /users/1
