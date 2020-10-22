@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserGroupAssociationsControllerTest < ActionController::TestCase
+class UserGroupAssociationsControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
