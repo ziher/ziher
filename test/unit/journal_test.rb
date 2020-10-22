@@ -322,7 +322,7 @@ class JournalTest < ActiveSupport::TestCase
     unit_id = journal.unit.id
     type_id = journal.journal_type_id
     current_year = Time.now.year
-    Journal.destroy_all(year: current_year, unit_id: unit_id)
+    Journal.where(year: current_year, unit_id: unit_id).destroy_all
 
     #when
     new_journal = Journal.create_for_current_year(type_id, unit_id)
