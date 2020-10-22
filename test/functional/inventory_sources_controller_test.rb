@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class InventorySourcesControllerTest < ActionController::TestCase
+class InventorySourcesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
     @inventory_source = inventory_sources(:one)
@@ -10,42 +10,50 @@ class InventorySourcesControllerTest < ActionController::TestCase
   # TODO: should not update finance nor bank source
 
   test "should get index" do
-    get :index
+    get inventory_sources_path
     assert_response :success
     assert_not_nil assigns(:inventory_sources)
   end
 
   test "should get new" do
-    get :new
+    get new_inventory_source_path
     assert_response :success
   end
 
   test "should create inventory_source" do
     assert_difference('InventorySource.count') do
-      post :create, params: {inventory_source: { is_active: @inventory_source.is_active, name: @inventory_source.name + "_tmp" }}
+      post inventory_sources_url, params: {inventory_source: { is_active: @inventory_source.is_active, name: @inventory_source.name + "_tmp" }}
     end
 
     assert_redirected_to inventory_source_path(assigns(:inventory_source))
   end
 
   test "should show inventory_source" do
-    get :show, params: {id: @inventory_source}
+    get inventory_source_path(@inventory_source)
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, params: {id: @inventory_source}
+    get edit_inventory_source_path(@inventory_source)
     assert_response :success
   end
 
   test "should update inventory_source" do
-    put :update, params: {id: @inventory_source, inventory_source: { is_active: @inventory_source.is_active, name: @inventory_source.name }}
+    put inventory_source_url(@inventory_source), params: {inventory_source: { is_active: @inventory_source.is_active, name: @inventory_source.name}}
     assert_redirected_to inventory_source_path(assigns(:inventory_source))
   end
 
-  test "should destroy inventory_source" do
+  test "should not destroy inventory_source in use" do
+    assert_difference('InventorySource.count', 0) do
+      delete inventory_source_path(@inventory_source)
+    end
+
+    assert_redirected_to inventory_sources_path
+  end
+
+  test "should destroy unused inventory_source" do
     assert_difference('InventorySource.count', -1) do
-      delete :destroy, params: {id: inventory_sources(:three)}
+      delete inventory_source_path(inventory_sources(:three))
     end
 
     assert_redirected_to inventory_sources_path
