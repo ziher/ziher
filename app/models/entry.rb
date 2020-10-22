@@ -71,23 +71,21 @@ class Entry < ApplicationRecord
   end
 
   def one_percent_category_item_should_have_same_amount_values
-    result = true
     items.each do |item|
       if item.category.is_one_percent
         if item.amount != item.amount_one_percent
           errors[:items] << "Niepoprawny wpis dla kategorii 1% (amount=#{item.amount} != amount_one_percent=#{item.amount_one_percent})"
-          result = false
+          throw :abort
         end
       end
     end
-    return result
   end
 
   def must_be_from_journals_year
     if journal && self.date
       if self.date.year!= journal.year
         errors[:base] << "Wpis nie moze byc z innego roku: journal.year=#{journal.year} != entry.year=#{self.date.year}"
-        return false
+        throw :abort
       end
     end
   end
@@ -97,12 +95,12 @@ class Entry < ApplicationRecord
       items.each do |item|
         if item.nil? || item.category.nil? || item.category.year.nil?
           errors[:base] << "Wpis musi miec kategorie z danego roku"
-          return false
+          throw :abort
         end
 
         if item.category.year != journal.year
           errors[:base] << "Wpis nie moze miec sumy dla kategorii z innego roku niz ksiazka: journal.year=#{journal.year} != category.year=#{item.category.year}"
-          return false
+          throw :abort
         end
       end
     end
@@ -112,7 +110,7 @@ class Entry < ApplicationRecord
     if journal
       unless journal.is_not_blocked(self.date)
         errors[:journal] << "Aby zmieniać wpisy książka musi być otwarta"
-        return false
+        throw :abort
       end
     end
   end
