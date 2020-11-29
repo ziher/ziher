@@ -22,8 +22,7 @@ class GroupsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create group" do
     assert_difference('Group.count', 1) do
-      # post groups_url, params: {group: @group.attributes, supergroup_id: groups(:district_zg).id}
-      post groups_url
+      post groups_url, params: {group: {name: 'New Group', code: 'NG'}}
     end
 
     assert_redirected_to group_path(assigns(:group))
