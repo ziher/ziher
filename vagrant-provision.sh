@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -ex
 
 echo ====================== Przygowotuje maszyne...
 sudo -H -u vagrant -i echo "export LANGUAGE=en_US.UTF-8" >> /etc/bash.bashrc
@@ -20,8 +20,8 @@ apt-get install --yes docker.io docker-compose
 usermod -aG docker vagrant
 
 echo ====================== Instaluje RVM
-apt-get install --yes git curl vim
-sudo -H -u vagrant -i bash -c "gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
+apt-get install --yes git curl vim gnupg2
+sudo -H -u vagrant -i bash -c "gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
 sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=2.5.7"
 sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
 
@@ -35,6 +35,7 @@ sudo -H -u vagrant -i echo "force_color_prompt=yes" >> /home/vagrant/.bashrc
 
 # https://github.com/mitchellh/vagrant/issues/866 - ~/.bashrc is not loaded in 'vagrant ssh' sessions
 sudo -H -u vagrant -i echo "source ~/.bashrc" >> /home/vagrant/.bash_profile
+sudo -H -u vagrant -i echo "cd /ziher" >> /home/vagrant/.bash_profile
 
 echo ====================== Instaluje PostgreSQL
 docker-compose -f /ziher/docker/docker-compose.yml up -d postgres
@@ -53,6 +54,7 @@ sudo -H -u vagrant -i bash -c "cd /ziher; rake db:create:all"
 sudo -H -u vagrant -i bash -c "cd /ziher; rake db:setup"
 sudo -H -u vagrant -i bash -c "cd /ziher; rake db:migrate RAILS_ENV=test"
 
+set +x
 echo '====================== ZiHeR jest gotowy do zabawy!'
 echo '====================== Aby zalogowac sie na maszyne wpisz'
 echo '====================== $ vagrant ssh <enter>'
