@@ -26,7 +26,7 @@ class InventoryEntriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show inventory_entry" do
-    get edit_inventory_entry_path(@inventory_entry)
+    get inventory_entry_path(@inventory_entry)
     assert_response :success
   end
 
