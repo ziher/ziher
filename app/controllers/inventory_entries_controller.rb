@@ -66,6 +66,9 @@ class InventoryEntriesController < ApplicationController
         @pdf_inventory_link = inventory_entries_path(:format => :pdf, :year => current_year)
         @pdf_all_inventory_link = inventory_entries_path(:format => :pdf, :year => "0")
 
+        @csv_inventory_link = inventory_entries_path(:format => :csv, :year => current_year)
+        @csv_all_inventory_link = inventory_entries_path(:format => :csv, :year => "0")
+
         render 'index'
       }
       format.pdf {
@@ -91,6 +94,26 @@ class InventoryEntriesController < ApplicationController
                          right: 'Strona [page] z [topage]',
                          font_size: 8
                }
+      }
+      format.csv {
+
+        if (show_all)
+          @inventory_entries = @inventory_entries_all
+          @sum_total_value = @inventory_entries_all.map(&:signed_total_value).sum
+          year_from = @years.first
+          year_to = current_year
+          @years_label = "lata #{year_from}-#{year_to}"
+        else
+          @inventory_entries = @inventory_entries_current_year
+          @years_label = "#{current_year} rok"
+        end
+
+        filename = "ZiHeR - #{@unit.full_name.gsub('"', '\'')} - ksiazka inwentarzowa za #{@years_label}.csv"
+
+        response.headers['Content-Type'] = 'text/csv'
+        response.headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
+
+        render template: 'inventory_entries/show'
       }
     end
   end

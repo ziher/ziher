@@ -11,8 +11,27 @@
           <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy rozchód
         <% end %>
       <% end %>
-      <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj rok".html_safe, @pdf_inventory_link, class: 'btn btn-sm btn-primary' %>
-      <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj wszystko".html_safe, @pdf_all_inventory_link, class: 'btn btn-sm btn-primary' %>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><%= link_to "Drukuj wyświetlony rok #{@current_year}".html_safe, @pdf_inventory_link %></li>
+          <li><%= link_to "Drukuj wszystkie lata".html_safe, @pdf_all_inventory_link %></li>
+        </ul>
+      </div>
+
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class='glyphicon glyphicon-list'></span>&nbsp;&nbsp;CSV
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><%= link_to "CSV wyświetlony rok".html_safe, @csv_inventory_link %></li>
+          <li><%= link_to "CSV wszystkie lata".html_safe, @csv_all_inventory_link %></li>
+        </ul>
+      </div>
     </small>
   </div>
   <div class="col-md-6">

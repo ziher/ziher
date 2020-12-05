@@ -1,0 +1,19 @@
+<%
+concat "Data\tNumer inwentarzowy\tNazwa\tNumer dokumentu\tŹródło\tPrzychód\tRozchód\tCena jednostkowa\tWartość\tOpis".html_safe
+
+@inventory_entries.each do |inventory_entry|
+  date = inventory_entry.date
+  stock = inventory_entry.stock_number
+  name = inventory_entry.name
+  document = inventory_entry.document_number
+  source = inventory_entry.inventory_source.name
+  revenue = inventory_entry.is_expense ? '0' : inventory_entry.amount
+  expense = inventory_entry.is_expense ? inventory_entry.amount : '0'
+  item_value = inventory_entry.total_value / inventory_entry.amount
+  value = inventory_entry.total_value * (inventory_entry.is_expense ? -1 : 1)
+  remark = inventory_entry.remark.strip
+
+  concat "\n#{date}\t#{stock}\t#{name}\t#{document}\t#{source}\t#{revenue}\t#{expense}\t#{item_value}\t#{value}\t#{remark}".html_safe
+end
+
+%>
