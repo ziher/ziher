@@ -44,6 +44,7 @@ Ziher::Application.routes.draw do
   get 'reports/finance_report' => 'reports#finance', :via => :get, :as => 'finance_report'
   get 'reports/finance_one_percent_report' => 'reports#finance_one_percent', :via => :get, :as => 'finance_one_percent_report'
   get 'reports/all_finance_report' => 'reports#all_finance', :via => :get, :as => 'all_finance_report'
+  get 'reports/all_finance_detailed_report' => 'reports#all_finance_detailed', :via => :get, :as => 'all_finance_detailed_report'
   get 'reports/all_finance_one_percent_report' => 'reports#all_finance_one_percent', :via => :get, :as => 'all_finance_one_percent_report'
 
   get 'inventory_entries/fixed_assets_report' => 'inventory_entries#fixed_assets_report', :via => :get, :as => 'fixed_assets_report'
