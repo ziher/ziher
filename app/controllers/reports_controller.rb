@@ -4,6 +4,8 @@ class ReportsController < ApplicationController
   TOTAL_BALANCE_INCOME_KEY = "total_balance_income"
   TOTAL_BALANCE_EXPENSE_KEY = "total_balance_expense"
 
+  helper ReportsHelper
+
   def finance
     @report_header = 'Raporty > Sprawozdanie finansowe'
     @report_link = finance_report_path
@@ -83,6 +85,7 @@ class ReportsController < ApplicationController
       format.html {
         @pdf_report_link = all_finance_report_path(:format => :pdf)
         @csv_report_link = all_finance_report_path(:format => :csv)
+        @csv_entries_report_link = all_finance_detailed_report_path(:format => :csv)
         render 'all_finance'
       }
       format.pdf {
@@ -129,6 +132,7 @@ class ReportsController < ApplicationController
       format.html {
         @pdf_report_link = all_finance_one_percent_report_path(:format => :pdf)
         @csv_report_link = all_finance_one_percent_report_path(:format => :csv)
+        @csv_entries_report_link = all_finance_detailed_report_path(:format => :csv)
         render 'all_finance'
       }
       format.pdf {
@@ -153,6 +157,34 @@ class ReportsController < ApplicationController
       }
     end
 
+  end
+
+  def all_finance_detailed
+    unless current_user.is_superadmin
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
+    @selected_year = params[:year] || session[:current_year]
+    @categories_expense = Category.find_by_year_and_type(@selected_year, true)
+    @categories_income = Category.find_by_year_and_type(@selected_year, false)
+
+    @journals = Journal.includes(:entries => :items).where(:year => @selected_year)
+
+    @all_journals_entries = Array.new()
+
+    @journals.each do |journal|
+      @all_journals_entries.append(journal.entries.order('date', 'id'))
+    end
+
+    respond_to do |format|
+      format.csv {
+        response.headers['Content-Type'] = 'text/csv"'
+        response.headers['Content-Disposition'] = "attachment; filename=\"ziher_calosciowe_szczegolowe_sprawozdanie_finansowe_za_#{@selected_year}.csv\""
+
+        render template: 'reports/all_finance_detailed'
+      }
+    end
   end
 
   private
