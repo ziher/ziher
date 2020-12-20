@@ -23,9 +23,8 @@ gem 'coffee-rails'
 gem 'uglifier'
 
 gem 'therubyracer'
-gem 'less-rails'
-gem 'twitter-bootstrap-rails', '~>4.0'
 
+gem 'bootstrap-sass', '~> 3.4.1'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'

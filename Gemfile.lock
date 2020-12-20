@@ -43,8 +43,13 @@ GEM
     arel (7.1.4)
     audited (4.9.0)
       activerecord (>= 4.2, < 6.1)
+    autoprefixer-rails (10.1.0.0)
+      execjs
     bcrypt (3.1.13)
     bindex (0.8.1)
+    bootstrap-sass (3.4.1)
+      autoprefixer-rails (>= 5.2.1)
+      sassc (>= 2.0.0)
     builder (3.2.4)
     bullet (6.1.0)
       activesupport (>= 3.0.0)
@@ -57,7 +62,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    commonjs (0.2.7)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
     devise (4.7.1)
@@ -84,14 +88,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    less (2.6.0)
-      commonjs (~> 0.2.7)
-    less-rails (2.8.0)
-      actionpack (>= 4.0)
-      less (~> 2.6.0)
-      sprockets (> 2, < 4)
-      tilt
-    libv8 (3.16.14.19)
+    libv8 (3.16.14.19-x86_64-linux)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -175,11 +172,6 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.10)
     timecop (0.9.1)
-    twitter-bootstrap-rails (4.0.0)
-      actionpack (~> 5.0, >= 5.0.1)
-      execjs (~> 2.7)
-      less-rails (~> 2.8, >= 2.8.0)
-      railties (~> 5.0, >= 5.0.1)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
@@ -206,6 +198,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_list
   audited (~> 4.9)
+  bootstrap-sass (~> 3.4.1)
   bullet
   cancancan
   coffee-rails
@@ -214,7 +207,6 @@ DEPENDENCIES
   devise_invitable
   jquery-rails
   jquery-ui-rails
-  less-rails
   listen
   passenger (= 5.2.3)
   pg (~> 0.21)
@@ -224,7 +216,6 @@ DEPENDENCIES
   sassc-rails
   therubyracer
   timecop
-  twitter-bootstrap-rails (~> 4.0)
   uglifier
   web-console
   wicked_pdf

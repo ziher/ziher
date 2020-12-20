@@ -6,11 +6,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require twitter/bootstrap
 //= require jquery-ui/widgets/datepicker
 //= require jquery-ui/i18n/datepicker-pl
 //= require jquery-ui/widgets/sortable
 //= require jquery-ui/effect
+//= require bootstrap-sprockets
 //= require_tree .
 
 $(function () {
