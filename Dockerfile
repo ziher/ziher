@@ -17,11 +17,6 @@ RUN set -x \
   && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_${VERSION_ID}_amd64.gz \
   && rm -rf /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/*.gz
 
-COPY config/initializers/version.rb /ziher/config/initializers/version.rb
-COPY . /ziher
-RUN set -x \
- && rake assets:precompile --trace
-
 RUN set -x \
  && apt-get update \
  && apt-get upgrade --yes \
@@ -32,5 +27,10 @@ RUN set -x \
  && apt-get --yes --purge autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+COPY config/initializers/version.rb /ziher/config/initializers/version.rb
+COPY . /ziher
+RUN set -x \
+ && rake assets:precompile --trace
 
 ENTRYPOINT ["passenger", "start", "-p", "3000", "-a", "0.0.0.0"]

@@ -10,13 +10,17 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-  app:
+  ziher:
     container_name: ziher
     build: ../
+    entrypoint: /ziher/entrypoint.sh
+    volumes:
+    - ./entrypoint.sh:/ziher/entrypoint.sh
     image: ziher:latest
     ports:
       - "3000:3000"
     environment:
+      - RAILS_RELATIVE_URL_ROOT=/dev
       - RAILS_ENV=production
       - ZIHER_DB_HOST=postgres
       - ZIHER_DB_NAME=ziher_development
@@ -30,6 +34,7 @@ services:
       - /tmp:exec
       - /usr/local/bundle/gems/passenger-5.2.3/buildout:exec
       - /ziher/log
+      - /ziher/public
       - /ziher/tmp
       - /ziher/tmp/pids
       - /root
