@@ -194,6 +194,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   acts_as_list
@@ -226,4 +227,4 @@ RUBY VERSION
    ruby 2.5.7p206
 
 BUNDLED WITH
-   1.17.3
+   2.2.2
