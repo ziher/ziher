@@ -16,21 +16,44 @@ export LANG=en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 
-apt-get install --yes docker.io docker-compose
+# install docker
+apt-get install --yes \
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  gnupg \
+  lsb-release
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt-get update
+apt-get install --yes \
+  docker-ce \
+  docker-ce-cli \
+  containerd.io
+
 usermod -aG docker vagrant
 
-echo ====================== Instaluje RVM
-apt-get install --yes git curl vim gnupg2
-sudo -H -u vagrant -i bash -c "gpg2 --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
-sudo -H -u vagrant -i bash -c "curl -L https://get.rvm.io | bash -s stable --ruby=2.5.7"
-sudo -H -u vagrant -i echo "source /home/vagrant/.rvm/scripts/rvm" >> /home/vagrant/.bashrc
+# install docker-compose
+readonly DOCKER_COMPOSE_VERSION=1.29.2
+curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 
-# some ruby variables to make ZiHeR a wee bit faster
-sudo -H -u vagrant -i echo "export RUBY_GC_HEAP_INIT_SLOTS=800000" >> /home/vagrant/.bashrc
-sudo -H -u vagrant -i echo "export RUBY_HEAP_FREE_MIN=100000" >> /home/vagrant/.bashrc
-sudo -H -u vagrant -i echo "export RUBY_HEAP_SLOTS_INCREMENT=300000" >> /home/vagrant/.bashrc
-sudo -H -u vagrant -i echo "export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1" >> /home/vagrant/.bashrc
-sudo -H -u vagrant -i echo "export RUBY_GC_MALLOC_LIMIT=79000000" >> /home/vagrant/.bashrc
+#echo ====================== Instaluje rbenv
+apt-get install --yes git curl vim libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
+sudo -H -u vagrant -i bash -c "git clone https://github.com/rbenv/rbenv.git /home/vagrant/.rbenv"
+sudo -H -u vagrant -i bash -c "git clone https://github.com/rbenv/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build"
+
+sudo -H -u vagrant -i echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/vagrant/.bash_profile
+sudo -H -u vagrant -i echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bash_profile
+
+sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv install 2.5.7"
+sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv global 2.5.7"
+
 sudo -H -u vagrant -i echo "force_color_prompt=yes" >> /home/vagrant/.bashrc
 
 # https://github.com/mitchellh/vagrant/issues/866 - ~/.bashrc is not loaded in 'vagrant ssh' sessions
