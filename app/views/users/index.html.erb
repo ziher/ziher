@@ -30,6 +30,7 @@ table.users tr.invited td { color: #aaa; }
   </tr>
 
 <% @users.each do |user| %>
+  <% if not user.is_blocked %>
   <tr>
     <td><%= link_to user.email, user %></td>
     <td><%= user.first_name %></td>
@@ -41,5 +42,30 @@ table.users tr.invited td { color: #aaa; }
     <% end %>
     <td><%= render_boolean_icon_centered(user.is_blocked) %></td>
   </tr>
+  <% end %>
 <% end %>
+
+  <tr>
+    <td colspan="8">
+      <span class="btn btn-small btn-default top-buffer-20" data-toggle="collapse" data-target="#inactive">Pokaż / ukryj zablokowane</span>
+    </td>
+  </tr>
+
+<tbody id="inactive" class="collapse">
+<% @users.each do |user| %>
+  <% if user.is_blocked %>
+  <tr>
+    <td><%= link_to user.email, user %></td>
+    <td><%= user.first_name %></td>
+    <td><%= user.last_name %></td>
+    <td><%= user.phone %></td>
+    <td class="text-center"><%= I18n.t(user.status) %></td>
+    <% if can? :set_superadmin, @user %>
+      <td><%= render_boolean_icon_centered(user.is_superadmin) %></td>
+    <% end %>
+    <td><%= render_boolean_icon_centered(user.is_blocked) %></td>
+  </tr>
+  <% end %>
+<% end %>
+</tbody>
 </table>
