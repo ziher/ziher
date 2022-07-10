@@ -1,0 +1,15 @@
+name: Builds
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build ZiHeR container
+        run: ./build.sh
