@@ -90,5 +90,5 @@ echo '====================== Po czym odpal serwer http ktory poda Ci ZiHeRa na t
 echo '====================== $ rails server -b 0.0.0.0 <enter>'
 echo '======================'
 echo '====================== Po wykonaniu tych komend twoj wlasny i niepowtarzalny ZiHeR czeka na Ciebie :]'
-echo '====================== W przegladarce wpisz: http://192.168.33.10:3000'
+echo '====================== W przegladarce wpisz: http://192.168.56.1:3000'
 echo '====================== (uzytkownik: admin@ziher, haslo: admin@ziher)'
