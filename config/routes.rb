@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   resources :groups
   resources :entries
   resources :cash_entries
-
+  
+  post 'upload_csv/upload' => 'upload_csv#upload', :as => :upload_csv
+  get 'upload_csv' => 'upload_csv#index', :as => :upload_csv_form
   get 'journals/default' => 'journals#default', :defaults => { :journal_type_id => JournalType::FINANCE_TYPE_ID }
   get 'journals/close_old' => 'journals#close_old', :as => :close_old
   get 'journals/close_current' => 'journals#close_current', :as => :close_current

@@ -1,0 +1,40 @@
+Wymagania pliku:
+Data, Opis, Numer dokumentu, Wpływ1, Wpływ2.., 1%, Wpływy razem, Wydatki razem, Wydatki 1%, Wydatek1, Wydatek1_1%, Wydatek2, Wydatek2_1%..
+
+<script>
+   function changeJournalColValue(val){
+     document.getElementById('journal_col_index').value=val;
+    }
+</script>
+
+<%= form_for :upload_csv, url: "/upload_csv/upload" do |form| %>
+  <%= form.file_field :file %>
+  Czy plik .csv zawiera książki wielu drużyn?
+  <br>
+  <%= form.radio_button :journals_multi, false, { checked: true, onclick: "changeJournalColValue(-1)"  } %> Jedna drużyna<br />
+  <%= form.radio_button :journals_multi, true, {onclick: "changeJournalColValue(3)"} %> Wiele drużyn<br />
+  <br>
+  <select id="unit_id" name="unit_id">
+    <% Unit.find_by_user(current_user).each do |unit| %>
+      <option value="<%= unit.id %>" <%= unit.id == session[:current_unit_id] ? "selected='selected'" : "" %>><%= unit.full_name %></option>
+    <% end %>
+  </select>
+
+  <select id="journaltype_id" name="journaltype_id">
+    <% JournalType.all().each do |journal_type| %>
+      <option value="<%= journal_type.id %>"><%= journal_type.to_s %></option>
+    <% end %>
+  </select>
+
+  <br>
+  Separator
+  <%= form.select :separator, [["tab", "\t"], [",", ","], [";", ";"]] %>
+  <br>
+  Kolumna zawierająca numer książki (Jeżeli brak, to wpisz -1)
+  <%= text_field_tag 'journal_col_index', -1  %>
+  <%= hidden_field_tag 'date_format', "%Y-%m-%d"  %>
+  <br/>
+  <%= form.submit "Check" %>
+  <%= form.submit "Upload" %>
+<% end  %>
+
