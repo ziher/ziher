@@ -1,4 +1,4 @@
-FROM ruby:2.5.7-stretch
+FROM ruby:2.5.9-stretch
 
 ENV RAILS_RELATIVE_URL_ROOT=/
 ENV RAILS_ENV=production

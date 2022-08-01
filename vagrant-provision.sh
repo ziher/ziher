@@ -51,8 +51,8 @@ sudo -H -u vagrant -i bash -c "git clone https://github.com/rbenv/ruby-build.git
 sudo -H -u vagrant -i echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/vagrant/.bash_profile
 sudo -H -u vagrant -i echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bash_profile
 
-sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv install 2.5.7"
-sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv global 2.5.7"
+sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv install 2.5.9"
+sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv global 2.5.9"
 
 sudo -H -u vagrant -i echo "force_color_prompt=yes" >> /home/vagrant/.bashrc
 

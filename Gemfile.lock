@@ -88,6 +88,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
+    libv8 (3.16.14.19)
     libv8 (3.16.14.19-x86_64-linux)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -224,7 +225,7 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 RUBY VERSION
-   ruby 2.5.7p206
+   ruby 2.5.9p229
 
 BUNDLED WITH
-   2.2.2
+   2.3.19
