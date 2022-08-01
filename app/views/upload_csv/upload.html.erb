@@ -1,0 +1,98 @@
+
+<%= @cat.inspect %>
+<br>
+<% @errors.each_with_index do |row, index| %>
+  <% if row["errors"] > 0 %>
+    W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["errors"] %> raz(y) błąd<br>
+  <% end %>
+<% end %>
+
+
+<% @errors.each_with_index do |row, index| %>
+  <% if row["warnings"] > 0 %>
+    W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["warnings"] %> raz(y) ostrzeżenie<br>
+  <% end %>
+<% end %>
+
+
+<br>
+<% @expenses_categories.each do |category| %>
+  <th class="income_<%= category %> text-center"><small><small><%= category %></small></small></th>
+<% end %>
+<br>
+<% @incomes_categories.each do |category| %>
+  <th class="income_<%= category %> text-center"><small><small><%= category %></small></small></th>
+<% end %>
+
+<style>
+  thead th {
+    top: 0;
+    position: sticky;
+    background-color: #ddd;
+    /* z-index: 20; */
+    min-height: 30px;
+    height: 50px;
+    outline: 1px solid #bbb;
+    margin:10px;
+  }
+  tr:nth-child(even) {
+    background-color: #f1f1f1;
+  }
+  td {
+    outline: 1px solid #ccc;
+  }
+</style>
+
+<div style="width:100%; overflow:auto; max-height:600px;">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th colspan="<%= @docno_index + 1 %>" class="text-center"><small><%=t 'helpers.label.journal.details'%></small></th>
+        <th colspan="<%= @incomes_categories.length()%>" class="text-center"><small><%=t 'helpers.label.journal.income_detailed'%></small></th>
+        <th colspan="<%= 3 %>" class="text-center"><small><%=t 'helpers.label.journal.income_expense_all'%></small></th>
+        <th colspan="<%= @rowarraydisp.length() - @expenses_sum_index - 2 %>" class="text-center"><small><%=t 'helpers.label.journal.expense_detailed'%></small></th>
+      </tr>
+
+      <tr>
+        <% @rowarraydisp[0][0..@docno_index].each do |info| %>
+          <th class="valign_middle text-center"><small><small><%= info %></small></small></th>
+        <% end %>
+
+        <% @incomes_categories.each_with_index do |category, index| %>
+          <th class="valign_middle text-center"><small><small><%= category %></small></small></th>
+        <% end %>
+        
+        <th class="valign_middle text-center"><small><%=t 'helpers.label.journal.income_all'%></small></th>
+        <th class="valign_middle text-center"><small><%=t 'helpers.label.journal.expense_all'%></small></th>
+        <th class="valign_middle text-center"><small><%=t 'helpers.label.journal.expense_all'%> 1%</small></th>
+
+        <% @expenses_categories.each_with_index do |category, index| %>
+          <th class="valign_middle text-center"><small><small><%= category %></small></small></th>
+        <% end %>
+      </tr>
+
+    </thead>
+    <tbody>
+      <% @rowarraydisp[1..-1].each_with_index do |row, index| %>
+        <tr>
+          <% row.each do |val| %>
+            <% if @errors[index]["errors"] > 0 %>
+              <td style="color:red;"><%= val %></td>
+            <% elsif @errors[index]["warnings"] > 0 %>
+              <td style="color:orange;"><%= val %></td>
+            <% else %>
+              <td><%= val %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+aaa 
+
+<br>
+<br>
+
+<%= render 'form' %>
