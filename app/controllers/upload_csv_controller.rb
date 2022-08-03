@@ -38,18 +38,13 @@ class UploadCsvController < ApplicationController
     # open csv file
     @rowarraydisp = open_csv_file()
     prepare_data_and_indexes()
-    skip_warnings = true # TODO: FROM FORM
+    skip_warnings = false # TODO: FROM FORM
     @rowarraydisp[1..@rowarraydisp.length()].each_with_index do |row, index|
-    # @rowarraydisp[1..2].each_with_index do |row|
-      errors, warnings = check_row(@rowarraydisp[0], row)
+      errors, warnings = check_row_and_add_errors(@rowarraydisp[0], row, index)
       if errors == 0 and (skip_warnings or warnings == 0)
         # Create object
         entry = create_entry(@rowarraydisp[0], row)
         entry.save!
-      else
-        @errors[index][ERRORS] += errors
-        @errors[index][WARNINGS] += warnings
-        @errors[index][:doc_number] += row[@docno_index]
       end
     end
   end
