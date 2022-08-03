@@ -1,28 +1,62 @@
 
-<%= @cat.inspect %>
-<br>
-<% @errors.each_with_index do |row, index| %>
-  <% if row["errors"] > 0 %>
-    W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["errors"] %> raz(y) błąd<br>
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $('#rowsErrors').hide();
+        $('.errors').click(function() {
+            if ($('#rowsErrors').is(':hidden')) {
+                 $('#rowsErrors').slideDown();
+            } else {
+                 $('#rowsErrors').slideUp();
+            }
+        });
+    });
+</script>
+
+<h1 class=""> 
+  Raport z 
+  <strong>
+  <% if params[:commit] == CHECK %>
+  weryfikacji
+  <% elsif params[:commit] == UPLOAD %>
+  dodawania
   <% end %>
-<% end %>
+  </strong>
+  pliku csv
+</h1>
+<br>
 
-
-<% @errors.each_with_index do |row, index| %>
-  <% if row["warnings"] > 0 %>
-    W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["warnings"] %> raz(y) ostrzeżenie<br>
+<% @journals_hash.each do |k, v| %> 
+  <% if k != 0 %>
+    <% journal = Journal.find(k) %>
+    Dla dziennika <strong><%= journal.unit.full_name %></strong> (<%= journal.year %>, <%= journal.journal_type.name %>): 
+  <% else %>
+    Dla danych, z których <strong>nie rozpoznano dziennika</strong>: 
   <% end %>
-<% end %>
+  <br>Znalezione wiersze: <span style="color:green;"><%= v[:rows] %> </span>
+  <br>Błędy: <span style="color:red;"><%= v[:errors] %> </span>
+  <br>Ostrzeżenia: <span style="color:orange;"><%= v[:warnings] %> </span>
+  <br>
+<br> <br>
+<%end%>
 
 
+<a href='#errors' class='errors'>Informacje o błedach</a>
+<div id='rowsErrors'>
+  <% @errors.each_with_index do |row, index| %>
+    <% if row["errors"] > 0 %>
+      W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["errors"] %> raz(y) błąd<br>
+    <% end %>
+  <% end %>
+
+
+  <% @errors.each_with_index do |row, index| %>
+    <% if row["warnings"] > 0 %>
+      W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["warnings"] %> raz(y) ostrzeżenie<br>
+    <% end %>
+  <% end %>
+</div>
 <br>
-<% @expenses_categories.each do |category| %>
-  <th class="income_<%= category %> text-center"><small><small><%= category %></small></small></th>
-<% end %>
 <br>
-<% @incomes_categories.each do |category| %>
-  <th class="income_<%= category %> text-center"><small><small><%= category %></small></small></th>
-<% end %>
 
 <style>
   thead th {
@@ -43,6 +77,7 @@
   }
 </style>
 
+<% if params[:commit] == CHECK %>
 <div style="width:100%; overflow:auto; max-height:600px;">
   <table class="table table-bordered">
     <thead>
@@ -90,9 +125,13 @@
   </table>
 </div>
 
-aaa 
+<% elsif params[:commit] == UPLOAD %>
 
 <br>
-<br>
+<% end %>
+<% # PRZEKOPIUJ TO PONIZEJ DO UPLOAD %>
+
+
+
 
 <%= render 'form' %>

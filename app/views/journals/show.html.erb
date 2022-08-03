@@ -60,7 +60,7 @@
 
     <% end %>
     <%= link_to "<span class='glyphicon glyphicon-print'></span>&nbsp;&nbsp;Drukuj".html_safe, @pdf_report_link, class: 'btn btn-sm btn-primary' %>
-    <%= link_to "<span class='glyphicon glyphicon-import'></span>&nbsp;&nbsp;Import CSV".html_safe, @csv_upload_link, class: 'btn btn-sm btn-primary' %>
+    <%= link_to "<span class='glyphicon glyphicon-import'></span>&nbsp;&nbsp;Import CSV".html_safe, upload_csv_form_path({:params => {:journaltype_id => @journal.journal_type.id}}), class: 'btn btn-sm btn-primary' %> 
     <%= link_to "<span class='glyphicon glyphicon-export'></span>&nbsp;&nbsp;Eksport CSV".html_safe, @csv_report_link, class: 'btn btn-sm btn-primary' %>
   </div>
   <div class="col-md-5 pull-right">
