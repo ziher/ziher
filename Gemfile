@@ -17,14 +17,16 @@ group :production do
   gem "passenger", "5.2.3"
 end
 
+gem 'sprockets', '~>3.7.2'
 
+gem 'execjs', '~> 2.7.0'
 gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 
 gem 'therubyracer'
 
-gem 'bootstrap-sass', '~> 3.4.1'
+gem 'bootstrap-sass'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'

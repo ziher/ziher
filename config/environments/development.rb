@@ -42,6 +42,10 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  # https://stackoverflow.com/a/51898048
+  config.assets.check_precompiled_asset = false
+
+
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
