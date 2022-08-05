@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby '2.5.9'
 
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.2.0'
 
 gem 'pg', '~> 0.21'
 
@@ -38,6 +38,9 @@ gem 'acts_as_list'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+# Reduces boot times through caching; required in config/boot.rb
+# gem 'bootsnap', require: false
+
 group :test do
   # Pretty printed test output
   #gem 'turn'
@@ -54,7 +57,7 @@ gem 'devise_invitable'
 
 gem 'cancancan'
 
-gem 'audited', '~> 4.9'
+gem 'audited'
 gem 'will_paginate', '~> 3.1.1'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
