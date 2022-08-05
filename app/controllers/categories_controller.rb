@@ -121,7 +121,7 @@ class CategoriesController < ApplicationController
       category.save
     end
 
-    render :nothing => true
+    head :ok
   end
 
   private

@@ -180,7 +180,7 @@ class JournalsController < ApplicationController
     respond_to do |format|
       Journal.open_all_by_year(session[:current_year].to_i)
 
-      format.html { redirect_to :back}
+      format.html { redirect_back(fallback_location: root_path) }
     end
   end
 
@@ -189,7 +189,7 @@ class JournalsController < ApplicationController
     respond_to do |format|
       Journal.close_all_by_year(session[:current_year].to_i)
 
-      format.html { redirect_to :back}
+      format.html { redirect_back(fallback_location: root_path) }
     end
   end
 
@@ -200,13 +200,13 @@ class JournalsController < ApplicationController
     blocked_to = params[:block_all_journals_to_hidden_input].to_date
 
     if blocked_to.blank? then
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
       return
     end
 
     respond_to do |format|
       Journal.close_all_by_year(current_year, blocked_to)
-      format.html { redirect_to :back}
+      format.html { redirect_back(fallback_location: root_path) }
     end
   end
 
