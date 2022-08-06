@@ -31,6 +31,10 @@ RUN set -x \
 
 COPY config/initializers/version.rb /ziher/config/initializers/version.rb
 COPY . /ziher
+
+ARG SECRET_KEY_BASE
+ENV SECRET_KEY_BASE ${SECRET_KEY_BASE}
+
 RUN set -x \
  && rake assets:precompile --trace
 

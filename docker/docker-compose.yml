@@ -13,7 +13,10 @@ services:
     restart: always
   ziher:
     container_name: ziher
-    build: ../
+    build:
+      context: ../
+      args:
+        SECRET_KEY_BASE: 99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
     entrypoint: /ziher/entrypoint.sh
     volumes:
     - ./entrypoint.sh:/ziher/entrypoint.sh
