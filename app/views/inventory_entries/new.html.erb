@@ -1,3 +1,12 @@
+<div class="row top-buffer-40">
+  <div class="col-md-6">
+  </div>
+
+  <div class="col-md-6">
+    <%= render "shared/inventory_entries_select_disabled" %>
+  </div>
+</div>
+
 <% if @inventory_entry.is_expense %>
   <h1>Nowy rozchód</h1>
 <% else %>

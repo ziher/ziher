@@ -2,21 +2,33 @@ module ApplicationHelper
   def menu_active?(page_name)
     case page_name
     when :journal_finance
-      "active" if
-        request.path_parameters[:controller].to_s == "journals" and
-        Journal.find_by_id(params[:id]) != nil and
+      "active" if (
+        request.path_parameters[:controller].to_s == "journals" &&
+        Journal.find_by_id(params[:id]) != nil &&
         Journal.find_by_id(params[:id]).journal_type_id == 1
-        # TODO: wywalić magic number
+      ) || (
+        current_page?(new_entry_path) &&
+        Journal.find_by_id(params[:journal_id]) != nil &&
+        Journal.find_by_id(params[:journal_id]).journal_type_id == 1
+      )
+      # TODO: wywalić magic number
 
     when :journal_bank
-      "active" if
-        request.path_parameters[:controller].to_s == "journals" and
-        Journal.find_by_id(params[:id]) != nil and
+      "active" if (
+        request.path_parameters[:controller].to_s == "journals" &&
+        Journal.find_by_id(params[:id]) != nil &&
         Journal.find_by_id(params[:id]).journal_type_id == 2
-        # TODO: wywalić magic number
+      ) || (
+        current_page?(new_entry_path) &&
+        Journal.find_by_id(params[:journal_id]) != nil &&
+        Journal.find_by_id(params[:journal_id]).journal_type_id == 2
+      )
+      # TODO: wywalić magic number
 
     when :inventory
-      "active" if current_page?(inventory_entries_path)
+      "active" if
+        current_page?(inventory_entries_path) ||
+        current_page?(new_inventory_entry_path)
 
     when :units
       "active" if current_page?(units_path)
