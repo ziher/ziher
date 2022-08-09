@@ -1,4 +1,4 @@
-class CreateItems < ActiveRecord::Migration
+class CreateItems < ActiveRecord::Migration[5.2]
   def change
     create_table :items do |t|
       t.decimal :amount,              :precision => 9, :scale => 2

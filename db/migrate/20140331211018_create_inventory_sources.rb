@@ -1,4 +1,4 @@
-class CreateInventorySources < ActiveRecord::Migration
+class CreateInventorySources < ActiveRecord::Migration[5.2]
   def change
     create_table :inventory_sources do |t|
       t.string :name

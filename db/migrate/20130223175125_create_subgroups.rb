@@ -1,4 +1,4 @@
-class CreateSubgroups < ActiveRecord::Migration
+class CreateSubgroups < ActiveRecord::Migration[5.2]
   def change
     create_table :subgroups, :id => false do |t|
       t.integer :group_id

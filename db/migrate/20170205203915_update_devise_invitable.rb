@@ -1,4 +1,4 @@
-class UpdateDeviseInvitable < ActiveRecord::Migration
+class UpdateDeviseInvitable < ActiveRecord::Migration[5.2]
   def up
     change_column :users, :invitation_token, :string, :limit => nil
 

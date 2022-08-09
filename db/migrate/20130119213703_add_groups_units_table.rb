@@ -1,4 +1,4 @@
-class AddGroupsUnitsTable < ActiveRecord::Migration
+class AddGroupsUnitsTable < ActiveRecord::Migration[5.2]
   def change 
     create_table :groups_units do |t|
       t.integer :group_id

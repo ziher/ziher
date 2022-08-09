@@ -1,4 +1,4 @@
-class AddBlockedToToJournals < ActiveRecord::Migration
+class AddBlockedToToJournals < ActiveRecord::Migration[5.2]
 
   class Journal < ApplicationRecord
   end

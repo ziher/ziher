@@ -1,11 +1,21 @@
 #!/bin/bash
 
-sudo service postgresql stop
+set -x
+
+readonly DB_CONTAINER=postgres
+readonly PGPASSWORD=postgres
+readonly DB_NAME=ziher_development
+readonly DB_PASSWORD=ziher
+readonly DB_USER=ziher
+
 docker-compose build
 docker-compose up -d --force-recreate
 
-psql -h 127.0.0.1 -U postgres -d postgres -c "create user ziher with password 'ziher'"
-psql -h 127.0.0.1 -U postgres -d postgres -c "create database ziher_development with owner ziher"
+docker-compose exec -T $DB_CONTAINER bash -c "PGPASSWORD=$PGPASSWORD psql -h localhost -U postgres -d postgres -c \"drop database $DB_NAME\""
+docker-compose exec -T $DB_CONTAINER bash -c "PGPASSWORD=$PGPASSWORD psql -h localhost -U postgres -d postgres -c \"drop user $DB_USER\""
+docker-compose exec -T $DB_CONTAINER bash -c "PGPASSWORD=$PGPASSWORD psql -h localhost -U postgres -d postgres -c \"create user $DB_USER with password '$DB_PASSWORD'\""
+docker-compose exec -T $DB_CONTAINER bash -c "PGPASSWORD=$PGPASSWORD psql -h localhost -U postgres -d postgres -c \"create database $DB_NAME with owner $DB_USER\""
 
 docker exec ziher rake db:migrate
+
 docker exec ziher rake db:seed

@@ -400,14 +400,14 @@ wyposazenie = Entry.new(date: '2012-01-01', name: 'entry 3: wyposazenie', docume
 transport = Entry.new(date: '2011-01-01', name: 'entry 4: transport', document_number: 'trnsprtdrwn', journal: wigryk2011b, is_expense: false)
 wynagrodzenie_i_wyposazenie = Entry.new(date: '2011-01-01', name: 'entry 5: darowizna, wyposazenie', document_number: 'dar34', journal: wigryk2011b, is_expense: true)
 
-darowizna.items << Item.create!(amount: 1, category: darowizny_2012)
-akcja_i_darowizna.items << Item.create!(amount: 2, category: akcje_zarobkowe_2012)
-akcja_i_darowizna.items << Item.create!(amount: 3, category: darowizny_2012)
-wyposazenie.items << Item.create!(amount: 4, amount_one_percent: 2, category: wyposazenie_2012)
-wyposazenie.items << Item.create!(amount: 3, amount_one_percent: 1, category: uslugi_2012)
-transport.items << Item.create!(amount: 5, category: wynagrodzenia_2011)
-wynagrodzenie_i_wyposazenie.items << Item.create!(amount: 6, category: wynagrodzenia_2011)
-wynagrodzenie_i_wyposazenie.items << Item.create!(amount: 7, category: wyposazenie_2011)
+darowizna.items << Item.create(amount: 1, category: darowizny_2012)
+akcja_i_darowizna.items << Item.create(amount: 2, category: akcje_zarobkowe_2012)
+akcja_i_darowizna.items << Item.create(amount: 3, category: darowizny_2012)
+wyposazenie.items << Item.create(amount: 4, amount_one_percent: 2, category: wyposazenie_2012)
+wyposazenie.items << Item.create(amount: 3, amount_one_percent: 1, category: uslugi_2012)
+transport.items << Item.create(amount: 5, category: wynagrodzenia_2011)
+wynagrodzenie_i_wyposazenie.items << Item.create(amount: 6, category: wynagrodzenia_2011)
+wynagrodzenie_i_wyposazenie.items << Item.create(amount: 7, category: wyposazenie_2011)
 
 darowizna.save!
 akcja_i_darowizna.save!

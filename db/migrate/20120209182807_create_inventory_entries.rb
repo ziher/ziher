@@ -1,4 +1,4 @@
-class CreateInventoryEntries < ActiveRecord::Migration
+class CreateInventoryEntries < ActiveRecord::Migration[5.2]
   def change
     create_table :inventory_entries do |t|
       t.date :date
