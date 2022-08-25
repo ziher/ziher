@@ -38,7 +38,7 @@ Importowanie z pliku .csv
 </h4> 
 <br>
 
-<%= form_for :upload_csv, url: "/upload_csv/upload" do |form| %>
+<%= form_for :upload_csv, url: :upload_csv do |form| %>
   <div class="form-group">
     <label for="file">Plik .csv</label>
     <%= form.file_field :file %>
