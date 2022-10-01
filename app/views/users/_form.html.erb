@@ -11,51 +11,59 @@
     </div>
   <% end %>
 
-	<p>
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email, 'disabled' => !@user.id.nil? %>
-  </div>
-  </p>
+    <div class="row">
+      <div class="col-md-3">
+        <%= f.label :email %></br>
+        <%= f.text_field :email, 'disabled' => !@user.id.nil?, :pattern => '^.*@(?:[^@]*\.|)zhr\.pl', :placeholder => "Adres email w domenie zhr.pl" %>
+      </div>
+    </div>
 
-	<p>
-  <div class="field">
-    <%= f.label :first_name %>
-    <%= f.text_field :first_name %>
-  </div>
-  </p>
+    <div class="row top-buffer-20">
+      <div class="col-md-3">
+        <%= f.label :first_name %></br>
+        <%= f.text_field :first_name %>
+      </div>
+    </div>
 
-	<p>
-  <div class="field">
-    <%= f.label :last_name %>
-    <%= f.text_field :last_name %>
-  </div>
-  </p>
+    <div class="row top-buffer-20">
+      <div class="col-md-3">
+        <%= f.label :last_name %></br>
+        <%= f.text_field :last_name %>
+      </div>
+    </div>
 
-	<p>
-  <div class="field">
-    <%= f.label :phone %>
-    <%= f.text_field :phone %>
-  </div>
-  </p>
+    <div class="row top-buffer-20">
+      <div class="col-md-3">
+        <%= f.label :phone %></br>
+        <%= f.text_field :phone %>
+      </div>
+    </div>
 
   <% if can? :set_superadmin, @user %>
-    <p>
     <div class="field">
-      <%= f.label :is_superadmin %>
-      <%= f.check_box :is_superadmin %>
+      <div class="row top-buffer-20">
+        <div class="col-md-3">
+          <%= f.label :is_superadmin %>
+          <%= f.check_box :is_superadmin %>
+        </div>
+      </div>
     </div>
-    </p>
   <% end %>
 
-	<p>
   <div class="field">
-    <%= f.label :is_blocked %>
-    <%= f.check_box :is_blocked %>
+    <div class="row top-buffer-20">
+      <div class="col-md-6">
+        <%= f.label :is_blocked %>
+        <%= f.check_box :is_blocked %>
+      </div>
+    </div>
   </div>
-	</p>
 
   <div class="actions">
-    <%= f.submit :Zapisz %>
+    <div class="row top-buffer-20">
+      <div class="col-md-3">
+        <%= f.submit :Zapisz, class: "btn btn-sm btn-success" %>
+      </div>
+    </div>
   </div>
 <% end %>
