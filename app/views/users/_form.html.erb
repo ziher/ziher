@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-md-3">
         <%= f.label :email %></br>
-        <%= f.text_field :email, 'disabled' => !@user.id.nil?, :pattern => '^.*@(?:[^@]*\.|)zhr\.pl', :placeholder => "Adres email w domenie zhr.pl" %>
+        <%= f.text_field :email, :pattern => '^.*@(?:[^@]*\.|)zhr\.pl', :placeholder => "Adres email w domenie zhr.pl" %>
       </div>
     </div>
 
