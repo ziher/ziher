@@ -1,5 +1,10 @@
 <h2><%= t "devise.registrations.edit.title" %></h2>
 
+<div class="alert alert-warning" role="alert">
+  Adres email powinien pochodzić z domeny <b>@zhr.pl</b> lub jej poddomen (np. <b>@malopolska.zhr.pl</b>)
+</div>
+
+
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
   <%= devise_error_messages! %>
 
