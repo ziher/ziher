@@ -4,7 +4,7 @@ class Unit < ApplicationRecord
   default_scope { order(:code, :name) }
 
   has_and_belongs_to_many :groups
-  has_many :user_unit_associations
+  has_many :user_unit_associations, dependent: :destroy
   has_many :users, through: :user_unit_associations
   has_many :journals
   has_many :inventory_entries

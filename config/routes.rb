@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get :unblock
       get :promote
       get :demote
+      delete :destroy
     end
   end
 

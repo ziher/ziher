@@ -78,6 +78,25 @@ class UsersController < ApplicationController
     end
   end
 
+  # DELETE /users/1
+  # DELETE /users/1.json
+  def destroy
+    @user = User.find(params[:id])
+    authorize! :delete, @user
+
+    @user.destroy
+
+    if not @user.errors.values.blank?
+      flash.now[:user] = @user.errors.values.join("<br/>")
+    end
+    flash.keep
+
+    respond_to do |format|
+      format.html { redirect_to users_url }
+      format.json { head :ok }
+    end
+  end
+
   # Blocks user
   def block
     @user = User.find(params[:id])

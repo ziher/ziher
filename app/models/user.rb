@@ -5,10 +5,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :invitable, :timeoutable
   audited except: [:encrypted_password, :confirmation_token, :invitation_token, :reset_password_token]
 
-  has_many :user_group_associations
+  has_many :user_group_associations, dependent: :destroy
   has_many :groups, through: :user_group_associations
 
-  has_many :user_unit_associations
+  has_many :user_unit_associations, dependent: :destroy
   has_many :units, through: :user_unit_associations
 
   # validates :email, :presence => true

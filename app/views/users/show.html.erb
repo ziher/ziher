@@ -3,17 +3,17 @@
 <div class="well">
   <div class="pull-right">
     <% if can? :update, @user %>
-        <%= link_to 'Edytuj', edit_user_path(@user), :class => "btn btn-sm btn-success", :accesskey => 'e' %>
+        <%= link_to 'Edytuj', edit_user_path(@user), :class => "btn btn-sm btn-success btn-space", :accesskey => 'e' %>
         <% if @user.is_blocked %>
             <%= link_to  'Odblokuj', unblock_user_path(@user),
                          data: { confirm: 'Czy chcesz pozwolić użytkownikowi na zalogowanie się?'},
                          :title => 'Umożliwia użytkownikowi zalogowanie się',
-                         :class => "btn btn-sm btn-danger" %>
+                         :class => "btn btn-sm btn-warning" %>
         <% else %>
             <%= link_to 'Zablokuj', block_user_path(@user),
                         data: { confirm: 'Czy chcesz zablokować możliwość zalogowania się?'},
                         :title => 'Pozbawia użytkownika możliwości zalogowania się',
-                        :class => "btn btn-sm btn-danger" %>
+                        :class => "btn btn-sm btn-warning" %>
         <% end %>
     <% end %>
     <% if current_user.is_superadmin %>
@@ -21,13 +21,20 @@
             <%= link_to 'Zdegraduj', demote_user_path(@user),
                         data: { confirm: 'Pozbawić użytkownika roli superadmina?'},
                         :title => 'Pozbawia użytkownika roli superadmina',
-                        :class => "btn btn-sm btn-danger" %>
+                        :class => "btn btn-sm btn-warning btn-space" %>
         <% else %>
             <%= link_to 'Awansuj', promote_user_path(@user),
                         data: { confirm: 'Awansować użytkownika do roli superadmina?'},
                         :title => 'Awansuje użytkownika do roli superadmina',
-                        :class => "btn btn-sm btn-danger" %>
+                        :class => "btn btn-sm btn-warning btn-space" %>
         <% end %>
+
+        <%= link_to 'Usuń', user_path(@user),
+                  data: { confirm: 'Czy chcesz usunąć użytkownika?'},
+                  :title => 'Usuwa konto użytkownika',
+                  :class => "btn btn-sm btn-danger",
+                  method: :delete %>
+
     <% end %>
   </div>
 
