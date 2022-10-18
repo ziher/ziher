@@ -1,4 +1,7 @@
 class InventoryEntriesController < ApplicationController
+
+  include Pagy::Backend
+
   # GET /inventory_entries
   # GET /inventory_entries.json
   def index
@@ -45,7 +48,8 @@ class InventoryEntriesController < ApplicationController
 
     @inventory_entries_all = InventoryEntry.where(:unit_id => @unit.id).order('date', 'id')
     @inventory_entries_current_year = InventoryEntry.where(:unit_id => @unit.id).by_year(current_year).order('date', 'id')
-    @inventory_entries = InventoryEntry.where(:unit_id => @unit.id).by_year(current_year).order('date', 'id').paginate(:page => params[:page], :per_page => 10)
+
+    @pagy, @inventory_entries = pagy(@inventory_entries_current_year, page: params[:page], items: 10)
 
     @sum_total_value = @inventory_entries_current_year.map(&:signed_total_value).sum
 

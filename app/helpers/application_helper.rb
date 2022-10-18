@@ -96,4 +96,6 @@ module ApplicationHelper
     return ("<div class='text-center'>" + render_boolean_icon(value) + "</div>").html_safe
   end
 
+  include Pagy::Frontend
+
 end

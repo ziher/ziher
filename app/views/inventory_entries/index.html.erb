@@ -39,6 +39,12 @@
   </div>
 </div>
 
+<div class="row top-buffer-40">
+  <div class="col-md-8">
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</div>
+
 <table class="table table-condensed top-buffer-20 text-center">
   <tr>
     <th rowspan="2" class="valign_middle text-center">#</th>
@@ -86,5 +92,3 @@
   </tr>
 
 </table>
-
-<%= will_paginate @inventory_entries %>

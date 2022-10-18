@@ -31,5 +31,8 @@
   <% end %>
 </table>
 
-<%= will_paginate @audits %>
-
+<div class="row top-buffer-40">
+  <div class="col-md-8">
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</div>

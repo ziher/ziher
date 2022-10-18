@@ -3,6 +3,8 @@
 class JournalsController < ApplicationController
   load_and_authorize_resource
 
+  include Pagy::Backend
+
   helper JournalsHelper
 
   # GET /journals
@@ -44,7 +46,9 @@ class JournalsController < ApplicationController
     @categories_expense = Category.find_by_year_and_type(@journal.year, true)
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
     all_entries = @journal.entries.order('date', 'id')
-    @entries = all_entries.paginate(:page => params[:page], :per_page => 10)
+
+    @pagy, @entries = pagy(all_entries, page: params[:page], items: 10)
+
     page = params[:page].to_i
     @start_position = page < 1 ? 0 : (page.to_i - 1) * 10
     @user_units = Unit.find_by_user(current_user)

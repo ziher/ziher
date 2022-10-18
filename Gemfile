@@ -58,6 +58,6 @@ gem 'devise_invitable'
 gem 'cancancan'
 
 gem 'audited'
-gem 'will_paginate', '~> 3.1.1'
+gem 'pagy'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'

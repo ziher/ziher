@@ -109,6 +109,8 @@ GEM
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    pagy (5.10.1)
+      activesupport
     passenger (5.2.3)
       rack
       rake (>= 0.8.1)
@@ -195,7 +197,6 @@ GEM
     websocket-extensions (0.1.5)
     wicked_pdf (2.6.3)
       activesupport
-    will_paginate (3.1.8)
     wkhtmltopdf-binary (0.12.6.5)
 
 PLATFORMS
@@ -215,6 +216,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   listen
+  pagy
   passenger (= 5.2.3)
   pg (~> 0.21)
   rails (~> 5.2.0)
@@ -227,7 +229,6 @@ DEPENDENCIES
   uglifier
   web-console
   wicked_pdf
-  will_paginate (~> 3.1.1)
   wkhtmltopdf-binary
 
 RUBY VERSION
