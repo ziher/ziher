@@ -70,7 +70,10 @@
 
 <div class="row top-buffer-40">
   <div class="col-md-8">
-    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    <%== pagy_nav(@pagy) if @page != 0 %>
+  </div>
+  <div class="col-md-4" style="margin: 20px 0;">
+    <%= render "shared/entries_number_select" %>
   </div>
 </div>
 
@@ -225,6 +228,9 @@
 
 <div class="row top-buffer-40">
   <div class="col-md-8">
-    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+    <%== pagy_nav(@pagy) if @page != 0 %>
+  </div>
+  <div class="col-md-4" style="margin: 20px 0;">
+    <%= render "shared/entries_number_select" %>
   </div>
 </div>

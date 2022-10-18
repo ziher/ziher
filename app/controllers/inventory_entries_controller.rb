@@ -49,12 +49,19 @@ class InventoryEntriesController < ApplicationController
     @inventory_entries_all = InventoryEntry.where(:unit_id => @unit.id).order('date', 'id')
     @inventory_entries_current_year = InventoryEntry.where(:unit_id => @unit.id).by_year(current_year).order('date', 'id')
 
-    @pagy, @inventory_entries = pagy(@inventory_entries_current_year, page: params[:page], items: 10)
+    if params[:items].blank?
+      @items = nil
+      @inventory_entries = @inventory_entries_current_year
+      @page = 0
+    else
+      @items = params[:items].to_i
+      @pagy, @inventory_entries = pagy(@inventory_entries_current_year, page: params[:page], items: @items)
+      @page = @pagy.page
+    end
 
     @sum_total_value = @inventory_entries_current_year.map(&:signed_total_value).sum
 
-    page = params[:page].to_i
-    @start_position = page < 1 ? 0 : (page.to_i - 1) * 10
+    @start_position = @page < 1 ? 0 : (@page - 1) * @items.to_i
 
     oldest_ziher_year = 2005
 

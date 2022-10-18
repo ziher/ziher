@@ -1,0 +1,18 @@
+<div class="row">
+  <script type="text/javascript">
+    function selectedItemsNumberChanged(items) {
+      const itemsParam = items.toString() === "" ? "" : "?items=" + items.toString();
+      document.location.href = "<%= inventory_entries_path %>" + itemsParam.toString();
+    }
+  </script>
+
+  <div class="col-md-6 pull-right">
+    <span>Na stronie:</span>
+    <select onchange="selectedItemsNumberChanged(this.value)" style="padding: 0; twidth: 100%;">
+      <option value="10" <%= 10 == @items ? "selected='selected'" : "" %>>10</option>
+      <option value="20" <%= 20 == @items ? "selected='selected'" : "" %>>20</option>
+      <option value="50" <%= 50 == @items ? "selected='selected'" : "" %>>50</option>
+      <option value="" <%= nil == @items ? "selected='selected'" : "" %>>wszystkie</option>
+    </select>
+  </div>
+</div>

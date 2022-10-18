@@ -47,10 +47,17 @@ class JournalsController < ApplicationController
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
     all_entries = @journal.entries.order('date', 'id')
 
-    @pagy, @entries = pagy(all_entries, page: params[:page], items: 10)
+    if params[:items].blank?
+      @items = nil
+      @entries = all_entries
+      @page = 0
+    else
+      @items = params[:items].to_i
+      @pagy, @entries = pagy(all_entries, page: params[:page], items: @items)
+      @page = @pagy.page
+    end
 
-    page = params[:page].to_i
-    @start_position = page < 1 ? 0 : (page.to_i - 1) * 10
+    @start_position = @page < 1 ? 0 : (@page - 1) * @items.to_i
     @user_units = Unit.find_by_user(current_user)
     @years = @journal.unit.find_journal_years(@journal.journal_type)
 
