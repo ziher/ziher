@@ -29,6 +29,10 @@ class User < ApplicationRecord
     end
   end
 
+  def valid_email
+    self.email =~ /\A[^@]+@([^@]+\.|)zhr\.pl\z/
+  end
+
   def active_for_authentication?
     super && !self.is_blocked
   end
