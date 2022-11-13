@@ -24,6 +24,7 @@ services:
     ports:
       - "3000:3000"
     environment:
+      - ZIHER_APP_NAME=dev environment
       - RAILS_RELATIVE_URL_ROOT=/dev
       - RAILS_ENV=production
       - ZIHER_DB_HOST=postgres

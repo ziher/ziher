@@ -1,5 +1,5 @@
 <div class="navbar navbar-default" id="navbar">
-  <div class="navbar-brand"><%= link_to root_path do %> <span class='glyphicon glyphicon-home'></span> ZiHeR <% end %></div>
+  <div class="navbar-brand"><%= link_to root_path do %> <span class='glyphicon glyphicon-home'></span> ZiHeR / <%= ENV["ZIHER_APP_NAME"] %><% end %></div>
 
   <ul class="nav navbar-nav">
       <% if user_signed_in? %>
