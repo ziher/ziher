@@ -11,5 +11,5 @@
 #finance = JournalType.create!(id: JournalType::FINANCE_TYPE_ID, name: "Książka finansowa", is_default: true)
 #bank = JournalType.create!(id: JournalType::BANK_TYPE_ID, name: "Książka bankowa")
 
-User.create!(email: 'admin@ziher', password: 'admin@ziher', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
-User.create!(email: 'user@ziher', password: 'user@ziher', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: false)
+User.create!(email: 'admin@dev.zhr.pl', password: 'admin@dev.zhr.pl', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
+User.create!(email: 'user@dev.zhr.pl', password: 'user@dev.zhr.pl', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: false)
