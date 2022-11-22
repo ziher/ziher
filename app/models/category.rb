@@ -5,6 +5,8 @@ class Category < ApplicationRecord
 
   has_many :items
 
+  has_one :grant
+
   validates :year, :presence => {:message => "Kategoria musi byc przypisana do roku"}
 
   validate :cannot_have_multiple_one_percent_categories_in_one_year

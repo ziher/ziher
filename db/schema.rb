@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_20_185233) do
+ActiveRecord::Schema.define(version: 2022_11_22_191844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 2022_11_20_185233) do
     t.integer "position"
     t.integer "year"
     t.boolean "is_one_percent", default: false
+    t.integer "grant_id"
+    t.index ["grant_id"], name: "index_categories_on_grant_id"
   end
 
   create_table "entries", force: :cascade do |t|
