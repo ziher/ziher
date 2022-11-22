@@ -78,6 +78,7 @@ module ApplicationHelper
         current_page?(units_path) or
         current_page?(groups_path) or
         current_page?(categories_path) or
+        current_page?(grants_path) or
         current_page?(journals_path) or
         current_page?(journal_types_path) or
         current_page?(users_path) or
