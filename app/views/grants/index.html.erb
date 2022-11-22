@@ -1,12 +1,10 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Grants</h1>
+<h1>Dotacje</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
+      <th>Nazwa</th>
+      <th>Opis</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,9 +14,9 @@
       <tr>
         <td><%= grant.name %></td>
         <td><%= grant.description %></td>
-        <td><%= link_to 'Show', grant %></td>
-        <td><%= link_to 'Edit', edit_grant_path(grant) %></td>
-        <td><%= link_to 'Destroy', grant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Pokaż', grant %></td>
+        <td><%= link_to 'Edytuj', edit_grant_path(grant) %></td>
+        <td><%= link_to 'Usuń', grant, method: :delete, data: { confirm: 'Czy na pewno usunąć?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +24,4 @@
 
 <br>
 
-<%= link_to 'New Grant', new_grant_path %>
+<%= link_to 'Nowa dotacja', new_grant_path %>

@@ -3,28 +3,34 @@ class GrantsController < ApplicationController
 
   # GET /grants
   def index
+    authorize! :manage, Grant
+
     @grants = Grant.all
   end
 
   # GET /grants/1
   def show
+    authorize! :show, @grant
   end
 
   # GET /grants/new
   def new
     @grant = Grant.new
+    authorize! :create, @grant
   end
 
   # GET /grants/1/edit
   def edit
+    authorize! :update, @grant
   end
 
   # POST /grants
   def create
     @grant = Grant.new(grant_params)
+    authorize! :create, @grant
 
     if @grant.save
-      redirect_to @grant, notice: 'Grant was successfully created.'
+      redirect_to @grant, notice: 'Dodacja została stworzona.'
     else
       render :new
     end
@@ -32,8 +38,10 @@ class GrantsController < ApplicationController
 
   # PATCH/PUT /grants/1
   def update
+    authorize! :update, @grant
+
     if @grant.update(grant_params)
-      redirect_to @grant, notice: 'Grant was successfully updated.'
+      redirect_to @grant, notice: 'Dotacja została zaktualizowana.'
     else
       render :edit
     end
@@ -41,8 +49,13 @@ class GrantsController < ApplicationController
 
   # DELETE /grants/1
   def destroy
-    @grant.destroy
-    redirect_to grants_url, notice: 'Grant was successfully destroyed.'
+    authorize! :destroy, @grant
+
+    if @grant.destroy
+      redirect_to grants_url, notice: 'Dotacja została usunięta.'
+    else
+      redirect_to grants_url, alert: @grant.errors.values.join("<br/>")
+    end
   end
 
   private

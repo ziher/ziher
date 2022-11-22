@@ -1,7 +1,7 @@
 <%= form_with(model: grant, local: true) do |form| %>
   <% if grant.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(grant.errors.count, "error") %> prohibited this grant from being saved:</h2>
+      <h2><%= pluralize(grant.errors.count, "error") %> błędy podczas próby zapisu zmian dla dotacji:</h2>
 
       <ul>
       <% grant.errors.full_messages.each do |message| %>
@@ -12,12 +12,12 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
+    <%= form.label :nazwa %>
     <%= form.text_field :name %>
   </div>
 
   <div class="field">
-    <%= form.label :description %>
+    <%= form.label :opis %>
     <%= form.text_area :description %>
   </div>
 
