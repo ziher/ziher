@@ -4,6 +4,8 @@ class Grant < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
 
+  before_destroy :there_are_no_linked_categories
+
   def category_exists?(year)
     Category.where(year: year, grant_id: self.id).present?
   end
@@ -22,5 +24,25 @@ class Grant < ApplicationRecord
     result = Category.where(year: year, grant_id: self.id).destroy_all
 
     return result
+  end
+
+  def there_are_no_linked_categories
+    categories = Category.where(grant_id: self.id)
+
+    if categories.present? then
+      categories_to_show = 10
+
+      errors[:base] << "Błąd usuwania - dotacja włączona w poniższych latach:"
+
+      categories.first(categories_to_show).each do |category|
+        errors[:base] << category.year
+      end
+
+      if categories.count > categories_to_show
+        errors[:base] << "... i inne, razem #{categories.count} kategorii."
+      end
+
+      throw(:abort)
+    end
   end
 end
