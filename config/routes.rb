@@ -42,6 +42,8 @@ Rails.application.routes.draw do
     post :sort, on: :collection
   end
 
+  post 'grants/:id/create_income_category_for_year' => 'grants#create_income_category_for_year', :as => :create_income_category_for_year
+  post 'grants/:id/delete_income_category_for_year' => 'grants#delete_income_category_for_year', :as => :delete_income_category_for_year
   resources :grants
 
   get 'reports/finance_report' => 'reports#finance', :via => :get, :as => 'finance_report'

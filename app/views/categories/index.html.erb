@@ -30,6 +30,9 @@
               <% if category.is_one_percent %>
                 <small>[1%]</small>
               <% end %>
+              <% if category.from_grant %>
+                <small>[dotacja]</small>
+              <% end %>
               <%= category.name %>
               <%= link_to edit_category_path(category) do %><span class="glyphicon glyphicon-pencil"></span>
               <% end %>
@@ -46,6 +49,26 @@
       </div>
     </div>
   <% end %>
+
+  <div class="col-md-3">
+    <div class="well">
+      <b>Dotacje</b><br /><br/>
+      <ul class="categories list-unstyled">
+        <% @grants.each do |grant| %>
+          <li id="grant_<%= grant.id %>">
+            <%= label_tag do %>
+              <%= check_box_tag grant.id, grant.name, grant.category_exists?(@year), disabled: true %>
+              <%= grant.name %>
+              <% if not grant.category_exists?(@year) %>
+                <%= link_to '- używaj w tym roku', create_income_category_for_year_url(grant), data: { confirm: 'Na pewno dodać jako kategorię w aktualnym roku?'}, method: :post %>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
 </div>
 
 <br/>

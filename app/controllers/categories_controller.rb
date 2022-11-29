@@ -6,6 +6,8 @@ class CategoriesController < ApplicationController
 
     @years = Category.get_all_years()
 
+    @grants = Grant.all
+
     unless params[:year].blank?
       @year = params[:year].to_i
     else
