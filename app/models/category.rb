@@ -9,6 +9,7 @@ class Category < ApplicationRecord
 
   validates :year, :presence => {:message => "Kategoria musi byc przypisana do roku"}
 
+  validate :cannot_have_same_grant_twice_for_same_year
   validate :cannot_have_multiple_one_percent_categories_in_one_year
   before_destroy :there_are_no_entries_with_self_category
 
@@ -24,6 +25,17 @@ class Category < ApplicationRecord
     Category.where(year: year, is_expense: is_expense)
   end
 
+  def Category.create_income_from_grant_for_year(year, grant)
+    category = Category.new
+    category.is_expense = false
+    category.name = grant.name
+    category.year = year
+    category.grant_id = grant.id
+    category.save
+
+    return category
+  end
+
   def cannot_have_multiple_one_percent_categories_in_one_year
     years = []
     Category.find_each do |category|
@@ -35,6 +47,14 @@ class Category < ApplicationRecord
     if self.is_one_percent then
       if years.include?(self.year) then
         errors[:category] << "Tylko jedna kategoria w roku moze byc kategoria typu 1%"
+      end
+    end
+  end
+
+  def cannot_have_same_grant_twice_for_same_year
+    if self.grant_id.present? then
+      if Category.where(year: self.year, grant_id: self.grant_id).present? then
+        errors[:category] << "dotacja może mieć tylko jedną kategorię w danym roku"
       end
     end
   end
@@ -64,4 +84,9 @@ class Category < ApplicationRecord
   def all_items_blank
     return self.items.all? {|item| item.amount.blank? }
   end
+
+  def from_grant
+    return self.grant_id.present?
+  end
+
 end

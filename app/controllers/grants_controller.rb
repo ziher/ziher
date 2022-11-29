@@ -58,6 +58,39 @@ class GrantsController < ApplicationController
     end
   end
 
+  # POST /grants/1/create_income_category_for_year
+  def create_income_category_for_year
+    authorize! :manage, Grant
+
+    grant = Grant.find(params[:id])
+    year = session[:current_year].to_i
+
+    respond_to do |format|
+      if grant.create_income_category_for_year(year)
+        format.html { redirect_to categories_url, notice: 'Wpływ dla dotacji ' + grant.name + ' został stworzony.' }
+      else
+        format.html { redirect_to categories_url, alert: "Błąd tworzenia wpływu dla dotacji " + grant.name + ": " + grant.errors.values.join(', ') }
+      end
+    end
+  end
+
+  # POST /grants/1/delete_income_category_for_year
+  def delete_income_category_for_year
+    authorize! :manage, Grant
+
+    grant = Grant.find(params[:id])
+    year = session[:current_year].to_i
+
+    respond_to do |format|
+      if grant.delete_income_category_for_year(year)
+        format.html { redirect_to categories_url, notice: 'Wpływ dla dotacji ' + grant.name + ' został usunięty.' }
+      else
+        format.html { redirect_to journals_url, alert: "Błąd usuwania wpływu dla dotacji " + grant.name + ": " + grant.errors.values.join(', ') }
+      end
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_grant
