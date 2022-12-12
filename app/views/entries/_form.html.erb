@@ -35,24 +35,31 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="col-md-12">
+
+
       <%= f.fields_for :items, @sorted_items do |item_fields| %>
         <div class="row top-buffer-20">
           <% category_name = item_fields.object.category.name %>
 
-          <div class="col-md-3">
+          <div class="col-md-2">
             <% #item amount %>
             <%= item_fields.label :amount, category_name %>
             <%= item_fields.text_field :amount, :class=>"category form-control" %>
           </div>
 
           <% if @entry.is_expense then %>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <% #item amount one percent %>
-              <%= item_fields.label :amount_one_percent, "W tym 1%" %>
+              <%= item_fields.label :amount_one_percent, "w tym 1%" %>
               <%= item_fields.text_field :amount_one_percent, :class=>"category form-control" %>
             </div>
-          <% end %>
 
+            <% print_item_grants_form(item_fields) %>
+
+          <% end %>
           <%= item_fields.hidden_field :category_id, :class=>"category_id"%>
         </div>
       <% end %>
