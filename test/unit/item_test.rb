@@ -70,14 +70,14 @@ class ItemTest < ActiveSupport::TestCase
     #given
     item = items(:income_one_percent)
     item.amount = 2
-    item.amount_one_percent = 4
 
     #when
-    item.save!
+    item.amount_one_percent = 4
 
     #then
-    assert_equal(item.amount_one_percent, 2)
-    assert_equal(item.amount_one_percent, item.amount)
+    assert_raise(ActiveRecord::RecordInvalid) {
+      item.save!
+    }
   end
 
   test 'should not update amount one percent if category type is not one percent' do
@@ -119,6 +119,43 @@ class ItemTest < ActiveSupport::TestCase
 
     #then
     assert_equal(item.amount_one_percent, 123.45)
+  end
+
+
+  test 'should not allow more than one item grant amount for same grant' do
+    # TODO implement me
+  end
+
+  test 'should not allow for grants with diferent amount sign than self amount' do
+    # TODO implement me
+  end
+
+  test 'should not allow absolute value of grants amounts sum bigger than abs of self sum' do
+    # TODO implement me
+  end
+
+  test 'should allow positive value for income category' do
+    # TODO implement me
+  end
+
+  test 'should allow negative value for income category' do
+    # TODO implement me
+  end
+
+  test 'should allow positive value for expense category' do
+    # TODO implement me
+  end
+
+  test 'should allow negative values for expense categry' do
+    # TODO implement me
+  end
+
+  test 'should allow positive value for grant amount in expense category' do
+    # TODO implement me
+  end
+
+  test 'should allow negative value for grant amount in expense category' do
+    # TODO implement me
   end
 
 end

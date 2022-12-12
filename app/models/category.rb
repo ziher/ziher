@@ -36,6 +36,10 @@ class Category < ApplicationRecord
     return category
   end
 
+  def Category.find_grants_by_year(year)
+    Category.where(year: year).where.not(grant_id: nil)
+  end
+
   def cannot_have_multiple_one_percent_categories_in_one_year
     years = []
     Category.find_each do |category|

@@ -4,6 +4,10 @@ class Grant < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
 
+  has_many :item_grants, dependent: :destroy
+  has_many :items, through: :item_grants
+  accepts_nested_attributes_for :item_grants
+
   before_destroy :there_are_no_linked_categories
 
   def category_exists?(year)
