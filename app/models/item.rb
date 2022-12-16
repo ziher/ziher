@@ -112,5 +112,8 @@ class Item < ApplicationRecord
       end
     end
   end
-end
 
+  def Item.get_by_category_and_grant(category_id, grant_id)
+    Item.includes(:grants).joins(:item_grants).where(category_id: category_id, item_grants: {grant_id: grant_id})
+  end
+end

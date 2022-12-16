@@ -11,7 +11,8 @@ class Category < ApplicationRecord
 
   validate :cannot_have_same_grant_twice_for_same_year
   validate :cannot_have_multiple_one_percent_categories_in_one_year
-  before_destroy :there_are_no_entries_with_self_category
+
+  before_destroy :check_category_usage
 
   def Category.get_all_years
     years = []
@@ -78,11 +79,66 @@ class Category < ApplicationRecord
       if category_items.count > items_to_show
         errors[:category] << "... i inne, razem #{category_items.count} wpisów."
       end
-
-      throw(:abort)
     end
 
     self.items.destroy_all
+  end
+
+  def there_are_no_items_with_self_grant
+    if from_grant
+      items_to_check = Item.includes(:grants).joins(:item_grants).where(category_id: self.id, item_grants: {grant_id: self.grant_id})
+
+      if not items_to_check.blank?
+        items_to_check.each do |item|
+          errors[:category] << "istnieje wpis #{item.id}"
+        end
+
+        # throw(:abort)
+      end
+    end
+  end
+
+  def there_are_no_item_grants_in_other_categories_when_disabling_grant
+    if from_grant
+
+      item_grants_errors = Array.new
+      entries_to_check = Array.new
+
+      items_to_show = 10
+
+      Category.where(year: self.year).each do |cat|
+        items_to_check = Item.get_by_category_and_grant(cat.id, self.grant_id)
+
+        if not items_to_check.blank?
+          entries_to_check << items_to_check.includes(:entry).map(&:entry)
+        end
+      end
+
+      entries_to_check = entries_to_check.flatten.uniq
+
+      entries_to_check.each do |entry|
+        item_grants_errors << entry.link_to_edit
+      end
+
+      if not item_grants_errors.empty?
+        errors[:category] << "Istnieją wpisy dla podanej dotacji:"
+        errors[:category] << item_grants_errors.first(items_to_show)
+
+        if item_grants_errors.count > items_to_show
+          errors[:category] << "... i inne, razem #{item_grants_errors.count} wpisów."
+        end
+      end
+    end
+  end
+
+  def check_category_usage
+    there_are_no_entries_with_self_category
+    there_are_no_items_with_self_grant
+    there_are_no_item_grants_in_other_categories_when_disabling_grant
+
+    if not errors[:category].empty?
+      throw(:abort)
+    end
   end
 
   def all_items_blank
