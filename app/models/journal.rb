@@ -5,6 +5,10 @@ class Journal < ApplicationRecord
   belongs_to :unit
   has_many :entries
 
+  has_many :journal_grants, dependent: :destroy
+  has_many :grants, through: :journal_grants
+  accepts_nested_attributes_for :journal_grants
+
   validates :journal_type, :presence => true
   validates :unit, :presence => true
   validates :year, :presence => true

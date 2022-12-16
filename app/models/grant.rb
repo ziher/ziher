@@ -8,6 +8,10 @@ class Grant < ApplicationRecord
   has_many :items, through: :item_grants
   accepts_nested_attributes_for :item_grants
 
+  has_many :journal_grants, dependent: :destroy
+  has_many :journals, through: :journal_grants
+  accepts_nested_attributes_for :journal_grants
+
   before_destroy :there_are_no_linked_categories
 
   def category_exists?(year)
