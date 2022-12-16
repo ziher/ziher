@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_12_202106) do
+ActiveRecord::Schema.define(version: 2022_12_16_115440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,14 @@ ActiveRecord::Schema.define(version: 2022_12_12_202106) do
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["entry_id"], name: "index_items_on_entry_id"
+  end
+
+  create_table "journal_grants", force: :cascade do |t|
+    t.integer "journal_id", null: false
+    t.integer "grant_id", null: false
+    t.decimal "initial_grant_balance", precision: 9, scale: 2, default: "0.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "journal_types", force: :cascade do |t|
