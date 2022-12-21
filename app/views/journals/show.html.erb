@@ -83,14 +83,35 @@
     <tr>
       <th colspan="<%= @categories_income.count + 3 %>" class="balance-label" title="<%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%>">
         <span class="pull-left label label-default" style="font-size: 85%;"><%= @journal.opened_from_info %></span>
-        <span class="pull-right text-muted"><small>Saldo początkowe (w tym 1%):</small></span>
+        <span class="pull-right text-muted"><small>Saldo początkowe:</small></span>
       </th>
       <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance">
         <span class="pull-left"><small>
           <%= number_with_precision(@journal.initial_balance, :precision => 2) %> zł
-          (<%= number_with_precision(@journal.initial_balance_one_percent, :precision => 2) %> zł)
         </small></span>
       </th>
+    </tr>
+    <tr>
+      <th colspan="<%= @categories_income.count + 3 %>" class="balance-label" style="border-top: none; border-bottom: none" title="<%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%>">
+        <span class="pull-right text-muted"><small>w tym 1%:</small></span>
+      </th>
+      <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance" style="border-top: none; border-bottom: none">
+        <span class="pull-left"><small>
+          <%= number_with_precision(@journal.initial_balance_one_percent, :precision => 2) %> zł
+        </small></span>
+      </th>
+
+      <% Grant.get_by_year(@journal.year).each do |grant| %>
+        <tr>
+          <th colspan="3" style="border-top: none; border-bottom: none"></th>
+          <th colspan="<%= @categories_income.count %>" class="balance-label" style="border-top: none; border-bottom: none"><span class="pull-right text-muted"><small>w tym <%= grant.name %>:</small></span></th>
+          <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance" style="border-top: none; border-bottom: none">
+            <span class="pull-left"><small>
+              <%= number_with_precision(@journal.initial_balance_for_grant(grant), :precision => 2) %> zł
+            </small></span>
+          </th>
+        </tr>
+      <% end %>
     </tr>
 
     <tr class="border-top-bold">
@@ -159,7 +180,7 @@
         <td class="expense expense_all text-right" title="<%=t 'helpers.label.journal.expense_all'%>">
           <small>
           <% if entry.is_expense
-              print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), entry.sum, entry.sum_one_percent)
+              print_formatted_entry_sum_with_grants(t('helpers.label.journal.expense_all'), entry)
              else
               concat "-"
              end
@@ -170,7 +191,7 @@
         <% @categories_expense.each do |category| %>
           <td class="expense expense_<%= category.id %> text-right" title="<%=category.name%>">
             <small>
-              <% print_formatted_amount_with_one_percent(category.name, entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category)) %>
+              <% print_formatted_amount_with_grant(category, entry.get_amount_for_category(category), entry.get_amount_one_percent_for_category(category), entry.get_grants_for_category(category), entry) %>
             </small>
           </td>
         <% end %>
@@ -200,14 +221,14 @@
       </td>
       <td class="expense expense_all text-right" title="<%=t 'helpers.label.journal.expense_all'%>">
         <small>
-          <% print_formatted_amount_with_one_percent(t('helpers.label.journal.expense_all'), @journal.get_expense_sum, @journal.get_expense_sum_one_percent) %>
+          <% print_formatted_journal_sums_with_grants(t('helpers.label.journal.expense_all'), @journal) %>
         </small>
       </td>
 
       <% @categories_expense.each do |category| %>
         <td class="expense expense_<%= category.id %> text-right" title="<%=category.name%>">
           <small>
-            <% print_formatted_amount_with_one_percent(category.name, @journal.get_sum_for_category(category), @journal.get_sum_one_percent_for_category(category)) %>
+            <% print_formatted_journal_sums_for_categories_with_grants(category, @journal) %>
           </small>
         </td>
       <% end %>
@@ -215,14 +236,35 @@
 
     <tr>
       <th colspan="3"></th>
-      <th colspan="<%= @categories_income.count %>" class="balance-label"><span class="pull-right text-muted"><small>Saldo końcowe (w tym 1%):</small></span></th>
+      <th colspan="<%= @categories_income.count %>" class="balance-label"><span class="pull-right text-muted"><small>Saldo końcowe:</small></span></th>
       <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance">
         <span class="pull-left"><small>
           <%= number_with_precision(@journal.get_final_balance, :precision => 2) %> zł
-          (<%= number_with_precision(@journal.get_final_balance_one_percent, :precision => 2) %> zł)
         </small></span>
       </th>
     </tr>
+    <tr>
+      <th colspan="3" style="border-top: none"></th>
+      <th colspan="<%= @categories_income.count %>" class="balance-label" style="border-top: none"><span class="pull-right text-muted"><small>w tym 1%:</small></span></th>
+      <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance" style="border-top: none">
+        <span class="pull-left"><small>
+          <%= number_with_precision(@journal.get_final_balance_one_percent, :precision => 2) %> zł
+        </small></span>
+      </th>
+    </tr>
+
+    <% Grant.get_by_year(@journal.year).each do |grant| %>
+      <tr>
+        <th colspan="3" style="border-top: none"></th>
+        <th colspan="<%= @categories_income.count %>" class="balance-label" style="border-top: none"><span class="pull-right text-muted"><small>w tym <%= grant.name %>:</small></span></th>
+        <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance" style="border-top: none">
+          <span class="pull-left"><small>
+            <%= number_with_precision(@journal.get_final_balance_for_grant(grant), :precision => 2) %> zł
+          </small></span>
+        </th>
+      </tr>
+    <% end %>
+
   </tfoot>
 </table>
 

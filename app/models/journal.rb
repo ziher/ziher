@@ -15,6 +15,7 @@ class Journal < ApplicationRecord
   validate :cannot_have_duplicated_type
 
   before_create :set_initial_balance
+  after_create :set_initial_balance_for_grants
 
   after_save :recalculate_next_initial_balances
   after_destroy :recalculate_next_initial_balances
@@ -36,6 +37,30 @@ class Journal < ApplicationRecord
     end
   end
 
+  # calculates balance of previous year's journal and sets it as this journal's initial grant's balances
+  def set_initial_balance_for_grants
+    previous = Journal.find_previous_for_type(self.unit, self.journal_type, self.year-1)
+    if previous
+      Grant.all.each do |grant|
+        previous_balance_for_grant = previous.initial_balance_for_grant(grant) + previous.get_income_sum_for_grant(grant) - previous.get_expense_sum_for_grant(grant)
+
+        jg = journal_grants.where(grant_id: grant.id).first_or_create
+        jg.initial_grant_balance = previous_balance_for_grant
+        jg.save!
+      end
+    end
+  end
+
+  def initial_balance_for_grant(grant)
+    jg = JournalGrant.where(journal_id: self.id, grant_id: grant.id)
+
+    if jg.count == 1
+      jg.first.initial_grant_balance
+    else
+      return 0
+    end
+  end
+
   def cannot_have_duplicated_type
     if self.journal_type
       found = Journal.find_by_unit_and_year_and_type(self.unit, self.year, self.journal_type)
@@ -53,6 +78,13 @@ class Journal < ApplicationRecord
   # returns sum one percent of all entries in this journal for given category
   def get_sum_one_percent_for_category(category, to_date = end_of_year)
     get_category_sum_for(:amount_one_percent, category, to_date)
+  end
+
+  # returns sum of all entries in this journal for given category
+  def get_sum_for_grant_in_category(grant, category, to_date = end_of_year)
+    entries_to_date = self.entries.select { |entry| entry.date <= to_date}
+
+    Item.includes(:item_grants).where(entry: entries_to_date, category: category, item_grants: {grant_id: grant.id}).map(&:item_grants).flatten.sum(&:amount)
   end
 
   def get_category_sum_for(summable, category, to_date)
@@ -78,6 +110,15 @@ class Journal < ApplicationRecord
     return sum
   end
 
+  # returns sum of all grant expense entries
+  def get_expense_sum_for_grant(grant, to_date = end_of_year)
+    sum = 0
+    Category.where(:year => self.year, :is_expense => true).each do |category|
+      sum += get_sum_for_grant_in_category(grant, category, to_date)
+    end
+    return sum
+  end
+
   # returns sum of all income entries
   def get_income_sum(to_date = end_of_year)
     sum = 0
@@ -96,6 +137,12 @@ class Journal < ApplicationRecord
     return sum
   end
 
+  # returns sum of all grant income entries
+  def get_income_sum_for_grant(grant, to_date = end_of_year)
+    category = grant.get_category_by_year(self.year)
+    return get_sum_for_category(category, to_date)
+  end
+
   def get_balance(to_date = end_of_year)
     return self.initial_balance + get_income_sum(to_date) - get_expense_sum(to_date)
 
@@ -111,6 +158,14 @@ class Journal < ApplicationRecord
 
   def get_final_balance_one_percent
     return get_balance_one_percent(end_of_year)
+  end
+
+  def get_balance_for_grant(grant, to_date = end_of_year)
+    return self.initial_balance_for_grant(grant) + get_income_sum_for_grant(grant, to_date) - get_expense_sum_for_grant(grant, to_date)
+  end
+
+  def get_final_balance_for_grant(grant)
+    return get_balance_for_grant(grant, end_of_year)
   end
 
   def find_next_year_journal
@@ -233,15 +288,37 @@ class Journal < ApplicationRecord
     end
   end
 
-  def verify_balance_one_percent_no_more_than_sum(to_date = end_of_year)
-    if self.get_balance_one_percent(to_date) == 0 or self.get_balance_one_percent(to_date) <= self.get_balance(to_date)
+  def verify_balance_for_grants_not_less_than_zero(to_date = end_of_year)
+    result = true
+
+    Grant.all.each do |grant|
+      if self.get_balance_for_grant(grant, to_date) < 0
+        errors[:grants] << "Saldo końcowe dla dotacji " + grant.name + " (" + self.get_balance_for_grant(grant, to_date).to_s + ") nie może być mniejsze niż zero"
+        result = false
+      end
+    end
+
+    return result
+  end
+
+  def verify_balance_for_one_percent_and_grants_no_more_than_sum(to_date = end_of_year)
+    one_percent_balance = self.get_balance_one_percent(to_date)
+    grant_balances_sum = 0
+    Grant.all.each do |grant|
+      grant_balances_sum += self.get_balance_for_grant(grant, to_date)
+    end
+
+    balances_sum = one_percent_balance + grant_balances_sum
+    total_balance = self.get_balance(to_date)
+
+    if balances_sum == 0 or balances_sum <= total_balance
       return true
     end
 
-    if self.get_balance(to_date) < 0
-      errors[:one_percent] << I18n.t(:sum_one_percent_negative_with_one_percent_left, :sum_one_percent => get_balance_one_percent(to_date), :sum => get_balance(to_date), :scope => :journal)
+    if total_balance < 0
+      errors[:one_percent] << "Saldo końcowe (" + total_balance.to_s + ") jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie " + balances_sum.to_s + ")"
     else
-      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_more_than_sum, :sum_one_percent => get_balance_one_percent(to_date), :sum => get_balance(to_date), :scope => :journal)
+      errors[:one_percent] << "Saldo końcowe dla dotacji (" + balances_sum.to_s + ") nie może być większe niż saldo książki (" + total_balance.to_s + ")"
     end
     return false
   end
@@ -273,7 +350,8 @@ class Journal < ApplicationRecord
   def verify_journal(blocked_to = end_of_year)
     result = true
     result = false unless verify_balance_one_percent_not_less_than_zero(blocked_to)
-    result = false unless verify_balance_one_percent_no_more_than_sum(blocked_to)
+    result = false unless verify_balance_for_grants_not_less_than_zero(blocked_to)
+    result = false unless verify_balance_for_one_percent_and_grants_no_more_than_sum(blocked_to)
     result = false unless verify_entries(blocked_to)
     result = false unless verify_inventory
     return result
@@ -351,6 +429,7 @@ class Journal < ApplicationRecord
     next_journal = self.find_next_year_journal
     while next_journal
       next_journal.set_initial_balance
+      next_journal.set_initial_balance_for_grants
       next_journal.save!
 
       next_journal = next_journal.find_next_year_journal

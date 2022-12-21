@@ -63,7 +63,7 @@ class JournalsControllerTest < ActionDispatch::IntegrationTest
     get journal_path(@journal)
 
     #then
-    expected_message = I18n.t(:sum_one_percent_negative_with_one_percent_left, :sum_one_percent => sum_one_percent, :sum => sum, :scope => :journal)
+    expected_message = "Saldo końcowe (#{sum}) jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie #{sum_one_percent})"
     assert_equal expected_message, flash[:alert]
   end
 
