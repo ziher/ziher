@@ -2,11 +2,25 @@
     function reloadForYear(year) {
         document.location.href = "<%= @report_link %>?year=" + year;
     }
+    function reloadForGrant(grant_id) {
+        document.location.href = "<%= @report_link %>?grant_id=" + grant_id;
+    }
 </script>
 
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-8">
     <h3><%= @report_header %></h3>
+  </div>
+  <div class="col-md-2">
+  <% if not @selected_grant_id.blank? %>
+    <div class="pull-right top-buffer-20">
+      Dotacja: <select class="no-margin" onchange="reloadForGrant(this.value)">
+      <% @grants.each do |grant| %>
+          <option value="<%= grant.id %>" <%= grant.id.to_s == @selected_grant_id.to_s ? 'selected=selected' : '' %>><%= grant.name %></option>
+      <% end %>
+    </select>
+    </div>
+  <% end %>
   </div>
   <div class="col-md-2">
     <div class="pull-right top-buffer-20">

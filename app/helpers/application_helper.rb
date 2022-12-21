@@ -60,11 +60,17 @@ module ApplicationHelper
     when :finance_one_percent_report
       "active" if current_page?(finance_one_percent_report_path)
 
+    when :finance_grants_report
+      "active" if current_page?(finance_grants_report_path)
+
     when :all_finance_report
       "active" if current_page?(all_finance_report_path)
 
     when :all_finance_one_percent_report
       "active" if current_page?(all_finance_one_percent_report_path)
+
+    when :all_finance_grants_report
+      "active" if current_page?(all_finance_grants_report_path)
 
     when :reports_dropdown
       "active" if

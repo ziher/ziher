@@ -21,8 +21,11 @@ class ReportsController < ApplicationController
 
     session[:current_unit_id] = @selected_unit_id.to_i
 
+    set_report_global_variables(@selected_unit_id)
+
     create_hashes_for(:amount,
                       :initial_balance,
+                      nil,
                       @selected_unit_id)
 
     respond_to do |format|
@@ -37,7 +40,7 @@ class ReportsController < ApplicationController
   end
 
   def finance_one_percent
-    @report_header = 'Raporty > Sprawozdanie finansowe dla 1%'
+    @report_header = 'Raporty > Sprawozdanie finansowe dla dotacji 1%'
     @report_link = finance_one_percent_report_path
 
     @user_units = Unit.find_by_user(current_user)
@@ -51,8 +54,11 @@ class ReportsController < ApplicationController
 
     session[:current_unit_id] = @selected_unit_id.to_i
 
+    set_report_global_variables(@selected_unit_id)
+
     create_hashes_for(:amount_one_percent,
                       :initial_balance_one_percent,
+                      nil,
                       @selected_unit_id)
 
     respond_to do |format|
@@ -62,10 +68,52 @@ class ReportsController < ApplicationController
       }
       format.pdf {
         @generation_time = Time.now
+        @report_short_name = "dotacji 1% podatku dochodowego od osób fizycznych"
+        @report_long_name = @report_short_name
         render pdf: 'sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/one_percent'
       }
     end
   end
+
+  def finance_grants
+
+    @user_units = Unit.find_by_user(current_user)
+
+    @selected_unit_id = params[:unit_id] || session[:current_unit_id]
+
+    unless current_user.is_superadmin || current_user.can_view_unit_entries(Unit.find(@selected_unit_id))
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
+    session[:current_unit_id] = @selected_unit_id.to_i
+
+    set_report_global_variables(@selected_unit_id)
+
+    grant = get_grant
+
+    @report_header = 'Raporty > Sprawozdanie finansowe dla dotacji ' + grant.name
+    @report_link = finance_grants_report_path
+
+    create_hashes_for(:amount,
+                      :initial_grant_balance,
+                      grant.id,
+                      @selected_unit_id)
+
+    respond_to do |format|
+      format.html {
+        @pdf_report_link = finance_grants_report_path(:format => :pdf)
+        render 'finance'
+      }
+      format.pdf {
+        @generation_time = Time.now
+        @report_short_name = "dotacji #{grant.name}"
+        @report_long_name = "dotacji \"#{grant.description}\""
+        render pdf: 'sprawozdanie_finansowe_dotacja_' + get_time_postfix, template: 'reports/one_percent'
+      }
+    end
+  end
+
 
   def all_finance
     unless current_user.is_superadmin
@@ -75,6 +123,8 @@ class ReportsController < ApplicationController
 
     @report_header = 'Raporty > Całościowe sprawozdanie finansowe'
     @report_link = all_finance_report_path
+
+    set_report_global_variables
 
     create_hashes_for(:amount, :initial_balance)
 
@@ -100,7 +150,7 @@ class ReportsController < ApplicationController
 
         @user_units = Unit.find_by_user(current_user)
         @user_units.each do |unit|
-          create_hashes_for(:amount, :initial_balance, unit.id)
+          create_hashes_for(:amount, :initial_balance, nil, unit.id)
           @all_finance_hashes[unit.id] = @finance_hash
           @all_bank_hashes[unit.id] = @bank_hash
           @total_hashes[unit.id] = @total_hash
@@ -120,8 +170,10 @@ class ReportsController < ApplicationController
       return
     end
 
-    @report_header = 'Raporty > Całościowe sprawozdanie finansowe dla 1%'
+    @report_header = 'Raporty > Całościowe sprawozdanie finansowe dla dotacji 1%'
     @report_link = all_finance_one_percent_report_path
+
+    set_report_global_variables
 
     create_hashes_for(:amount_one_percent, :initial_balance_one_percent)
 
@@ -137,6 +189,8 @@ class ReportsController < ApplicationController
       }
       format.pdf {
         @generation_time = Time.now
+        @report_short_name = "dotacji 1% podatku dochodowego od osób fizycznych"
+        @report_long_name = @report_short_name
         render pdf: 'calosciowe_sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/all_one_percent'
       }
       format.csv {
@@ -145,13 +199,64 @@ class ReportsController < ApplicationController
 
         @user_units = Unit.find_by_user(current_user)
         @user_units.each do |unit|
-          create_hashes_for(:amount_one_percent, :initial_balance_one_percent, unit.id)
+          create_hashes_for(:amount_one_percent, :initial_balance_one_percent, nil, unit.id)
           @all_finance_hashes[unit.id] = @finance_hash
           @all_bank_hashes[unit.id] = @bank_hash
         end
 
         response.headers['Content-Type'] = 'text/csv"'
         response.headers['Content-Disposition'] = "attachment; filename=\"ziher_calosciowe_sprawozdanie_finansowe_1_procent_za_#{session[:current_year]}.csv\""
+
+        render template: 'reports/all_finance'
+      }
+    end
+
+  end
+
+  def all_finance_grants
+    unless current_user.is_superadmin
+      redirect_to root_path, alert: I18n.t(:default, :scope => :unauthorized)
+      return
+    end
+
+    set_report_global_variables
+
+    grant = get_grant
+
+    @report_header = 'Raporty > Całościowe sprawozdanie finansowe dla dotacji ' + grant.name
+    @report_link = all_finance_grants_report_path
+
+    create_hashes_for(:amount, :initial_grant_balance, grant.id)
+
+    @open_old_journals = Journal.find_old_open(@selected_year)
+    @open_current_journals = Journal.find_open_by_year(@selected_year)
+
+    respond_to do |format|
+      format.html {
+        @pdf_report_link = all_finance_grants_report_path(:format => :pdf)
+        @csv_report_link = all_finance_grants_report_path(:format => :csv)
+        @csv_entries_report_link = all_finance_detailed_report_path(:format => :csv)
+        render 'all_finance'
+      }
+      format.pdf {
+        @generation_time = Time.now
+        @report_short_name = "dotacji #{grant.name}"
+        @report_long_name = "dotacji \"#{grant.description}\""
+        render pdf: 'calosciowe_sprawozdanie_finansowe_dotacja_' + get_time_postfix, template: 'reports/all_one_percent'
+      }
+      format.csv {
+        @all_finance_hashes = Hash.new
+        @all_bank_hashes = Hash.new
+
+        @user_units = Unit.find_by_user(current_user)
+        @user_units.each do |unit|
+          create_hashes_for(:amount, :initial_grant_balance, grant.id, unit.id)
+          @all_finance_hashes[unit.id] = @finance_hash
+          @all_bank_hashes[unit.id] = @bank_hash
+        end
+
+        response.headers['Content-Type'] = 'text/csv"'
+        response.headers['Content-Disposition'] = "attachment; filename=\"ziher_calosciowe_sprawozdanie_finansowe_dotacja_za_#{session[:current_year]}.csv\""
 
         render template: 'reports/all_finance'
       }
@@ -189,7 +294,7 @@ class ReportsController < ApplicationController
 
   private
 
-  def create_hashes_for(amount_type, initial_balance_type, unit_id = nil)
+  def set_report_global_variables(unit_id = nil)
     @selected_year = params[:year] || session[:current_year]
     @report_start_date = @selected_year.to_s + '-01-01'
     @report_end_date = get_report_end_date(@selected_year)
@@ -203,6 +308,11 @@ class ReportsController < ApplicationController
       end
     end
 
+    @grants = Grant.get_by_year(@selected_year)
+  end
+
+  def create_hashes_for(amount_type, initial_balance_type, grant_id = nil, unit_id = nil)
+
     @years = Journal.find_all_years
     @categories = Category.where(:year => @selected_year)
 
@@ -215,21 +325,23 @@ class ReportsController < ApplicationController
                                                 @selected_year,
                                                 amount_type,
                                                 initial_balance_type,
+                                                grant_id,
                                                 unit_id)
 
     @bank_hash = create_hash_for_amount_type(JournalType::BANK_TYPE_ID,
                                              @selected_year,
                                              amount_type,
                                              initial_balance_type,
+                                             grant_id,
                                              unit_id)
 
     @total_hash = get_totals(@finance_hash, @bank_hash)
   end
 
-  def create_hash_for_amount_type(journal_type, year, amount_type, initial_balance_type, unit_id = nil)
-    hash = get_categories_hash(journal_type, year, amount_type, unit_id)
+  def create_hash_for_amount_type(journal_type, year, amount_type, initial_balance_type, grant_id = nil, unit_id = nil)
+    hash = get_categories_hash(journal_type, year, amount_type, grant_id, unit_id)
 
-    hash.merge!(get_initial_balances(journal_type, year, initial_balance_type, unit_id))
+    hash.merge!(get_initial_balances(journal_type, year, initial_balance_type, grant_id, unit_id))
 
     hash.merge!(get_total_balances(hash, year))
 
@@ -282,13 +394,21 @@ class ReportsController < ApplicationController
     return hash
   end
 
-  def get_initial_balances(journal_type, year, balance_type, unit_id = nil)
+  def get_initial_balances(journal_type, year, balance_type, grant_id = nil, unit_id = nil)
     hash = Hash.new
 
-    if unit_id.nil?
-      sum = Journal.where(:year => year, :journal_type => journal_type).sum(balance_type)
+    if grant_id.nil?
+      if unit_id.nil?
+        sum = Journal.where(:year => year, :journal_type => journal_type).sum(balance_type)
+      else
+        sum = Journal.where(:year => year, :journal_type => journal_type, :unit_id => unit_id).sum(balance_type)
+      end
     else
-      sum = Journal.where(:year => year, :journal_type => journal_type, :unit_id => unit_id).sum(balance_type)
+      if unit_id.nil?
+        sum = JournalGrant.includes(:journal).where(grant_id: grant_id, journals: {year: year, journal_type: journal_type}).sum(balance_type)
+      else
+        sum = JournalGrant.includes(:journal).where(grant_id: grant_id, journals: {year: year, journal_type: journal_type, unit_id: unit_id}).sum(balance_type)
+      end
     end
 
     hash[INITIAL_BALANCE_KEY] = sum
@@ -296,7 +416,7 @@ class ReportsController < ApplicationController
     return hash
   end
 
-  def get_categories_hash(journal_type, year, amount_type, unit_id = nil)
+  def get_categories_hash(journal_type, year, amount_type, grant_id = nil, unit_id = nil)
     hash = Hash.new
 
     categories = Category.where(:year => year)
@@ -310,7 +430,15 @@ class ReportsController < ApplicationController
     categories.each do |category|
       items = Item.where(:category => category, :entry => entries)
 
-      sum = items.sum(amount_type)
+      if grant_id.nil?
+        sum = items.sum(amount_type)
+      else
+        if category.from_grant && category.grant_id == grant_id
+          sum = items.where(category: category).sum(amount_type)
+        else
+          sum = ItemGrant.where(grant_id: grant_id, item: items).sum(amount_type)
+        end
+      end
 
       hash[category.id] = sum
     end
@@ -328,5 +456,21 @@ class ReportsController < ApplicationController
 
   def get_time_postfix
     @generation_time.strftime('%Y%m%d%H%M%S')
+  end
+
+  def get_grant
+    @selected_grant_id = params[:grant_id] || session[:current_grant_id]
+    grant = Grant.find_by(id: @selected_grant_id)
+
+    if grant.blank?
+      grant = @grants.first
+
+      redirect_to root_path if grant.nil?
+    end
+
+    session[:current_grant_id] = grant.id
+    @selected_grant_id = grant.id
+
+    return grant
   end
 end
