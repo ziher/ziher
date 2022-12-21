@@ -53,4 +53,14 @@ class Grant < ApplicationRecord
       throw(:abort)
     end
   end
+
+  def get_category_by_year(year)
+    Category.where(year: year, grant_id: self.id)
+  end
+
+  def Grant.get_by_year(year)
+    grant_ids = Category.where(year: year).map(&:grant_id).reject(&:blank?)
+
+    Grant.find grant_ids
+  end
 end

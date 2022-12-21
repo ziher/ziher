@@ -52,6 +52,18 @@ class Entry < ApplicationRecord
     end
   end
 
+  def get_grants_for_category(category)
+    items.includes(:item_grants).map(&:item_grants).flatten.map(&:grant).uniq
+  end
+
+  def get_amount_for_category_and_grant(category, grant)
+    items.includes(:item_grants).where(category_id: category.id).map(&:item_grants).flatten.select {|item| item.grant_id == grant.id}.map(&:amount)
+  end
+
+  def get_sum_for_grant(grant)
+    Item.includes(:item_grants).where(entry: self, item_grants: {grant_id: grant.id}).map(&:item_grants).flatten.sum(&:amount)
+  end
+
   def has_category(category)
     existing_item = self.items.find { |item| item.category == category }
     return (existing_item != nil)
