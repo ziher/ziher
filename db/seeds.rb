@@ -414,3 +414,7 @@ akcja_i_darowizna.save!
 wyposazenie.save!
 transport.save!
 wynagrodzenie_i_wyposazenie.save!
+
+rohis = Grant.create!(name: 'ROHiS', description: 'Rządowy Program Wsparcia Rozwoju Organizacji Harcerskich i Skautowych')
+rohis.create_income_category_for_year(2022)
+rohis.create_income_category_for_year(2023)
