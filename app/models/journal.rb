@@ -168,8 +168,8 @@ class Journal < ApplicationRecord
     return get_balance_for_grant(grant, end_of_year)
   end
 
-  def find_next_year_journal
-    return Journal.where(year: self.year + 1, unit_id: self.unit_id, journal_type_id: self.journal_type.id).first
+  def find_next_journal
+    return Journal.where("unit_id = ? AND journal_type_id = ? AND year >= ?", self.unit_id, self.journal_type.id, self.year + 1).order("year ASC").first
   end
 
   # Returns one journal of given year and type, or nil if not found
@@ -426,13 +426,13 @@ class Journal < ApplicationRecord
 
 
   def recalculate_next_initial_balances
-    next_journal = self.find_next_year_journal
+    next_journal = self.find_next_journal
     while next_journal
       next_journal.set_initial_balance
       next_journal.set_initial_balance_for_grants
       next_journal.save!
 
-      next_journal = next_journal.find_next_year_journal
+      next_journal = next_journal.find_next_journal
     end
   end
 
