@@ -34,7 +34,7 @@
     <table class="table table-condensed table-bordered">
       <tr>
         <td>Nr konta / nr książeczki oszczędnościowej
-          <hr/>
+          <br/><br/><hr/>
         </td>
       </tr>
     </table>
@@ -47,8 +47,54 @@
       <tr>
         <td class="text-center">
           Oświadczam, że w złożonym sprawozdaniu finansowym zostały ujęte (zgodnie z posiadanymi przez jednostkę dowodami księgowymi) wszystkie przychody i rozchody związane z działalnością statutową wymienionej powyżej jednostki organizacyjnej. Potwierdzam posiadanie kwoty salda na dzień <%= @report_end_date %>
-          <hr/>
+          <br/><br/><hr/>
           <i>(data, imię, nazwisko i podpis komendanta (opiekuna) jednostki składającej sprawozdanie)</i>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    Sporządził: <%= current_user.first_name %> <%= current_user.last_name %>
+    <br/>
+    <%= @generation_time.strftime ('%Y-%m-%d %H:%M:%S') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <td>
+          <b>Protokół inwentaryzacji kasy</b><br/><br/>
+          <table class="table table-bordered table-striped">
+            <tr>
+              <th style="width: 100px;">Nominał</th>
+              <th style="width: 250px;">Ilość</th>
+              <th>Kwota</th>
+            </tr>
+            <tr><td>500 zł</td><td></td><td></td></tr>
+            <tr><td>200 zł</td><td></td><td></td></tr>
+            <tr><td>100 zł</td><td></td><td></td></tr>
+            <tr><td>50 zł</td><td></td><td></td></tr>
+            <tr><td>20 zł</td><td></td><td></td></tr>
+            <tr><td>10 zł</td><td></td><td></td></tr>
+            <tr><td>5 zł</td><td></td><td></td></tr>
+            <tr><td>2 zł</td><td></td><td></td></tr>
+            <tr><td>1 zł</td><td></td><td></td></tr>
+            <tr><td>0,50 zł</td><td></td><td></td></tr>
+            <tr><td>0,20 zł</td><td></td><td></td></tr>
+            <tr><td>0,10 zł</td><td></td><td></td></tr>
+            <tr><td>0,05 zł</td><td></td><td></td></tr>
+            <tr><td>0,02 zł</td><td></td><td></td></tr>
+            <tr><td>0,01 zł</td><td></td><td></td></tr>
+            <tr><td colspan="2" class="text-right"><b>Razem kwota:</b></td><td></td></tr>
+          </table>
+          <br/>
+          <hr/>
+          <i>(data, imię, nazwisko i podpis komendanta (opiekuna) jednostki oraz osoby sprawdzającej)</i>
         </td>
       </tr>
     </table>
