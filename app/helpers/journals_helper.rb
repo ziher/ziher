@@ -39,11 +39,14 @@ module JournalsHelper
     end
 
     Grant.get_by_year(journal.year).each do |grant|
-      grant_and_amount = grant.name + ": " + number_with_precision(journal.get_expense_sum_for_grant(grant), precision: 2).to_s
+      grant_amount = journal.get_expense_sum_for_grant(grant)
+      if grant_amount != nil && grant_amount != 0
+        grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s
 
-      result += "<br/><small><small><span title='" + category_name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
-      result += grant_and_amount
-      result += "</span></small></small>"
+        result += "<br/><small><small><span title='" + category_name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
+        result += grant_and_amount
+        result += "</span></small></small>"
+      end
     end
   end
 
@@ -66,11 +69,14 @@ module JournalsHelper
       end
 
       Grant.get_by_year(entry.journal.year).each do |grant|
-        grant_and_amount = grant.name + ": " + number_with_precision(entry.get_sum_for_grant(grant), precision: 2).to_s
+        grant_amount = entry.get_sum_for_grant(grant)
+        if grant_amount != nil && grant_amount != 0
+          grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s
 
-        result += "<br/><small><small><span title='" + category_name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
-        result += grant_and_amount
-        result += "</span></small></small>"
+          result += "<br/><small><small><span title='" + category_name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
+          result += grant_and_amount
+          result += "</span></small></small>"
+        end
       end
     end
 
@@ -95,11 +101,14 @@ module JournalsHelper
       if ! grants.blank?
         grants.each do |grant|
 
-          grant_and_amount = grant.name + ": " + number_with_precision(entry.get_amount_for_category_and_grant(category, grant).first, precision: 2).to_s
+          grant_amount = entry.get_amount_for_category_and_grant(category, grant).first
+          if grant_amount != nil && grant_amount != 0
+            grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s
 
-          result += "<br/><small><small><span title='" + category.name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
-          result += grant_and_amount
-          result += "</span></small></small>"
+            result += "<br/><small><small><span title='" + category.name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
+            result += grant_and_amount
+            result += "</span></small></small>"
+          end
         end
       end
     end
@@ -127,11 +136,14 @@ module JournalsHelper
       end
 
       Grant.get_by_year(journal.year).each do |grant|
-        grant_and_amount = grant.name + ": " + number_with_precision(journal.get_sum_for_grant_in_category(grant, category), precision: 2).to_s
+        grant_amount = journal.get_sum_for_grant_in_category(grant, category)
+        if grant_amount != nil && grant_amount != 0
+          grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s
 
-        result += "<br/><small><small><span title='" + category.name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
-        result += grant_and_amount
-        result += "</span></small></small>"
+          result += "<br/><small><small><span title='" + category.name + "&#013;Środki wydane z " + grant_and_amount  + "' class='text-muted'>"
+          result += grant_and_amount
+          result += "</span></small></small>"
+        end
       end
     end
 
