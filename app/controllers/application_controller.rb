@@ -23,9 +23,11 @@ class ApplicationController < ActionController::Base
   def validate_email
     if current_user != nil and not current_user.valid_email
       flash.now[:email_check] = "<b>Uwaga!</b> Twój adres <b>email jest spoza domeny @zhr.pl lub @malopolska.zhr.pl</b>"
-      flash.now[:email_check] += " - <a href='" + edit_user_registration_path + "'>kliknij tu aby go zmienić.</a>"
+      flash.now[:email_check] += " - aby móc dalej używać ZiHeRa musisz go zmienić.</a>"
 
-      flash.now[:email_check] += "</br></br><b>Możliwość logowania</b> adresem email spoza @zhr.pl lub @malopolska.zhr.pl <b>zostanie wyłączona 1 stycznia 2023 roku</b>."
+      flash.now[:email_check] += "</br></br><b>Możliwość logowania</b> adresem email spoza @zhr.pl lub @malopolska.zhr.pl <b>została wyłączona 1 stycznia 2023 roku</b>."
+
+      redirect_to edit_user_registration_path unless request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users/edit" or request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users/sign_out"
     end
   end
 end
