@@ -63,38 +63,98 @@
   </div>
 </div>
 
+<%# Page break %>
+<div style = "display:block; clear:both; page-break-after:always;"></div>
+
 <div class="row">
   <div class="col-md-12">
-    <table class="table">
+    <table class="table table-condensed table-bordered">
       <tr>
-        <td>
-          <b>Protokół inwentaryzacji kasy</b><br/><br/>
-          <table class="table table-bordered table-striped">
-            <tr>
-              <th style="width: 100px;">Nominał</th>
-              <th style="width: 250px;">Ilość</th>
-              <th>Kwota</th>
-            </tr>
-            <tr><td>500 zł</td><td></td><td></td></tr>
-            <tr><td>200 zł</td><td></td><td></td></tr>
-            <tr><td>100 zł</td><td></td><td></td></tr>
-            <tr><td>50 zł</td><td></td><td></td></tr>
-            <tr><td>20 zł</td><td></td><td></td></tr>
-            <tr><td>10 zł</td><td></td><td></td></tr>
-            <tr><td>5 zł</td><td></td><td></td></tr>
-            <tr><td>2 zł</td><td></td><td></td></tr>
-            <tr><td>1 zł</td><td></td><td></td></tr>
-            <tr><td>0,50 zł</td><td></td><td></td></tr>
-            <tr><td>0,20 zł</td><td></td><td></td></tr>
-            <tr><td>0,10 zł</td><td></td><td></td></tr>
-            <tr><td>0,05 zł</td><td></td><td></td></tr>
-            <tr><td>0,02 zł</td><td></td><td></td></tr>
-            <tr><td>0,01 zł</td><td></td><td></td></tr>
-            <tr><td colspan="2" class="text-right"><b>Razem kwota:</b></td><td></td></tr>
-          </table>
-          <br/>
-          <hr/>
-          <i>(data, imię, nazwisko i podpis komendanta (opiekuna) jednostki oraz osoby sprawdzającej)</i>
+        <td class="text-center" style="font-size: small;">
+          <b>
+            <span class="text-uppercase">Protokół inwentaryzacji kasy</span> na dzień <%= @report_end_date %>
+            <br/>
+            <span class="text-uppercase">dla</span>
+            <br/>
+            <%= @selected_unit_name %>
+          </b>
+        </td>
+      </tr>
+    </table>
+    <span><b>W toku inwentaryzacji stwierdzono co następuje:</b></span>
+    <br/><br/>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th style="width: 50px;">Lp.</th>
+        <th style="width: 100px;">Nominał</th>
+        <th style="width: 250px;">Ilość</th>
+        <th>Kwota złotych</th>
+      </tr>
+      <tr><td>1.</td><td>500 zł</td><td></td><td></td></tr>
+      <tr><td>2.</td><td>200 zł</td><td></td><td></td></tr>
+      <tr><td>3.</td><td>100 zł</td><td></td><td></td></tr>
+      <tr><td>4.</td><td>50 zł</td><td></td><td></td></tr>
+      <tr><td>5.</td><td>20 zł</td><td></td><td></td></tr>
+      <tr><td>6.</td><td>10 zł</td><td></td><td></td></tr>
+      <tr><td>7.</td><td>5 zł</td><td></td><td></td></tr>
+      <tr><td>8.</td><td>2 zł</td><td></td><td></td></tr>
+      <tr><td>9.</td><td>1 zł</td><td></td><td></td></tr>
+      <tr><td>10.</td><td>0,50 zł</td><td></td><td></td></tr>
+      <tr><td>11.</td><td>0,20 zł</td><td></td><td></td></tr>
+      <tr><td>12.</td><td>0,10 zł</td><td></td><td></td></tr>
+      <tr><td>13.</td><td>0,05 zł</td><td></td><td></td></tr>
+      <tr><td>14.</td><td>0,02 zł</td><td></td><td></td></tr>
+      <tr><td>15.</td><td>0,01 zł</td><td></td><td></td></tr>
+      <tr><td colspan="3" class="text-right"><b>Ogółem gotówka w kasie:</b></td><td></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <td><b>Słownie:</b>
+          <br/><br/><hr/>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <span><b>Protokół sporządzono w 2 egzemplarzach, w dniu <%= @report_end_date %> przez Zespół Inwentaryzacyjny w składzie:</b></span>
+    <br/><br/><br/><br/>
+    <table class="table">
+      <% for counter in 1..3 do %>
+        <tr height="75px">
+          <td style="border-top: none;"><%= counter %>.</td>
+          <td class="text-center" style="border-top: none;">
+            <span>..................................................................................</span><br/>
+            <span>imię i nazwisko</span>
+          </td>
+          <td class="text-center" style="border-top: none;">
+            <span>...................................................................................</span><br/>
+            <span>funkcja</span>
+          </td>
+          <td class="text-center" style="border-top: none;">
+            <span>.........................................................</span><br/>
+            <span>podpis</span>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <td><b>Potwierdzam za zgodność:</b>
+          <br/><br/><hr/>
+          <i>(pieczątka i podpis osoby z jednostki nadrzędnej finansowo)</i>
         </td>
       </tr>
     </table>
