@@ -48,27 +48,85 @@
   </tr>
 
 <% position = @start_position %>
-<% @inventory_entries.each do |inventory_entry| %>
+
   <tr>
-    <td><%= position += 1 %>.</td>
-    <td><%= inventory_entry.date %></td>
-    <td><%= inventory_entry.stock_number %></td>
-    <td><%= inventory_entry.name %></td>
-    <td><%= inventory_entry.document_number %></td>
-    <td><%= inventory_entry.inventory_source.name %></td>
-    <td><%= inventory_entry.is_expense ? '-' : inventory_entry.amount %></td>
-    <td><%= inventory_entry.is_expense ? inventory_entry.amount : '-' %></td>
-    <td><%= number_with_precision(inventory_entry.unit_price, :precision => 2) %></td>
-    <td><%= number_with_precision(inventory_entry.signed_total_value, :precision => 2)  %></td>
-    <td><%= inventory_entry.remark %></td>
+    <th>Środki do 1 000 zł</th>
   </tr>
-<% end %>
+  <% @inventory_entries.each do |inventory_entry| %>
+    <% if inventory_entry.unit_price < 1000 %>
+      <tr>
+        <td><%= position += 1 %>.</td>
+        <td><%= inventory_entry.date %></td>
+        <td><%= inventory_entry.stock_number %></td>
+        <td><%= inventory_entry.name %></td>
+        <td><%= inventory_entry.document_number %></td>
+        <td><%= inventory_entry.inventory_source.name %></td>
+        <td><%= inventory_entry.is_expense ? '-' : inventory_entry.amount %></td>
+        <td><%= inventory_entry.is_expense ? inventory_entry.amount : '-' %></td>
+        <td><%= number_with_precision(inventory_entry.unit_price, :precision => 2) %></td>
+        <td><%= number_with_precision(inventory_entry.signed_total_value, :precision => 2)  %></td>
+        <td><%= inventory_entry.remark %></td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <tr height="50px"></tr>
+
+  <tr>
+    <th>Środki od 1 000 zł do 10 000 zł</th>
+  </tr>
+  <% @inventory_entries.each do |inventory_entry| %>
+    <% if inventory_entry.unit_price >= 1000 && inventory_entry.unit_price < 10000 %>
+      <tr>
+        <td><%= position += 1 %>.</td>
+        <td><%= inventory_entry.date %></td>
+        <td><%= inventory_entry.stock_number %></td>
+        <td><%= inventory_entry.name %></td>
+        <td><%= inventory_entry.document_number %></td>
+        <td><%= inventory_entry.inventory_source.name %></td>
+        <td><%= inventory_entry.is_expense ? '-' : inventory_entry.amount %></td>
+        <td><%= inventory_entry.is_expense ? inventory_entry.amount : '-' %></td>
+        <td><%= number_with_precision(inventory_entry.unit_price, :precision => 2) %></td>
+        <td><%= number_with_precision(inventory_entry.signed_total_value, :precision => 2)  %></td>
+        <td><%= inventory_entry.remark %></td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <tr height="50px"></tr>
+
+  <tr>
+    <th>Środki powyżej 10 000 zł</th>
+  </tr>
+  <% @inventory_entries.each do |inventory_entry| %>
+    <% if inventory_entry.unit_price > 10000 %>
+      <tr>
+        <td><%= position += 1 %>.</td>
+        <td><%= inventory_entry.date %></td>
+        <td><%= inventory_entry.stock_number %></td>
+        <td><%= inventory_entry.name %></td>
+        <td><%= inventory_entry.document_number %></td>
+        <td><%= inventory_entry.inventory_source.name %></td>
+        <td><%= inventory_entry.is_expense ? '-' : inventory_entry.amount %></td>
+        <td><%= inventory_entry.is_expense ? inventory_entry.amount : '-' %></td>
+        <td><%= number_with_precision(inventory_entry.unit_price, :precision => 2) %></td>
+        <td><%= number_with_precision(inventory_entry.signed_total_value, :precision => 2)  %></td>
+        <td><%= inventory_entry.remark %></td>
+      </tr>
+    <% end %>
+  <% end %>
 
   <tr>
     <td class="text-right" colspan="9"><b>Razem: </b></td>
     <td><b><%= number_with_precision(@sum_total_value, :precision => 2) %></b></td>
     <td colspan="3"></td>
   </tr>
+
+  <tr height="50px"></tr>
+  <tr>
+    <th>Dodatkowo:</th>
+  </tr>
+
 </table>
 </div>
 

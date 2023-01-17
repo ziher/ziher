@@ -418,3 +418,10 @@ wynagrodzenie_i_wyposazenie.save!
 rohis = Grant.create!(name: 'ROHiS', description: 'Rządowy Program Wsparcia Rozwoju Organizacji Harcerskich i Skautowych')
 rohis.create_income_category_for_year(2022)
 rohis.create_income_category_for_year(2023)
+
+inventory_entries_totals = [100, 500, 1000, 1500, 2100, 3000, 6000, 10000, 21000]
+
+inventory_entries_totals.each_with_index do |total_value, index|
+    InventoryEntry.create!(date: '2023-01-17', stock_number: total_value, name: total_value, document_number: total_value, amount: 1, is_expense: false, total_value: total_value, unit_id: 1, inventory_source_id: 1, remark: total_value)
+    InventoryEntry.create!(date: '2023-01-17', stock_number: total_value, name: total_value, document_number: total_value, amount: 3, is_expense: false, total_value: total_value, unit_id: 1, inventory_source_id: 1, remark: total_value)
+end
