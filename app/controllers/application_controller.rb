@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
       flash.now[:email_check] += "</br></br><b>Możliwość logowania</b> adresem email spoza @zhr.pl lub @malopolska.zhr.pl <b>została wyłączona 1 stycznia 2023 roku</b>."
 
-      redirect_to edit_user_registration_path unless request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users/edit" or request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users/sign_out" or request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users"
+      redirect_to edit_user_registration_path unless request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users/edit" or request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users/sign_out" or request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users" or request.path == "#{ENV['RAILS_RELATIVE_URL_ROOT']}/users/confirmation"
     end
   end
 end
