@@ -13,3 +13,12 @@ jobs:
 
       - name: Build ZiHeR container
         run: ./build.sh
+
+      - name: Login to Docker Hub
+        run: docker login -u ${DOCKER_HUB_LOGIN} -p ${DOCKER_HUB_TOKEN}
+        env:
+          DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Push Docker Hub
+        run: ./release.sh
