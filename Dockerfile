@@ -10,7 +10,7 @@ WORKDIR /ziher
 COPY Gemfile /ziher/Gemfile
 COPY Gemfile.lock /ziher/Gemfile.lock
 RUN set -x \
-  && gem install bundler \
+  && gem install bundler -v 2.3.26 \
   && bundle config set --local without 'development test' \
   && bundle install --no-cache \
   && rm -rf /usr/local/bundle/cache/* \
