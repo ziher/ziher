@@ -1,34 +1,36 @@
-version: '2'
+version: '3'
+name: ziher
+
 services:
   postgres:
     container_name: postgres
-    image: postgres:9.4.1
+    image: postgres:10
     ports:
       - "5432:5432"
     volumes:
-      - /var/lib/postgresql/data
+     - ../:/ziher/
+     - /var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
     restart: always
-  ziher:
-    container_name: ziher
-    build:
-      context: ../
-      args:
-        SECRET_KEY_BASE: 99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
-    entrypoint: /ziher/entrypoint.sh
-    volumes:
-    - ./entrypoint.sh:/ziher/entrypoint.sh
-    image: ziher:latest
+
+  ziher-stage:
+    profiles:
+      - stage
+    container_name: ziher-stage
+    image: ziher/app:latest
+    #entrypoint: /ziher/entrypoint.sh
+    #volumes:
+    #- ./entrypoint.sh:/ziher/entrypoint.sh
     ports:
       - "3000:3000"
     environment:
-      - ZIHER_APP_NAME=dev environment
-      - RAILS_RELATIVE_URL_ROOT=/dev
-      - RAILS_ENV=production
+      - ZIHER_APP_NAME=stage environment
+      - RAILS_RELATIVE_URL_ROOT=/stage
+      #- RAILS_ENV=production
       - ZIHER_DB_HOST=postgres
-      - ZIHER_DB_NAME=ziher_development
+      - ZIHER_DB_NAME=ziher_stage
       - ZIHER_DB_USERNAME=ziher
       - ZIHER_DB_PASSWORD=ziher
       - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
@@ -55,3 +57,47 @@ services:
       options:
         max-size: "200m"
         max-file: "3"
+
+  ziher-dev:
+    profiles:
+      - dev
+    container_name: ziher-dev
+    image: ziher/app
+    entrypoint: /ziher/docker/entrypoint-dev.sh
+    volumes:
+      - ../:/ziher/
+    ports:
+      - "3000:3000"
+    environment:
+      - ZIHER_APP_NAME=dev environment
+      - RAILS_RELATIVE_URL_ROOT=/dev
+      - RAILS_ENV=development
+      - ZIHER_DB_HOST=postgres
+      - ZIHER_DB_NAME=ziher_development
+      - ZIHER_DB_USERNAME=ziher
+      - ZIHER_DB_PASSWORD=ziher
+      - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
+    links:
+      - postgres
+
+  ziher-dev-shell:
+    profiles:
+      - dev-shell
+    container_name: ziher-dev-shell
+    image: ziher/app
+    entrypoint: /ziher/docker/entrypoint-dev-shell.sh
+    volumes:
+      - ../:/ziher/
+    ports:
+      - "3000:3000"
+    environment:
+      - ZIHER_APP_NAME=dev environment
+      - RAILS_RELATIVE_URL_ROOT=/dev
+      - RAILS_ENV=development
+      - ZIHER_DB_HOST=postgres
+      - ZIHER_DB_NAME=ziher_development
+      - ZIHER_DB_USERNAME=ziher
+      - ZIHER_DB_PASSWORD=ziher
+      - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
+    links:
+      - postgres
