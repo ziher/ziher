@@ -68,8 +68,8 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['ZIHER_DB_NAME'] %>
+  database: "<%= ENV['ZIHER_DB_NAME'] %>"
   pool: 5
-  host: <%= ENV['ZIHER_DB_HOST'] %>
-  username: <%= ENV['ZIHER_DB_USERNAME'] %>
-  password: <%= ENV['ZIHER_DB_PASSWORD'] %>
+  host: "<%= ENV['ZIHER_DB_HOST'] %>"
+  username: "<%= ENV['ZIHER_DB_USERNAME'] %>"
+  password: "<%= ENV['ZIHER_DB_PASSWORD'] %>"
