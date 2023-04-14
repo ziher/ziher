@@ -4,7 +4,6 @@ set -x
 
 readonly DB_CONTAINER=postgres
 readonly PGPASSWORD=postgres
-readonly DB_NAME=ziher_development
 readonly DB_PASSWORD=ziher
 readonly DB_USER=ziher
 
