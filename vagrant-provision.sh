@@ -63,7 +63,7 @@ sudo -H -u vagrant -i echo "cd /ziher" >> /home/vagrant/.bash_profile
 echo ====================== Instaluje PostgreSQL
 docker-compose -f /ziher/docker/docker-compose.yml up -d postgres
 apt-get install --yes libpq-dev
-docker exec -u postgres postgres bash -c "psql postgres -c \"create user ziher with password 'ziher' createdb\""
+docker exec -u postgres postgres bash -c "psql postgres -c \"create role ziher with CREATEDB SUPERUSER login password 'ziher'\""
 
 sudo -H -u vagrant -i bash -c "git config --global color.ui true"
 
