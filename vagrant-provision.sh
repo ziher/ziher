@@ -38,11 +38,6 @@ apt-get install --yes \
 
 usermod -aG docker vagrant
 
-# install docker-compose
-readonly DOCKER_COMPOSE_VERSION=1.29.2
-curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-
 #echo ====================== Instaluje rbenv
 apt-get install --yes git curl vim libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
 sudo -H -u vagrant -i bash -c "git clone https://github.com/rbenv/rbenv.git /home/vagrant/.rbenv"
@@ -61,7 +56,7 @@ sudo -H -u vagrant -i echo "source ~/.bashrc" >> /home/vagrant/.bash_profile
 sudo -H -u vagrant -i echo "cd /ziher" >> /home/vagrant/.bash_profile
 
 echo ====================== Instaluje PostgreSQL
-docker-compose -f /ziher/docker/docker-compose.yml up -d postgres
+docker compose -f /ziher/docker/docker-compose.yml up -d postgres
 apt-get install --yes libpq-dev
 docker exec -u postgres postgres bash -c "psql postgres -c \"create role ziher with CREATEDB SUPERUSER login password 'ziher'\""
 
