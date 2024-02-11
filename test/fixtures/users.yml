@@ -1,56 +1,56 @@
 admin:
-  email: andrzej.stencel+ziher2-c64@gmail.com
+  email: ziher.test.admin@zhr.pl
   encrypted_password: $2a$10$nqte3zSljboVWtQOmtLmWexZIyG2oRQTbmZJzFhm/UNecrJ5p5J3m
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
   is_superadmin: true
 
 master_1zgm:
-  email: andrzej.stencel+user-at-ziher.c64@gmail.com
+  email: master_1zgm@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 master_2zgm:
-  email: master_2zgm@zhr.com
+  email: master_2zgm@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 master_zg_m:
-  email: master_zg_m@zhr.com
+  email: master_zg_m@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 master_zg:
-  email: master_zg@zhr.com
+  email: master_zg@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 treasurer_zg:
-  email: treasurer_zg@zhr.com
+  email: treasurer_zg@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 user_zg:
-  email: user_zg@zhr.com
+  email: user_zg@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 master_p_f:
-  email: master_p_f@zhr.com
+  email: master_p_f@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 master_p_m:
-  email: master_p_m@zhr.com
+  email: master_p_m@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 master_p:
-  email: master_p@zhr.com
+  email: master_p@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
 
 treasurer_p:
-  email: treasurer_p@zhr.com
+  email: treasurer_p@zhr.pl
   confirmed_at: 2012-03-24 22:37:00
   confirmation_sent_at: 2012-03-24 22:36:09
