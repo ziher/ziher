@@ -6,6 +6,7 @@ volumes:
 
 services:
   postgres:
+    network_mode: "host"
     container_name: postgres
     image: postgres:10
     ports:
@@ -19,6 +20,7 @@ services:
     restart: always
 
   ziher-stage:
+    network_mode: "host"
     profiles:
       - stage
     container_name: ziher-stage
@@ -32,13 +34,11 @@ services:
       - ZIHER_APP_NAME=stage environment
       - RAILS_RELATIVE_URL_ROOT=/stage
       #- RAILS_ENV=production
-      - ZIHER_DB_HOST=postgres
+      - ZIHER_DB_HOST=localhost
       - ZIHER_DB_NAME=ziher_stage
       - ZIHER_DB_USERNAME=ziher
       - ZIHER_DB_PASSWORD=ziher
       - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
-    links:
-      - postgres
     read_only: true
     tmpfs:
       - /tmp:exec
@@ -62,6 +62,7 @@ services:
         max-file: "3"
 
   ziher-dev:
+    network_mode: "host"
     profiles:
       - dev
     container_name: ziher-dev
@@ -75,15 +76,14 @@ services:
       - ZIHER_APP_NAME=dev environment
       - RAILS_RELATIVE_URL_ROOT=/dev
       - RAILS_ENV=development
-      - ZIHER_DB_HOST=postgres
+      - ZIHER_DB_HOST=localhost
       - ZIHER_DB_NAME=ziher_development
       - ZIHER_DB_USERNAME=ziher
       - ZIHER_DB_PASSWORD=ziher
       - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
-    links:
-      - postgres
 
   ziher-dev-shell:
+    network_mode: "host"
     profiles:
       - dev-shell
     container_name: ziher-dev-shell
@@ -97,10 +97,8 @@ services:
       - ZIHER_APP_NAME=dev environment
       - RAILS_RELATIVE_URL_ROOT=/dev
       - RAILS_ENV=development
-      - ZIHER_DB_HOST=postgres
+      - ZIHER_DB_HOST=localhost
       - ZIHER_DB_NAME=ziher_development
       - ZIHER_DB_USERNAME=ziher
       - ZIHER_DB_PASSWORD=ziher
       - SECRET_KEY_BASE=99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
-    links:
-      - postgres
