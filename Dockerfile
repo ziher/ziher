@@ -1,4 +1,4 @@
-FROM ruby:2.6.10-bullseye
+FROM ruby:2.6.10-bullseye as ziher-prod
 
 ENV RAILS_RELATIVE_URL_ROOT=/
 ENV RAILS_ENV=production
@@ -42,3 +42,13 @@ RUN set -x \
  && rake assets:precompile --trace
 
 ENTRYPOINT ["passenger", "start", "-p", "3000", "-a", "0.0.0.0"]
+
+
+# --------------------------
+FROM ziher-prod as ziher-dev
+
+RUN set -x \
+  && bundle config unset --local without \
+  && bundle install
+
+ENTRYPOINT ["/bin/bash"]
