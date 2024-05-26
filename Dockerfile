@@ -1,4 +1,4 @@
-FROM ruby:2.5.9-stretch
+FROM ruby:2.6.10-bullseye
 
 ENV RAILS_RELATIVE_URL_ROOT=/
 ENV RAILS_ENV=production
@@ -10,7 +10,9 @@ WORKDIR /ziher
 COPY Gemfile /ziher/Gemfile
 COPY Gemfile.lock /ziher/Gemfile.lock
 RUN set -x \
-  && gem install bundler -v 2.3.26 \
+  && gem install bundler -v 2.3.26
+
+RUN set -x \
   && bundle config set --local without 'development test' \
   && bundle install --no-cache \
   && rm -rf /usr/local/bundle/cache/*
