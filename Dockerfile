@@ -13,9 +13,10 @@ RUN set -x \
   && gem install bundler -v 2.3.26 \
   && bundle config set --local without 'development test' \
   && bundle install --no-cache \
-  && rm -rf /usr/local/bundle/cache/* \
-  && source /etc/os-release \
-  && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_${VERSION_ID}_amd64.gz \
+  && rm -rf /usr/local/bundle/cache/*
+
+RUN set -x \
+  && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_10_amd64.gz \
   && rm -rf /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/*.gz
 
 RUN set -x \
