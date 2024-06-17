@@ -55,7 +55,7 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'devise_invitable'
 
-gem 'cancancan'
+gem 'cancancan', '~>3.4.0'
 
 gem 'audited'
 gem 'pagy'
