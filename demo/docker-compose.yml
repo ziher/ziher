@@ -1,0 +1,35 @@
+version: '3'
+name: ziher
+
+services:
+
+  demo-db:
+    container_name: demo-db
+    image: postgres:10
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: always
+
+  demo:
+    container_name: demo
+    #image: ziher/app:latest
+    image: ziher/app:2024.06.17-a5d0fc8
+    restart: always
+    entrypoint: /ziher/entrypoint.sh
+    ports:
+      - 3000:3000
+    links:
+      - demo-db
+    environment:
+      - RAILS_RELATIVE_URL_ROOT=/demo
+      - RAILS_ENV=production
+      - ZIHER_APP_NAME=Demo
+      - ZIHER_DB_HOST=demo-db
+      - ZIHER_DB_NAME=ziherdemo
+      - ZIHER_DB_USERNAME=ziherdemo
+      - ZIHER_DB_PASSWORD=ziherdemo
+    volumes:
+      - ./entrypoint.sh:/ziher/entrypoint.sh
+      - ./seeds.rb:/ziher/db/seeds.rb

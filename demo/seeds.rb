@@ -1,0 +1,88 @@
+# encoding: utf-8
+
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
+#
+# Examples:
+#
+#   cities = City.create!([{ name: 'Chicago' }, { name: 'Copenhagen' }])
+#   Mayor.create!(name: 'Emanuel', city: cities.first)
+
+skladki_2022 = Category.create!(name: 'Składki', is_expense: false, year: 2022)
+darowizny_2022 = Category.create!(name: 'Darowizny', is_expense: false, year: 2022)
+akcje_zarobkowe_2022 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2022)
+pozostale_2022 = Category.create!(name: 'Pozostałe', is_expense: false, year: 2022)
+jeden_procent_2022 = Category.create!(name: '1%', is_expense: false, is_one_percent: true, year: 2022)
+wyposazenie_2022 = Category.create!(name: 'Wyposażenie', is_expense: true, year: 2022)
+materialy_2022 = Category.create!(name: 'Materiały', is_expense: true, year: 2022)
+wyzywienie_2022 = Category.create!(name: 'Wyżywienie', is_expense: true, year: 2022)
+uslugi_2022 = Category.create!(name: 'Usługi', is_expense: true, year: 2022)
+transport_2022 = Category.create!(name: 'Transport', is_expense: true, year: 2022)
+czynsz_2022 = Category.create!(name: 'Czynsz, energia', is_expense: true, year: 2022)
+ubezpieczenia_2022 = Category.create!(name: 'Ubezpieczenia', is_expense: true, year: 2022)
+inne_2022 = Category.create!(name: 'Inne', is_expense: true, year: 2022)
+wynagrodzenia_2022 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2022)
+skladki_wydatek_2022 = Category.create!(name: 'Składki', is_expense: true, year: 2022)
+
+skladki_2023 = Category.create!(name: 'Składki', is_expense: false, year: 2023)
+darowizny_2023 = Category.create!(name: 'Darowizny', is_expense: false, year: 2023)
+akcje_zarobkowe_2023 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2023)
+pozostale_2023 = Category.create!(name: 'Pozostałe', is_expense: false, year: 2023)
+jeden_procent_2023 = Category.create!(name: '1%', is_expense: false, is_one_percent: true, year: 2023)
+wyposazenie_2023 = Category.create!(name: 'Wyposażenie', is_expense: true, year: 2023)
+materialy_2023 = Category.create!(name: 'Materiały', is_expense: true, year: 2023)
+wyzywienie_2023 = Category.create!(name: 'Wyżywienie', is_expense: true, year: 2023)
+uslugi_2023 = Category.create!(name: 'Usługi', is_expense: true, year: 2023)
+transport_2023 = Category.create!(name: 'Transport', is_expense: true, year: 2023)
+czynsz_2023 = Category.create!(name: 'Czynsz, energia', is_expense: true, year: 2023)
+ubezpieczenia_2023 = Category.create!(name: 'Ubezpieczenia', is_expense: true, year: 2023)
+inne_2023 = Category.create!(name: 'Inne', is_expense: true, year: 2023)
+wynagrodzenia_2023 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2023)
+skladki_wydatek_2023 = Category.create!(name: 'Składki', is_expense: true, year: 2023)
+
+skladki_2024 = Category.create!(name: 'Składki', is_expense: false, year: 2024)
+darowizny_2024 = Category.create!(name: 'Darowizny', is_expense: false, year: 2024)
+akcje_zarobkowe_2024 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2024)
+pozostale_2024 = Category.create!(name: 'Pozostałe', is_expense: false, year: 2024)
+jeden_procent_2024 = Category.create!(name: '1%', is_expense: false, is_one_percent: true, year: 2024)
+wyposazenie_2024 = Category.create!(name: 'Wyposażenie', is_expense: true, year: 2024)
+materialy_2024 = Category.create!(name: 'Materiały', is_expense: true, year: 2024)
+wyzywienie_2024 = Category.create!(name: 'Wyżywienie', is_expense: true, year: 2024)
+uslugi_2024 = Category.create!(name: 'Usługi', is_expense: true, year: 2024)
+transport_2024 = Category.create!(name: 'Transport', is_expense: true, year: 2024)
+czynsz_2024 = Category.create!(name: 'Czynsz, energia', is_expense: true, year: 2024)
+ubezpieczenia_2024 = Category.create!(name: 'Ubezpieczenia', is_expense: true, year: 2024)
+inne_2024 = Category.create!(name: 'Inne', is_expense: true, year: 2024)
+wynagrodzenia_2024 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2024)
+skladki_wydatek_2024 = Category.create!(name: 'Składki', is_expense: true, year: 2024)
+
+skladki_2025 = Category.create!(name: 'Składki', is_expense: false, year: 2025)
+darowizny_2025 = Category.create!(name: 'Darowizny', is_expense: false, year: 2025)
+akcje_zarobkowe_2025 = Category.create!(name: 'Akcje zarobkowe', is_expense: false, year: 2025)
+pozostale_2025 = Category.create!(name: 'Pozostałe', is_expense: false, year: 2025)
+jeden_procent_2025 = Category.create!(name: '1%', is_expense: false, is_one_percent: true, year: 2025)
+wyposazenie_2025 = Category.create!(name: 'Wyposażenie', is_expense: true, year: 2025)
+materialy_2025 = Category.create!(name: 'Materiały', is_expense: true, year: 2025)
+wyzywienie_2025 = Category.create!(name: 'Wyżywienie', is_expense: true, year: 2025)
+uslugi_2025 = Category.create!(name: 'Usługi', is_expense: true, year: 2025)
+transport_2025 = Category.create!(name: 'Transport', is_expense: true, year: 2025)
+czynsz_2025 = Category.create!(name: 'Czynsz, energia', is_expense: true, year: 2025)
+ubezpieczenia_2025 = Category.create!(name: 'Ubezpieczenia', is_expense: true, year: 2025)
+inne_2025 = Category.create!(name: 'Inne', is_expense: true, year: 2025)
+wynagrodzenia_2025 = Category.create!(name: 'Wynagrodzenia', is_expense: true, year: 2025)
+skladki_wydatek_2025 = Category.create!(name: 'Składki', is_expense: true, year: 2025)
+
+finance = JournalType.create!(id: JournalType::FINANCE_TYPE_ID, name: "Książka finansowa", is_default: true)
+bank = JournalType.create!(id: JournalType::BANK_TYPE_ID, name: "Książka bankowa")
+
+finance_inventory_source = InventorySource.create!(name: 'książka finansowa', is_active: true)
+bank_inventory_source = InventorySource.create!(name: 'książka bankowa', is_active: true)
+
+unit = Unit.create!(name: 'Jednostka testowa', code: 'kod-testowy')
+
+user = User.create!(email: 'demo@ziher.zhr.pl', password: 'demo@ziher.zhr.pl', confirmed_at: '2012-03-24 22:37:00', confirmation_sent_at: '2012-03-24 22:36:09', is_superadmin: true)
+
+rohis = Grant.create!(name: 'ROHiS', description: 'Rządowy Program Wsparcia Rozwoju Organizacji Harcerskich i Skautowych')
+rohis.create_income_category_for_year(2022)
+rohis.create_income_category_for_year(2023)
+rohis.create_income_category_for_year(2024)
