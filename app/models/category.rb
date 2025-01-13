@@ -5,7 +5,7 @@ class Category < ApplicationRecord
 
   has_many :items
 
-  has_one :grant
+  belongs_to :grant, optional: true
 
   validates :year, :presence => {:message => "Kategoria musi byc przypisana do roku"}
 

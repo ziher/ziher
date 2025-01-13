@@ -36,7 +36,7 @@ class JournalsController < ApplicationController
   # GET /journals/1.json
   def show
     #override CanCan's auto-fetched journal
-    @journal = Journal.includes(:entries => :items).find_by_id(@journal.id)
+    @journal = Journal.includes(entries: { items: [:category, :grants, { item_grants: :grant }] }).find_by_id(@journal.id)
 
     if @journal.nil? or @journal.unit.is_active == false
       flash.keep
@@ -45,7 +45,7 @@ class JournalsController < ApplicationController
 
     @categories_expense = Category.find_by_year_and_type(@journal.year, true)
     @categories_income = Category.find_by_year_and_type(@journal.year, false)
-    all_entries = @journal.entries.order('date', 'id')
+    all_entries = @journal.entries.includes({ items: [:category, :grants, { item_grants: :grant }] }).order('date', 'id')
 
     if params[:items].blank?
       @items = nil
@@ -60,6 +60,7 @@ class JournalsController < ApplicationController
     @start_position = @page < 1 ? 0 : (@page - 1) * @items.to_i
     @user_units = Unit.find_by_user(current_user)
     @years = @journal.unit.find_journal_years(@journal.journal_type)
+    @grants_by_journal_year = Grant.get_by_year(@journal.year)
 
     if current_user.is_superadmin
       @years << Time.now.year - 1

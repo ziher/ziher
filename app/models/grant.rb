@@ -12,6 +12,8 @@ class Grant < ApplicationRecord
   has_many :journals, through: :journal_grants
   accepts_nested_attributes_for :journal_grants
 
+  has_many :categories
+
   before_destroy :there_are_no_linked_categories
 
   def category_exists?(year)
@@ -59,8 +61,6 @@ class Grant < ApplicationRecord
   end
 
   def Grant.get_by_year(year)
-    grant_ids = Category.where(year: year).map(&:grant_id).reject(&:blank?)
-
-    Grant.find grant_ids
+    Grant.includes(:categories).where(categories: {year: year})
   end
 end

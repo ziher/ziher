@@ -101,7 +101,7 @@
         </small></span>
       </th>
 
-      <% Grant.get_by_year(@journal.year).each do |grant| %>
+      <% @grants_by_journal_year.each do |grant| %>
         <tr>
           <th colspan="3" style="border-top: none; border-bottom: none"></th>
           <th colspan="<%= @categories_income.count %>" class="balance-label" style="border-top: none; border-bottom: none"><span class="pull-right text-muted"><small>w tym <%= grant.name %>:</small></span></th>
@@ -253,7 +253,7 @@
       </th>
     </tr>
 
-    <% Grant.get_by_year(@journal.year).each do |grant| %>
+    <% @grants_by_journal_year.each do |grant| %>
       <tr>
         <th colspan="3" style="border-top: none"></th>
         <th colspan="<%= @categories_income.count %>" class="balance-label" style="border-top: none"><span class="pull-right text-muted"><small>w tym <%= grant.name %>:</small></span></th>
@@ -262,7 +262,7 @@
             <%= number_with_precision(@journal.get_final_balance_for_grant(grant), :precision => 2) %> zł
           </small></span>
         </th>
-      </tr>
+      </tr>`
     <% end %>
 
   </tfoot>

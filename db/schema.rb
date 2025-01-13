@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_16_115440) do
+ActiveRecord::Schema.define(version: 2025_01_08_133005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.boolean "is_one_percent", default: false
     t.integer "grant_id"
     t.index ["grant_id"], name: "index_categories_on_grant_id"
+    t.index ["is_expense"], name: "index_categories_on_is_expense"
+    t.index ["year"], name: "index_categories_on_year"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -58,6 +60,7 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.integer "journal_id"
     t.boolean "is_expense"
     t.integer "linked_entry_id"
+    t.index ["journal_id"], name: "index_entries_on_journal_id"
   end
 
   create_table "grants", force: :cascade do |t|
@@ -92,6 +95,10 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.datetime "updated_at", null: false
     t.integer "inventory_source_id"
     t.string "remark"
+    t.index ["date"], name: "index_inventory_entries_on_date"
+    t.index ["inventory_source_id"], name: "index_inventory_entries_on_inventory_source_id"
+    t.index ["is_expense"], name: "index_inventory_entries_on_is_expense"
+    t.index ["unit_id"], name: "index_inventory_entries_on_unit_id"
   end
 
   create_table "inventory_sources", force: :cascade do |t|
@@ -108,6 +115,8 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.decimal "amount", precision: 9, scale: 2, default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["grant_id"], name: "index_item_grants_on_grant_id"
+    t.index ["item_id"], name: "index_item_grants_on_item_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -127,6 +136,8 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.decimal "initial_grant_balance", precision: 9, scale: 2, default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["grant_id"], name: "index_journal_grants_on_grant_id"
+    t.index ["journal_id"], name: "index_journal_grants_on_journal_id"
   end
 
   create_table "journal_types", force: :cascade do |t|
@@ -148,6 +159,7 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.date "blocked_to"
     t.index ["journal_type_id"], name: "index_journals_on_journal_type_id"
     t.index ["unit_id"], name: "index_journals_on_unit_id"
+    t.index ["year"], name: "index_journals_on_year"
   end
 
   create_table "subgroups", id: false, force: :cascade do |t|
@@ -162,6 +174,7 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.string "code"
     t.boolean "is_active", default: true, null: false
     t.index ["code"], name: "index_units_on_code", unique: true
+    t.index ["is_active"], name: "index_units_on_is_active"
   end
 
   create_table "user_group_associations", force: :cascade do |t|
@@ -175,6 +188,8 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.boolean "can_manage_users", default: false
     t.boolean "can_manage_units", default: false
     t.boolean "can_manage_groups", default: false
+    t.index ["group_id"], name: "index_user_group_associations_on_group_id"
+    t.index ["user_id"], name: "index_user_group_associations_on_user_id"
   end
 
   create_table "user_unit_associations", force: :cascade do |t|
@@ -184,6 +199,8 @@ ActiveRecord::Schema.define(version: 2022_12_16_115440) do
     t.boolean "can_manage_entries", default: false
     t.boolean "can_close_journals", default: false
     t.boolean "can_manage_users", default: false
+    t.index ["unit_id"], name: "index_user_unit_associations_on_unit_id"
+    t.index ["user_id"], name: "index_user_unit_associations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
