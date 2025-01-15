@@ -9,8 +9,6 @@ class AddIndices < ActiveRecord::Migration[5.2]
     add_index :inventory_entries, :date
     add_index :item_grants, :item_id
     add_index :item_grants, :grant_id
-    add_index :items, :entry_id
-    add_index :items, :category_id
     add_index :journal_grants, :journal_id
     add_index :journal_grants, :grant_id
     add_index :journals, :year
