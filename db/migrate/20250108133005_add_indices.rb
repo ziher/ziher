@@ -12,7 +12,6 @@ class AddIndices < ActiveRecord::Migration[5.2]
     add_index :journal_grants, :journal_id
     add_index :journal_grants, :grant_id
     add_index :journals, :year
-    add_index :journals, :journal_type_id
     add_index :units, :is_active
     add_index :user_group_associations, :user_id
     add_index :user_group_associations, :group_id
