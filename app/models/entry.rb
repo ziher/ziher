@@ -153,13 +153,13 @@ class Entry < ApplicationRecord
   end
 
   def sum
-    items.sum { |item| item.amount ? item.amount : 0 }
+    @sum ||= items.sum { |item| item.amount ? item.amount : 0 }
   end
 
   def sum_one_percent
     return 0 if is_expense
 
-    items.select { |item| item.category.is_one_percent }.sum { |item| item.amount_one_percent ? item.amount_one_percent : 0 }
+    @sum_one_percent ||= items.select { |item| item.category.is_one_percent }.sum { |item| item.amount_one_percent ? item.amount_one_percent : 0 }
   end
 
   # recalculates initial balance for next year's journal

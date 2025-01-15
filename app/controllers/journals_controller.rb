@@ -36,7 +36,7 @@ class JournalsController < ApplicationController
   # GET /journals/1.json
   def show
     #override CanCan's auto-fetched journal
-    @journal = Journal.includes(entries: { items: [:category, :grants, { item_grants: :grant }] }).find_by_id(@journal.id)
+    @journal = Journal.includes(:journal_grants, entries: { items: [:category, :grants] }).find_by_id(@journal.id)
 
     if @journal.nil? or @journal.unit.is_active == false
       flash.keep
@@ -164,7 +164,7 @@ class JournalsController < ApplicationController
     @journal = Journal.find(params[:id])
     blocked_to = params[:journal_blocked_to_hidden_input].to_date
 
-    if blocked_to.blank? then
+    if blocked_to.blank?
       redirect_to @journal
       return
     end

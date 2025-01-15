@@ -29,7 +29,7 @@ class InventoryEntryVerifier
     inventory_sums = Hash.new
 
     inventory_journal = Array.new
-    InventoryEntry.where(:unit => @unit, :is_expense => false).each do |entry|
+    InventoryEntry.includes(:inventory_source).where(:unit => @unit, :is_expense => false).each do |entry|
       if entry.date.year == year
         inventory_journal << entry
       end

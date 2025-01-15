@@ -52,9 +52,9 @@ class Journal < ApplicationRecord
   end
 
   def initial_balance_for_grant(grant)
-    jg = JournalGrant.where(journal_id: self.id, grant_id: grant.id)
+    jg = journal_grants.select { |jg| jg.grant_id ==  grant.id }
 
-    if jg.count == 1
+    if jg.size == 1
       jg.first.initial_grant_balance
     else
       return 0
@@ -109,16 +109,18 @@ class Journal < ApplicationRecord
     Category.where(:year => self.year, :is_expense => true).each do |category|
       sum += get_sum_for_category(category, to_date)
     end
-    return sum
+    sum
   end
 
   # returns sum of all one percent expense entries
-  def get_expense_sum_one_percent(to_date = end_of_year)
-    sum = 0
+  def get_expense_sum_one_percent
+    return @get_expense_sum_one_percent if @get_expense_sum_one_percent
+
+    @get_expense_sum_one_percent = 0
     Category.where(:year => self.year, :is_expense => true).each do |category|
-      sum += get_sum_one_percent_for_category(category, to_date)
+      @get_expense_sum_one_percent += get_sum_one_percent_for_category(category, end_of_year)
     end
-    return sum
+    @get_expense_sum_one_percent
   end
 
   # returns sum of all grant expense entries
@@ -127,7 +129,7 @@ class Journal < ApplicationRecord
     Category.where(:year => self.year, :is_expense => true).each do |category|
       sum += get_sum_for_grant_in_category(grant, category, to_date)
     end
-    return sum
+    sum
   end
 
   # returns sum of all income entries
@@ -140,12 +142,14 @@ class Journal < ApplicationRecord
   end
 
   # returns sum of all one percent income entries
-  def get_income_sum_one_percent(to_date = end_of_year)
-    sum = 0
+  def get_income_sum_one_percent
+    return @get_income_sum_one_percent if @get_income_sum_one_percent
+
+    @get_income_sum_one_percent = 0
     Category.where(:year => self.year, :is_expense => false, :is_one_percent => true).each do |category|
-      sum += get_sum_one_percent_for_category(category, to_date)
+      @get_income_sum_one_percent += get_sum_one_percent_for_category(category, end_of_year)
     end
-    sum
+    @get_income_sum_one_percent
   end
 
   # returns sum of all grant income entries
@@ -159,15 +163,15 @@ class Journal < ApplicationRecord
   end
 
   def get_final_balance
-    get_balance(end_of_year)
+    @get_final_balance ||= get_balance(end_of_year)
   end
 
   def get_balance_one_percent(to_date = end_of_year)
-    self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
+    @get_balance_one_percent ||= self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
   end
 
   def get_final_balance_one_percent
-    get_balance_one_percent(end_of_year)
+    @get_final_balance_one_percent ||= get_balance_one_percent(end_of_year)
   end
 
   def get_balance_for_grant(grant, to_date = end_of_year)
