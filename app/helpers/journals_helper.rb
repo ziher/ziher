@@ -38,7 +38,7 @@ module JournalsHelper
       result += "</span></small></small>"
     end
 
-    Grant.get_by_year(journal.year).each do |grant|
+    @grants_by_journal_year.each do |grant|
       grant_amount = journal.get_expense_sum_for_grant(grant)
       if grant_amount != nil && grant_amount != 0
         grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s
@@ -68,7 +68,7 @@ module JournalsHelper
         result += "</span></small></small>"
       end
 
-      Grant.get_by_year(entry.journal.year).each do |grant|
+      @grants_by_journal_year.each do |grant|
         grant_amount = entry.get_sum_for_grant(grant)
         if grant_amount != nil && grant_amount != 0
           grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s
@@ -117,14 +117,14 @@ module JournalsHelper
   end
 
   def print_formatted_journal_sums_for_categories_with_grants(category, journal)
-    journal_sum_for_category = @journal.get_sum_for_category(category)
+    journal_sum_for_category = journal.get_sum_for_category(category)
 
     if journal_sum_for_category == 0
       result = "-"
     else
       result = "" + number_with_precision(journal_sum_for_category, :precision => 2).to_s
 
-      journal_sum_one_percent_for_category = @journal.get_sum_one_percent_for_category(category)
+      journal_sum_one_percent_for_category = journal.get_sum_one_percent_for_category(category)
 
       if journal_sum_one_percent_for_category != 0
 
@@ -135,7 +135,7 @@ module JournalsHelper
         result += "</span></small></small>"
       end
 
-      Grant.get_by_year(journal.year).each do |grant|
+      @grants_by_journal_year.each do |grant|
         grant_amount = journal.get_sum_for_grant_in_category(grant, category)
         if grant_amount != nil && grant_amount != 0
           grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s

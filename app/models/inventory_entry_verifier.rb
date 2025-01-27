@@ -29,7 +29,7 @@ class InventoryEntryVerifier
     inventory_sums = Hash.new
 
     inventory_journal = Array.new
-    InventoryEntry.where(:unit => @unit, :is_expense => false).each do |entry|
+    InventoryEntry.includes(:inventory_source).where(:unit => @unit, :is_expense => false).each do |entry|
       if entry.date.year == year
         inventory_journal << entry
       end
@@ -87,7 +87,7 @@ class InventoryEntryVerifier
 
   def get_sum(unit, year, type)
     category = Category.where(:year => year, :name => 'Wyposażenie')
-    journal = Journal.find_by_unit_and_year_and_type(unit, year, type)
+    journal = Journal.includes(entries: :items).find_by_unit_and_year_and_type(unit, year, type)
     return journal.nil? ? 0 : journal.get_sum_for_category(category)
   end
 

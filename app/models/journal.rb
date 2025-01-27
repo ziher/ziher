@@ -52,9 +52,9 @@ class Journal < ApplicationRecord
   end
 
   def initial_balance_for_grant(grant)
-    jg = JournalGrant.where(journal_id: self.id, grant_id: grant.id)
+    jg = journal_grants.select { |jg| jg.grant_id ==  grant.id }
 
-    if jg.count == 1
+    if jg.size == 1
       jg.first.initial_grant_balance
     else
       return 0
@@ -82,14 +82,25 @@ class Journal < ApplicationRecord
 
   # returns sum of all entries in this journal for given category
   def get_sum_for_grant_in_category(grant, category, to_date = end_of_year)
-    entries_to_date = self.entries.select { |entry| entry.date <= to_date}
-
-    Item.includes(:item_grants).where(entry: entries_to_date, category: category, item_grants: {grant_id: grant.id}).map(&:item_grants).flatten.sum(&:amount)
+    grant_id = grant.is_a?(Grant) ? grant.id : grant
+    entries_to_date = entries.select { |entry| entry.date <= to_date}
+    entries_to_date.map(&:items).flatten.select do |item|
+      item.category == category && item.item_grants.map(&:grant_id).include?(grant_id)
+    end.map(&:item_grants).flatten.sum{ |gi| gi.amount.nil? ? 0 : gi.amount }
   end
 
   def get_category_sum_for(summable, category, to_date)
-    entries_to_date = self.entries.select { |entry| entry.date <= to_date}
-    Item.where(:entry => entries_to_date, :category => category).sum(summable)
+    entries_to_date = entries.select { |entry| entry.date <= to_date}
+
+    category = Array.wrap(category)
+
+    items = entries_to_date.map(&:items).flatten.select { |item| item.category_id.in?(category.map(&:id)) }
+    items.sum do |item|
+      if item.respond_to?(summable)
+        amount = item.send(summable)
+        amount.nil? ? 0 : amount
+      end
+    end
   end
 
   # returns sum of all expense entries
@@ -98,16 +109,18 @@ class Journal < ApplicationRecord
     Category.where(:year => self.year, :is_expense => true).each do |category|
       sum += get_sum_for_category(category, to_date)
     end
-    return sum
+    sum
   end
 
   # returns sum of all one percent expense entries
-  def get_expense_sum_one_percent(to_date = end_of_year)
-    sum = 0
+  def get_expense_sum_one_percent
+    return @get_expense_sum_one_percent if @get_expense_sum_one_percent
+
+    @get_expense_sum_one_percent = 0
     Category.where(:year => self.year, :is_expense => true).each do |category|
-      sum += get_sum_one_percent_for_category(category, to_date)
+      @get_expense_sum_one_percent += get_sum_one_percent_for_category(category, end_of_year)
     end
-    return sum
+    @get_expense_sum_one_percent
   end
 
   # returns sum of all grant expense entries
@@ -116,7 +129,7 @@ class Journal < ApplicationRecord
     Category.where(:year => self.year, :is_expense => true).each do |category|
       sum += get_sum_for_grant_in_category(grant, category, to_date)
     end
-    return sum
+    sum
   end
 
   # returns sum of all income entries
@@ -125,51 +138,52 @@ class Journal < ApplicationRecord
     Category.where(:year => self.year, :is_expense => false).each do |category|
       sum += get_sum_for_category(category, to_date)
     end
-    return sum
+    sum
   end
 
   # returns sum of all one percent income entries
-  def get_income_sum_one_percent(to_date = end_of_year)
-    sum = 0
+  def get_income_sum_one_percent
+    return @get_income_sum_one_percent if @get_income_sum_one_percent
+
+    @get_income_sum_one_percent = 0
     Category.where(:year => self.year, :is_expense => false, :is_one_percent => true).each do |category|
-      sum += get_sum_one_percent_for_category(category, to_date)
+      @get_income_sum_one_percent += get_sum_one_percent_for_category(category, end_of_year)
     end
-    return sum
+    @get_income_sum_one_percent
   end
 
   # returns sum of all grant income entries
   def get_income_sum_for_grant(grant, to_date = end_of_year)
     category = grant.get_category_by_year(self.year)
-    return get_sum_for_category(category, to_date)
+    get_sum_for_category(category, to_date)
   end
 
   def get_balance(to_date = end_of_year)
-    return self.initial_balance + get_income_sum(to_date) - get_expense_sum(to_date)
-
+    self.initial_balance + get_income_sum(to_date) - get_expense_sum(to_date)
   end
 
   def get_final_balance
-    return get_balance(end_of_year)
+    @get_final_balance ||= get_balance(end_of_year)
   end
 
   def get_balance_one_percent(to_date = end_of_year)
-    return self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
+    @get_balance_one_percent ||= self.initial_balance_one_percent + get_income_sum_one_percent - get_expense_sum_one_percent
   end
 
   def get_final_balance_one_percent
-    return get_balance_one_percent(end_of_year)
+    @get_final_balance_one_percent ||= get_balance_one_percent(end_of_year)
   end
 
   def get_balance_for_grant(grant, to_date = end_of_year)
-    return self.initial_balance_for_grant(grant) + get_income_sum_for_grant(grant, to_date) - get_expense_sum_for_grant(grant, to_date)
+    self.initial_balance_for_grant(grant) + get_income_sum_for_grant(grant, to_date) - get_expense_sum_for_grant(grant, to_date)
   end
 
   def get_final_balance_for_grant(grant)
-    return get_balance_for_grant(grant, end_of_year)
+    get_balance_for_grant(grant, end_of_year)
   end
 
   def find_next_journal
-    return Journal.where("unit_id = ? AND journal_type_id = ? AND year >= ?", self.unit_id, self.journal_type.id, self.year + 1).order("year ASC").first
+    Journal.where("unit_id = ? AND journal_type_id = ? AND year >= ?", self.unit_id, self.journal_type.id, self.year + 1).order("year ASC").first
   end
 
   # Returns one journal of given year and type, or nil if not found
@@ -214,11 +228,11 @@ class Journal < ApplicationRecord
   # Returns all journals of the specified type that the specified user has access to.
   # Journals are ordered by year, starting from newest
   def Journal.find_by_type_and_user(type, user)
-    journals = Journal.where(:journal_type_id => type.id, :unit_id => Unit.find_by_user(user).map { |u| u.id }).order("year DESC")
+    Journal.where(:journal_type_id => type.id, :unit_id => Unit.find_by_user(user).map { |u| u.id }).order("year DESC")
   end
 
   def Journal.find_previous_for_type(unit, type, year)
-    journal = Journal.where("unit_id = ? AND journal_type_id = ? AND year <= ?", unit.id, type.id, year).order("year DESC").first
+    Journal.where("unit_id = ? AND journal_type_id = ? AND year <= ?", unit.id, type.id, year).order("year DESC").first
   end
 
   # Returns journal for unit and type for previous year
@@ -226,11 +240,11 @@ class Journal < ApplicationRecord
     previous_year = Time.now.year - 1
     journal = Journal.where(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year).first
 
-    if (journal == nil)
+    if journal.nil?
       journal = Journal.create!(:journal_type_id => type_id, :unit_id => unit_id, :year => previous_year, :is_open => false, :blocked_to => Journal.end_of_year(previous_year))
     end
 
-    return journal
+    journal
   end
 
   # Returns journal for unit and type current year
@@ -238,7 +252,7 @@ class Journal < ApplicationRecord
     journal = Journal.where(:journal_type_id => type_id, :unit_id => unit_id, :year => Time.now.year).first
 
     # there should be always a journal for current year - if there is not just create it
-    if (journal == nil)
+    if journal.nil?
       journal = create_for_current_year(type_id, unit_id)
     end
     return journal

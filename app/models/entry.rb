@@ -33,40 +33,35 @@ class Entry < ApplicationRecord
   after_destroy :recalculate_initial_balance
 
   def get_amount_for_category(category)
-    result = self.items.find_all { |item| item.category == category }
-
-    if result != nil && result.first != nil && result.first.amount != nil
-      return result.first.amount
-    else
-      return 0
-    end
+    category_id = category.is_a?(Category) ? category.id : category
+    amount = self.items.find { |item| item.category_id == category_id }&.amount
+    amount || 0.0
   end
 
   def get_amount_one_percent_for_category(category)
-    result = self.items.find_all { |item| item.category == category }
-
-    if result != nil && result.first != nil && result.first.amount_one_percent != nil
-      return result.first.amount_one_percent
-    else
-      return 0
-    end
+    category_id = category.is_a?(Category) ? category.id : category
+    amount_one_percent = self.items.find { |item| item.category_id == category_id }&.amount_one_percent
+    amount_one_percent || 0.0
   end
 
   def get_grants_for_category(category)
-    items.includes(:item_grants).map(&:item_grants).flatten.map(&:grant).uniq
+    items.map(&:grants).flatten.uniq
   end
 
   def get_amount_for_category_and_grant(category, grant)
-    items.includes(:item_grants).where(category_id: category.id).map(&:item_grants).flatten.select {|item| item.grant_id == grant.id}.map(&:amount)
+    category_id = category.is_a?(Category) ? category.id : category
+    grant_id = grant.is_a?(Grant) ? grant.id : grant
+    items.select{ |item| item.category_id == category_id && item.item_grants.map(&:grant_id).include?(grant_id) }.compact.map(&:amount)
   end
 
   def get_sum_for_grant(grant)
-    Item.includes(:item_grants).where(entry: self, item_grants: {grant_id: grant.id}).map(&:item_grants).flatten.sum(&:amount)
+    grant_id = grant.is_a?(Grant) ? grant.id : grant
+    items.select{ |item| item.item_grants.map(&:grant_id).include?(grant_id) }.sum{ |item| item.item_grants.sum(&:amount) }
   end
 
   def has_category(category)
-    existing_item = self.items.find { |item| item.category == category }
-    return (existing_item != nil)
+    category_id = category.is_a?(Category) ? category.id : category
+    items.find { |item| item.category_id == category_id }.present?
   end
 
   def cannot_have_multiple_items_in_one_category
@@ -158,27 +153,13 @@ class Entry < ApplicationRecord
   end
 
   def sum
-    result = 0
-    items.each do |item|
-      if item.amount
-        result += item.amount
-      end
-    end
-
-    return result
+    @sum ||= items.sum { |item| item.amount ? item.amount : 0 }
   end
 
   def sum_one_percent
-    result = 0
-    items.each do |item|
-      if !self.is_expense && item.category.is_one_percent && item.amount_one_percent
-        result += item.amount_one_percent
-      elsif item.amount_one_percent
-        result += item.amount_one_percent
-      end
-    end
+    return 0 if is_expense
 
-    return result
+    @sum_one_percent ||= items.select { |item| item.category.is_one_percent }.sum { |item| item.amount_one_percent ? item.amount_one_percent : 0 }
   end
 
   # recalculates initial balance for next year's journal

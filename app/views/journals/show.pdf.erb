@@ -82,7 +82,7 @@
         </small></span>
       </th>
     </tr>
-    <% Grant.get_by_year(@journal.year).each do |grant| %>
+    <% @grants_by_journal_year.each do |grant| %>
     <tr>
       <th colspan="<%= @categories_income.count + 3 %>" class="balance-label" style="border-top: none; border-bottom: none">
         <span class="pull-right text-muted" style="white-space: nowrap"><small>w tym <%= grant.name %>:</small></span>
@@ -250,7 +250,7 @@
       </th>
     </tr>
 
-    <% Grant.get_by_year(@journal.year).each do |grant| %>
+    <% @grants_by_journal_year.each do |grant| %>
     <tr>
       <th colspan="<%= @categories_income.count + 3 %>" class="balance-label" style="border-top: none; border-bottom: none"><span class="pull-right text-muted" style="white-space: nowrap"><small>w tym <%= grant.name %>:</small></span></th>
       <th colspan="<%= @categories_expense.count + 2 %>" class="balance" id="initial-balance" style="border-top: none; border-bottom: none">
