@@ -51,7 +51,7 @@ class Entry < ApplicationRecord
   def get_amount_for_category_and_grant(category, grant)
     category_id = category.is_a?(Category) ? category.id : category
     grant_id = grant.is_a?(Grant) ? grant.id : grant
-    items.select{ |item| item.category_id == category_id && item.item_grants.map(&:grant_id).include?(grant_id) }.compact.map(&:amount)
+    items.select{ |item| item.category_id == category_id && item.item_grants.map(&:grant_id).include?(grant_id) }.compact.map{ |i| i.item_grants.sum(&:amount) }
   end
 
   def get_sum_for_grant(grant)
