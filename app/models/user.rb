@@ -3,7 +3,12 @@ class User < ApplicationRecord
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :invitable, :timeoutable
-  audited except: [:encrypted_password, :confirmation_token, :invitation_token, :reset_password_token]
+  audited except: [:encrypted_password,
+                   :confirmation_token,
+                   :invitation_token,
+                   :reset_password_token,
+                   :remember_token,
+                   :remember_created_at]
 
   has_many :user_group_associations, dependent: :destroy
   has_many :groups, through: :user_group_associations
