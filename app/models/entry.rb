@@ -51,12 +51,12 @@ class Entry < ApplicationRecord
   def get_amount_for_category_and_grant(category, grant)
     category_id = category.is_a?(Category) ? category.id : category
     grant_id = grant.is_a?(Grant) ? grant.id : grant
-    items.select{ |item| item.category_id == category_id && item.item_grants.map(&:grant_id).include?(grant_id) }.compact.map{ |i| i.item_grants.sum(&:amount) }
+    items.map{ |i| i.item_grants }.flatten.select{ |ig| ig.grant_id == grant_id && ig.item.category_id == category_id }.sum(&:amount)
   end
 
   def get_sum_for_grant(grant)
     grant_id = grant.is_a?(Grant) ? grant.id : grant
-    items.select{ |item| item.item_grants.map(&:grant_id).include?(grant_id) }.sum{ |item| item.item_grants.sum(&:amount) }
+    items.map{ |i| i.item_grants }.flatten.select{ |ig| ig.grant_id == grant_id }.sum(&:amount)
   end
 
   def has_category(category)

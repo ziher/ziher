@@ -101,7 +101,7 @@ module JournalsHelper
       if ! grants.blank?
         grants.each do |grant|
 
-          grant_amount = entry.get_amount_for_category_and_grant(category, grant).first
+          grant_amount = entry.get_amount_for_category_and_grant(category, grant)
           if grant_amount != nil && grant_amount != 0
             grant_and_amount = grant.name + ": " + number_with_precision(grant_amount, precision: 2).to_s
 
