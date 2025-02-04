@@ -73,11 +73,10 @@ class ItemTest < ActiveSupport::TestCase
 
     #when
     item.amount_one_percent = 4
+    item.save!
 
     #then
-    assert_raise(ActiveRecord::RecordInvalid) {
-      item.save!
-    }
+    assert_equal(item.amount_one_percent, item.amount)
   end
 
   test 'should not update amount one percent if category type is not one percent' do

@@ -13,6 +13,7 @@ class Item < ApplicationRecord
 
   before_validation :remove_nil_amount_grants
   before_validation :remove_zero_amount_grants
+  before_validation :set_same_values_for_one_percent_category
 
   validate :cannot_have_amount_one_percent_greater_than_amount
   validate :cannot_have_amount_one_percent_if_amount_is_nil
@@ -23,8 +24,6 @@ class Item < ApplicationRecord
 
   validate :grants_and_one_percent_amount_should_have_same_sign_as_self_amount
 
-  before_save :set_same_values_for_one_percent_category
-
   def amount=(val)
     write_attribute :amount, val.to_s.gsub(/[,\s+]/, ',' => '.', '\s+' => '')
   end
@@ -34,7 +33,7 @@ class Item < ApplicationRecord
   end
 
   def set_same_values_for_one_percent_category
-    if self.category.is_one_percent then
+    if self.category.is_one_percent
       self.amount_one_percent = self.amount
     end
   end
