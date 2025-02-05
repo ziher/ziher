@@ -179,7 +179,7 @@
         </td>
 
         <td class="balance text-right" title="<%=t 'helpers.label.journal.balance'%>">
-          <small>
+          <small class="<%= entry.balance < 0 ? 'text-danger' : '' %>">
             <% print_formatted_amount(entry.balance) %>
           </small>
         </td>
@@ -227,7 +227,7 @@
         </small>
       </td>
       <td class="balance text-right" title="<%=t 'helpers.label.journal.balance'%>">
-        <small>
+        <small class="<%= @journal.get_final_balance < 0 ? 'text-danger' : '' %>">
           <%= number_with_precision(@journal.get_final_balance, :precision => 2) %> zł
         </small>
       </td>
@@ -250,9 +250,11 @@
       <th colspan="4"></th>
       <th colspan="<%= @categories_income.length %>" class="balance-label"><span class="pull-right text-muted"><small>Saldo końcowe:</small></span></th>
       <th colspan="<%= @categories_expense.length + 2 %>" class="balance" id="initial-balance">
-        <span class="pull-left"><small>
-          <%= number_with_precision(@journal.get_final_balance, :precision => 2) %> zł
-        </small></span>
+        <span class="pull-left">
+          <small class="<%= @journal.get_final_balance < 0 ? 'text-danger' : '' %>">
+            <%= number_with_precision(@journal.get_final_balance, :precision => 2) %> zł
+          </small>
+        </span>
       </th>
     </tr>
     <tr>

@@ -34,6 +34,7 @@ pl:
         unit_ids: "Jednostki należące do tej grupy"
         user_ids: "Użytkownicy przypisani do tej grupy"
       journal:
+        balance: "Saldo"
         name: "Nazwa"
         year: "Rok"
         journal_type: "Rodzaj"
