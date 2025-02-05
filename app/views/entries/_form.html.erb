@@ -2,6 +2,7 @@
 <%= hidden_field_tag :journal_blocked_to, @journal.blocked_to %>
 
 <%= form_for(@entry) do |f| %>
+  <%= f.hidden_field :referer, { value: @referer } %>
   <% if @entry.errors.any? %>
     <div id="error_explanation">
       <h2>Wystąpiły błędy podczas próby zapisu:</h2>
