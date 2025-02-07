@@ -23,6 +23,7 @@ class EntriesController < ApplicationController
     create_empty_items(@entry, @journal.year)
     
     @linked_entry = create_empty_items_in_linked_entry(@entry)
+    @referer = request.referer
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,6 +35,7 @@ class EntriesController < ApplicationController
   # POST /entries.json
   # creates Entry and related Items
   def create
+    @referer = params[:entry][:referer]
     @entry = Entry.new(entry_params)
    
     if params[:is_linked]
@@ -46,7 +48,13 @@ class EntriesController < ApplicationController
 
     respond_to do |format|
       if @entry.save
-        format.html { redirect_to @entry.journal, notice: 'Wpis utworzony' }
+        format.html do
+          if params[:entry][:referer]
+            redirect_to params[:entry][:referer], notice: 'Wpis utworzony'
+          else
+            redirect_to @entry.journal, notice: 'Wpis utworzony'
+          end
+        end
         format.json { render json: @entry, status: :created, location: @entry }
       else
         @journal = @entry.journal
@@ -69,11 +77,13 @@ class EntriesController < ApplicationController
     @linked_entry = create_empty_items_in_linked_entry(@entry)
 
     @sorted_items = @entry.items.sort_by {|item| item.category.position.to_s}
+    @referer = request.referer
   end
 
   # PUT /entries/1
   # PUT /entries/1.json
   def update
+    @referer = params[:entry][:referer]
     @entry = Entry.find(params[:id])
     authorize! :update, @entry
     @journal = @entry.journal
@@ -92,7 +102,13 @@ class EntriesController < ApplicationController
 
     respond_to do |format|
       if @entry.update_attributes(entry_params)
-        format.html { redirect_to @journal, notice: 'Zmiany zapisane.' }
+        format.html do
+          if params[:entry][:referer]
+            redirect_to params[:entry][:referer], notice: 'Zmiany zapisane'
+          else
+            redirect_to @journal, notice: 'Zmiany zapisane'
+          end
+        end
         format.json { head :ok }
       else
         create_empty_items(@entry, @journal.year)
