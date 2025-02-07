@@ -176,11 +176,13 @@ class Entry < ApplicationRecord
   end
 
   def balance
+    return @balance if @balance
+
     initial_balance = journal.initial_balance
     entries = journal.entries.select { |e| e.date < date || (e.date == date && e.id <= id) }.sort_by(&:date)
     expense_sum = entries.select(&:is_expense).sum { |e| e.sum.to_d }
     income_sum = entries.select { |e| !e.is_expense }.sum { |e| e.sum.to_d }
 
-    initial_balance + income_sum - expense_sum
+    @balance = initial_balance + income_sum - expense_sum
   end
 end
