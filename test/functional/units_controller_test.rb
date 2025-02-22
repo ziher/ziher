@@ -19,7 +19,7 @@ class UnitsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create unit" do
     assert_difference('Unit.count', 1) do
-      post units_url, params: {unit: {name: "created"}}
+      post units_url, params: {unit: {name: "created", code: "code-created"}}
     end
 
     assert_redirected_to unit_path(assigns(:unit))
@@ -36,7 +36,7 @@ class UnitsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update unit" do
-    put unit_url(@unit), params: {unit: {name: "updated"}}
+    put unit_url(@unit), params: {unit: {name: "updated", code: "code-updated"}}
     assert_redirected_to unit_path(assigns(:unit))
   end
 

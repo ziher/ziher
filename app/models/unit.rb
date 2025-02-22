@@ -9,8 +9,8 @@ class Unit < ApplicationRecord
   has_many :journals
   has_many :inventory_entries
 
-  # validates :name, :presence => true
-  # validates :code, :presence => true
+  validates :name, :presence => true
+  validates :code, :presence => true, :uniqueness => true
 
   def Unit.find_by_user(user, is_active = true)
     if (user.is_superadmin)

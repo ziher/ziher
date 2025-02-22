@@ -50,6 +50,7 @@ class UnitsController < ApplicationController
   # PUT /units/1.json
   def update
     @unit = Unit.find(params[:id])
+    @groups = Group.find_by_user(current_user, { :can_manage_units => true })
     authorize! :update, @unit
 
     respond_to do |format|
@@ -80,6 +81,7 @@ class UnitsController < ApplicationController
   # POST /units.json
   def create
     @unit = Unit.new(unit_params)
+    @groups = Group.find_by_user(current_user, { :can_manage_units => true })
     authorize! :create, @unit
 
     respond_to do |format|

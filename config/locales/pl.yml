@@ -7,6 +7,9 @@ pl:
         name: "Opis"
         journal: ""
         items: ""
+      unit:
+        name: "Nazwa"
+        code: "Kod"
     errors:
       models:
         entry:
@@ -21,6 +24,12 @@ pl:
               blank: "Wpis musi być przypisany do książki"
             items:
               blank: "Wpis musi mieć przynajmniej jedną sumę"
+        unit:
+          attributes:
+            name:
+              blank: "nie może być pusta"
+            code:
+              blank: "nie może być pusty"
   helpers:
     label:
       category:
