@@ -70,6 +70,24 @@ class Journal < ApplicationRecord
     end
   end
 
+  def verify_initial_balance
+    previous = Journal.find_previous_for_type(self.unit, self.journal_type, self.year-1)
+    if previous
+      if previous.get_final_balance != self.initial_balance
+        puts "#{self.id}\tprevious.get_final_balance: #{previous.get_final_balance}\tself.initial_balance: #{self.initial_balance}"
+      end
+      if previous.get_final_balance_one_percent != self.initial_balance_one_percent
+        puts "#{self.id}\tprevious.get_final_balance_one_percent: #{previous.get_final_balance_one_percent}\tself.initial_balance_one_percent: #{self.initial_balance_one_percent}"
+      end
+
+      Grant.all.each do |grant|
+        if previous.get_final_balance_for_grant(grant) != self.initial_balance_for_grant(grant)
+          puts "#{self.id}\tprevious.get_final_balance_for_grant(grant): #{previous.get_final_balance_for_grant(grant)}\tself.initial_balance_for_grant(grant): #{self.initial_balance_for_grant(grant)}"
+        end
+      end
+    end
+  end
+
   # returns sum of all entries in this journal for given category
   def get_sum_for_category(category, to_date = end_of_year)
     get_category_sum_for(:amount, category, to_date)
