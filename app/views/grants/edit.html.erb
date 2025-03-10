@@ -1,6 +1,15 @@
 <h1>Edycja dotacji</h1>
 
-<%= render 'form', grant: @grant %>
 
-<%= link_to 'Pokaż', @grant %> |
-<%= link_to 'Powrót', grants_path %>
+  <div class="row top-buffer-20">
+    <div class="col-md-12">
+        <%= render 'form', grant: @grant %>
+    </div>
+   </div>
+
+
+  <div class="row top-buffer-20">
+    <div class="col-md-12">
+        <%= link_to 'Powrót do dotacji', grants_path, class: "btn btn-sm btn-default" %>
+    </div>   
+  </div> 

@@ -1,55 +1,81 @@
 <%= form_for(@inventory_entry) do |f| %>
   <% if @inventory_entry.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@inventory_entry.errors.count, "error") %> prohibited this inventory_entry from being saved:</h2>
-
+      <h2>Wystąpiły błędy podczas próby zapisu:</h2>
       <ul>
-      <% @inventory_entry.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% @inventory_entry.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="row">
     <div class="col-md-6">
-      <div class="field">
-        <%= f.label :data %>
-        <%= f.text_field :date %>
-      </div>
-      <div class="field">
-        <%= f.label :nazwa %>
-        <%= f.text_field :name %>
-      </div>
-      <div class="field">
-        <%= f.label :numer_dokumentu %>
-        <%= f.text_field :document_number %>
-      </div>
-      <div class="field">
-        <%= f.label :ilość %>
-        <%= f.number_field :amount %>
-      </div>
-      <div class="field">
-        <%= f.label :wartość%>
-        <%= f.text_field :total_value %>
-      </div>
-      <div class="field">
-        <%= f.label :Źródło %>
-        <%= collection_select(:inventory_entry, :inventory_source_id, InventorySource.where(:is_active => true), :id, :name, prompt: true) %>
-      </div>
-      <div class="field">
-        <%= f.label :numer_inwentarzowy %>
-        <%= f.text_field :stock_number %>
-      </div>
-      <div class="field">
-        <%= f.label :opis %>
-        <%= f.text_field :remark %>
-      </div>
-      <div class="actions">
-        <%= f.submit "Zapisz"%>
+      <div class="well">
+        <div class="row">
+          <div class="col-md-3">
+            <%= f.label :data %>
+            <%= f.text_field :date, class: "form-control" %>
+          </div>
+          <div class="col-md-6 col-md-offset-3">
+            <%= f.label :numer_dokumentu %>
+            <%= f.text_field :document_number, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row top-buffer-20">
+          <div class="col-md-12">
+            <%= f.label :opis %>
+            <%= f.text_field :remark, class: "form-control" %>
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="col-md-12">
+      <div class="row top-buffer-20">
+        <div class="col-md-3">
+          <%= f.label :ilość %>
+          <%= f.number_field :amount, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="row top-buffer-20">
+        <div class="col-md-3">
+          <%= f.label :wartość %>
+          <%= f.text_field :total_value, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="row top-buffer-20">
+        <div class="col-md-3">
+          <%= f.label :źródło %>
+          <%= collection_select(:inventory_entry, :inventory_source_id, InventorySource.where(is_active: true), :id, :name, { prompt: true }, { class: "form-control" }) %>
+        </div>
+      </div>
+
+      <div class="row top-buffer-20">
+        <div class="col-md-3">
+          <%= f.label :numer_inwentarzowy %>
+          <%= f.text_field :stock_number, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="row top-buffer-20">
+        <div class="col-md-3">
+         <%= f.label :nazwa %>
+         <%= f.text_field :name, class: "form-control" %>
+        </div>
+      </div>
+
+      <%= f.hidden_field :unit_id, value: @unit.id %>
+      <%= f.hidden_field :is_expense, value: @inventory_entry.is_expense %>
+    </div>
   </div>
-  <%= f.hidden_field :unit_id, :value => @unit.id %>
-  <%= f.hidden_field :is_expense, :value => @inventory_entry.is_expense %>
+
+  <div class="row top-buffer-20">
+    <div class="col-md-12">
+      <%= f.submit "Zapisz", class: "btn btn-sm btn-success" %>
+    </div>
+  </div>
 <% end %>

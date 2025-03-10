@@ -1,44 +1,57 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Data:</b>
-  <%= @inventory_entry.date %>
-</p>
 
-<p>
-  <b>Nazwa:</b>
-  <%= @inventory_entry.name %>
-</p>
+<div class="row">
+  <div class="col-md-6">
+    <div class="well">
+      <div class="row">
+        <div class="col-md-3">
+          <b>Data:</b>
+          <%= @inventory_entry.date %>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+          <b>Numer dokumentu:</b>
+          <%= @inventory_entry.document_number %>
+        </div>
+      </div>
+      <div class="row top-buffer-20">
+          <div class="col-md-3">
+            <b>Opis:</b>
+            <%= @inventory_entry.remark %>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p>
-  <b>Numer dokumentu:</b>
-  <%= @inventory_entry.document_number %>
-</p>
+<div class="row top-buffer-20">
+  <div class="col-md-12">
+    <div class="row col-md-12">
+      <b>Nazwa:</b>
+      <%= @inventory_entry.name %>
+    </div> 
+    <div class="row col-md-12">
+      <b>Ilość:</b>
+      <%= @inventory_entry.amount %>
+    </div> 
+    <div class="row col-md-12">
+      <b>Wartość:</b>
+      <%= @inventory_entry.total_value %>
+    </div> 
+    <div class="row col-md-12">
+      <b>Źródło:</b>
+      <%= @inventory_entry.inventory_source.name %>
+    </div> 
+    <div class="row col-md-12">
+      <b>Numer inwentarzowy:</b>
+      <%= @inventory_entry.stock_number %>
+    </div>
+  </div>
+</div>
 
-<p>
-  <b>Ilość:</b>
-  <%= @inventory_entry.amount %>
-</p>
-
-<p>
-  <b>Wartość:</b>
-  <%= @inventory_entry.total_value %>
-</p>
-
-<p>
-  <b>Źródło:</b>
-  <%= @inventory_entry.inventory_source.name %>
-</p>
-
-<p>
-  <b>Numer inwentarzowy:</b>
-  <%= @inventory_entry.stock_number %>
-</p>
-
-<p>
-    <b>Opis:</b>
-    <%= @inventory_entry.remark %>
-</p>
-
-<%= link_to 'Edytuj', edit_inventory_entry_path(@inventory_entry) %> |
-<%= link_to 'Wstecz', inventory_entries_path %>
+<div class="row top-buffer-20">
+  <div class="col-md-12">
+    <%= link_to 'Edytuj', edit_inventory_entry_path(@inventory_entry), class: "btn btn-sm btn-primary mx-1" %>
+    <%= link_to 'Wstecz', inventory_entries_path, class: "btn btn-secondary mx-2" %>
+  </div>
+</div>

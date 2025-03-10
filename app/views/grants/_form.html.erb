@@ -11,17 +11,31 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :nazwa %>
-    <%= form.text_field :name %>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="well">
+        <div class="row">
+          <div class="col-md-6">
+            <%= form.label :nazwa %>
+            <%= form.text_field :name, class: "form-control" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="row top-buffer-20">
+        <div class="col-md-6">
+          <%= form.label :opis %>
+          <%= form.text_area :description, class: "form-control" %>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :opis %>
-    <%= form.text_area :description %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
+  <div class="col-md-12">
+    <div class="row top-buffer-20">
+      <%= form.submit "Zapisz", class: "btn btn-success" %>
+    </div>
   </div>
 <% end %>
