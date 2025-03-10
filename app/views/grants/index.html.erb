@@ -1,27 +1,35 @@
 <h1>Dotacje</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nazwa</th>
-      <th>Opis</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @grants.each do |grant| %>
-      <tr>
-        <td><%= grant.name %></td>
-        <td><%= grant.description %></td>
-        <td><%= link_to 'Pokaż', grant %></td>
-        <td><%= link_to 'Edytuj', edit_grant_path(grant) %></td>
-        <td><%= link_to 'Usuń', grant, method: :delete, data: { confirm: 'Czy na pewno usunąć?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nazwa</th>
+          <th>Opis</th>
+          <th colspan="2"></th>
+        </tr>
+      </thead>
 
-<br>
+      <tbody>
+        <% @grants.each do |grant| %>
+          <tr>
+            <td><%= grant.name %></td>
+            <td><%= grant.description %></td>
+            <td class="pull-right">
+              <%= link_to 'Edytuj', edit_grant_path(grant), class: "btn btn-sm btn-primary" %>
+              <%= link_to 'Usuń', grant, method: :delete, data: { confirm: 'Czy na pewno usunąć?' }, class: "btn btn-sm btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<%= link_to 'Nowa dotacja', new_grant_path %>
+<div class='row top-buffer-20'>
+  <div class="col-md-12">
+    <%= link_to 'Nowa dotacja', new_grant_path, class: "btn btn-sm btn-success" %>
+  </div>  
+</div>

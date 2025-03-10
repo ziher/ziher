@@ -1,12 +1,23 @@
-<p>
-  <strong>Nazwa:</strong>
-  <%= @grant.name %>
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="well">
+      <div class="row">
+        <div class="col-md-6">
+          <p>
+            <strong>Nazwa:</strong>
+            <%= @grant.name %>
+          </p>
 
-<p>
-  <strong>Opis:</strong>
-  <%= @grant.description %>
-</p>
-
-<%= link_to 'Edytuj', edit_grant_path(@grant) %> |
-<%= link_to 'Powrót', grants_path %>
+          <p>
+            <strong>Opis:</strong>
+            <%= @grant.description %>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <%= link_to 'Edytuj', edit_grant_path(@grant), class: "btn btn-sm btn-primary mx-2" %> |
+      <%= link_to 'Powrót', grants_path %>
+    </div>
+  </div>
+</div>
