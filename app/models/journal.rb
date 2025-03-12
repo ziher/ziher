@@ -104,7 +104,7 @@ class Journal < ApplicationRecord
     entries_to_date = entries.select { |entry| entry.date <= to_date}
     entries_to_date.map(&:items).flatten.select do |item|
       item.category == category && item.item_grants.map(&:grant_id).include?(grant_id)
-    end.map(&:item_grants).flatten.sum{ |gi| gi.amount.nil? ? 0 : gi.amount }
+    end.map(&:item_grants).flatten.select { |it| it.grant_id == grant_id }.sum{ |gi| gi.amount.nil? ? 0 : gi.amount }
   end
 
   def get_category_sum_for(summable, category, to_date)
