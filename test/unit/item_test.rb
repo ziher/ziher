@@ -82,7 +82,7 @@ class ItemTest < ActiveSupport::TestCase
   test 'should not update amount one percent if category type is not one percent' do
     #given
     item = items(:one)
-    amount = 30
+    amount = 37
     one_percent = 1
 
     #when
