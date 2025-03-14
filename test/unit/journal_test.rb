@@ -332,6 +332,15 @@ class JournalTest < ActiveSupport::TestCase
     assert new_journal.is_not_blocked
   end
 
+  test "#get_sum_for_grant_in_category" do
+    grant = grants(:one)
+    category = categories(:five)
+    journal = journals(:finance_2012)
+
+    result = journal.get_sum_for_grant_in_category(grant, category)
+    assert_equal result, 19.98
+  end
+
   private
 
   def count_sum_for_category(journal, category)
@@ -345,5 +354,4 @@ class JournalTest < ActiveSupport::TestCase
     items_for_category = Item.where(['category_id = ? AND entry_id IN (?) and amount_one_percent IS NOT NULL', category.id, entries_for_category])
     return items_for_category.to_a.sum(&:amount_one_percent)
   end
-
 end

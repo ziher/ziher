@@ -18,10 +18,10 @@ class ItemTest < ActiveSupport::TestCase
   test 'should save item when amount one percent is lesser than amount' do
     #given
     item = items(:one)
-    item.amount = 2
+    item.amount = 38
 
     #when
-    item.amount_one_percent = 1
+    item.amount_one_percent = 2
 
     #then
     assert item.save!
@@ -29,11 +29,11 @@ class ItemTest < ActiveSupport::TestCase
 
   test 'should save item when amount one percent is equal amount' do
     #given
-    item = items(:one)
-    item.amount = 2
+    item = items(:five)
+    item.amount = 40
 
     #when
-    item.amount_one_percent = 2
+    item.amount_one_percent = 40
 
     #then
     assert item.save!
@@ -82,7 +82,7 @@ class ItemTest < ActiveSupport::TestCase
   test 'should not update amount one percent if category type is not one percent' do
     #given
     item = items(:one)
-    amount = 2
+    amount = 37
     one_percent = 1
 
     #when

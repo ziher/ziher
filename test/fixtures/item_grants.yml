@@ -1,11 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  item_id: 1
-  grant_id: 1
+  item: one
+  grant: one
   amount: 9.99
 
 two:
-  item_id: 1
-  grant_id: 1
+  item: one
+  grant: one
+  amount: 9.99
+
+three:
+  item: one
+  grant: two
+  amount: 9.99
+
+four:
+  item: one
+  grant: two
   amount: 9.99
