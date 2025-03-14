@@ -18,7 +18,7 @@ class ItemTest < ActiveSupport::TestCase
   test 'should save item when amount one percent is lesser than amount' do
     #given
     item = items(:one)
-    item.amount = 30
+    item.amount = 38
 
     #when
     item.amount_one_percent = 2
