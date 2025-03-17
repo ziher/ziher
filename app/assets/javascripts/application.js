@@ -17,6 +17,7 @@ $(function () {
     $.datepicker.setDefaults($.datepicker.regional[ "pl" ]);
     $.datepicker.setDefaults({ dateFormat: "yy-mm-dd" });
     $.datepicker.setDefaults({ numberOfMonths: 3 });
+    $.datepicker.setDefaults({ showCurrentAtPos: 1 });
     $("#inventory_entry_date").datepicker();
 });
 
