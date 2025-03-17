@@ -28,6 +28,7 @@ $(function () {
     $("#entry_date").datepicker({
         minDate: minDate,
         maxDate: new Date(year, 12 - 1, 31),
-        numberOfMonths: 3
+        numberOfMonths: 3,
+        showCurrentAtPos: 1
     });
 });
