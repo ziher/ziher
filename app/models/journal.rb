@@ -14,6 +14,8 @@ class Journal < ApplicationRecord
   validates :year, :presence => true
   validate :cannot_have_duplicated_type
 
+  validates :unit_id, uniqueness: { scope: [:year, :journal_type_id], message: "Książka już istnieje" }
+
   before_create :set_initial_balance
   after_create :set_initial_balance_for_grants
 

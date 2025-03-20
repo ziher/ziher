@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_01_08_133005) do
+ActiveRecord::Schema.define(version: 2025_03_20_071722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 2025_01_08_133005) do
     t.decimal "initial_balance_one_percent", precision: 9, scale: 2, default: "0.0", null: false
     t.date "blocked_to"
     t.index ["journal_type_id"], name: "index_journals_on_journal_type_id"
+    t.index ["unit_id", "year", "journal_type_id"], name: "index_journals_on_unit_year_type", unique: true
     t.index ["unit_id"], name: "index_journals_on_unit_id"
     t.index ["year"], name: "index_journals_on_year"
   end
