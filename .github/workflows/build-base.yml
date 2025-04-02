@@ -1,0 +1,29 @@
+name: Build ZiHeR base
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Gemfile'
+      - 'Gemfile.lock'
+      - '.github/workflows/build-base.yml'
+
+jobs:
+  build-and-release-base:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build ZiHeR Base image
+        run: ./build.sh base
+
+      - name: Login to Docker Hub
+        run: docker login -u ${DOCKER_HUB_LOGIN} -p ${DOCKER_HUB_TOKEN}
+        env:
+          DOCKER_HUB_LOGIN: ${{ secrets.DOCKER_HUB_LOGIN }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Push ZiHeR Base to Docker Hub
+        run: ./release.sh base
