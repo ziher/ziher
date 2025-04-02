@@ -7,6 +7,7 @@ on:
     paths:
       - 'Gemfile'
       - 'Gemfile.lock'
+      - 'Dockerfile.base'
       - '.github/workflows/build-base.yml'
 
 jobs:
