@@ -17,7 +17,7 @@ module EntriesHelper
 
       result += "<div class='col-md-2'>"
       result += "  <label style='width: 100%;' for='entry_items_attributes_#{item_fields.index}_item_grants_attributes_#{index}_grant_name'>w tym #{grant.name}</label>"
-      result += "  <input class='form-control' type='text' value='#{item_grant_amount}' name='#{entry_name_key_prefix}[amount]' id='#{entry_id_key_prefix}_amount'>"
+      result += "  <input class='form-control amount-input-grants grant-#{grant.id}' type='text' value='#{item_grant_amount}' name='#{entry_name_key_prefix}[amount]' id='#{entry_id_key_prefix}_amount'>"
       result += "  <input class='grant_id' type='hidden' value='#{grant.id}' name='#{entry_name_key_prefix}[grant_id]' id='#{entry_id_key_prefix}_grant_id'>"
       result += "  <input class='item_id' type='hidden' value='#{item_fields.object.id}' name='#{entry_name_key_prefix}[item_id]' id='#{entry_id_key_prefix}_item_id'>"
       result += "  <input type='hidden' value='#{item_grant_id}' name='#{entry_name_key_prefix}[id]' id='#{entry_id_key_prefix}_id'>"

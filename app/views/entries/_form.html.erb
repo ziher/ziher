@@ -6,7 +6,6 @@
   <% if @entry.errors.any? %>
     <div id="error_explanation">
       <h2>Wystąpiły błędy podczas próby zapisu:</h2>
-
       <ul>
       <% @entry.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -35,31 +34,25 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="col-md-12">
-
-
       <%= f.fields_for :items, @sorted_items do |item_fields| %>
         <div class="row top-buffer-20">
           <% category_name = item_fields.object.category.name %>
-
           <div class="col-md-2">
             <% #item amount %>
             <%= item_fields.label :amount, category_name %>
-            <%= item_fields.text_field :amount, :class=>"category form-control" %>
+            <%= item_fields.text_field :amount, class: "category form-control amount-input" %>
           </div>
 
           <% if @entry.is_expense then %>
             <div class="col-md-2">
               <% #item amount one percent %>
               <%= item_fields.label :amount_one_percent, "w tym 1%" %>
-              <%= item_fields.text_field :amount_one_percent, :class=>"category form-control" %>
+              <%= item_fields.text_field :amount_one_percent, :class=>"category form-control amount-input-one-percent" %>
             </div>
-
             <% print_item_grants_form(item_fields) %>
-
           <% end %>
           <%= item_fields.hidden_field :category_id, :class=>"category_id"%>
         </div>
@@ -78,7 +71,6 @@
         <div id="linked_entry_div">
           <%= fields_for :linked_entry, @linked_entry do |linked_entry| %>
             <%= linked_entry.select :journal_id, options_from_collection_for_select(@other_journals, "id", "journal_type")%>
-
             <%= linked_entry.fields_for :items do |linked_item_fields| %>
               <%= linked_item_fields.label :amount, linked_item_fields.object.category.name %>
               <%= linked_item_fields.text_field :amount, :class=>"category" %>
@@ -90,12 +82,34 @@
     <% end %>
   </div>
 
+  <!-- Pole sumy -->
+  <div class="row top-buffer-20">
+    <div class="col-md-2">
+      <label for="total-sum">Suma</label>
+      <input type="text" class="form-control" id="total-sum" readonly>
+    </div>
+    <% if @entry.is_expense %>
+      <div class="col-md-2">
+        <label for="total-sum-one-percent">Suma 1%</label>
+        <input type="text" class="form-control" id="total-sum-one-percent" readonly>
+      </div>
+      <% Category.find_grants_by_year(@journal.year).each do |category| %>
+        <% grant = Grant.find(category.grant_id) %>
+        <div class="col-md-2">
+          <label for="total-sum-grant-<%= grant.id %>">Suma <%= grant.name %></label>
+          <input type="text" class="form-control" id="total-sum-grant-<%= grant.id %>" readonly>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
   <div class="row top-buffer-20">
     <div class="col-md-12">
       <%= f.submit "Zapisz", class: "btn btn-sm btn-success"%>
     </div>
   </div>
+
 <% end %>
-<script type="text/JavaScript">
+  <script type="text/JavaScript">
   showOrHideLinkedEntry();
 </script>
