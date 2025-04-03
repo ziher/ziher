@@ -1,4 +1,4 @@
-FROM ziher/base:2025.04.02-30b4eab AS ziher-prod
+FROM ziher/base:2025.04.03-cbb9f47 AS ziher-prod
 
 SHELL ["/bin/bash", "-c"]
 
