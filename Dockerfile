@@ -16,7 +16,7 @@ RUN set -x \
   && rm -rf /usr/local/bundle/cache/* \
   && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_11_amd64.gz \
   && rm -rf /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/*.gz \
-  && chmod 100 /usr/local/bundle/gems/wkhtmltopdf-binary-0.12.6.7/bin/wkhtmltopdf_debian_11_amd64
+  && chmod 100 /usr/local/bundle/gems/wkhtmltopdf-binary-0.12.6.8/bin/wkhtmltopdf_debian_11_amd64
 
 ARG SECRET_KEY_BASE
 ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
