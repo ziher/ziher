@@ -1,4 +1,4 @@
-name: Builds
+name: Build and publish ZiHeR prod app image
 
 on:
   push:

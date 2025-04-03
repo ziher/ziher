@@ -1,4 +1,4 @@
-name: Build ZiHeR base
+name: Build and publish ZiHeR base image
 
 on:
   push:
