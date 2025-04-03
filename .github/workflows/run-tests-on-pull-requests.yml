@@ -1,0 +1,38 @@
+name: Test the app on pull requests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+
+    services:
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_DB: ziher_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build ZiHeR container
+        run: ./build.sh dev
+
+      - name: Create test database
+        run: docker run --rm --network=host ziher/app:latest-dev "rake db:create db:schema:load RAILS_ENV=test"
+
+      - name: Run tests inside the container
+        run: docker run --rm --network=host ziher/app:latest-dev "rake test RAILS_ENV=test"
