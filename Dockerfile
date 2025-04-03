@@ -14,7 +14,7 @@ RUN set -x \
   && bundle config set --local without 'development test' \
   && bundle install --no-cache \
   && rm -rf /usr/local/bundle/cache/* \
-  && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_11_amd64.gz \
+  && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_11_amd64.gz || true \
   && rm -rf /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/*.gz \
   && chmod 100 /usr/local/bundle/gems/wkhtmltopdf-binary-0.12.6.8/bin/wkhtmltopdf_debian_11_amd64
 
