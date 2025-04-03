@@ -82,6 +82,13 @@
     <% end %>
   </div>
 
+  <!-- Szara linia oddzielająca -->
+  <div class="row top-buffer-20">
+    <div class="col-md-<%= 2 * (1 + (@entry.is_expense ? 1 + Category.find_grants_by_year(@journal.year).count : 0)) %>">
+      <hr class="my-3" style="border-top-width: 5px; border-color: #ccc;">
+    </div>
+  </div>
+
   <!-- Pole sumy -->
   <div class="row top-buffer-20">
     <div class="col-md-2">
