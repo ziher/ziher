@@ -7,12 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
 
       - name: Build ZiHeR container
-        run: ./build.sh
+        run: ./build.sh prod
 
       - name: Login to Docker Hub
         run: docker login -u ${DOCKER_HUB_LOGIN} -p ${DOCKER_HUB_TOKEN}
@@ -21,4 +21,4 @@ jobs:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Push Docker Hub
-        run: ./release.sh
+        run: ./release.sh prod
