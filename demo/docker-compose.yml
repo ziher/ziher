@@ -15,7 +15,7 @@ services:
   demo:
     container_name: demo
     #image: ziher/app:latest
-    image: ziher/app:2025.04.03-bc830ba
+    image: ziher/app:2025.04.04-b024a97
     restart: always
     entrypoint: /ziher/entrypoint.sh
     ports:
