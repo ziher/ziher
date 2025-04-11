@@ -11,8 +11,9 @@ function showOrHideLinkedEntry(){
 function updateTotalSum(inputSelector, outputId) {
     var total = 0;
     $(inputSelector).each(function() {
-        var value = parseFloat($(this).val()) || 0;
-        total += value;
+        var value = $(this).val().replace(/,/g, '.');
+        var parsedValue = parseFloat(value) || 0;
+        total += parsedValue;
     });
     $(outputId).val(total.toFixed(2));
 }
