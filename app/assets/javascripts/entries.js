@@ -7,33 +7,6 @@ function showOrHideLinkedEntry(){
   }
 }
 
-$(document).ready(function() {
-    // Zamiana przecinków na kropki w czasie rzeczywistym
-    $('.amount-input').on('input', function() {
-        var value = $(this).val().replace(/,/g, '.');
-        $(this).val(value);
-
-    $('.amount-input-one-percent').on('input', function() {
-        var value = $(this).val().replace(/,/g, '.');
-        $(this).val(value);
-        updateTotalSum('.amount-input-one-percent', '#total-sum-one-percent');
-    });
-
-    $('.amount-input-grants').on('input', function() {
-        var value = $(this).val().replace(/,/g, '.');
-        $(this).val(value);
-        var grantId = $(this).siblings('.grant_id').val();
-        if (grantId) {
-            updateTotalSum('.amount-input-grants.grant-' + grantId, '#total-sum-grant-' + grantId);
-        }
-    });
-        // Aktualizuj sumę po każdej zmianie
-        updateTotalSum('.amount-input', '#total-sum');
-    });
-
-    // Początkowa aktualizacja sumy
-    updateTotalSum('.amount-input', '#total-sum');
-});
 // Uniwersalna funkcja do sumowania kwot
 function updateTotalSum(inputSelector, outputId) {
     var total = 0;
