@@ -16,6 +16,12 @@ table.users tr.invited td { color: #aaa; }
   </div>
 </div>
 
+<div class="row">
+  <div class="col-md-4">
+    <input type="text" id="userFilter" class="form-control" placeholder="Szukaj po nazwie...">
+  </div>
+</div>
+
 <table class="table table-condensed top-buffer-20">
   <tr>
     <th>E-mail</th>
@@ -69,3 +75,22 @@ table.users tr.invited td { color: #aaa; }
 <% end %>
 </tbody>
 </table>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const filterInput = document.getElementById('userFilter');
+  filterInput.addEventListener('keyup', function() {
+    const filter = filterInput.value.toLowerCase();
+    const rows = document.querySelectorAll('table.users tbody tr, table.table-condensed tbody tr');
+
+    rows.forEach(function(row) {
+      const text = row.textContent.toLowerCase();
+      if (text.includes(filter)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
