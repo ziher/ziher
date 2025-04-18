@@ -15,9 +15,6 @@ module Ziher
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-
-    # TODO: This was needed after Rails 5.2 upgrade - to be removed in the future
-    # https://stackoverflow.com/a/72991385
-    config.active_record.use_yaml_unsafe_load = true
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone, ActiveSupport::HashWithIndifferentAccess, BigDecimal]
   end
 end
