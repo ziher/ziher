@@ -71,13 +71,13 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { :host => ENV["EMAIL_DOMAIN"] }
-  ActionMailer::Base.smtp_settings = {
-    :address => ENV["EMAIL_ADDRESS"],
-    :port => ENV["EMAIL_PORT"],
-    :user_name => ENV["EMAIL_USER"],
-    :password => ENV["EMAIL_PASS"],
-    :domain => ENV["EMAIL_DOMAIN"],
-    :authentication => :plain
+  config.action_mailer.smtp_settings = {
+    address: ENV["EMAIL_ADDRESS"],
+    port: ENV["EMAIL_PORT"],
+    user_name: ENV["EMAIL_USER"],
+    password: ENV["EMAIL_PASS"],
+    domain: ENV["EMAIL_DOMAIN"],
+    authentication: "plain"
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
