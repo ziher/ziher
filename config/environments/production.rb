@@ -77,7 +77,8 @@ Rails.application.configure do
     user_name: ENV["EMAIL_USER"],
     password: ENV["EMAIL_PASS"],
     domain: ENV["EMAIL_DOMAIN"],
-    authentication: "plain"
+    authentication: "plain",
+    enable_starttls_auto: true
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
