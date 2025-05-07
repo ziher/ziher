@@ -43,7 +43,7 @@ class EntryTest < ActiveSupport::TestCase
     items << item1 << item2
 
     assert_raise(ActiveRecord::RecordInvalid){
-      entry.update_attributes!(:items => items)
+      entry.update!(:items => items)
     }
   end
 

@@ -43,7 +43,7 @@ class GroupsController < ApplicationController
     authorize! :update, @group
 
     respond_to do |format|
-      if @group.update_attributes(group_params)
+      if @group.update(group_params)
         format.html { redirect_to @group, notice: 'Group was successfully updated.' }
         format.json { head :ok }
       else

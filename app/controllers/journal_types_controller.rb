@@ -61,7 +61,7 @@ class JournalTypesController < ApplicationController
     @journal_type = JournalType.find(params[:id])
 
     respond_to do |format|
-      if @journal_type.update_attributes(journal_type_params)
+      if @journal_type.update(journal_type_params)
         format.html { redirect_to @journal_type, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
