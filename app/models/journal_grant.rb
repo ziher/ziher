@@ -5,5 +5,5 @@ class JournalGrant < ApplicationRecord
     # validate there is only one grant type per item
     validates_uniqueness_of :journal_id, scope: [:grant_id]
 
-    validates :initial_grant_balance, numericality: true, null: false
+    validates :initial_grant_balance, numericality: true, presence: true
 end

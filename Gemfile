@@ -2,9 +2,9 @@ source 'http://rubygems.org'
 
 ruby '2.6.10'
 
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.1.0'
 
-gem 'pg', '~> 0.21'
+gem 'pg', '~> 1.1'
 
 group :development do
   gem 'bullet'
