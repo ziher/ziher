@@ -103,8 +103,8 @@ class CategoriesController < ApplicationController
     authorize! :destroy, @category
     @category.destroy
 
-    if not @category.errors.values.blank?
-      flash.now[:category] = @category.errors.values.join("<br/>")
+    if not @category.errors.messages.blank?
+      flash.now[:category] = @category.errors.messages.values.join("<br/>")
     end
     flash.keep
 

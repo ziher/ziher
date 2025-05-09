@@ -42,14 +42,14 @@ class Grant < ApplicationRecord
     if categories.present? then
       categories_to_show = 10
 
-      errors[:base] << "Błąd usuwania - dotacja włączona w poniższych latach:"
+      errors.add(:base, "Błąd usuwania - dotacja włączona w poniższych latach:")
 
       categories.first(categories_to_show).each do |category|
-        errors[:base] << category.year
+        errors.add(:base, category.year)
       end
 
       if categories.count > categories_to_show
-        errors[:base] << "... i inne, razem #{categories.count} kategorii."
+        errors.add(:base, "... i inne, razem #{categories.count} kategorii.")
       end
 
       throw(:abort)
