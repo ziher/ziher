@@ -51,7 +51,7 @@ class Category < ApplicationRecord
 
     if self.is_one_percent then
       if years.include?(self.year) then
-        errors[:category] << "Tylko jedna kategoria w roku moze byc kategoria typu 1%"
+        errors.add(:category, "Tylko jedna kategoria w roku moze byc kategoria typu 1%")
       end
     end
   end
@@ -59,7 +59,7 @@ class Category < ApplicationRecord
   def cannot_have_same_grant_twice_for_same_year
     if self.grant_id.present? then
       if Category.where(year: self.year, grant_id: self.grant_id).present? then
-        errors[:category] << "dotacja może mieć tylko jedną kategorię w danym roku"
+        errors.add(:category, "dotacja może mieć tylko jedną kategorię w danym roku")
       end
     end
   end
@@ -68,16 +68,16 @@ class Category < ApplicationRecord
     if not all_items_blank
       items_to_show = 10
 
-      errors[:category] << "Istnieją wpisy dla podanej kategorii:"
+      errors.add(:category, "Istnieją wpisy dla podanej kategorii:")
 
       category_items = self.items.select{|item| not item.amount.blank?}
       category_items.first(items_to_show).each do |item|
         entry = Entry.find(item.entry.id)
 
-        errors[:category] << entry.link_to_edit
+        errors.add(:category, entry.link_to_edit)
       end
       if category_items.count > items_to_show
-        errors[:category] << "... i inne, razem #{category_items.count} wpisów."
+        errors.add(:category, "... i inne, razem #{category_items.count} wpisów.")
       end
     end
 
@@ -90,7 +90,7 @@ class Category < ApplicationRecord
 
       if not items_to_check.blank?
         items_to_check.each do |item|
-          errors[:category] << "istnieje wpis #{item.id}"
+          errors.add(:category, "istnieje wpis #{item.id}")
         end
 
         # throw(:abort)
@@ -121,11 +121,11 @@ class Category < ApplicationRecord
       end
 
       if not item_grants_errors.empty?
-        errors[:category] << "Istnieją wpisy dla podanej dotacji:"
-        errors[:category] << item_grants_errors.first(items_to_show)
+        errors.add(:category, "Istnieją wpisy dla podanej dotacji:")
+        errors.add(:category, item_grants_errors.first(items_to_show))
 
         if item_grants_errors.count > items_to_show
-          errors[:category] << "... i inne, razem #{item_grants_errors.count} wpisów."
+          errors.add(:category, "... i inne, razem #{item_grants_errors.count} wpisów.")
         end
       end
     end

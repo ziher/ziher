@@ -21,7 +21,7 @@ class InventorySource < ApplicationRecord
 
   def prevent_changes_for_finance_bank
     if self.id == InventorySource::FINANCE_TYPE_ID || self.id == InventorySource::BANK_TYPE_ID
-      errors[:inventory_source] << "Nie można edytować źródła #{self.name}"
+      errors.add(:inventory_source, "Nie można edytować źródła #{self.name}")
       throw(:abort)
     end
   end
@@ -29,7 +29,7 @@ class InventorySource < ApplicationRecord
   def check_for_inventory_entries
     return true if inventory_entries.count == 0
 
-    errors[:inventory_source] << "Nie można kasować źródła dla którego istnieją wpisy"
+    errors.add(:inventory_source, "Nie można kasować źródła dla którego istnieją wpisy")
     throw(:abort)
   end
 
