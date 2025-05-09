@@ -24,7 +24,7 @@ class Journal < ApplicationRecord
 
   # returns a user-friendly string representation
   def to_s
-    return "Journal(id:#{self.id}, type:#{self.journal_type}, year:#{self.year}, unit:#{self.unit.name}, open:#{self.is_open ? 'open' : 'closed'}, balance:#{initial_balance}, balance1%:#{initial_balance_one_percent}, blocked_to:#{self.blocked_to})"
+    return "Journal(id:#{self.id}, type:#{self.journal_type}, year:#{self.year}, unit:#{self.unit.name}, open:#{self.is_open ? 'open' : 'closed'}, balance:#{initial_balance}, balance1,5%:#{initial_balance_one_percent}, blocked_to:#{self.blocked_to})"
   end
 
   # calculates balance of previous year's journal and sets it as this journal's initial balance

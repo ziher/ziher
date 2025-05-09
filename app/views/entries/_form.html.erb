@@ -49,7 +49,7 @@
           <% if @entry.is_expense then %>
             <div class="col-md-2">
               <% #item amount one percent %>
-              <%= item_fields.label :amount_one_percent, "w tym 1%" %>
+              <%= item_fields.label :amount_one_percent, "w tym 1,5%" %>
               <%= item_fields.text_field :amount_one_percent, :class=>"category form-control amount-input-one-percent" %>
             </div>
             <% print_item_grants_form(item_fields) %>
@@ -97,7 +97,7 @@
     </div>
     <% if @entry.is_expense %>
       <div class="col-md-2">
-        <label for="total-sum-one-percent">Suma 1%</label>
+        <label for="total-sum-one-percent">Suma 1,5%</label>
         <input type="text" class="form-control" id="total-sum-one-percent" readonly>
       </div>
       <% Category.find_grants_by_year(@journal.year).each do |category| %>

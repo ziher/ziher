@@ -81,7 +81,7 @@ class Entry < ApplicationRecord
     items.each do |item|
       if item.category.is_one_percent
         if item.amount != item.amount_one_percent
-          errors[:items] << "Niepoprawny wpis dla kategorii 1% (amount=#{item.amount} != amount_one_percent=#{item.amount_one_percent})"
+          errors[:items] << "Niepoprawny wpis dla kategorii 1,5% (amount=#{item.amount} != amount_one_percent=#{item.amount_one_percent})"
           throw :abort
         end
       end

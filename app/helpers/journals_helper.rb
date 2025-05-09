@@ -33,7 +33,7 @@ module JournalsHelper
 
       amount_string = number_with_precision(journal.get_expense_sum_one_percent, :precision => 2).to_s
 
-      result += "<br/><small><small><span title='" + category_name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1%: "
+      result += "<br/><small><small><span title='" + category_name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1,5%: "
       result += amount_string
       result += "</span></small></small>"
     end
@@ -63,7 +63,7 @@ module JournalsHelper
 
         amount_string = number_with_precision(entry.sum_one_percent, :precision => 2).to_s
 
-        result += "<br/><small><small><span title='" + category_name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1%: "
+        result += "<br/><small><small><span title='" + category_name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1,5%: "
         result += amount_string
         result += "</span></small></small>"
       end
@@ -93,7 +93,7 @@ module JournalsHelper
 
         amount_string = number_with_precision(amount_one_percent, :precision => 2).to_s
 
-        result += "<br/><small><small><span title='" + category.name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1%: "
+        result += "<br/><small><small><span title='" + category.name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1,5%: "
         result += amount_string
         result += "</span></small></small>"
       end
@@ -130,7 +130,7 @@ module JournalsHelper
 
         amount_string = number_with_precision(journal_sum_one_percent_for_category, :precision => 2).to_s
 
-        result += "<br/><small><small><span title='" + category.name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1%: "
+        result += "<br/><small><small><span title='" + category.name + "&#013;" + I18n.t('helpers.label.journal.one_percent_tooltip')  + ": " + amount_string + "' class='text-muted'>1,5%: "
         result += amount_string
         result += "</span></small></small>"
       end

@@ -40,7 +40,7 @@ class ReportsController < ApplicationController
   end
 
   def finance_one_percent
-    @report_header = 'Raporty > Sprawozdanie finansowe dla dotacji 1%'
+    @report_header = 'Raporty > Sprawozdanie finansowe dla dotacji 1,5%'
     @report_link = finance_one_percent_report_path
 
     @user_units = Unit.find_by_user(current_user)
@@ -68,7 +68,7 @@ class ReportsController < ApplicationController
       }
       format.pdf {
         @generation_time = Time.now
-        @report_short_name = "dotacji 1% podatku dochodowego od osób fizycznych"
+        @report_short_name = "dotacji 1,5% podatku dochodowego od osób fizycznych"
         @report_long_name = @report_short_name
         render pdf: 'sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/one_percent'
       }
@@ -170,7 +170,7 @@ class ReportsController < ApplicationController
       return
     end
 
-    @report_header = 'Raporty > Całościowe sprawozdanie finansowe dla dotacji 1%'
+    @report_header = 'Raporty > Całościowe sprawozdanie finansowe dla dotacji 1,5%'
     @report_link = all_finance_one_percent_report_path
 
     set_report_global_variables
@@ -189,7 +189,7 @@ class ReportsController < ApplicationController
       }
       format.pdf {
         @generation_time = Time.now
-        @report_short_name = "dotacji 1% podatku dochodowego od osób fizycznych"
+        @report_short_name = "dotacji 1,5% podatku dochodowego od osób fizycznych"
         @report_long_name = @report_short_name
         render pdf: 'calosciowe_sprawozdanie_finansowe_1procent_' + get_time_postfix, template: 'reports/all_one_percent'
       }
