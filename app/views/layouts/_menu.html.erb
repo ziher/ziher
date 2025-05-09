@@ -13,11 +13,11 @@
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Raporty <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li class="<%= menu_active?(:finance_report) %>"> <%= link_to "Sprawozdanie finansowe", finance_report_path %> </li>
-            <li class="<%= menu_active?(:finance_one_percent_report) %>"> <%= link_to "Sprawozdanie finansowe dla 1%", finance_one_percent_report_path %> </li>
+            <li class="<%= menu_active?(:finance_one_percent_report) %>"> <%= link_to "Sprawozdanie finansowe dla 1,5%", finance_one_percent_report_path %> </li>
             <li class="<%= menu_active?(:finance_grants_report) %>"> <%= link_to "Sprawozdania finansowe dla dotacji", finance_grants_report_path %> </li>
             <% if current_user.is_superadmin %>
               <li class="<%= menu_active?(:all_finance_report) %>"> <%= link_to "Całościowe sprawozdanie finansowe", all_finance_report_path %> </li>
-              <li class="<%= menu_active?(:all_finance_one_percent_report) %>"> <%= link_to "Całościowe sprawozdanie finansowe dla 1%", all_finance_one_percent_report_path %> </li>
+              <li class="<%= menu_active?(:all_finance_one_percent_report) %>"> <%= link_to "Całościowe sprawozdanie finansowe dla 1,5%", all_finance_one_percent_report_path %> </li>
               <li class="<%= menu_active?(:all_finance_grants_report) %>"> <%= link_to "Całościowe sprawozdania finansowe dla dotacji", all_finance_grants_report_path %> </li>
               <li class="<%= menu_active?(:reports) %>"> <%= link_to "Spis z natury", fixed_assets_report_path %> </li>
             <% end %>
