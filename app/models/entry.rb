@@ -73,7 +73,7 @@ class Entry < ApplicationRecord
     end
 
     if categories.length != categories.uniq.length
-      errors[:items] << 'Wpis nie moze miec kilku sum z tej samej kategorii'
+      errors.add(:items, 'Wpis nie moze miec kilku sum z tej samej kategorii')
     end
   end
 
@@ -81,7 +81,7 @@ class Entry < ApplicationRecord
     items.each do |item|
       if item.category.is_one_percent
         if item.amount != item.amount_one_percent
-          errors[:items] << "Niepoprawny wpis dla kategorii 1% (amount=#{item.amount} != amount_one_percent=#{item.amount_one_percent})"
+          errors.add(:items, "Niepoprawny wpis dla kategorii 1% (amount=#{item.amount} != amount_one_percent=#{item.amount_one_percent})")
           throw :abort
         end
       end
@@ -91,7 +91,7 @@ class Entry < ApplicationRecord
   def must_be_from_journals_year
     if journal && self.date
       if self.date.year!= journal.year
-        errors[:base] << "Wpis nie moze byc z innego roku: journal.year=#{journal.year} != entry.year=#{self.date.year}"
+        errors.add(:base, "Wpis nie moze byc z innego roku: journal.year=#{journal.year} != entry.year=#{self.date.year}")
         throw :abort
       end
     end
@@ -101,12 +101,12 @@ class Entry < ApplicationRecord
     if journal
       items.each do |item|
         if item.nil? || item.category.nil? || item.category.year.nil?
-          errors[:base] << "Wpis musi miec kategorie z danego roku"
+          errors.add(:base, "Wpis musi miec kategorie z danego roku")
           throw :abort
         end
 
         if item.category.year != journal.year
-          errors[:base] << "Wpis nie moze miec sumy dla kategorii z innego roku niz ksiazka: journal.year=#{journal.year} != category.year=#{item.category.year}"
+          errors.add(:base, "Wpis nie moze miec sumy dla kategorii z innego roku niz ksiazka: journal.year=#{journal.year} != category.year=#{item.category.year}")
           throw :abort
         end
       end
@@ -116,7 +116,7 @@ class Entry < ApplicationRecord
   def should_not_change_if_journal_is_closed
     if journal
       unless journal.is_not_blocked(self.date)
-        errors[:journal] << "Aby zmieniać wpisy książka musi być otwarta"
+        errors.add(:journal, "Aby zmieniać wpisy książka musi być otwarta")
         throw :abort
       end
     end
@@ -130,7 +130,7 @@ class Entry < ApplicationRecord
         is_expense = true if item.category.is_expense
         is_income = true unless item.category.is_expense
         if is_expense && is_income
-          errors[:base] << "Wpis nie może być jednocześnie wpływem i wydatkiem"
+          errors.add(:base, "Wpis nie może być jednocześnie wpływem i wydatkiem")
         end
       end
     end
@@ -139,7 +139,7 @@ class Entry < ApplicationRecord
   def linked_entry_sum_must_match
     if linked_entry != nil
       if self.sum != linked_entry.sum
-        errors[:linked_entry] << "Połączony wpis musi mieć taką samą kwotę"
+        errors.add(:linked_entry, "Połączony wpis musi mieć taką samą kwotę")
       end
     end
   end
@@ -147,7 +147,7 @@ class Entry < ApplicationRecord
   def linked_entry_must_be_opposite
     if linked_entry != nil
       if self.is_expense == linked_entry.is_expense
-        errors[:linked_entry] << "Połączony wpis musi być odwrotnego typu"
+        errors.add(:linked_entry, "Połączony wpis musi być odwrotnego typu")
       end
     end
   end

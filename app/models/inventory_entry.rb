@@ -43,7 +43,7 @@ class InventoryEntry < ApplicationRecord
       return true
     end
 
-    errors[:inventory_entry] << "Nie można użyć nieaktywnego źródła #{inventory_source.name}"
+    errors.add(:inventory_entry, "Nie można użyć nieaktywnego źródła #{inventory_source.name}")
     return false
   end
 
@@ -58,7 +58,7 @@ class InventoryEntry < ApplicationRecord
       return true
     end
 
-    errors[:inventory_entry] << "Źródło #{inventory_source.name} dla roku #{date.year} jest zamknięte"
+    errors.add(:inventory_entry, "Źródło #{inventory_source.name} dla roku #{date.year} jest zamknięte")
     return false
   end
 
