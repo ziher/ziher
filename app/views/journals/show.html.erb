@@ -93,7 +93,7 @@
     </tr>
     <tr>
       <th colspan="<%= @categories_income.length + 4 %>" class="balance-label" style="border-top: none; border-bottom: none" title="<%=@journal.journal_type.name%> dla <%= @journal.unit.name %>, <%=@journal.year%>">
-        <span class="pull-right text-muted"><small>w tym 1%:</small></span>
+        <span class="pull-right text-muted"><small>w tym 1,5%:</small></span>
       </th>
       <th colspan="<%= @categories_expense.length + 2 %>" class="balance" id="initial-balance" style="border-top: none; border-bottom: none">
         <span class="pull-left"><small>
@@ -259,7 +259,7 @@
     </tr>
     <tr>
       <th colspan="4" style="border-top: none"></th>
-      <th colspan="<%= @categories_income.length %>" class="balance-label" style="border-top: none"><span class="pull-right text-muted"><small>w tym 1%:</small></span></th>
+      <th colspan="<%= @categories_income.length %>" class="balance-label" style="border-top: none"><span class="pull-right text-muted"><small>w tym 1,5%:</small></span></th>
       <th colspan="<%= @categories_expense.length + 2 %>" class="balance" id="initial-balance" style="border-top: none">
         <span class="pull-left"><small>
           <%= number_with_precision(@journal.get_final_balance_one_percent, :precision => 2) %> zł

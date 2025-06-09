@@ -51,7 +51,7 @@ class Category < ApplicationRecord
 
     if self.is_one_percent then
       if years.include?(self.year) then
-        errors.add(:category, "Tylko jedna kategoria w roku moze byc kategoria typu 1%")
+        errors.add(:category, "Tylko jedna kategoria w roku moze byc kategoria typu 1,5%")
       end
     end
   end

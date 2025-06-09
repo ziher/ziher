@@ -55,14 +55,14 @@ class Item < ApplicationRecord
   def cannot_have_amount_one_percent_greater_than_amount
     if self.amount != nil && self.amount_one_percent != nil
       if self.amount_one_percent.abs > self.amount.abs && !category.is_one_percent
-        errors.add(:items, " - wartość dla 1% (#{self.amount_one_percent}) musi być mniejsza niż wartość główna (#{self.amount})")
+        errors.add(:items, " - wartość dla 1,5% (#{self.amount_one_percent}) musi być mniejsza niż wartość główna (#{self.amount})")
       end
     end
   end
 
   def cannot_have_amount_one_percent_if_amount_is_nil
     if self.amount == nil && self.amount_one_percent != nil && self.amount_one_percent != 0 then
-      errors.add(:items, " - podano wartość dla 1% (#{self.amount_one_percent}) bez podania wartości głównej")
+      errors.add(:items, " - podano wartość dla 1,5% (#{self.amount_one_percent}) bez podania wartości głównej")
     end
   end
 
