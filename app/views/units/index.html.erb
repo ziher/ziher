@@ -48,6 +48,12 @@
   </div>
 </div>
 
+<div class="row top-buffer-20">
+  <div class="col-md-4">
+    <%= text_field_tag :query, params[:query], placeholder: "Szukaj ...", class: "form-control", id: "units-search" %>
+  </div>
+</div>
+
 <table class="table table-condensed top-buffer-20">
   <tr>
     <th rowspan="3">Kod</th>
@@ -66,10 +72,10 @@
   </tr>
   <tr>
     <th>&nbsp;</th>
-    <th class="text-right">1,5%</th>
+    <th class="text-right">1%</th>
     <th class="text-right">blokada</th>
     <th>&nbsp;</th>
-    <th class="text-right">1,5%</th>
+    <th class="text-right">1%</th>
     <th class="text-right">blokada</th>
   </tr>
 
