@@ -16,7 +16,7 @@ class UserGroupAssociationsController < ApplicationController
     authorize! :update, @user_group_association
 
     respond_to do |format|
-      if @user_group_association.update_attributes(uga_params)
+      if @user_group_association.update(uga_params)
         target = params[:from] == "group" ? @user_group_association.group : @user_group_association.user
 
         format.html { redirect_to target, notice: 'Zmiany zapisane.' }

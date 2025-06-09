@@ -54,7 +54,7 @@ class UnitsController < ApplicationController
     authorize! :update, @unit
 
     respond_to do |format|
-      if @unit.update_attributes(unit_params)
+      if @unit.update(unit_params)
         format.html { redirect_to @unit, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else

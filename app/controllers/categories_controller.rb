@@ -86,7 +86,7 @@ class CategoriesController < ApplicationController
     authorize! :update, @category
 
     respond_to do |format|
-      if @category.update_attributes(category_params)
+      if @category.update(category_params)
         format.html { redirect_to categories_url, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
@@ -103,8 +103,8 @@ class CategoriesController < ApplicationController
     authorize! :destroy, @category
     @category.destroy
 
-    if not @category.errors.values.blank?
-      flash.now[:category] = @category.errors.values.join("<br/>")
+    if not @category.errors.messages.blank?
+      flash.now[:category] = @category.errors.messages.values.join("<br/>")
     end
     flash.keep
 

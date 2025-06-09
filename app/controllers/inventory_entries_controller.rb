@@ -192,7 +192,7 @@ class InventoryEntriesController < ApplicationController
     authorize! :update, @inventory_entry
 
     respond_to do |format|
-      if @inventory_entry.update_attributes(inventory_entries_params)
+      if @inventory_entry.update(inventory_entries_params)
         format.html { redirect_to @inventory_entry, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else

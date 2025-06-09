@@ -1,3 +1,5 @@
+require "active_support/core_ext/integer/time"
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -31,7 +33,7 @@ Rails.application.configure do
   config.assets.prefix = "#{ENV['RAILS_RELATIVE_URL_ROOT']}/assets"
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.action_controller.asset_host = 'http://assets.example.com'
+  # config.asset_host = 'http://assets.example.com'
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
@@ -48,8 +50,8 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # Use the lowest log level to ensure availability of diagnostic information
-  # when problems arise.
+  # Include generic and useful information about system operation, but avoid logging too much
+  # information to avoid inadvertent exposure of personally identifiable information (PII).
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL") { "info" }
 
   # Prepend all log lines with the following tags.
@@ -71,13 +73,14 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { :host => ENV["EMAIL_DOMAIN"] }
-  ActionMailer::Base.smtp_settings = {
-    :address => ENV["EMAIL_ADDRESS"],
-    :port => ENV["EMAIL_PORT"],
-    :user_name => ENV["EMAIL_USER"],
-    :password => ENV["EMAIL_PASS"],
-    :domain => ENV["EMAIL_DOMAIN"],
-    :authentication => :plain
+  config.action_mailer.smtp_settings = {
+    address: ENV["EMAIL_ADDRESS"],
+    port: ENV["EMAIL_PORT"],
+    user_name: ENV["EMAIL_USER"],
+    password: ENV["EMAIL_PASS"],
+    domain: ENV["EMAIL_DOMAIN"],
+    authentication: "plain",
+    enable_starttls_auto: true
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
@@ -87,11 +90,17 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
+  # Log disallowed deprecations.
+  config.active_support.disallowed_deprecation = :log
+
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
+
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
   # Use a different logger for distributed setups.
-  # require 'syslog/logger'
+  # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?

@@ -16,7 +16,7 @@ class UserUnitAssociationsController < ApplicationController
     authorize! :update, @user_unit_association
 
     respond_to do |format|
-      if @user_unit_association.update_attributes(uua_params)
+      if @user_unit_association.update(uua_params)
         target = params[:from] == "unit" ? @user_unit_association.unit : @user_unit_association.user
 
         format.html { redirect_to target, notice: 'Zmiany zapisane.' }

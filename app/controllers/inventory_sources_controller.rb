@@ -64,11 +64,11 @@ class InventorySourcesController < ApplicationController
     @inventory_source = InventorySource.find(params[:id])
     authorize! :update, @inventory_source
 
-    flash.now[:alert] = @inventory_source.errors.values.join("<br/>")
+    flash.now[:alert] = @inventory_source.errors.messages.values.join("<br/>")
     flash.keep
 
     respond_to do |format|
-      if @inventory_source.update_attributes(inventory_source_params)
+      if @inventory_source.update(inventory_source_params)
         format.html { redirect_to @inventory_source, notice: 'Inventory source was successfully updated.' }
         format.json { head :no_content }
       else
@@ -85,7 +85,7 @@ class InventorySourcesController < ApplicationController
     authorize! :destroy, @inventory_source
     @inventory_source.destroy
 
-    flash.now[:alert] = @inventory_source.errors.values.join("<br/>")
+    flash.now[:alert] = @inventory_source.errors.messages.values.join("<br/>")
     flash.keep
 
     respond_to do |format|

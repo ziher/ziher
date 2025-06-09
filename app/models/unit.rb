@@ -90,7 +90,8 @@ class Unit < ApplicationRecord
   def unit_has_open_journals
     open_journals = self.journals.select { |journal| journal.is_not_blocked()}
     if open_journals.count > 0
-      errors[:journal] << "jednostka posiada niezamknięte książki w latach: " + open_journals.map(&:year).uniq().join(', ')
+      msg = "jednostka posiada niezamknięte książki w latach: " + open_journals.map(&:year).uniq().join(', ')
+      errors.add(:journal, msg)
       return false
     end
 

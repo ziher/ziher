@@ -91,7 +91,7 @@ class EntriesController < ApplicationController
 
     if params[:is_linked]
       if @entry.linked_entry
-        @entry.linked_entry.update_attributes(params[:linked_entry])
+        @entry.linked_entry.update(params[:linked_entry])
         linked_entry = @entry.linked_entry
       else
         linked_entry = Entry.new(params[:linked_entry])
@@ -101,7 +101,7 @@ class EntriesController < ApplicationController
     end
 
     respond_to do |format|
-      if @entry.update_attributes(entry_params)
+      if @entry.update(entry_params)
         format.html do
           if params[:entry][:referer]
             redirect_to params[:entry][:referer], notice: 'Zmiany zapisane'

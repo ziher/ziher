@@ -315,7 +315,7 @@ class Journal < ApplicationRecord
 
   def verify_balance_one_percent_not_less_than_zero(to_date = end_of_year)
     if self.get_balance_one_percent(to_date) < 0
-      errors[:one_percent] << I18n.t(:sum_one_percent_must_not_be_less_than_zero, :sum_one_percent => get_balance_one_percent(to_date), :scope => :journal)
+      errors.add(:one_percent, I18n.t(:sum_one_percent_must_not_be_less_than_zero, :sum_one_percent => get_balance_one_percent(to_date), :scope => :journal))
       return false
     else
       return true
@@ -327,7 +327,7 @@ class Journal < ApplicationRecord
 
     Grant.all.each do |grant|
       if self.get_balance_for_grant(grant, to_date) < 0
-        errors[:grants] << "Saldo końcowe dla dotacji " + grant.name + " (" + self.get_balance_for_grant(grant, to_date).to_s + ") nie może być mniejsze niż zero"
+        errors.add(:grants, "Saldo końcowe dla dotacji " + grant.name + " (" + self.get_balance_for_grant(grant, to_date).to_s + ") nie może być mniejsze niż zero")
         result = false
       end
     end
@@ -350,9 +350,9 @@ class Journal < ApplicationRecord
     end
 
     if total_balance < 0
-      errors[:one_percent] << "Saldo końcowe (" + total_balance.to_s + ") jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie " + balances_sum.to_s + ")"
+      errors.add(:one_percent, "Saldo końcowe (" + total_balance.to_s + ") jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie " + balances_sum.to_s + ")")
     else
-      errors[:one_percent] << "Saldo końcowe dla dotacji (" + balances_sum.to_s + ") nie może być większe niż saldo książki (" + total_balance.to_s + ")"
+      errors.add(:one_percent, "Saldo końcowe dla dotacji (" + balances_sum.to_s + ") nie może być większe niż saldo książki (" + total_balance.to_s + ")")
     end
     return false
   end
@@ -362,7 +362,7 @@ class Journal < ApplicationRecord
     self.entries.each do |entry|
       if !entry.verify_entry
         result = false
-        errors[:entry] << entry.errors.values
+        errors.add(:entry, entry.errors.values)
       end
     end
     return result
@@ -374,7 +374,8 @@ class Journal < ApplicationRecord
     inventoryVerifier = InventoryEntryVerifier.new(self.unit)
     years_to_verify = [self.year]
     unless inventoryVerifier.verify(years_to_verify)
-      errors[:inventory] << '<br/>' + inventoryVerifier.errors.values.join("<br/><br/>")
+      errors.add(:inventory, "<br/>")
+      errors.add(:inventory, inventoryVerifier.errors.values.join("<br/><br/>"))
       result = false
     end
 
@@ -472,7 +473,7 @@ class Journal < ApplicationRecord
 
   private
   def add_error_for_duplicated_type
-    errors[:journal_type] << I18n.t(:journal_for_this_year_and_type_already_exists, :year => self.year, :type => self.journal_type.name, :scope => :journal)
+    errors.add(:journal_type, I18n.t(:journal_for_this_year_and_type_already_exists, :year => self.year, :type => self.journal_type.name, :scope => :journal))
   end
 
   def Journal.end_of_year(year)
@@ -485,7 +486,7 @@ class Journal < ApplicationRecord
 
   def verify_block_date(date)
     if date.year != self.year or date.blank? or not date.is_a?(Date)
-      errors[:blocked_to] << "Błędna data zamknięcia książki"
+      errors.add(:blocked_to, "Błędna data zamknięcia książki")
       return false
     end
 

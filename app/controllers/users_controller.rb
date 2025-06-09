@@ -68,7 +68,7 @@ class UsersController < ApplicationController
     authorize! :set_superadmin, @user if params[:user][:set_superadmin]
 
     respond_to do |format|
-      if @user.update_attributes(user_params)
+      if @user.update(user_params)
         format.html { redirect_to @user, notice: 'Zmiany zapisane.' }
         format.json { head :ok }
       else
