@@ -22,23 +22,21 @@ $(function () {
 });
 
 // Uniwersalny kod do wyszukiwania dla users i units
-['users', 'units'].forEach(resource => {
-    document.addEventListener('DOMContentLoaded', () => {
-        const input = document.querySelector(`#${resource}-search`);
-        const selector = resource === 'users'
-            ? 'table.users tbody tr, table.table-condensed tbody tr'
-            : 'table tbody tr';
+function initSearch(resource) {
+    const input = document.querySelector(`#${resource}-search`);
+    const selector = resource === 'users'
+        ? 'table.users tbody tr, table.table-condensed tbody tr'
+        : 'table tbody tr';
 
-        if (input) {
-            input.addEventListener('keyup', () => {
-                const filter = input.value.toLowerCase();
-                document.querySelectorAll(selector).forEach(row => {
-                    row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
-                });
+    if (input) {
+        input.addEventListener('keyup', () => {
+            const filter = input.value.toLowerCase();
+            document.querySelectorAll(selector).forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
             });
-        }
-    });
-});
+        });
+    }
+}
 
 
 $(document).ready(function () {

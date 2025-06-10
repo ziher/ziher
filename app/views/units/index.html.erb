@@ -2,6 +2,11 @@
   function reloadForYear(year) {
     document.location.href = "<%= units_path %>?year=" + year;
   }
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initSearch('units');
+  });
 </script>
 
 <div class="row">
