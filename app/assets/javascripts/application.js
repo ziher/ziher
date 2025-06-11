@@ -21,6 +21,20 @@ $(function () {
     $("#inventory_entry_date").datepicker();
 });
 
+// Uniwersalny kod do wyszukiwania dla users i units
+function initSearch(resource, selector) {
+    const input = document.querySelector(`#${resource}`);
+    if (input) {
+        input.addEventListener('keyup', () => {
+            const filter = input.value.toLowerCase();
+            document.querySelectorAll(selector).forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
+            });
+        });
+    }
+}
+
+
 $(document).ready(function () {
     $('table').delegate('td, th', 'mouseover mouseleave', function (e) {
         if (e.type == 'mouseover') {

@@ -2,6 +2,11 @@
   function reloadForYear(year) {
     document.location.href = "<%= units_path %>?year=" + year;
   }
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    initSearch('units-search', 'table tbody tr');
+  });
+
 </script>
 
 <div class="row">
@@ -48,7 +53,13 @@
   </div>
 </div>
 
-<table class="table table-condensed top-buffer-20">
+<div class="row top-buffer-20">
+  <div class="col-md-4">
+    <%= text_field_tag :query, params[:query], placeholder: "Szukaj...", class: "form-control", id: "units-search" %>
+  </div>
+</div>
+
+<table class="table table-condensed top-buffer-20 units">
   <tr>
     <th rowspan="3">Kod</th>
     <th class="name-cell" rowspan="3">Nazwa</th>

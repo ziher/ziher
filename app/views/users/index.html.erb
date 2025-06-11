@@ -1,3 +1,9 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    initSearch('users-search', 'table.users tbody tr, table.table-condensed tbody tr');
+  });
+</script>
+
 <style type="text/css">
 table.users tr.invited td { color: #aaa; }
 </style>
@@ -16,7 +22,13 @@ table.users tr.invited td { color: #aaa; }
   </div>
 </div>
 
-<table class="table table-condensed top-buffer-20">
+<div class="row top-buffer-20">
+  <div class="col-md-4">
+    <%= text_field_tag :query, params[:query], placeholder: "Szukaj...", class: "form-control", id: "users-search" %>
+  </div>
+</div>
+
+<table class="table table-condensed top-buffer-20 users">
   <tr>
     <th>E-mail</th>
     <th>Imię</th>
