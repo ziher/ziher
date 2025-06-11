@@ -1,4 +1,4 @@
-FROM ziher/base:2025.06.11-f27c80f AS ziher-prod
+FROM docker.io/ziher/base:2025.06.11-8ac9826 AS ziher-prod
 
 SHELL ["/bin/bash", "-c"]
 
@@ -30,6 +30,13 @@ RUN set -x \
  && apt-get install --yes \
       build-essential \
       libpq-dev \
+      wget \
+      libjpeg62-turbo \
+      libpng16-16 \
+      libxrender1 \
+      libfontconfig1 \
+      libfreetype6 \
+      libx11-6 \
       \
  && apt-get --yes --purge autoremove \
  && apt-get clean \
