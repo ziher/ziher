@@ -22,12 +22,8 @@ $(function () {
 });
 
 // Uniwersalny kod do wyszukiwania dla users i units
-function initSearch(resource) {
-    const input = document.querySelector(`#${resource}-search`);
-    const selector = resource === 'users'
-        ? 'table.users tbody tr, table.table-condensed tbody tr'
-        : 'table tbody tr';
-
+function initSearch(resource, selector) {
+    const input = document.querySelector(`#${resource}`);
     if (input) {
         input.addEventListener('keyup', () => {
             const filter = input.value.toLowerCase();

@@ -1,6 +1,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    initSearch('users');
+    initSearch('users-search', 'table.users tbody tr, table.table-condensed tbody tr');
   });
 </script>
 
@@ -28,7 +28,7 @@ table.users tr.invited td { color: #aaa; }
   </div>
 </div>
 
-<table class="table table-condensed top-buffer-20">
+<table class="table table-condensed top-buffer-20 users">
   <tr>
     <th>E-mail</th>
     <th>Imię</th>
