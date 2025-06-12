@@ -237,6 +237,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webrick (1.9.1)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -276,6 +277,7 @@ DEPENDENCIES
   timecop
   uglifier
   web-console
+  webrick
   wicked_pdf
   wkhtmltopdf-binary
 

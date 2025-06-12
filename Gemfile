@@ -10,6 +10,7 @@ group :development do
   gem 'bullet'
   gem 'listen'
   gem 'web-console'
+  gem "webrick"
 end
 
 group :production do
