@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby '3.0.7'
 
-gem 'rails', '~> 7.0.0'
+gem 'rails', '~> 7.1.0'
 
 gem 'pg', '~> 1.1'
 
@@ -24,8 +24,6 @@ gem 'execjs', '~> 2.7.0'
 gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
-
-gem 'therubyracer'
 
 gem 'bootstrap-sass'
 

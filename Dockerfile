@@ -11,23 +11,10 @@ COPY config/initializers/version.rb /ziher/config/initializers/version.rb
 COPY . /ziher
 
 RUN set -x \
-  && bundle config set --local without 'development test' \
-  && bundle install --no-cache \
-  && rm -rf /usr/local/bundle/cache/* \
-  && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_11_amd64.gz || true \
-  && rm -rf /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/*.gz \
-  && chmod 100 /usr/local/bundle/gems/wkhtmltopdf-binary-0.12.6.9/bin/wkhtmltopdf_debian_11_amd64
-
-ARG SECRET_KEY_BASE
-ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
-
-RUN set -x \
- && rake assets:precompile --trace
-
-RUN set -x \
  && apt-get update \
  && apt-get upgrade --yes \
  && apt-get install --yes \
+      nodejs \
       build-essential \
       libpq-dev \
       wget \
@@ -41,6 +28,20 @@ RUN set -x \
  && apt-get --yes --purge autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN set -x \
+  && bundle config set --local without 'development test' \
+  && bundle install --no-cache \
+  && rm -rf /usr/local/bundle/cache/* \
+  && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_11_amd64.gz || true \
+  && rm -rf /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/*.gz \
+  && chmod 100 /usr/local/bundle/gems/wkhtmltopdf-binary-0.12.6.9/bin/wkhtmltopdf_debian_11_amd64
+
+ARG SECRET_KEY_BASE
+ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
+
+RUN set -x \
+ && rake assets:precompile --trace
 
 ENTRYPOINT ["passenger", "start", "-p", "3000", "-a", "0.0.0.0"]
 

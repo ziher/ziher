@@ -11,6 +11,7 @@ RUN set -x \
  && apt-get update \
  && apt-get upgrade --yes \
  && apt-get install --yes \
+      nodejs \
       build-essential \
       libpq-dev \
       wget \
