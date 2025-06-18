@@ -4,7 +4,7 @@ ruby '3.0.7'
 
 gem 'rails', '~> 7.1.0'
 
-gem 'pg', '~> 1.1'
+gem 'pg'
 
 group :development do
   gem 'bullet'
@@ -20,7 +20,7 @@ end
 
 gem 'sprockets', '~>3.7.2'
 
-gem 'execjs', '~> 2.7.0'
+gem 'execjs'
 gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
@@ -54,7 +54,7 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'devise_invitable'
 
-gem 'cancancan', '~>3.4.0'
+gem 'cancancan'
 
 gem 'audited'
 gem 'pagy'
