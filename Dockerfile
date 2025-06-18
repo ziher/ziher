@@ -1,4 +1,4 @@
-FROM docker.io/ziher/base:2025.06.11-8ac9826 AS ziher-prod
+FROM docker.io/ziher/base:2025.06.18-f63392a AS ziher-prod
 
 SHELL ["/bin/bash", "-c"]
 
