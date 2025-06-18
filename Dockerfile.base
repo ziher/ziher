@@ -1,11 +1,11 @@
-FROM ruby:3.0.7-slim-bullseye AS ziher-base
+FROM ruby:3.4.4-slim-bullseye AS ziher-base
 
 RUN mkdir /ziher
 WORKDIR /ziher
 COPY Gemfile /ziher/Gemfile
 COPY Gemfile.lock /ziher/Gemfile.lock
 RUN set -x \
-  && gem install bundler -v 2.3.26
+  && gem install bundler --version 2.6.7
 
 RUN set -x \
  && apt-get update \
@@ -21,6 +21,7 @@ RUN set -x \
       libfontconfig1 \
       libfreetype6 \
       libx11-6 \
+      libyaml-dev \
       \
  && apt-get --yes --purge autoremove \
  && apt-get clean \

@@ -1,83 +1,77 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    actioncable (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actioncable (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
       zeitwerk (~> 2.6)
-    actionmailbox (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      mail (>= 2.7.1)
-      net-imap
-      net-pop
-      net-smtp
-    actionmailer (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      actionview (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      mail (~> 2.5, >= 2.5.4)
-      net-imap
-      net-pop
-      net-smtp
+    actionmailbox (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activestorage (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
+      mail (>= 2.8.0)
+    actionmailer (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      actionview (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
+      mail (>= 2.8.0)
       rails-dom-testing (~> 2.2)
-    actionpack (7.1.5.1)
-      actionview (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actionpack (7.2.2.1)
+      actionview (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       nokogiri (>= 1.8.5)
       racc
-      rack (>= 2.2.4)
+      rack (>= 2.2.4, < 3.2)
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    actiontext (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+      useragent (~> 0.16)
+    actiontext (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activestorage (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actionview (7.2.2.1)
+      activesupport (= 7.2.2.1)
       builder (~> 3.1)
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    activejob (7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activejob (7.2.2.1)
+      activesupport (= 7.2.2.1)
       globalid (>= 0.3.6)
-    activemodel (7.1.5.1)
-      activesupport (= 7.1.5.1)
-    activerecord (7.1.5.1)
-      activemodel (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activemodel (7.2.2.1)
+      activesupport (= 7.2.2.1)
+    activerecord (7.2.2.1)
+      activemodel (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       timeout (>= 0.4.0)
-    activestorage (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activestorage (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       marcel (~> 1.0)
-    activesupport (7.1.5.1)
+    activesupport (7.2.2.1)
       base64
       benchmark (>= 0.3)
       bigdecimal
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+      concurrent-ruby (~> 1.0, >= 1.3.1)
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
       logger (>= 1.4.2)
       minitest (>= 5.1)
-      mutex_m
       securerandom (>= 0.3)
-      tzinfo (~> 2.0)
+      tzinfo (~> 2.0, >= 2.0.5)
     acts_as_list (1.2.4)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -99,7 +93,6 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     cancancan (3.6.1)
-    cgi (0.5.0)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
       railties (>= 5.2.0)
@@ -124,11 +117,11 @@ GEM
       actionmailer (>= 5.0)
       devise (>= 4.6)
     drb (2.2.3)
-    erb (4.0.4)
-      cgi (>= 0.3.3)
+    erb (5.0.1)
     erubi (1.13.1)
     execjs (2.10.0)
     ffi (1.17.2)
+    ffi (1.17.2-x86_64-linux-gnu)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -159,8 +152,7 @@ GEM
     marcel (1.0.4)
     mini_mime (1.1.5)
     minitest (5.25.5)
-    mutex_m (0.3.0)
-    net-imap (0.4.22)
+    net-imap (0.5.8)
       date
       net-protocol
     net-pop (0.1.2)
@@ -170,11 +162,11 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.17.2-x86_64-linux)
+    nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.2)
-    pagy (6.5.0)
+    pagy (9.3.4)
     passenger (5.2.3)
       rack
       rake (>= 0.8.1)
@@ -194,20 +186,20 @@ GEM
     rackup (1.0.1)
       rack (< 3)
       webrick
-    rails (7.1.5.1)
-      actioncable (= 7.1.5.1)
-      actionmailbox (= 7.1.5.1)
-      actionmailer (= 7.1.5.1)
-      actionpack (= 7.1.5.1)
-      actiontext (= 7.1.5.1)
-      actionview (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activemodel (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    rails (7.2.2.1)
+      actioncable (= 7.2.2.1)
+      actionmailbox (= 7.2.2.1)
+      actionmailer (= 7.2.2.1)
+      actionpack (= 7.2.2.1)
+      actiontext (= 7.2.2.1)
+      actionview (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activemodel (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activestorage (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       bundler (>= 1.15.0)
-      railties (= 7.1.5.1)
+      railties (= 7.2.2.1)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -222,10 +214,10 @@ GEM
     rails-i18n (7.0.10)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    railties (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      irb
+    railties (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
+      irb (~> 1.13)
       rackup (>= 1.0.0)
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
@@ -250,7 +242,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    securerandom (0.3.2)
+    securerandom (0.4.1)
     sprockets (3.7.5)
       base64
       concurrent-ruby (~> 1.0)
@@ -269,6 +261,7 @@ GEM
     uglifier (4.2.1)
       execjs (>= 0.3.0, < 3)
     uniform_notifier (1.17.0)
+    useragent (0.16.11)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -285,7 +278,7 @@ GEM
       activesupport
       ostruct
     wkhtmltopdf-binary (0.12.6.9)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.3)
 
 PLATFORMS
   x86_64-linux
@@ -307,7 +300,7 @@ DEPENDENCIES
   pagy
   passenger (= 5.2.3)
   pg
-  rails (~> 7.1.0)
+  rails (~> 7.2.0)
   rails-controller-testing
   rails-i18n
   sassc-rails
@@ -320,7 +313,7 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 RUBY VERSION
-   ruby 3.0.7p220
+   ruby 3.4.4p34
 
 BUNDLED WITH
-   2.3.26
+   2.6.7

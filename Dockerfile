@@ -24,6 +24,7 @@ RUN set -x \
       libfontconfig1 \
       libfreetype6 \
       libx11-6 \
+      libyaml-dev \
       \
  && apt-get --yes --purge autoremove \
  && apt-get clean \
