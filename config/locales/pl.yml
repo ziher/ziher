@@ -54,6 +54,8 @@ pl:
         income_detailed: "Wpływy szczegółowo"
         expense_all: "Wydatki razem"
         expense_detailed: "Wydatki szczegółowo"
+        income_expense_all: "Wydatki i wpływy"
+        details: "Informacje"
       unit:
         name: "Nazwa jednostki"
         code: "Kod jednostki"

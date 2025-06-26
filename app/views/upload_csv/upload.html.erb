@@ -1,0 +1,137 @@
+
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $('#rowsErrors').hide();
+        $('.errors').click(function() {
+            if ($('#rowsErrors').is(':hidden')) {
+                 $('#rowsErrors').slideDown();
+            } else {
+                 $('#rowsErrors').slideUp();
+            }
+        });
+    });
+</script>
+
+<h1 class=""> 
+  Raport z 
+  <strong>
+  <% if params[:commit] == CHECK %>
+  weryfikacji
+  <% elsif params[:commit] == UPLOAD %>
+  dodawania
+  <% end %>
+  </strong>
+  pliku csv
+</h1>
+<br>
+
+<% @journals_hash.each do |k, v| %> 
+  <% if k != 0 %>
+    <% journal = Journal.find(k) %>
+    Dla dziennika <strong><%= journal.unit.full_name %></strong> (<%= journal.year %>, <%= journal.journal_type.name %>): 
+  <% else %>
+    Dla danych, z których <strong>nie rozpoznano dziennika</strong>: 
+  <% end %>
+  <br>Znalezione wiersze: <span style="color:green;"><%= v[:rows] %> </span>
+  <br>Błędy: <span style="color:red;"><%= v[:errors] %> </span>
+  <br>Ostrzeżenia: <span style="color:orange;"><%= v[:warnings] %> </span>
+  <br>
+<br> <br>
+<%end%>
+
+
+<a href='#errors' class='errors'>Informacje o błedach</a>
+<div id='rowsErrors'>
+  <% @errors.each_with_index do |row, index| %>
+    <% if row["errors"] > 0 %>
+      W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["errors"] %> raz(y) błąd<br>
+    <% end %>
+  <% end %>
+
+
+  <% @errors.each_with_index do |row, index| %>
+    <% if row["warnings"] > 0 %>
+      W wierszu nr <%= index %> (Dziennik nr <%= @rowarraydisp[index+1][@journal_col_index] %>) wykryto <%= row["warnings"] %> raz(y) ostrzeżenie<br>
+    <% end %>
+  <% end %>
+</div>
+<br>
+<br>
+
+<style>
+  thead th {
+    top: 0;
+    position: sticky;
+    background-color: #ddd;
+    /* z-index: 20; */
+    min-height: 30px;
+    height: 50px;
+    outline: 1px solid #bbb;
+    margin:10px;
+  }
+  tr:nth-child(even) {
+    background-color: #f1f1f1;
+  }
+  td {
+    outline: 1px solid #ccc;
+  }
+</style>
+
+<% if params[:commit] == CHECK %>
+<div style="width:100%; overflow:auto; max-height:600px;">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th colspan="<%= @docno_index + 1 %>" class="text-center"><small><%=t 'helpers.label.journal.details'%></small></th>
+        <th colspan="<%= @incomes_categories.length()%>" class="text-center"><small><%=t 'helpers.label.journal.income_detailed'%></small></th>
+        <th colspan="<%= 3 %>" class="text-center"><small><%=t 'helpers.label.journal.income_expense_all'%></small></th>
+        <th colspan="<%= @expenses_categories.length() %>" class="text-center"><small><%=t 'helpers.label.journal.expense_detailed'%></small></th>
+      </tr>
+
+      <tr>
+        <% @rowarraydisp[0][0..@docno_index].each do |info| %>
+          <th class="valign_middle text-center"><small><small><%= info %></small></small></th>
+        <% end %>
+
+        <% @incomes_categories.each_with_index do |category, index| %>
+          <th class="valign_middle text-center"><small><small><%= category %></small></small></th>
+        <% end %>
+        
+        <th class="valign_middle text-center"><small><%=t 'helpers.label.journal.income_all'%></small></th>
+        <th class="valign_middle text-center"><small><%=t 'helpers.label.journal.expense_all'%></small></th>
+        <th class="valign_middle text-center"><small><%=t 'helpers.label.journal.expense_all'%> 1%</small></th>
+
+        <% @expenses_categories.each_with_index do |category, index| %>
+          <th class="valign_middle text-center"><small><small><%= category %></small></small></th>
+        <% end %>
+      </tr>
+
+    </thead>
+    <tbody>
+      <% @rowarraydisp[1..-1].each_with_index do |row, index| %>
+        <tr>
+          <% row.each do |val| %>
+            <% if @errors[index]["errors"] > 0 %>
+              <td style="color:red;"><%= val %></td>
+            <% elsif @errors[index]["warnings"] > 0 %>
+              <td style="color:orange;"><%= val %></td>
+            <% else %>
+              <td><%= val %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% elsif params[:commit] == UPLOAD %>
+
+<br>
+<% end %>
+<% # PRZEKOPIUJ TO PONIZEJ DO UPLOAD %>
+
+
+
+
+<%= render 'form' %>

@@ -80,6 +80,7 @@ class JournalsController < ApplicationController
       format.html { # show.html.erb
         @pdf_report_link = journal_path(:format => :pdf)
         @csv_report_link = journal_path(:format => :csv)
+        @csv_upload_link = upload_csv_form_path()
       }
       format.json { render json: @journal }
       format.pdf {
