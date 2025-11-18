@@ -25,6 +25,7 @@ RUN set -x \
       libfreetype6 \
       libx11-6 \
       libyaml-dev \
+      procps \
       \
  && apt-get --yes --purge autoremove \
  && apt-get clean \
