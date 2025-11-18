@@ -87,7 +87,7 @@ class UsersController < ApplicationController
     @user.destroy
 
     if not @user.errors.values.blank?
-      flash.now[:user] = @user.errors.values.join("<br/>")
+      flash.now[:user] = @user.errors.full_messages.join("<br/>")
     end
     flash.keep
 

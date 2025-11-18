@@ -54,7 +54,7 @@ class GrantsController < ApplicationController
     if @grant.destroy
       redirect_to grants_url, notice: 'Dotacja została usunięta.'
     else
-      redirect_to grants_url, alert: @grant.errors.values.join("<br/>")
+      redirect_to grants_url, alert: @grant.errors.full_messages.join("<br/>")
     end
   end
 
@@ -69,7 +69,7 @@ class GrantsController < ApplicationController
       if grant.create_income_category_for_year(year)
         format.html { redirect_to categories_url, notice: 'Wpływ dla dotacji ' + grant.name + ' został stworzony.' }
       else
-        format.html { redirect_to categories_url, alert: "Błąd tworzenia wpływu dla dotacji " + grant.name + ": " + grant.errors.values.join(', ') }
+        format.html { redirect_to categories_url, alert: "Błąd tworzenia wpływu dla dotacji " + grant.name + ": " + grant.errors.full_messages.join(', ') }
       end
     end
   end
@@ -85,7 +85,7 @@ class GrantsController < ApplicationController
       if grant.delete_income_category_for_year(year)
         format.html { redirect_to categories_url, notice: 'Wpływ dla dotacji ' + grant.name + ' został usunięty.' }
       else
-        format.html { redirect_to journals_url, alert: "Błąd usuwania wpływu dla dotacji " + grant.name + ": " + grant.errors.values.join(', ') }
+        format.html { redirect_to journals_url, alert: "Błąd usuwania wpływu dla dotacji " + grant.name + ": " + grant.errors.full_messages.join(', ') }
       end
     end
   end

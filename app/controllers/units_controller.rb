@@ -120,7 +120,7 @@ class UnitsController < ApplicationController
       if @unit.disable
         format.html { redirect_to @unit, notice: 'Jednostka wyłączona.' }
       else
-        format.html { redirect_to @unit, alert: 'Podczas wyłączania nastąpił błąd: ' + @unit.errors.values.join(', ')}
+        format.html { redirect_to @unit, alert: 'Podczas wyłączania nastąpił błąd: ' + @unit.errors.full_messages.join(', ') }
       end
     end
   end

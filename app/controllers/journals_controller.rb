@@ -153,7 +153,7 @@ class JournalsController < ApplicationController
         format.html { redirect_to journal_path(@journal), notice: 'Książka zamknięta.' }
         format.json { render json: @journal, status: :closed, location: @journal }
       else
-        format.html { redirect_to journals_url, alert: "Błąd zamykania książki: " + @journal.errors.values.join(', ') }
+        format.html { redirect_to journals_url, alert: "Błąd zamykania książki: " + @journal.errors.full_messages.join(', ') }
         format.json { render json: @journal.errors, status: :unprocessable_entity }
       end
     end
@@ -173,7 +173,7 @@ class JournalsController < ApplicationController
       if @journal.close(blocked_to)
         format.html { redirect_to journal_path(@journal), notice: 'Książka zamknięta.' }
       else
-        format.html { redirect_to journals_url, alert: "Błąd zamykania książki: " + @journal.errors.values.join(', ') }
+        format.html { redirect_to journals_url, alert: "Błąd zamykania książki: " + @journal.errors.full_messages.join(', ') }
       end
     end
   end
