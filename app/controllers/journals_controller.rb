@@ -73,7 +73,7 @@ class JournalsController < ApplicationController
     session[:current_unit_id] = @journal.unit.id
 
     unless @journal.verify_journal
-      flash.now[:alert] = @journal.errors.messages.values.join("<br/>")
+      flash.now[:alert] = @journal.errors.full_messages.join("<br/>")
     end
 
     respond_to do |format|

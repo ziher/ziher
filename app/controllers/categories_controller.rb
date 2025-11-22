@@ -104,7 +104,7 @@ class CategoriesController < ApplicationController
     @category.destroy
 
     if not @category.errors.messages.blank?
-      flash.now[:category] = @category.errors.messages.values.join("<br/>")
+      flash.now[:category] = @category.errors.full_messages.join("<br/>")
     end
     flash.keep
 

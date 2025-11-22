@@ -64,7 +64,7 @@ class InventorySourcesController < ApplicationController
     @inventory_source = InventorySource.find(params[:id])
     authorize! :update, @inventory_source
 
-    flash.now[:alert] = @inventory_source.errors.messages.values.join("<br/>")
+    flash.now[:alert] = @inventory_source.errors.full_messages.join("<br/>")
     flash.keep
 
     respond_to do |format|
@@ -85,7 +85,7 @@ class InventorySourcesController < ApplicationController
     authorize! :destroy, @inventory_source
     @inventory_source.destroy
 
-    flash.now[:alert] = @inventory_source.errors.messages.values.join("<br/>")
+    flash.now[:alert] = @inventory_source.errors.full_messages.join("<br/>")
     flash.keep
 
     respond_to do |format|
