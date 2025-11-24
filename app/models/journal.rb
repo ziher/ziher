@@ -375,7 +375,7 @@ class Journal < ApplicationRecord
     years_to_verify = [self.year]
     unless inventoryVerifier.verify(years_to_verify)
       errors.add(:inventory, "<br/>")
-      errors.add(:inventory, inventoryVerifier.errors.full_messages.join("<br/><br/>"))
+      errors.add(:inventory, inventoryVerifier.errors.values.join("<br/><br/>"))
       result = false
     end
 

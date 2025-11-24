@@ -68,7 +68,7 @@ class InventoryEntriesController < ApplicationController
     inventoryVerifier = InventoryEntryVerifier.new(@unit)
     years_to_verify = (oldest_ziher_year..Time.now.year).to_a
     unless inventoryVerifier.verify(years_to_verify)
-      flash.now[:alert] = inventoryVerifier.errors.full_messages.join("<br/><br/>")
+      flash.now[:alert] = inventoryVerifier.errors.values.join("<br/><br/>")
       puts inventoryVerifier.errors.values
     end
 
