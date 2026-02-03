@@ -290,3 +290,35 @@
     <%= render "shared/entries_number_select" %>
   </div>
 </div>
+
+<div class="row top-buffer-20">
+  <div class="col-md-6">
+    <% if @journal.is_not_blocked() %>
+      <% if can? :update, @journal %>
+        <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => false), class: 'btn btn-sm btn-success' do %>
+          <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ
+        <% end %>
+      <% else %>
+        <div class="btn btn-sm btn-default" disabled><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ</div>
+      <% end %>
+      <% if can? :update, @journal %>
+        <%= link_to new_entry_path(:journal_id => @journal.id, :is_expense => true), class: 'btn btn-sm btn-success' do %>
+          <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek
+        <% end %>
+      <% else %>
+        <div class="btn btn-sm btn-default" disabled><span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek</div>
+      <% end %>
+    <% else %>
+      <%= link_to "javascript:alert('Książka jest zablokowana')",
+                  :title => 'Książka jest zablokowana',
+                  :class => "btn btn-sm btn-default" do %>
+          <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Nowy wpływ
+        <% end %>
+      <%= link_to "javascript:alert('Książka jest zablokowana')",
+                  :title => 'Książka jest zablokowana',
+                  :class => "btn btn-sm btn-default" do %>
+        <span class="glyphicon glyphicon-minus"></span>&nbsp;&nbsp;Nowy wydatek
+      <% end %>
+    <% end %>
+  </div>
+</div>
