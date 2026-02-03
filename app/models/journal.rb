@@ -251,6 +251,10 @@ class Journal < ApplicationRecord
     Journal.where(:journal_type_id => type.id, :unit_id => Unit.find_by_user(user).map { |u| u.id }).order("year DESC")
   end
 
+  def Journal.find_by_user(user)
+    journals = Journal.where(:unit_id => Unit.find_by_user(user).map { |u| u.id })
+  end
+
   def Journal.find_previous_for_type(unit, type, year)
     Journal.where("unit_id = ? AND journal_type_id = ? AND year <= ?", unit.id, type.id, year).order("year DESC").first
   end
