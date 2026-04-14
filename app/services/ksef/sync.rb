@@ -1,6 +1,10 @@
 module Ksef
   class Sync
-    DEFAULT_FROM = "2024-01-01T00:00:00Z".freeze
+    # KSeF limits dateRange to max 3 months. Default to 3 months back + 1 day
+    # to sit safely inside the window; clamp stale HWM to the same floor.
+    def self.default_from_date
+      (3.months.ago + 1.day).utc.beginning_of_day.iso8601
+    end
 
     def self.call(exporter_class: Ksef::Exporter)
       new(exporter_class: exporter_class).call
@@ -27,8 +31,8 @@ module Ksef
           received = result.invoices.size
           persisted = 0
           ApplicationRecord.transaction do
-            result.invoices.each do |xml|
-              persisted += 1 if persist_invoice(xml)
+            result.invoices.each do |file|
+              persisted += 1 if persist_invoice(file)
             end
             advance_hwm(result)
             mark_success
@@ -46,31 +50,32 @@ module Ksef
     private
 
     def next_date_from
-      @setting.last_permanent_storage_date.presence || @setting.last_hwm_date.presence || DEFAULT_FROM
+      stored = @setting.last_permanent_storage_date.presence || @setting.last_hwm_date.presence
+      floor = self.class.default_from_date
+      return floor if stored.nil?
+      Time.parse(stored) < Time.parse(floor) ? floor : stored
+    rescue ArgumentError
+      self.class.default_from_date
     end
 
-    def persist_invoice(xml)
-      attrs = Ksef::Parser.parse(xml)
-      ksef_number = derive_ksef_number(attrs, xml)
-      return false if KsefInvoice.exists?(ksef_number: ksef_number)
+    def persist_invoice(file)
+      return false if KsefInvoice.exists?(ksef_number: file.ksef_number)
 
+      attrs = Ksef::Parser.parse(file.xml)
       KsefInvoice.create!(attrs.merge(
-        ksef_number: ksef_number,
-        invoice_xml: xml,
+        ksef_number: file.ksef_number,
+        invoice_xml: file.xml,
         synced_at: Time.current,
         status: :unassigned
       ))
       true
     end
 
-    def derive_ksef_number(attrs, xml)
-      doc = Nokogiri::XML(xml)
-      doc.at_xpath("//f:KsefReferenceNumber", Ksef::Parser::NS)&.text.presence ||
-        "#{attrs[:seller_nip]}-#{attrs[:invoice_number]}"
-    end
-
     def advance_hwm(result)
-      if result.truncated && result.last_permanent_storage_date.present?
+      if result.truncated
+        if result.last_permanent_storage_date.blank?
+          raise Ksef::Client::Error.new("KSeF returned truncated=true without lastPermanentStorageDate")
+        end
         @setting.last_permanent_storage_date = result.last_permanent_storage_date
       else
         @setting.last_hwm_date = result.hwm_date if result.hwm_date.present?

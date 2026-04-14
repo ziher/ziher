@@ -30,6 +30,8 @@ class Ksef::SettingsController < Ksef::BaseController
   end
 
   def setting_params
-    params.require(:ksef_setting).permit(:nip, :api_url, :cert_pem, :key_pem)
+    attrs = params.require(:ksef_setting).permit(:nip, :api_url, :cert_pem, :key_pem, :key_passphrase)
+    attrs.delete(:key_passphrase) if attrs[:key_passphrase].blank?
+    attrs
   end
 end

@@ -1,6 +1,7 @@
 class KsefSetting < ApplicationRecord
   encrypts :cert_pem
   encrypts :key_pem
+  encrypts :key_passphrase
 
   validates :nip, format: { with: /\A\d{10}\z/ }, allow_blank: true
   validates :api_url, presence: true
