@@ -8,6 +8,7 @@
 
         <li class="<%= menu_active?(:inventory) %>"> <%= link_to "Książka inwentarzowa", inventory_entries_path %> </li>
 
+        <li class="<%= menu_active?(:ksef_invoices) %>"> <%= link_to "Faktury KSeF", ksef_invoices_path %> </li>
 
         <li class="dropdown <%= menu_active?(:reports_dropdown) %>">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Raporty <b class="caret"></b></a>
@@ -38,6 +39,7 @@
                 <% if can? :manage, InventorySource %><li class="<%= menu_active?(:inventory_sources) %>"> <%= link_to "Źródła inwentarza", inventory_sources_path %> </li><% end %>
             <% end %>
             <% if current_user.is_superadmin %><li class="<%= menu_active?(:audits) %>"> <%= link_to "Dziennik zmian", audits_index_path %> </li><% end %>
+            <% if current_user.is_superadmin %><li class="<%= menu_active?(:ksef_setting) %>"> <%= link_to "Konfiguracja KSeF", edit_ksef_setting_path %> </li><% end %>
           </ul>
         </li>
         <% end %>
