@@ -5,6 +5,7 @@ ruby '3.4.4'
 gem 'rails', '~> 8.0.0'
 
 gem 'pg'
+gem 'solid_queue'
 
 group :development do
   gem 'bullet'
@@ -46,6 +47,7 @@ group :test do
   #gem 'minitest'
   gem 'timecop'
   gem 'rails-controller-testing'
+  gem 'webmock'
 end
 
 gem 'rails-i18n'
