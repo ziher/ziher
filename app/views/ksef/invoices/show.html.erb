@@ -1,37 +1,28 @@
-<h1>Faktura KSeF <%= @invoice.ksef_number %></h1>
+<div class="ksef-show">
+  <div class="ksef-show__toolbar">
+    <h1>Faktura KSeF <%= @invoice.ksef_number %></h1>
+    <div class="ksef-show__meta">
+      <span>Jednostka: <strong><%= @invoice.unit&.name || "—" %></strong></span>
+      <span>Status: <strong><%= @invoice.status %></strong></span>
+      <%= link_to "Pobierz PDF", ksef_invoice_path(@invoice, format: :pdf), class: "btn btn-default" %>
+    </div>
+  </div>
 
-<dl>
-  <dt>Sprzedawca</dt><dd><%= @invoice.seller_name %> (NIP <%= @invoice.seller_nip %>)</dd>
-  <dt>Numer faktury</dt><dd><%= @invoice.invoice_number %></dd>
-  <dt>Data wystawienia</dt><dd><%= @invoice.issue_date %></dd>
-  <dt>Netto</dt><dd><%= number_to_currency @invoice.net_amount, unit: @invoice.currency %></dd>
-  <dt>Brutto</dt><dd><%= number_to_currency @invoice.gross_amount, unit: @invoice.currency %></dd>
-  <dt>Jednostka</dt><dd><%= @invoice.unit&.name || "—" %></dd>
-  <dt>Status</dt><dd><%= @invoice.status %></dd>
-</dl>
+  <%= render "ksef/invoices/pdf_styles" %>
 
-<h2>Pozycje</h2>
-<table class="table">
-  <thead><tr><th>Nazwa</th><th>Netto</th><th>VAT</th></tr></thead>
-  <tbody>
-    <% (@invoice.metadata["lines"] || []).each do |line| %>
-      <tr>
-        <td><%= line["name"] %></td>
-        <td><%= line["net"] %></td>
-        <td><%= line["vat"] %>%</td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <% if @document %>
+    <%= render "ksef/invoices/fa/invoice", document: @document, ksef_number: @invoice.ksef_number %>
+  <% else %>
+    <p>Brak zapisanego XML-a faktury — nie mogę wyrenderować wizualizacji.</p>
+  <% end %>
 
-<p><%= link_to "Pobierz PDF", ksef_invoice_path(@invoice, format: :pdf), class: "btn btn-default" %></p>
+  <% if current_user.is_superadmin && @invoice.assignable? %>
+    <h2>Przypisz do jednostki</h2>
+    <%= render "assign_form", invoice: @invoice %>
+  <% end %>
 
-<% if current_user.is_superadmin && @invoice.assignable? %>
-  <h2>Przypisz do jednostki</h2>
-  <%= render "assign_form", invoice: @invoice %>
-<% end %>
-
-<% if can?(:import, @invoice) %>
-  <h2>Importuj do księgi</h2>
-  <%= link_to "Otwórz formularz importu", import_ksef_invoice_path(@invoice), class: "btn btn-primary" %>
-<% end %>
+  <% if can?(:import, @invoice) %>
+    <h2>Importuj do księgi</h2>
+    <%= link_to "Otwórz formularz importu", import_ksef_invoice_path(@invoice), class: "btn btn-primary" %>
+  <% end %>
+</div>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Faktura xmlns="http://crd.gov.pl/wzor/2025/06/25/13775/">
+  <Naglowek>
+    <KodFormularza kodSystemowy="FA (3)" wersjaSchemy="1-0E">FA</KodFormularza>
+    <WariantFormularza>3</WariantFormularza>
+    <DataWytworzeniaFa>2026-03-22T10:15:30Z</DataWytworzeniaFa>
+    <SystemInfo>Ziher test suite</SystemInfo>
+  </Naglowek>
+  <Podmiot1>
+    <PrefiksPodatnika>PL</PrefiksPodatnika>
+    <DaneIdentyfikacyjne>
+      <NIP>5265877635</NIP>
+      <Nazwa>Bartkowiak, Dróżdż and Górecki Sp. z o.o.</Nazwa>
+    </DaneIdentyfikacyjne>
+    <Adres>
+      <KodKraju>PL</KodKraju>
+      <AdresL1>ul. Kępa 332</AdresL1>
+      <AdresL2>20-892 Tyszowce</AdresL2>
+    </Adres>
+    <DaneKontaktowe>
+      <Email>biuro@bdg.example</Email>
+      <Telefon>17-756-90-14</Telefon>
+    </DaneKontaktowe>
+  </Podmiot1>
+  <Podmiot2>
+    <DaneIdentyfikacyjne>
+      <NIP>6808208874</NIP>
+      <Nazwa>ZHR Hufiec Testowy</Nazwa>
+    </DaneIdentyfikacyjne>
+    <Adres>
+      <KodKraju>PL</KodKraju>
+      <AdresL1>ul. Harcerska 5</AdresL1>
+      <AdresL2>00-001 Warszawa</AdresL2>
+    </Adres>
+    <DaneKontaktowe>
+      <Email>hufiec@example.org</Email>
+      <Telefon>22-000-00-00</Telefon>
+    </DaneKontaktowe>
+    <NrKlienta>KL-7615</NrKlienta>
+  </Podmiot2>
+  <Fa>
+    <KodWaluty>PLN</KodWaluty>
+    <P_1>2026-03-15</P_1>
+    <P_1M>Warszawa</P_1M>
+    <P_2>FA/YUCFO-4342344706/03/2026</P_2>
+    <P_6>2026-03-10</P_6>
+    <P_13_1>1000.00</P_13_1>
+    <P_14_1>230.00</P_14_1>
+    <P_13_7>200.00</P_13_7>
+    <P_15>1430.00</P_15>
+    <Adnotacje>
+      <P_16>2</P_16>
+      <P_17>2</P_17>
+      <P_18>2</P_18>
+      <P_18A>2</P_18A>
+      <Zwolnienie>
+        <P_19N>1</P_19N>
+      </Zwolnienie>
+      <NoweSrodkiTransportu>
+        <P_22N>1</P_22N>
+      </NoweSrodkiTransportu>
+      <P_23>2</P_23>
+      <PMarzy>
+        <P_PMarzyN>1</P_PMarzyN>
+      </PMarzy>
+    </Adnotacje>
+    <RodzajFaktury>VAT</RodzajFaktury>
+    <FaWiersz>
+      <NrWierszaFa>1</NrWierszaFa>
+      <P_7>Materiały szkoleniowe</P_7>
+      <P_8A>szt.</P_8A>
+      <P_8B>10</P_8B>
+      <P_9A>50.00</P_9A>
+      <P_11>500.00</P_11>
+      <P_12>23</P_12>
+    </FaWiersz>
+    <FaWiersz>
+      <NrWierszaFa>2</NrWierszaFa>
+      <P_7>Wynajem sali</P_7>
+      <P_8A>godz.</P_8A>
+      <P_8B>5</P_8B>
+      <P_9A>100.00</P_9A>
+      <P_11>500.00</P_11>
+      <P_12>23</P_12>
+    </FaWiersz>
+    <FaWiersz>
+      <NrWierszaFa>3</NrWierszaFa>
+      <P_7>Usługa edukacyjna (zwolniona)</P_7>
+      <P_8A>szt.</P_8A>
+      <P_8B>1</P_8B>
+      <P_9A>200.00</P_9A>
+      <P_11>200.00</P_11>
+      <P_12>zw</P_12>
+    </FaWiersz>
+    <Platnosc>
+      <Zaplacono>2</Zaplacono>
+      <TerminPlatnosci>
+        <Termin>2026-03-29</Termin>
+      </TerminPlatnosci>
+      <FormaPlatnosci>6</FormaPlatnosci>
+      <RachunekBankowy>
+        <NrRB>PL61109010140000071219812874</NrRB>
+        <NazwaBanku>Bank Testowy SA</NazwaBanku>
+      </RachunekBankowy>
+    </Platnosc>
+  </Fa>
+</Faktura>

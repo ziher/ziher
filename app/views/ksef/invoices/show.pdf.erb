@@ -1,40 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>Faktura <%= @invoice.ksef_number %></title>
-  <style>
-    body { font-family: sans-serif; font-size: 11pt; }
-    h1 { font-size: 16pt; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border: 1px solid #999; padding: 4px 8px; text-align: left; }
-    dl dt { font-weight: bold; margin-top: 6px; }
-  </style>
+  <title>Faktura KSeF <%= @invoice.ksef_number %></title>
+  <%= render partial: "ksef/invoices/pdf_styles", formats: [:html] %>
 </head>
 <body>
-  <h1>Faktura KSeF <%= @invoice.ksef_number %></h1>
-
-  <dl>
-    <dt>Sprzedawca</dt><dd><%= @invoice.seller_name %> (NIP <%= @invoice.seller_nip %>)</dd>
-    <dt>Numer faktury</dt><dd><%= @invoice.invoice_number %></dd>
-    <dt>Data wystawienia</dt><dd><%= @invoice.issue_date %></dd>
-    <dt>Netto</dt><dd><%= number_to_currency @invoice.net_amount, unit: @invoice.currency %></dd>
-    <dt>Brutto</dt><dd><%= number_to_currency @invoice.gross_amount, unit: @invoice.currency %></dd>
-    <dt>Jednostka</dt><dd><%= @invoice.unit&.name || "—" %></dd>
-  </dl>
-
-  <h2>Pozycje</h2>
-  <table>
-    <thead><tr><th>Nazwa</th><th>Netto</th><th>VAT</th></tr></thead>
-    <tbody>
-      <% (@invoice.metadata["lines"] || []).each do |line| %>
-        <tr>
-          <td><%= line["name"] %></td>
-          <td><%= line["net"] %></td>
-          <td><%= line["vat"] %>%</td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <% if @document %>
+    <%= render partial: "ksef/invoices/fa/invoice", formats: [:html], locals: { document: @document, ksef_number: @invoice.ksef_number } %>
+  <% else %>
+    <p>Brak zapisanego XML-a faktury.</p>
+  <% end %>
 </body>
 </html>

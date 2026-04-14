@@ -1,0 +1,15 @@
+<%# Orchestrates all sections of a KSeF invoice visualization. %>
+<%# Locals: document (Ksef::Parser::Document), ksef_number (String, optional) %>
+<div class="ksef-invoice">
+  <%= render "ksef/invoices/fa/naglowek", document: document, ksef_number: local_assigns[:ksef_number] %>
+  <%= render "ksef/invoices/fa/dane_fa_korygowanej", document: document %>
+  <%= render "ksef/invoices/fa/podmioty", document: document %>
+  <%= render "ksef/invoices/fa/szczegoly", document: document %>
+  <%= render "ksef/invoices/fa/wiersze", document: document %>
+  <%= render "ksef/invoices/fa/podsumowanie_stawek", document: document %>
+  <%= render "ksef/invoices/fa/adnotacje", document: document %>
+  <%= render "ksef/invoices/fa/rozliczenie", document: document %>
+  <%= render "ksef/invoices/fa/platnosc", document: document %>
+  <%= render "ksef/invoices/fa/warunki_transakcji", document: document %>
+  <%= render "ksef/invoices/fa/stopka", document: document %>
+</div>

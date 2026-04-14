@@ -1,0 +1,101 @@
+<% platnosc = document.fa.platnosc %>
+<% return unless platnosc.present? %>
+<% currency = document.fa.kod_waluty.presence || "PLN" %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Płatność</h3>
+  <dl class="ksef-dl ksef-dl--two-col">
+    <dt>Informacja o płatności</dt>
+    <dd>
+      <% case platnosc.zaplacono
+         when "1" %>
+        Zapłacono
+      <% when "2" %>
+        Brak zapłaty
+      <% else %>
+        <% case platnosc.znacznik_zaplaty_czesciowej
+           when "1" %>Zapłacono w części
+        <% when "2" %>Zapłacono całość w częściach
+        <% else %>—<% end %>
+      <% end %>
+    </dd>
+
+    <% if platnosc.data_zaplaty.present? %>
+      <dt>Data zapłaty</dt><dd><%= ksef_fmt_date(platnosc.data_zaplaty) %></dd>
+    <% end %>
+
+    <% if platnosc.forma_platnosci.present? %>
+      <dt>Forma płatności</dt>
+      <dd><%= Ksef::Pdf::Dictionaries.forma_platnosci(platnosc.forma_platnosci) %></dd>
+    <% elsif platnosc.opis_platnosci.present? %>
+      <dt>Forma płatności</dt><dd>Płatność inna — <%= platnosc.opis_platnosci %></dd>
+    <% end %>
+
+    <% platnosc.terminy_platnosci.each_with_index do |t, idx| %>
+      <dt>Termin płatności<%= " (#{idx + 1})" if platnosc.terminy_platnosci.size > 1 %></dt>
+      <dd>
+        <%= ksef_fmt_date(t[:termin]) %>
+        <% if t[:termin_opis].present? %>
+          — <%= t[:termin_opis] %>
+        <% end %>
+      </dd>
+    <% end %>
+
+    <% if platnosc.ip_ksef.present? %>
+      <dt>Identyfikator płatności KSeF</dt><dd><%= platnosc.ip_ksef %></dd>
+    <% end %>
+
+    <% if platnosc.link_do_platnosci.present? %>
+      <dt>Link do płatności</dt>
+      <dd><a href="<%= platnosc.link_do_platnosci %>"><%= platnosc.link_do_platnosci %></a></dd>
+    <% end %>
+  </dl>
+
+  <% (platnosc.rachunki_bankowe + platnosc.rachunki_bankowe_faktora).each_with_index do |rb, idx| %>
+    <div class="ksef-rachunek">
+      <h4>Rachunek bankowy<%= idx >= platnosc.rachunki_bankowe.size ? " faktora" : "" %></h4>
+      <dl class="ksef-dl">
+        <% if rb[:nr_rb].present? %><dt>Numer</dt><dd><%= rb[:nr_rb] %></dd><% end %>
+        <% if rb[:swift].present? %><dt>SWIFT</dt><dd><%= rb[:swift] %></dd><% end %>
+        <% if rb[:nazwa_banku].present? %><dt>Nazwa banku</dt><dd><%= rb[:nazwa_banku] %></dd><% end %>
+        <% if rb[:opis].present? %><dt>Opis</dt><dd><%= rb[:opis] %></dd><% end %>
+      </dl>
+    </div>
+  <% end %>
+
+  <% if platnosc.skonto.any? %>
+    <div class="ksef-section__inner">
+      <h4>Skonto</h4>
+      <dl class="ksef-dl">
+        <% if platnosc.skonto[:warunki].present? %><dt>Warunki</dt><dd><%= platnosc.skonto[:warunki] %></dd><% end %>
+        <% if platnosc.skonto[:wysokosc].present? %><dt>Wysokość</dt><dd><%= platnosc.skonto[:wysokosc] %></dd><% end %>
+      </dl>
+    </div>
+  <% end %>
+
+  <% if platnosc.zaplata_czesciowa.any? %>
+    <table class="ksef-table">
+      <thead>
+        <tr>
+          <th>Data zapłaty częściowej</th>
+          <th class="num">Kwota</th>
+          <th>Forma płatności</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% platnosc.zaplata_czesciowa.each do |zc| %>
+          <tr>
+            <td><%= ksef_fmt_date(zc[:data]) %></td>
+            <td class="num"><%= ksef_fmt_money(zc[:kwota], currency) %></td>
+            <td>
+              <% if zc[:platnosc_inna].present? %>
+                <%= zc[:opis_platnosci] %>
+              <% else %>
+                <%= Ksef::Pdf::Dictionaries.forma_platnosci(zc[:forma_platnosci]) %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

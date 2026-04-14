@@ -1,0 +1,17 @@
+<% stopka = document.stopka %>
+<% return unless stopka.present? %>
+<% info = stopka.informacje %>
+<% rejestry = stopka.rejestry %>
+<% return if info.empty? && rejestry.empty? %>
+<div class="ksef-section ksef-section--stopka">
+  <% info.each do |line| %>
+    <p><%= line %></p>
+  <% end %>
+  <% rejestry.each do |r| %>
+    <p>
+      <% if r[:krs].present? %>KRS: <%= r[:krs] %><% end %>
+      <% if r[:regon].present? %> · REGON: <%= r[:regon] %><% end %>
+      <% if r[:bdo].present? %> · BDO: <%= r[:bdo] %><% end %>
+    </p>
+  <% end %>
+</div>

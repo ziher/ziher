@@ -1,0 +1,23 @@
+<% records = document.fa.dane_fa_korygowanej %>
+<% return if records.empty? %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Dane faktury korygowanej</h3>
+  <table class="ksef-table">
+    <thead>
+      <tr>
+        <th>Numer faktury korygowanej</th>
+        <th>Data wystawienia</th>
+        <th>Numer KSeF</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% records.each do |r| %>
+        <tr>
+          <td><%= r[:numer] %></td>
+          <td><%= ksef_fmt_date(r[:data_wystawienia]) %></td>
+          <td><%= r[:nr_ksef] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

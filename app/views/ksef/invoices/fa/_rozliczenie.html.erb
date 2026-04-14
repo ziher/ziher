@@ -1,0 +1,20 @@
+<% rozl = document.fa.rozliczenie %>
+<% return unless rozl.present? %>
+<% currency = document.fa.kod_waluty.presence || "PLN" %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Rozliczenie</h3>
+  <dl class="ksef-dl ksef-dl--two-col">
+    <% if rozl.suma_obciazen.present? %>
+      <dt>Suma obciążeń</dt><dd><%= ksef_fmt_money(rozl.suma_obciazen, currency) %></dd>
+    <% end %>
+    <% if rozl.suma_odliczen.present? %>
+      <dt>Suma odliczeń</dt><dd><%= ksef_fmt_money(rozl.suma_odliczen, currency) %></dd>
+    <% end %>
+    <% if rozl.do_zaplaty.present? %>
+      <dt>Do zapłaty</dt><dd><%= ksef_fmt_money(rozl.do_zaplaty, currency) %></dd>
+    <% end %>
+    <% if rozl.do_rozliczenia.present? %>
+      <dt>Do rozliczenia</dt><dd><%= ksef_fmt_money(rozl.do_rozliczenia, currency) %></dd>
+    <% end %>
+  </dl>
+</div>

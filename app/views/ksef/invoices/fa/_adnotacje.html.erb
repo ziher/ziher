@@ -1,0 +1,12 @@
+<% adn = document.fa.adnotacje %>
+<% return unless adn.present? %>
+<% flags = Ksef::Pdf::Dictionaries.adnotacje_flags(adn) %>
+<% return if flags.empty? %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Adnotacje</h3>
+  <ul class="ksef-list">
+    <% flags.each do |flag| %>
+      <li><%= flag %></li>
+    <% end %>
+  </ul>
+</div>

@@ -1,0 +1,22 @@
+<%
+  cols = [
+    { title: "Sprzedawca", podmiot: document.sprzedawca, role: :sprzedawca },
+    { title: "Nabywca",    podmiot: document.nabywca,    role: :nabywca }
+  ]
+  document.odbiorcy.each_with_index do |odb, idx|
+    label = Ksef::Pdf::Dictionaries.rola_podmiotu3(odb.rola_podmiotu3) || "Odbiorca"
+    label = "#{label} #{idx + 1}" if document.odbiorcy.size > 1
+    cols << { title: label, podmiot: odb, role: :odbiorca }
+  end
+  col_width = (100.0 / cols.size).round(2)
+%>
+<table class="ksef-podmioty">
+  <tr>
+    <% cols.each do |col| %>
+      <td class="ksef-podmioty__col" style="width: <%= col_width %>%;">
+        <h3 class="ksef-section__title"><%= col[:title] %></h3>
+        <%= render "ksef/invoices/fa/podmiot", podmiot: col[:podmiot], role: col[:role] %>
+      </td>
+    <% end %>
+  </tr>
+</table>

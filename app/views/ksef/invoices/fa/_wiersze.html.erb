@@ -1,0 +1,64 @@
+<% fa = document.fa %>
+<% wiersze = fa.wiersze %>
+<% return if wiersze.empty? %>
+<% currency = fa.kod_waluty.presence || "PLN" %>
+<% brutto = fa.brutto_mode? %>
+<% price_label = brutto ? "Cena brutto" : "Cena netto" %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Pozycje</h3>
+  <% if currency != "PLN" %>
+    <p class="ksef-note">Faktura wystawiona w walucie <%= currency %></p>
+  <% end %>
+  <table class="ksef-table ksef-table--wiersze">
+    <thead>
+      <tr>
+        <th class="num">Lp.</th>
+        <th>Nazwa towaru lub usługi</th>
+        <th class="num">Ilość</th>
+        <th>Miara</th>
+        <th class="num"><%= price_label %></th>
+        <th class="num">Wartość netto</th>
+        <th class="num">Wartość brutto</th>
+        <th class="num">Stawka</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% wiersze.each do |row| %>
+        <%
+          cena = brutto ? (row[:cena_brutto].presence || row[:cena_netto]) : (row[:cena_netto].presence || row[:cena_brutto])
+          netto_raw  = row[:wartosc_netto].presence
+          brutto_raw = row[:wartosc_brutto].presence
+          begin
+            rate = Integer(row[:stawka]) rescue nil
+          rescue
+            rate = nil
+          end
+          if netto_raw.nil? && brutto_raw.present? && rate
+            netto_calc = (BigDecimal(brutto_raw) / (1 + BigDecimal(rate) / 100)).round(2)
+          end
+          if brutto_raw.nil? && netto_raw.present?
+            brutto_calc = (BigDecimal(netto_raw) * (1 + BigDecimal(rate || 0) / 100)).round(2)
+          end
+          netto_val  = netto_raw || netto_calc
+          brutto_val = brutto_raw || brutto_calc
+        %>
+        <tr>
+          <td class="num"><%= row[:nr] %></td>
+          <td><%= row[:nazwa] %></td>
+          <td class="num"><%= row[:ilosc] %></td>
+          <td><%= row[:miara] %></td>
+          <td class="num"><%= ksef_fmt_money(cena, currency) %></td>
+          <td class="num"><%= ksef_fmt_money(netto_val, currency) %></td>
+          <td class="num"><%= ksef_fmt_money(brutto_val, currency) %></td>
+          <td class="num"><%= Ksef::Pdf::Dictionaries.stawka_podatku(row[:stawka]) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if fa.gross_amount.present? %>
+    <p class="ksef-total">
+      Kwota należności ogółem:
+      <strong><%= ksef_fmt_money(fa.gross_amount, currency) %></strong>
+    </p>
+  <% end %>
+</div>

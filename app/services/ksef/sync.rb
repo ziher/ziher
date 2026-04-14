@@ -61,8 +61,8 @@ module Ksef
     def persist_invoice(file)
       return false if KsefInvoice.exists?(ksef_number: file.ksef_number)
 
-      attrs = Ksef::Parser.parse(file.xml)
-      KsefInvoice.create!(attrs.merge(
+      document = Ksef::Parser.parse(file.xml)
+      KsefInvoice.create!(Ksef::Parser.persistence_attrs(document).merge(
         ksef_number: file.ksef_number,
         invoice_xml: file.xml,
         synced_at: Time.current,

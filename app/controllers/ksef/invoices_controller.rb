@@ -12,13 +12,22 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   def show
     authorize! :read, @invoice
+    @document = Ksef::Parser.parse(@invoice.invoice_xml) if @invoice.invoice_xml.present?
     respond_to do |format|
       format.html
       format.pdf do
         render pdf: "ksef-#{@invoice.ksef_number}",
                template: "ksef/invoices/show",
                formats: [:pdf],
-               layout: false
+               layout: false,
+               page_size: "A4",
+               margin: { top: 15, bottom: 15, left: 15, right: 15 },
+               footer: {
+                 font_size: 8,
+                 right: "[page] z [topage]",
+                 spacing: 4
+               },
+               encoding: "UTF-8"
       end
     end
   end

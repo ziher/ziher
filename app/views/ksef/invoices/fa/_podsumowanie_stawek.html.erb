@@ -1,0 +1,28 @@
+<% rows = document.fa.tax_summary %>
+<% return if rows.empty? %>
+<% currency = document.fa.kod_waluty.presence || "PLN" %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Podsumowanie stawek podatku</h3>
+  <table class="ksef-table ksef-table--stawki">
+    <thead>
+      <tr>
+        <th class="num">Lp.</th>
+        <th>Stawka podatku</th>
+        <th class="num">Kwota netto</th>
+        <th class="num">Kwota podatku</th>
+        <th class="num">Kwota brutto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% rows.each_with_index do |row, idx| %>
+        <tr>
+          <td class="num"><%= idx + 1 %></td>
+          <td><%= row[:label] %></td>
+          <td class="num"><%= ksef_fmt_money(row[:net], currency) %></td>
+          <td class="num"><%= ksef_fmt_money(row[:tax], currency) %></td>
+          <td class="num"><%= ksef_fmt_money(row[:gross], currency) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

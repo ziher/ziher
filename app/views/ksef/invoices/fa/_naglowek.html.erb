@@ -1,0 +1,22 @@
+<% fa = document.fa %>
+<% rodzaj_label = Ksef::Pdf::Dictionaries.rodzaj_faktury(fa.rodzaj_faktury, okres_korygowanej: fa.okres_fa_korygowanej) %>
+<table class="ksef-naglowek">
+  <tr>
+    <td style="width: 50%; text-align: left;">
+      <div class="ksef-naglowek__brand">
+        Krajowy System <span class="ksef-naglowek__brand-e">e</span>-Faktur
+      </div>
+    </td>
+    <td style="width: 50%; text-align: right;">
+      <div class="ksef-naglowek__label">Numer faktury:</div>
+      <div class="ksef-naglowek__number"><%= fa.p_2 %></div>
+      <div class="ksef-naglowek__rodzaj"><%= rodzaj_label %></div>
+      <% if local_assigns[:ksef_number].present? %>
+        <div class="ksef-naglowek__ksef">Numer KSeF: <strong><%= ksef_number %></strong></div>
+      <% end %>
+      <% if document.naglowek.data_wytworzenia.present? %>
+        <div class="ksef-naglowek__wytw">Wytworzono: <%= ksef_fmt_datetime(document.naglowek.data_wytworzenia) %></div>
+      <% end %>
+    </td>
+  </tr>
+</table>

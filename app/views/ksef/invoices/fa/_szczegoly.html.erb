@@ -1,0 +1,22 @@
+<% fa = document.fa %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Szczegóły</h3>
+  <dl class="ksef-dl ksef-dl--two-col">
+    <% if fa.p_1.present? %>
+      <dt>Data wystawienia</dt><dd><%= ksef_fmt_date(fa.p_1) %></dd>
+    <% end %>
+    <% if fa.p_1m.present? %>
+      <dt>Miejsce wystawienia</dt><dd><%= fa.p_1m %></dd>
+    <% end %>
+    <% if fa.okres_fa_korygowanej.present? %>
+      <dt>Okres, którego dotyczy rabat</dt><dd><%= fa.okres_fa_korygowanej %></dd>
+    <% end %>
+    <% if fa.p_6.present? %>
+      <dt><%= fa.rodzaj_faktury =~ /ZAL\z/ ? "Data otrzymania zapłaty" : "Data dostawy / wykonania usługi" %></dt>
+      <dd><%= ksef_fmt_date(fa.p_6) %></dd>
+    <% end %>
+    <% if fa.kod_waluty.present? %>
+      <dt>Kod waluty</dt><dd><%= fa.kod_waluty %></dd>
+    <% end %>
+  </dl>
+</div>

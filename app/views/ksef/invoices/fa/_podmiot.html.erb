@@ -1,0 +1,50 @@
+<% return unless podmiot.present? %>
+<div class="ksef-podmiot">
+  <% if podmiot.prefiks_podatnika.present? || podmiot.nip.present? %>
+    <div class="ksef-podmiot__row"><span class="ksef-podmiot__label">NIP:</span> <%= [podmiot.prefiks_podatnika, podmiot.nip].compact_blank.join(" ") %></div>
+  <% end %>
+  <% if podmiot.nr_eori.present? %>
+    <div class="ksef-podmiot__row"><span class="ksef-podmiot__label">EORI:</span> <%= podmiot.nr_eori %></div>
+  <% end %>
+  <% if podmiot.nazwa.present? %>
+    <div class="ksef-podmiot__row ksef-podmiot__row--name"><%= podmiot.nazwa %></div>
+  <% end %>
+
+  <% if podmiot.adres.present? %>
+    <% podmiot.adres.lines.each do |line| %>
+      <div class="ksef-podmiot__row"><%= line %></div>
+    <% end %>
+  <% end %>
+
+  <% if podmiot.adres_koresp.present? %>
+    <div class="ksef-podmiot__row ksef-podmiot__label">Adres korespondencyjny:</div>
+    <% podmiot.adres_koresp.lines.each do |line| %>
+      <div class="ksef-podmiot__row"><%= line %></div>
+    <% end %>
+  <% end %>
+
+  <% if podmiot.dane_kontaktowe.any? %>
+    <% podmiot.dane_kontaktowe.entries.each do |entry| %>
+      <div class="ksef-podmiot__row">
+        <%= entry[:email] %><% if entry[:email].present? && entry[:telefon].present? %> · <% end %><%= entry[:telefon] %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if role == :nabywca && podmiot.nr_klienta.present? %>
+    <div class="ksef-podmiot__row"><span class="ksef-podmiot__label">Nr klienta:</span> <%= podmiot.nr_klienta %></div>
+  <% end %>
+  <% if role == :nabywca && podmiot.id_nabywcy.present? %>
+    <div class="ksef-podmiot__row"><span class="ksef-podmiot__label">ID nabywcy:</span> <%= podmiot.id_nabywcy %></div>
+  <% end %>
+  <% if role == :nabywca && podmiot.jst? %>
+    <div class="ksef-podmiot__row"><span class="ksef-podmiot__label">JST:</span> TAK</div>
+  <% end %>
+  <% if role == :nabywca && podmiot.gv? %>
+    <div class="ksef-podmiot__row"><span class="ksef-podmiot__label">Grupa VAT:</span> TAK</div>
+  <% end %>
+
+  <% if role == :sprzedawca && podmiot.status_info_podatnika.present? %>
+    <div class="ksef-podmiot__row"><span class="ksef-podmiot__label">Status podatnika:</span> <%= Ksef::Pdf::Dictionaries.taxpayer_status(podmiot.status_info_podatnika) || podmiot.status_info_podatnika %></div>
+  <% end %>
+</div>

@@ -1,0 +1,46 @@
+<% wt = document.fa.warunki_transakcji %>
+<% return unless wt.present? %>
+<div class="ksef-section">
+  <h3 class="ksef-section__title">Warunki transakcji</h3>
+  <dl class="ksef-dl ksef-dl--two-col">
+    <% if wt.warunki_dostawy.present? %>
+      <dt>Warunki dostawy</dt><dd><%= wt.warunki_dostawy %></dd>
+    <% end %>
+    <% if wt.kurs_umowny.present? %>
+      <dt>Kurs umowny</dt><dd><%= wt.kurs_umowny %></dd>
+    <% end %>
+    <% if wt.waluta_umowna.present? %>
+      <dt>Waluta umowna</dt><dd><%= wt.waluta_umowna %></dd>
+    <% end %>
+    <% if wt.podmiot_posredniczacy.present? %>
+      <dt>Podmiot pośredniczący</dt><dd><%= wt.podmiot_posredniczacy %></dd>
+    <% end %>
+  </dl>
+
+  <% if wt.umowy.any? %>
+    <h4>Umowy</h4>
+    <ul class="ksef-list">
+      <% wt.umowy.each do |u| %>
+        <li><%= [u[:numer], u[:data] && "(#{ksef_fmt_date(u[:data])})"].compact_blank.join(" ") %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if wt.zamowienia.any? %>
+    <h4>Zamówienia</h4>
+    <ul class="ksef-list">
+      <% wt.zamowienia.each do |z| %>
+        <li><%= [z[:numer], z[:data] && "(#{ksef_fmt_date(z[:data])})"].compact_blank.join(" ") %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if wt.nr_partii_towaru.any? %>
+    <h4>Nr partii towaru</h4>
+    <ul class="ksef-list">
+      <% wt.nr_partii_towaru.each do |nr| %>
+        <li><%= nr %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
