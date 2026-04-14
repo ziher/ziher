@@ -94,6 +94,9 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   def import
     authorize! :import, @invoice
+    unless @invoice.unit.present?
+      redirect_to ksef_invoice_path(@invoice), alert: "Faktura nie jest przypisana do żadnej jednostki." and return
+    end
     @lines = Ksef::ImportLines.from_invoice(@invoice)
     @journals = candidate_journals_for_import
     @categories = Category.where(year: @invoice.issue_date.year, is_expense: true).order(:name)

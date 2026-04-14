@@ -1,118 +1,272 @@
-<h1>Import faktury <%= @invoice.ksef_number %> do księgi</h1>
+<div class="ksef-import">
+  <div class="ksef-import__header">
+    <div>
+      <h1>Import faktury do książki</h1>
+      <div class="ksef-import__ksef-number"><%= @invoice.ksef_number %></div>
+    </div>
+    <div class="ksef-import__toolbar">
+      <%= link_to "Zobacz szczegóły faktury", ksef_invoice_path(@invoice), class: "btn btn-default", target: "_blank" %>
+    </div>
+  </div>
 
-<div class="ksef-import__header">
-  <dl class="dl-horizontal">
+  <dl class="dl-horizontal ksef-import__summary">
     <dt>Sprzedawca</dt><dd><%= @invoice.seller_name %></dd>
     <dt>Numer</dt><dd><%= @invoice.invoice_number.presence || "—" %></dd>
     <dt>Data wystawienia</dt><dd><%= @invoice.issue_date %></dd>
-    <dt>Kwota brutto</dt><dd><%= number_to_currency @invoice.gross_amount, unit: @invoice.currency %></dd>
+    <dt>Kwota brutto</dt><dd><strong><%= number_to_currency @invoice.gross_amount, unit: @invoice.currency %></strong></dd>
   </dl>
-</div>
 
-<% if @journals.empty? %>
-  <div class="alert alert-danger">
-    Brak otwartych książek finansowych jednostki <%= @invoice.unit.name %> dla roku <%= @invoice.issue_date.year %>. Najpierw otwórz odpowiednią książkę.
-  </div>
-<% elsif @categories.empty? %>
-  <div class="alert alert-danger">
-    Brak kategorii wydatków na rok <%= @invoice.issue_date.year %>. Najpierw dodaj kategorie w planie kont.
-  </div>
-<% else %>
-  <%= form_with url: import_ksef_invoice_path(@invoice), method: :post, scope: :import, local: true do |f| %>
-    <div class="form-group">
-      <%= f.label :journal_id, "Książka" %>
-      <% journal_options = @journals.map { |j| ["#{j.journal_type.name} #{j.year} — #{j.unit.name}", j.id] } %>
-      <%= f.select :journal_id, options_for_select(journal_options, @default_journal_id), {}, class: "form-control" %>
+  <% if @journals.empty? %>
+    <div class="alert alert-danger">
+      Brak otwartych książek jednostki <%= @invoice.unit.name %> dla roku <%= @invoice.issue_date.year %>. Najpierw otwórz odpowiednią książkę.
     </div>
-
-    <div class="form-group">
-      <%= f.label :description, "Opis" %>
-      <%= f.text_field :description, value: @invoice.seller_name, class: "form-control" %>
+  <% elsif @categories.empty? %>
+    <div class="alert alert-danger">
+      Brak kategorii wydatków na rok <%= @invoice.issue_date.year %>. Najpierw dodaj kategorie w planie kont.
     </div>
+  <% else %>
+    <%= form_with url: import_ksef_invoice_path(@invoice), method: :post, scope: :import, local: true do |f| %>
+      <div class="ksef-import__form-grid">
+        <div class="form-group">
+          <%= f.label :journal_id, "Książka docelowa" %>
+          <% journal_options = @journals.map { |j| ["#{j.journal_type.name} #{j.year} — #{j.unit.name}", j.id] } %>
+          <%= f.select :journal_id, options_for_select(journal_options, @default_journal_id), {}, class: "form-control" %>
+        </div>
 
-    <h3>Pozycje faktury</h3>
-    <p class="text-muted">Każda pozycja może mieć inną kategorię. Pozycje z tą samą kategorią zostaną zsumowane w jeden wiersz wpisu.</p>
+        <div class="form-group">
+          <%= f.label :description, "Opis wpisu" %>
+          <%= f.text_field :description, value: @invoice.seller_name, class: "form-control" %>
+        </div>
+      </div>
 
-    <% if @lines.size > 1 %>
-      <div class="form-group ksef-import__bulk">
-        <label>Bulk edit kategorii</label>
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <select id="ksef-bulk-category" class="form-control" style="max-width: 320px;">
-            <option value="">— wybierz kategorię —</option>
-            <% @categories.each do |category| %>
-              <option value="<%= category.id %>"><%= category.name %></option>
+      <div class="ksef-import__section">
+        <div class="ksef-import__section-header">
+          <h3>Pozycje faktury</h3>
+          <p class="text-muted">Każda pozycja może mieć inną kategorię. Pozycje z tą samą kategorią zostaną zsumowane w jeden wiersz wpisu.</p>
+        </div>
+
+        <% if @lines.size > 1 %>
+          <div class="ksef-import__bulk">
+            <label class="ksef-import__bulk-label">Przypisz kategorię zbiorczo</label>
+            <div class="ksef-import__bulk-row">
+              <select id="ksef-bulk-category" class="form-control ksef-import__bulk-select">
+                <option value="">— wybierz kategorię —</option>
+                <% @categories.each do |category| %>
+                  <option value="<%= category.id %>"><%= category.name %></option>
+                <% end %>
+              </select>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default" id="ksef-bulk-apply-all">Dla wszystkich</button>
+                <button type="button" class="btn btn-default" id="ksef-bulk-apply-empty">Dla niewybranych</button>
+                <button type="button" class="btn btn-default" id="ksef-bulk-apply-selected">Dla zaznaczonych</button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <table class="table ksef-list ksef-import__lines">
+          <thead>
+            <tr>
+              <% if @lines.size > 1 %>
+                <th class="ksef-import__check"><input type="checkbox" id="ksef-select-all" title="Zaznacz wszystkie"></th>
+              <% end %>
+              <th class="ksef-import__nr">Nr</th>
+              <th>Nazwa</th>
+              <th class="ksef-list__num">Kwota brutto</th>
+              <th class="ksef-import__category-col">Kategoria</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @lines.each_with_index do |line, i| %>
+              <tr>
+                <% if @lines.size > 1 %>
+                  <td class="ksef-import__check"><input type="checkbox" class="ksef-line-check" data-line-index="<%= i %>"></td>
+                <% end %>
+                <td class="ksef-import__nr"><%= line.nr %></td>
+                <td><%= line.nazwa %></td>
+                <td class="ksef-list__num"><%= number_to_currency line.amount_gross, unit: @invoice.currency %></td>
+                <td class="ksef-import__category-cell">
+                  <%= hidden_field_tag "import[lines][#{i}][amount]", line.amount_gross %>
+                  <%= select_tag "import[lines][#{i}][category_id]",
+                                 options_from_collection_for_select(@categories, :id, :name),
+                                 prompt: "— wybierz kategorię —",
+                                 class: "form-control",
+                                 data: { line_index: i } %>
+                </td>
+              </tr>
             <% end %>
-          </select>
-          <button type="button" class="btn btn-default btn-sm" id="ksef-bulk-apply-all">Ustaw dla wszystkich</button>
-          <button type="button" class="btn btn-default btn-sm" id="ksef-bulk-apply-empty">Ustaw dla niewybranych</button>
+          </tbody>
+          <tfoot>
+            <tr>
+              <% if @lines.size > 1 %>
+                <th></th>
+              <% end %>
+              <th colspan="2" class="text-right">Suma pozycji</th>
+              <th class="ksef-list__num"><%= number_to_currency @lines.sum { |l| l.amount_gross }, unit: @invoice.currency %></th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+
+        <% invoice_total = @invoice.gross_amount || 0 %>
+        <% lines_total = @lines.sum { |l| l.amount_gross } %>
+        <% if (invoice_total - lines_total).abs > 0.01 %>
+          <div class="alert alert-warning">
+            Suma pozycji (<%= number_to_currency lines_total %>) różni się od kwoty brutto faktury
+            (<%= number_to_currency invoice_total %>). Zweryfikuj zanim zaimportujesz.
+          </div>
+        <% end %>
+      </div>
+
+      <div class="ksef-import__preview" id="ksef-entry-preview" data-currency="<%= @invoice.currency %>">
+        <div class="ksef-import__preview-title">Podgląd docelowego wpisu</div>
+        <div class="ksef-import__preview-body" id="ksef-entry-preview-body">
+          <em class="text-muted">Wybierz kategorie aby zobaczyć jak będzie wyglądał wpis.</em>
+        </div>
+      </div>
+
+      <div class="ksef-import__sticky-bar">
+        <div class="ksef-import__status" id="ksef-uncategorized-status"></div>
+        <div class="ksef-import__actions">
+          <%= link_to "Anuluj", ksef_invoice_path(@invoice), class: "btn btn-default" %>
+          <%= f.submit "Utwórz wpis", class: "btn btn-primary", id: "ksef-submit" %>
         </div>
       </div>
     <% end %>
 
-    <table class="table ksef-import__lines">
-      <thead>
-        <tr>
-          <th class="ksef-import__nr">Nr</th>
-          <th>Nazwa</th>
-          <th class="ksef-list__num">Kwota (brutto)</th>
-          <th>Kategoria</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @lines.each_with_index do |line, i| %>
-          <tr>
-            <td><%= line.nr %></td>
-            <td><%= line.nazwa %></td>
-            <td class="ksef-list__num"><%= number_to_currency line.amount_gross, unit: @invoice.currency %></td>
-            <td>
-              <%= hidden_field_tag "import[lines][#{i}][amount]", line.amount_gross %>
-              <%= select_tag "import[lines][#{i}][category_id]",
-                             options_from_collection_for_select(@categories, :id, :name),
-                             prompt: "— wybierz kategorię —",
-                             class: "form-control" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th colspan="2" class="text-right">Suma pozycji</th>
-          <th class="ksef-list__num"><%= number_to_currency @lines.sum { |l| l.amount_gross }, unit: @invoice.currency %></th>
-          <th></th>
-        </tr>
-      </tfoot>
-    </table>
+    <script>
+      (function() {
+        var categorySelector = 'select[name^="import[lines]"][name$="[category_id]"]';
+        var amountSelector = 'input[name^="import[lines]"][name$="[amount]"]';
+        var previewBody = document.getElementById('ksef-entry-preview-body');
+        var statusEl = document.getElementById('ksef-uncategorized-status');
+        var submitEl = document.getElementById('ksef-submit');
+        var previewWrapper = document.getElementById('ksef-entry-preview');
+        var currency = previewWrapper ? (previewWrapper.dataset.currency || '') : '';
 
-    <% invoice_total = @invoice.gross_amount || 0 %>
-    <% lines_total = @lines.sum { |l| l.amount_gross } %>
-    <% if (invoice_total - lines_total).abs > 0.01 %>
-      <div class="alert alert-warning">
-        Suma pozycji (<%= number_to_currency lines_total %>) różni się od kwoty brutto faktury
-        (<%= number_to_currency invoice_total %>). Zweryfikuj zanim zaimportujesz.
-      </div>
-    <% end %>
+        function formatAmount(num) {
+          var fixed = (Math.round(num * 100) / 100).toFixed(2).replace('.', ',');
+          return fixed + (currency ? ' ' + currency : '');
+        }
 
-    <%= f.submit "Utwórz wpis", class: "btn btn-primary" %>
-    <%= link_to "Anuluj", ksef_invoice_path(@invoice), class: "btn btn-default" %>
-  <% end %>
+        function selectByIndex(idx) {
+          return document.querySelector('select[name="import[lines][' + idx + '][category_id]"]');
+        }
 
-  <script>
-    (function() {
-      var bulk = document.getElementById('ksef-bulk-category');
-      if (!bulk) return;
-      var selector = 'select[name^="import[lines]"][name$="[category_id]"]';
+        function lineNoun(n) {
+          if (n === 1) return 'pozycja';
+          if (n >= 2 && n <= 4) return 'pozycje';
+          return 'pozycji';
+        }
 
-      function apply(onlyEmpty) {
-        var val = bulk.value;
-        if (!val) return;
-        document.querySelectorAll(selector).forEach(function(s) {
-          if (onlyEmpty && s.value) return;
-          s.value = val;
+        function updateState() {
+          var selects = document.querySelectorAll(categorySelector);
+          var total = selects.length;
+          var uncategorized = 0;
+          var sums = {};
+          var order = [];
+
+          selects.forEach(function(sel) {
+            var row = sel.closest('tr');
+            if (!sel.value) {
+              uncategorized++;
+              if (row) row.classList.add('ksef-import__row--empty');
+              return;
+            }
+            if (row) row.classList.remove('ksef-import__row--empty');
+
+            var label = sel.options[sel.selectedIndex].text;
+            var amountInput = row ? row.querySelector(amountSelector) : null;
+            var amount = amountInput ? parseFloat(amountInput.value) || 0 : 0;
+            if (!(label in sums)) {
+              sums[label] = 0;
+              order.push(label);
+            }
+            sums[label] += amount;
+          });
+
+          if (statusEl) {
+            statusEl.classList.remove('ksef-import__status--ok', 'ksef-import__status--bad');
+            if (total === 0) {
+              statusEl.textContent = '';
+            } else if (uncategorized === 0) {
+              statusEl.classList.add('ksef-import__status--ok');
+              statusEl.textContent = '✓ Wszystkie ' + total + ' ' + lineNoun(total) + ' skategoryzowane';
+            } else {
+              statusEl.classList.add('ksef-import__status--bad');
+              statusEl.textContent = uncategorized + ' z ' + total + ' ' + lineNoun(total) + ' bez kategorii';
+            }
+          }
+
+          if (submitEl) {
+            submitEl.disabled = uncategorized > 0;
+          }
+
+          if (previewBody) {
+            if (order.length === 0) {
+              previewBody.innerHTML = '<em class="text-muted">Wybierz kategorie aby zobaczyć jak będzie wyglądał wpis.</em>';
+            } else {
+              var grandTotal = 0;
+              var listHtml = '<ul class="ksef-import__preview-list">';
+              order.forEach(function(label) {
+                grandTotal += sums[label];
+                listHtml += '<li><span>' + label + '</span><span class="ksef-import__preview-amount">' + formatAmount(sums[label]) + '</span></li>';
+              });
+              listHtml += '</ul>';
+              var headHtml = '<div class="ksef-import__preview-head">Wpis będzie miał <strong>' + order.length + '</strong> ' + lineNoun(order.length) +
+                             ', suma <strong>' + formatAmount(grandTotal) + '</strong></div>';
+              previewBody.innerHTML = headHtml + listHtml;
+            }
+          }
+        }
+
+        document.querySelectorAll(categorySelector).forEach(function(sel) {
+          sel.addEventListener('change', updateState);
         });
-      }
 
-      document.getElementById('ksef-bulk-apply-all').addEventListener('click', function() { apply(false); });
-      document.getElementById('ksef-bulk-apply-empty').addEventListener('click', function() { apply(true); });
-    })();
-  </script>
-<% end %>
+        var bulk = document.getElementById('ksef-bulk-category');
+        if (bulk) {
+          function apply(mode) {
+            var val = bulk.value;
+            if (!val) return;
+
+            if (mode === 'selected') {
+              var checked = document.querySelectorAll('.ksef-line-check:checked');
+              if (checked.length === 0) {
+                alert('Zaznacz najpierw wiersze, do których chcesz przypisać kategorię.');
+                return;
+              }
+              checked.forEach(function(cb) {
+                var sel = selectByIndex(cb.dataset.lineIndex);
+                if (sel) sel.value = val;
+              });
+              updateState();
+              return;
+            }
+
+            document.querySelectorAll(categorySelector).forEach(function(s) {
+              if (mode === 'empty' && s.value) return;
+              s.value = val;
+            });
+            updateState();
+          }
+
+          document.getElementById('ksef-bulk-apply-all').addEventListener('click', function() { apply('all'); });
+          document.getElementById('ksef-bulk-apply-empty').addEventListener('click', function() { apply('empty'); });
+          document.getElementById('ksef-bulk-apply-selected').addEventListener('click', function() { apply('selected'); });
+
+          var selectAll = document.getElementById('ksef-select-all');
+          if (selectAll) {
+            selectAll.addEventListener('change', function() {
+              document.querySelectorAll('.ksef-line-check').forEach(function(cb) {
+                cb.checked = selectAll.checked;
+              });
+            });
+          }
+        }
+
+        updateState();
+      })();
+    </script>
+  <% end %>
+</div>

@@ -1,5 +1,8 @@
 <div class="ksef-index__header">
-  <h1>KSeF — Faktury</h1>
+  <div>
+    <h1>KSeF — Faktury</h1>
+    <div class="ksef-index__subtitle">Krajowy System e-Faktur</div>
+  </div>
   <% if current_user.is_superadmin %>
     <div class="ksef-index__toolbar">
       <%= link_to "Konfiguracja KSeF", edit_ksef_setting_path, class: "btn btn-default" %>

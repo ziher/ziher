@@ -1,40 +1,89 @@
+<% show_assign  = can?(:assign, @invoice) || (current_user.is_superadmin && @invoice.assignable?) %>
+<% show_release = can?(:release, @invoice) || (current_user.is_superadmin && @invoice.releasable?) %>
+<% show_import  = can?(:import, @invoice) && @invoice.unit.present? %>
+<% has_actions  = show_assign || show_release || show_import %>
+
 <div class="ksef-show">
-  <div class="ksef-show__toolbar">
-    <h1>Faktura KSeF <%= @invoice.ksef_number %></h1>
-    <div class="ksef-show__meta">
-      <span>Jednostka: <strong><%= @invoice.unit&.name || "—" %></strong></span>
-      <span>Status: <strong><%= @invoice.status_label %></strong></span>
-      <%= link_to "Pobierz PDF", ksef_invoice_path(@invoice, format: :pdf), class: "btn btn-default" %>
+  <div class="ksef-show__header">
+    <div>
+      <h1>Faktura <%= @invoice.invoice_number.presence || "bez numeru" %></h1>
+      <div class="ksef-show__ksef-number"><%= @invoice.ksef_number %></div>
+    </div>
+    <div class="ksef-show__toolbar">
+      <%= link_to "← Wróć do listy", ksef_invoices_path, class: "btn btn-default" %>
+      <%= link_to "Pobierz PDF", ksef_invoice_path(@invoice, format: :pdf), class: "btn btn-default", target: "_blank" %>
     </div>
   </div>
 
-  <%= render "ksef/invoices/pdf_styles" %>
+  <div class="ksef-show__summary">
+    <div class="ksef-show__summary-row">
+      <span class="ksef-show__summary-label">Status</span>
+      <span class="ksef-show__summary-value"><%= ksef_status_badge(@invoice) %></span>
+    </div>
+    <div class="ksef-show__summary-row">
+      <span class="ksef-show__summary-label">Jednostka</span>
+      <span class="ksef-show__summary-value"><strong><%= @invoice.unit&.name || "—" %></strong></span>
+    </div>
+    <% if @invoice.assigned_by %>
+      <div class="ksef-show__summary-row">
+        <span class="ksef-show__summary-label">Przypisano przez</span>
+        <span class="ksef-show__summary-value">
+          <%= @invoice.assigned_by.name %>
+          <% if @invoice.assigned_at %>
+            <span class="text-muted">· <%= @invoice.assigned_at.to_date %></span>
+          <% end %>
+        </span>
+      </div>
+    <% end %>
+    <% if @invoice.note.present? %>
+      <div class="ksef-show__summary-row">
+        <span class="ksef-show__summary-label">Notatka</span>
+        <span class="ksef-show__summary-value"><%= @invoice.note %></span>
+      </div>
+    <% end %>
+  </div>
 
-  <% if @document %>
-    <%= render "ksef/invoices/fa/invoice", document: @document, ksef_number: @invoice.ksef_number %>
-  <% else %>
-    <p>Brak zapisanego XML-a faktury — nie mogę wyrenderować wizualizacji.</p>
+  <% if has_actions %>
+    <div class="ksef-show__actions-panel">
+      <div class="ksef-show__actions-title">Akcje</div>
+
+      <% if show_import %>
+        <div class="ksef-show__action-row">
+          <%= link_to "Importuj do książki", import_ksef_invoice_path(@invoice), class: "btn btn-primary" %>
+        </div>
+      <% end %>
+
+      <% if show_assign %>
+        <div class="ksef-show__action-row">
+          <div class="ksef-show__action-label">Przypisz do jednostki</div>
+          <% units =
+               if current_user.is_superadmin
+                 Unit.order(:name)
+               else
+                 current_user.units.select { |u| current_user.can_manage_unit_entries(u) }.sort_by(&:name)
+               end %>
+          <%= render "assign_form", invoice: @invoice, units: units %>
+        </div>
+      <% end %>
+
+      <% if show_release %>
+        <div class="ksef-show__action-row">
+          <%= button_to "Oznacz jako nieprzypisaną",
+                        release_ksef_invoice_path(@invoice),
+                        method: :patch,
+                        class: "btn btn-default",
+                        form: { style: "display:inline" } %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 
-  <% if can?(:assign, @invoice) || (current_user.is_superadmin && @invoice.assignable?) %>
-    <h2>Przypisz do jednostki</h2>
-    <% units =
-         if current_user.is_superadmin
-           Unit.order(:name)
-         else
-           current_user.units.select { |u| current_user.can_manage_unit_entries(u) }.sort_by(&:name)
-         end %>
-    <%= render "assign_form", invoice: @invoice, units: units %>
-  <% end %>
-
-  <% if can?(:release, @invoice) || (current_user.is_superadmin && @invoice.releasable?) %>
-    <p>
-      <%= button_to "Oznacz jako nieprzypisaną", release_ksef_invoice_path(@invoice), method: :patch, class: "btn btn-default" %>
-    </p>
-  <% end %>
-
-  <% if can?(:import, @invoice) %>
-    <h2>Importuj do księgi</h2>
-    <%= link_to "Otwórz formularz importu", import_ksef_invoice_path(@invoice), class: "btn btn-primary" %>
-  <% end %>
+  <div class="ksef-show__document">
+    <%= render "ksef/invoices/pdf_styles" %>
+    <% if @document %>
+      <%= render "ksef/invoices/fa/invoice", document: @document, ksef_number: @invoice.ksef_number %>
+    <% else %>
+      <p class="text-muted">Brak zapisanego XML-a faktury — nie mogę wyrenderować wizualizacji.</p>
+    <% end %>
+  </div>
 </div>
