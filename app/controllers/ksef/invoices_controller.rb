@@ -94,18 +94,20 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   def import
     authorize! :import, @invoice
-    @journals = @invoice.unit.journals.where(is_open: true).order(year: :desc)
-    @categories = Category.where(year: @invoice.issue_date.year).order(:name)
+    @lines = Ksef::ImportLines.from_invoice(@invoice)
+    @journals = candidate_journals_for_import
+    @categories = Category.where(year: @invoice.issue_date.year, is_expense: true).order(:name)
+    @default_journal_id = @journals.first&.id
   end
 
   def do_import
     authorize! :import, @invoice
     journal = Journal.find(params[:import][:journal_id])
-    category = Category.find(params[:import][:category_id])
-    entry = Ksef::Importer.call(invoice: @invoice, journal: journal, category: category, user: current_user)
+    lines = submitted_import_lines
+    entry = Ksef::Importer.call(invoice: @invoice, journal: journal, user: current_user, lines: lines)
     redirect_to journal_path(journal), notice: "Wpis #{entry.id} utworzony z faktury KSeF."
   rescue Ksef::Importer::InvalidImport => e
-    redirect_to ksef_invoice_path(@invoice), alert: e.message
+    redirect_to import_ksef_invoice_path(@invoice), alert: e.message
   end
 
   private
@@ -119,6 +121,21 @@ class Ksef::InvoicesController < Ksef::BaseController
     return requested if STATUS_TABS.include?(requested)
 
     default_status_for(current_user)
+  end
+
+  def candidate_journals_for_import
+    @invoice.unit.journals
+            .where(is_open: true, year: @invoice.issue_date.year, journal_type_id: JournalType::FINANCE_TYPE_ID)
+            .order(year: :desc)
+  end
+
+  def submitted_import_lines
+    lines_params = params.dig(:import, :lines)
+    return [] if lines_params.blank?
+
+    lines_params.values.map do |line|
+      { category_id: line[:category_id], amount: line[:amount] }
+    end
   end
 
   def default_status_for(user)

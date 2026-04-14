@@ -2,21 +2,29 @@ module Ksef
   class Importer
     class InvalidImport < StandardError; end
 
-    def self.call(invoice:, journal:, category:, user:)
-      new(invoice: invoice, journal: journal, category: category, user: user).call
+    def self.call(invoice:, journal:, user:, lines:)
+      new(invoice: invoice, journal: journal, user: user, lines: lines).call
     end
 
-    def initialize(invoice:, journal:, category:, user:)
+    def initialize(invoice:, journal:, user:, lines:)
       @invoice = invoice
       @journal = journal
-      @category = category
       @user = user
+      @lines = Array(lines)
     end
 
     def call
-      raise InvalidImport, "invoice already imported" if @invoice.imported?
-      raise InvalidImport, "invoice has no unit" if @invoice.unit_id.nil?
-      raise InvalidImport, "journal unit mismatch" if @journal.unit_id != @invoice.unit_id
+      raise InvalidImport, "faktura została już zaimportowana" if @invoice.imported?
+      raise InvalidImport, "faktura nie jest przypisana do jednostki" if @invoice.unit_id.nil?
+      raise InvalidImport, "jednostka książki nie pasuje do jednostki faktury" if @journal.unit_id != @invoice.unit_id
+      raise InvalidImport, "brak pozycji do zaimportowania" if @lines.empty?
+      raise InvalidImport, "każda pozycja musi mieć wybraną kategorię" if @lines.any? { |l| l[:category_id].to_i.zero? }
+
+      totals = @lines.group_by { |l| l[:category_id].to_i }
+                     .transform_values { |group| group.sum { |l| BigDecimal(l[:amount].to_s) } }
+                     .reject { |_, amount| amount.zero? }
+
+      raise InvalidImport, "suma kwot dla wszystkich pozycji wynosi 0" if totals.empty?
 
       ApplicationRecord.transaction do
         entry = Entry.new(
@@ -26,10 +34,9 @@ module Ksef
           document_number: @invoice.invoice_number.presence || @invoice.ksef_number,
           is_expense: true
         )
-        entry.items.build(
-          category: @category,
-          amount: @invoice.gross_amount
-        )
+        totals.each do |category_id, amount|
+          entry.items.build(category_id: category_id, amount: amount)
+        end
         entry.save!
 
         @invoice.update!(

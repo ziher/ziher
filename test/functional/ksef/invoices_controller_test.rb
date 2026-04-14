@@ -148,7 +148,10 @@ class Ksef::InvoicesControllerTest < ActionDispatch::IntegrationTest
 
     sign_in @member
     post import_ksef_invoice_url(@assigned), params: {
-      import: { journal_id: journal.id, category_id: category.id }
+      import: {
+        journal_id: journal.id,
+        lines: { "0" => { category_id: category.id, amount: "100.00" } }
+      }
     }
     assert_redirected_to journal_url(journal)
     @assigned.reload

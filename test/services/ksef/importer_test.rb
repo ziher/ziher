@@ -20,7 +20,10 @@ class Ksef::ImporterTest < ActiveSupport::TestCase
 
     invoice = KsefInvoice.create!(base_invoice_attrs(unit_id: journal.unit_id))
 
-    entry = Ksef::Importer.call(invoice: invoice, journal: journal, category: category, user: user)
+    entry = Ksef::Importer.call(
+      invoice: invoice, journal: journal, user: user,
+      lines: [{ category_id: category.id, amount: 250.00 }]
+    )
 
     assert entry.persisted?
     assert_equal "Sprzedawca", entry.name
@@ -36,6 +39,26 @@ class Ksef::ImporterTest < ActiveSupport::TestCase
     assert_equal entry.id, invoice.imported_entry_id
   end
 
+  test "sums multiple lines with the same category into a single Item" do
+    user = users(:master_1zgm)
+    journal = journals(:finance_2012)
+    category = categories(:two)
+
+    invoice = KsefInvoice.create!(base_invoice_attrs(ksef_number: "X-150", unit_id: journal.unit_id))
+
+    entry = Ksef::Importer.call(
+      invoice: invoice, journal: journal, user: user,
+      lines: [
+        { category_id: category.id, amount: 100.00 },
+        { category_id: category.id, amount: 150.00 }
+      ]
+    )
+
+    assert_equal 1, entry.items.size
+    assert_in_delta 250.00, entry.items.first.amount.to_f, 0.001
+    assert_equal category, entry.items.first.category
+  end
+
   test "raises when invoice is already imported" do
     user = users(:master_1zgm)
     journal = journals(:finance_2012)
@@ -44,7 +67,10 @@ class Ksef::ImporterTest < ActiveSupport::TestCase
     invoice = KsefInvoice.create!(base_invoice_attrs(ksef_number: "X-200", unit_id: journal.unit_id, status: :imported))
 
     assert_raises(Ksef::Importer::InvalidImport) do
-      Ksef::Importer.call(invoice: invoice, journal: journal, category: category, user: user)
+      Ksef::Importer.call(
+        invoice: invoice, journal: journal, user: user,
+        lines: [{ category_id: category.id, amount: 250.00 }]
+      )
     end
   end
 
@@ -56,7 +82,10 @@ class Ksef::ImporterTest < ActiveSupport::TestCase
     invoice = KsefInvoice.create!(base_invoice_attrs(ksef_number: "X-300", unit_id: nil))
 
     assert_raises(Ksef::Importer::InvalidImport) do
-      Ksef::Importer.call(invoice: invoice, journal: journal, category: category, user: user)
+      Ksef::Importer.call(
+        invoice: invoice, journal: journal, user: user,
+        lines: [{ category_id: category.id, amount: 250.00 }]
+      )
     end
   end
 
@@ -69,7 +98,24 @@ class Ksef::ImporterTest < ActiveSupport::TestCase
     invoice = KsefInvoice.create!(base_invoice_attrs(ksef_number: "X-400", unit_id: other_unit.id))
 
     assert_raises(Ksef::Importer::InvalidImport) do
-      Ksef::Importer.call(invoice: invoice, journal: journal, category: category, user: user)
+      Ksef::Importer.call(
+        invoice: invoice, journal: journal, user: user,
+        lines: [{ category_id: category.id, amount: 250.00 }]
+      )
+    end
+  end
+
+  test "raises when a line is missing a category" do
+    user = users(:master_1zgm)
+    journal = journals(:finance_2012)
+
+    invoice = KsefInvoice.create!(base_invoice_attrs(ksef_number: "X-500", unit_id: journal.unit_id))
+
+    assert_raises(Ksef::Importer::InvalidImport) do
+      Ksef::Importer.call(
+        invoice: invoice, journal: journal, user: user,
+        lines: [{ category_id: nil, amount: 250.00 }]
+      )
     end
   end
 end
