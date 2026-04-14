@@ -125,8 +125,9 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   def candidate_journals_for_import
     @invoice.unit.journals
-            .where(is_open: true, year: @invoice.issue_date.year, journal_type_id: JournalType::FINANCE_TYPE_ID)
-            .order(year: :desc)
+            .includes(:journal_type)
+            .where(is_open: true, year: @invoice.issue_date.year)
+            .order(:journal_type_id, year: :desc)
   end
 
   def submitted_import_lines

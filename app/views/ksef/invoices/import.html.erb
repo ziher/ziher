@@ -21,7 +21,8 @@
   <%= form_with url: import_ksef_invoice_path(@invoice), method: :post, scope: :import, local: true do |f| %>
     <div class="form-group">
       <%= f.label :journal_id, "Książka" %>
-      <%= f.select :journal_id, options_from_collection_for_select(@journals, :id, :to_s, @default_journal_id), {}, class: "form-control" %>
+      <% journal_options = @journals.map { |j| ["#{j.journal_type.name} #{j.year} — #{j.unit.name}", j.id] } %>
+      <%= f.select :journal_id, options_for_select(journal_options, @default_journal_id), {}, class: "form-control" %>
     </div>
 
     <h3>Pozycje faktury</h3>
