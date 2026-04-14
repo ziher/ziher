@@ -12,11 +12,10 @@ class Ksef::CryptoTest < ActiveSupport::TestCase
     assert_equal 16, session.iv.bytesize
   end
 
-  test "encrypt_key wraps AES key with RSA-OAEP SHA-256" do
+  test "encrypt_aes_key_with_rsa wraps AES key with RSA-OAEP SHA-256" do
     session = Ksef::Crypto.generate_session_key
-    encrypted_b64 = Ksef::Crypto.encrypt_key(session.key, @public_pem)
+    encrypted = Ksef::Crypto.encrypt_aes_key_with_rsa(@public_pem, session.key)
 
-    encrypted = Base64.strict_decode64(encrypted_b64)
     rsa = OpenSSL::PKey::RSA.new(@private_pem)
     decrypted = rsa.decrypt(encrypted, { rsa_padding_mode: "oaep", rsa_oaep_md: "SHA256", rsa_mgf1_md: "SHA256" })
 

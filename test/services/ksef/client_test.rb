@@ -12,7 +12,7 @@ class Ksef::ClientTest < ActiveSupport::TestCase
   end
 
   test "GET returns parsed JSON body on 200" do
-    stub_request(:get, "https://example.test/foo").to_return(
+    stub_request(:get, "https://example.test/v2/foo").to_return(
       status: 200, body: '{"hello":"world"}', headers: { "Content-Type" => "application/json" }
     )
 
@@ -21,7 +21,7 @@ class Ksef::ClientTest < ActiveSupport::TestCase
   end
 
   test "POST sends JSON body and Authorization header" do
-    stub_request(:post, "https://example.test/sessions")
+    stub_request(:post, "https://example.test/v2/sessions")
       .with(
         body: '{"a":1}',
         headers: { "Authorization" => "TOKEN", "Content-Type" => "application/json" }
@@ -33,13 +33,13 @@ class Ksef::ClientTest < ActiveSupport::TestCase
   end
 
   test "raises Ksef::Client::Error on 4xx with body" do
-    stub_request(:get, "https://example.test/missing").to_return(status: 404, body: '{"error":"not found"}')
+    stub_request(:get, "https://example.test/v2/missing").to_return(status: 404, body: '{"error":"not found"}')
 
     assert_raises(Ksef::Client::Error) { @client.get("/missing") }
   end
 
   test "honours Retry-After on 429 then succeeds" do
-    stub_request(:get, "https://example.test/rate")
+    stub_request(:get, "https://example.test/v2/rate")
       .to_return({ status: 429, headers: { "Retry-After" => "0" } }, { status: 200, body: '{"k":"v"}' })
 
     response = @client.get("/rate")
