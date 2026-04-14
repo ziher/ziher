@@ -104,7 +104,13 @@ class Ksef::InvoicesController < Ksef::BaseController
     authorize! :import, @invoice
     journal = Journal.find(params[:import][:journal_id])
     lines = submitted_import_lines
-    entry = Ksef::Importer.call(invoice: @invoice, journal: journal, user: current_user, lines: lines)
+    entry = Ksef::Importer.call(
+      invoice: @invoice,
+      journal: journal,
+      user: current_user,
+      lines: lines,
+      description: params.dig(:import, :description)
+    )
     redirect_to journal_path(journal), notice: "Wpis #{entry.id} utworzony z faktury KSeF."
   rescue Ksef::Importer::InvalidImport => e
     redirect_to import_ksef_invoice_path(@invoice), alert: e.message

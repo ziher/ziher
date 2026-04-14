@@ -39,6 +39,38 @@ class Ksef::ImporterTest < ActiveSupport::TestCase
     assert_equal entry.id, invoice.imported_entry_id
   end
 
+  test "uses provided description as the Entry name" do
+    user = users(:master_1zgm)
+    journal = journals(:finance_2012)
+    category = categories(:two)
+
+    invoice = KsefInvoice.create!(base_invoice_attrs(ksef_number: "X-110", unit_id: journal.unit_id))
+
+    entry = Ksef::Importer.call(
+      invoice: invoice, journal: journal, user: user,
+      lines: [{ category_id: category.id, amount: 250.00 }],
+      description: "Materiały biurowe Q2"
+    )
+
+    assert_equal "Materiały biurowe Q2", entry.name
+  end
+
+  test "falls back to seller_name when description is blank" do
+    user = users(:master_1zgm)
+    journal = journals(:finance_2012)
+    category = categories(:two)
+
+    invoice = KsefInvoice.create!(base_invoice_attrs(ksef_number: "X-120", unit_id: journal.unit_id))
+
+    entry = Ksef::Importer.call(
+      invoice: invoice, journal: journal, user: user,
+      lines: [{ category_id: category.id, amount: 250.00 }],
+      description: "   "
+    )
+
+    assert_equal "Sprzedawca", entry.name
+  end
+
   test "sums multiple lines with the same category into a single Item" do
     user = users(:master_1zgm)
     journal = journals(:finance_2012)

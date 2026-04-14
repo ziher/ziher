@@ -25,8 +25,29 @@
       <%= f.select :journal_id, options_for_select(journal_options, @default_journal_id), {}, class: "form-control" %>
     </div>
 
+    <div class="form-group">
+      <%= f.label :description, "Opis" %>
+      <%= f.text_field :description, value: @invoice.seller_name, class: "form-control" %>
+    </div>
+
     <h3>Pozycje faktury</h3>
     <p class="text-muted">Każda pozycja może mieć inną kategorię. Pozycje z tą samą kategorią zostaną zsumowane w jeden wiersz wpisu.</p>
+
+    <% if @lines.size > 1 %>
+      <div class="form-group ksef-import__bulk">
+        <label>Bulk edit kategorii</label>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <select id="ksef-bulk-category" class="form-control" style="max-width: 320px;">
+            <option value="">— wybierz kategorię —</option>
+            <% @categories.each do |category| %>
+              <option value="<%= category.id %>"><%= category.name %></option>
+            <% end %>
+          </select>
+          <button type="button" class="btn btn-default btn-sm" id="ksef-bulk-apply-all">Ustaw dla wszystkich</button>
+          <button type="button" class="btn btn-default btn-sm" id="ksef-bulk-apply-empty">Ustaw dla niewybranych</button>
+        </div>
+      </div>
+    <% end %>
 
     <table class="table ksef-import__lines">
       <thead>
@@ -74,4 +95,24 @@
     <%= f.submit "Utwórz wpis", class: "btn btn-primary" %>
     <%= link_to "Anuluj", ksef_invoice_path(@invoice), class: "btn btn-default" %>
   <% end %>
+
+  <script>
+    (function() {
+      var bulk = document.getElementById('ksef-bulk-category');
+      if (!bulk) return;
+      var selector = 'select[name^="import[lines]"][name$="[category_id]"]';
+
+      function apply(onlyEmpty) {
+        var val = bulk.value;
+        if (!val) return;
+        document.querySelectorAll(selector).forEach(function(s) {
+          if (onlyEmpty && s.value) return;
+          s.value = val;
+        });
+      }
+
+      document.getElementById('ksef-bulk-apply-all').addEventListener('click', function() { apply(false); });
+      document.getElementById('ksef-bulk-apply-empty').addEventListener('click', function() { apply(true); });
+    })();
+  </script>
 <% end %>

@@ -2,15 +2,16 @@ module Ksef
   class Importer
     class InvalidImport < StandardError; end
 
-    def self.call(invoice:, journal:, user:, lines:)
-      new(invoice: invoice, journal: journal, user: user, lines: lines).call
+    def self.call(invoice:, journal:, user:, lines:, description: nil)
+      new(invoice: invoice, journal: journal, user: user, lines: lines, description: description).call
     end
 
-    def initialize(invoice:, journal:, user:, lines:)
+    def initialize(invoice:, journal:, user:, lines:, description: nil)
       @invoice = invoice
       @journal = journal
       @user = user
       @lines = Array(lines)
+      @description = description.to_s.strip
     end
 
     def call
@@ -30,7 +31,7 @@ module Ksef
         entry = Entry.new(
           journal: @journal,
           date: @invoice.issue_date,
-          name: @invoice.seller_name.presence || "KSeF #{@invoice.ksef_number}",
+          name: @description.presence || @invoice.seller_name.presence || "KSeF #{@invoice.ksef_number}",
           document_number: @invoice.invoice_number.presence || @invoice.ksef_number,
           is_expense: true
         )
