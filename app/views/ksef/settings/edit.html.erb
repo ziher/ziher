@@ -1,63 +1,156 @@
-<h1>Konfiguracja KSeF</h1>
+<div class="ksef-settings">
+  <div class="ksef-settings__header">
+    <div>
+      <h1>Konfiguracja KSeF</h1>
+      <div class="ksef-settings__subtitle">Krajowy System e-Faktur — ustawienia integracji</div>
+    </div>
+    <div class="ksef-settings__toolbar">
+      <%= link_to "← Powrót do faktur", ksef_invoices_path, class: "btn btn-default" %>
+    </div>
+  </div>
 
-<%= form_with model: @ksef_setting, url: ksef_setting_path, method: :patch do |f| %>
   <% if @ksef_setting.errors.any? %>
     <div class="alert alert-danger"><%= @ksef_setting.errors.full_messages.join(", ") %></div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :nip, "NIP organizacji" %>
-    <%= f.text_field :nip, class: "form-control" %>
-  </div>
+  <%= form_with model: @ksef_setting, url: ksef_setting_path, method: :patch, local: true do |f| %>
 
-  <div class="form-group">
-    <%= f.label :api_url, "API URL" %>
-    <%= f.text_field :api_url, class: "form-control" %>
-  </div>
+    <div class="ksef-settings__section">
+      <div class="ksef-settings__section-title">Połączenie</div>
+      <div class="ksef-settings__two-col">
+        <div class="form-group">
+          <%= f.label :nip, "NIP organizacji" %>
+          <%= f.text_field :nip, class: "form-control", placeholder: "10 cyfr bez separatorów", maxlength: 10 %>
+        </div>
+        <div class="form-group">
+          <%= f.label :api_url, "API URL" %>
+          <%= f.text_field :api_url, class: "form-control" %>
+        </div>
+      </div>
+    </div>
 
-  <div class="form-group">
-    <%= f.label :cert_pem, "Certyfikat (PEM)" %>
-    <%= f.text_area :cert_pem, rows: 8, class: "form-control" %>
-  </div>
+    <div class="ksef-settings__section">
+      <div class="ksef-settings__section-title">Certyfikat i klucz prywatny</div>
+      <p class="ksef-settings__section-hint">Dane uwierzytelniające przechowywane są zaszyfrowane. Wklej zawartość pliku <code>.pem</code> włącznie z nagłówkami <code>-----BEGIN …-----</code>.</p>
+      <div class="ksef-settings__two-col">
+        <div class="form-group">
+          <%= f.label :cert_pem, "Certyfikat (PEM)" %>
+          <% if @ksef_setting.cert_pem.present? %>
+            <div class="ksef-settings__pem-saved">
+              <span class="label label-success">Zapisany</span>
+              Certyfikat jest zapisany.
+              <a href="#" class="ksef-settings__pem-replace-link" data-target="cert-pem-area">Zastąp nowym</a>
+            </div>
+            <%= f.text_area :cert_pem, value: "", rows: 10,
+                            class: "form-control ksef-settings__pem-area ksef-settings__pem-area--hidden",
+                            id: "cert-pem-area",
+                            placeholder: "-----BEGIN CERTIFICATE-----\n…\n-----END CERTIFICATE-----" %>
+          <% else %>
+            <%= f.text_area :cert_pem, rows: 10, class: "form-control ksef-settings__pem-area",
+                            placeholder: "-----BEGIN CERTIFICATE-----\n…\n-----END CERTIFICATE-----" %>
+          <% end %>
+        </div>
+        <div class="form-group">
+          <%= f.label :key_pem, "Klucz prywatny (PEM)" %>
+          <% if @ksef_setting.key_pem.present? %>
+            <div class="ksef-settings__pem-saved">
+              <span class="label label-success">Zapisany</span>
+              Klucz prywatny jest zapisany.
+              <a href="#" class="ksef-settings__pem-replace-link" data-target="key-pem-area">Zastąp nowym</a>
+            </div>
+            <%= f.text_area :key_pem, value: "", rows: 10,
+                            class: "form-control ksef-settings__pem-area ksef-settings__pem-area--hidden",
+                            id: "key-pem-area",
+                            placeholder: "-----BEGIN PRIVATE KEY-----\n…\n-----END PRIVATE KEY-----" %>
+          <% else %>
+            <%= f.text_area :key_pem, rows: 10, class: "form-control ksef-settings__pem-area",
+                            placeholder: "-----BEGIN PRIVATE KEY-----\n…\n-----END PRIVATE KEY-----" %>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-group ksef-settings__passphrase-row">
+        <%= f.label :key_passphrase, "Hasło do klucza prywatnego" %>
+        <% if @ksef_setting.key_passphrase.present? %>
+          <div class="ksef-settings__pem-saved">
+            <span class="label label-success">Zapisane</span>
+            Hasło jest zapisane.
+            <a href="#" class="ksef-settings__pem-replace-link" data-target="key-passphrase-field">Zastąp nowym</a>
+          </div>
+          <%= f.password_field :key_passphrase, value: "",
+                               id: "key-passphrase-field",
+                               class: "form-control ksef-settings__pem-area--hidden",
+                               autocomplete: "new-password",
+                               placeholder: "Nowe hasło do klucza prywatnego" %>
+        <% else %>
+          <%= f.password_field :key_passphrase, value: "",
+                               class: "form-control",
+                               autocomplete: "new-password",
+                               placeholder: "Pozostaw puste, jeśli klucz nie jest zaszyfrowany" %>
+        <% end %>
+      </div>
+    </div>
 
-  <div class="form-group">
-    <%= f.label :key_pem, "Klucz prywatny (PEM)" %>
-    <%= f.text_area :key_pem, rows: 8, class: "form-control" %>
-  </div>
+    <div class="ksef-settings__sticky-bar">
+      <%= f.submit "Zapisz konfigurację", class: "btn btn-primary" %>
+    </div>
 
-  <div class="form-group">
-    <%= f.label :key_passphrase, "Hasło do klucza prywatnego (jeśli zaszyfrowany)" %>
-    <%= f.password_field :key_passphrase, value: "", class: "form-control", autocomplete: "new-password" %>
-    <p class="help-block">
-      <% if @ksef_setting.key_passphrase.present? %>
-        Hasło jest zapisane. Pozostaw puste, aby nie zmieniać.
-      <% else %>
-        Pozostaw puste, jeśli klucz nie jest zaszyfrowany.
-      <% end %>
-    </p>
-  </div>
-
-  <div>
-    <strong>Ostatnia synchronizacja:</strong>
-    <%= @ksef_setting.last_sync_at&.strftime("%Y-%m-%d %H:%M") || "—" %>
-    (<%= @ksef_setting.last_sync_status || "—" %>)
-  </div>
-
-  <% if @ksef_setting.last_sync_error.present? %>
-    <pre class="alert alert-warning"><%= @ksef_setting.last_sync_error %></pre>
   <% end %>
 
-  <%= f.submit "Zapisz", class: "btn btn-primary" %>
-<% end %>
+  <div class="ksef-settings__section ksef-settings__section--sync">
+    <div class="ksef-settings__section-title">Synchronizacja</div>
 
-<hr>
+    <div class="ksef-settings__sync-card">
+      <div class="ksef-settings__sync-row">
+        <span class="ksef-settings__sync-label">Ostatnia synchronizacja</span>
+        <span class="ksef-settings__sync-value">
+          <%= @ksef_setting.last_sync_at&.strftime("%Y-%m-%d %H:%M") || "—" %>
+        </span>
+      </div>
+      <div class="ksef-settings__sync-row">
+        <span class="ksef-settings__sync-label">Status</span>
+        <span class="ksef-settings__sync-value">
+          <% status = @ksef_setting.last_sync_status %>
+          <% if status == "ok" %>
+            <span class="label label-success">OK</span>
+          <% elsif status.present? %>
+            <span class="label label-danger"><%= status %></span>
+          <% else %>
+            <span class="text-muted">—</span>
+          <% end %>
+        </span>
+      </div>
+    </div>
 
-<%= button_to "Uruchom synchronizację teraz",
-              sync_ksef_setting_path,
-              method: :post,
-              class: "btn btn-default",
-              disabled: !@ksef_setting.configured?,
-              data: { confirm: "Uruchomić synchronizację KSeF teraz?" } %>
-<p class="help-block">
-  Synchronizacja działa automatycznie co 30 minut. Ten przycisk pozwala uruchomić ją ręcznie.
-</p>
+    <% if @ksef_setting.last_sync_error.present? %>
+      <pre class="ksef-settings__sync-error"><%= @ksef_setting.last_sync_error %></pre>
+    <% end %>
+
+    <div class="ksef-settings__sync-action">
+      <%= button_to "Uruchom synchronizację teraz",
+                    sync_ksef_setting_path,
+                    method: :post,
+                    class: "btn btn-default",
+                    disabled: !@ksef_setting.configured?,
+                    data: { confirm: "Uruchomić synchronizację KSeF teraz?" },
+                    form: { style: "display:inline" } %>
+      <span class="ksef-settings__sync-hint">
+        Synchronizacja uruchamia się automatycznie co 30 minut.
+        <% unless @ksef_setting.configured? %>
+          <strong class="text-danger">Uzupełnij NIP, certyfikat i klucz, aby aktywować.</strong>
+        <% end %>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.ksef-settings__pem-replace-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var area = document.getElementById(link.dataset.target);
+      var saved = link.closest('.ksef-settings__pem-saved');
+      if (area) { area.classList.remove('ksef-settings__pem-area--hidden'); area.focus(); }
+      if (saved) { saved.style.display = 'none'; }
+    });
+  });
+</script>
