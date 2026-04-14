@@ -41,6 +41,24 @@ class Category < ApplicationRecord
     Category.where(year: year).where.not(grant_id: nil)
   end
 
+  def Category.copy_year(from:, to:)
+    raise ArgumentError, "from and to must differ" if from == to
+    raise ArgumentError, "target year #{to} already has categories" if Category.where(year: to).exists?
+
+    sources = Category.where(year: from).order(:position)
+    transaction do
+      sources.map do |source|
+        Category.create!(
+          name: source.name,
+          is_expense: source.is_expense,
+          is_one_percent: source.is_one_percent,
+          grant_id: source.grant_id,
+          year: to
+        )
+      end
+    end
+  end
+
   def cannot_have_multiple_one_percent_categories_in_one_year
     years = []
     Category.find_each do |category|

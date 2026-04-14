@@ -15,6 +15,23 @@
   </div>
 </div>
 
+<% if @year_is_empty %>
+  <div class="alert alert-info">
+    Plan kont dla roku <strong><%= @year %></strong> jest pusty.
+    <% if @previous_year_with_categories %>
+      <%= button_to "Skopiuj plan kont z roku #{@previous_year_with_categories}",
+                    copy_from_previous_year_categories_path(year: @year),
+                    method: :post,
+                    class: "btn btn-primary btn-sm",
+                    form: { style: "display:inline-block; margin:0 8px;" },
+                    data: { confirm: "Skopiować plan kont z roku #{@previous_year_with_categories} do roku #{@year}?" } %>
+      lub dodaj pierwszą kategorię ręcznie poniżej.
+    <% else %>
+      Dodaj pierwszą kategorię ręcznie poniżej.
+    <% end %>
+  </div>
+<% end %>
+
 <% expenses = {:label => I18n.t(:expenses), :data => Category.find_by_year_and_type(@year, true)} %>
 <% incomes = {:label => I18n.t(:incomes), :data => Category.find_by_year_and_type(@year, false)} %>
 

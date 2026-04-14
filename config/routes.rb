@@ -37,9 +37,11 @@ Rails.application.routes.draw do
   get 'ksiazka_bankowa' =>  'journals#default', :defaults => { :journal_type_id => JournalType::BANK_TYPE_ID }, :as => :default_bank_journal
   resources :journal_types
 
-  resources :categories
   resources :categories do
-    post :sort, on: :collection
+    collection do
+      post :sort
+      post :copy_from_previous_year
+    end
   end
 
   post 'grants/:id/create_income_category_for_year' => 'grants#create_income_category_for_year', :as => :create_income_category_for_year

@@ -4,26 +4,45 @@ class CategoriesController < ApplicationController
   def index
     authorize! :manage, Category
 
-    @years = Category.get_all_years()
-
     @grants = Grant.all
+    existing_years = Category.get_all_years
 
-    unless params[:year].blank?
-      @year = params[:year].to_i
-    else
-      @year = session[:current_year]
-    end
-
-    unless @year and @years.include?(@year)
-      @year = @years.last
-    end
-
+    requested = params[:year].presence&.to_i || session[:current_year] || existing_years.last || Date.current.year
+    @year = requested.to_i
     session[:current_year] = @year
+
+    @years = (existing_years + [@year, Date.current.year]).uniq.sort
+    @year_is_empty = !existing_years.include?(@year)
+    @previous_year_with_categories = existing_years.select { |y| y < @year }.max
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @categories }
     end
+  end
+
+  # POST /categories/copy_from_previous_year
+  def copy_from_previous_year
+    authorize! :manage, Category
+
+    target_year = params[:year].to_i
+    if target_year <= 0
+      redirect_to categories_path, alert: "Nieprawidłowy rok docelowy." and return
+    end
+
+    if Category.where(year: target_year).exists?
+      redirect_to categories_path(year: target_year), alert: "Plan kont dla roku #{target_year} już istnieje." and return
+    end
+
+    source_year = Category.where("year < ?", target_year).maximum(:year)
+    if source_year.nil?
+      redirect_to categories_path, alert: "Brak wcześniejszego roku do skopiowania." and return
+    end
+
+    copied = Category.copy_year(from: source_year, to: target_year)
+    session[:current_year] = target_year
+    redirect_to categories_path(year: target_year),
+                notice: "Skopiowano plan kont z roku #{source_year} (#{copied.size} kategorii)."
   end
 
   # GET /categories/1

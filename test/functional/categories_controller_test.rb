@@ -71,4 +71,38 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to categories_path
   end
+
+  test "index shows empty-year banner and copy button for a year without categories" do
+    empty_year = 2099
+    assert_equal 0, Category.where(year: empty_year).count
+
+    get categories_path, params: { year: empty_year }
+    assert_response :success
+    assert_select "div.alert", text: /Plan kont dla roku/
+    assert_select "form[action=?]", copy_from_previous_year_categories_path(year: empty_year)
+  end
+
+  test "copy_from_previous_year clones categories into the target year" do
+    target_year = 2099
+    assert_equal 0, Category.where(year: target_year).count
+    source_year = Category.where("year < ?", target_year).maximum(:year)
+    expected_count = Category.where(year: source_year).count
+    assert expected_count > 0
+
+    assert_difference('Category.where(year: target_year).count', expected_count) do
+      post copy_from_previous_year_categories_path, params: { year: target_year }
+    end
+    assert_redirected_to categories_path(year: target_year)
+  end
+
+  test "copy_from_previous_year refuses to overwrite a year that already has categories" do
+    target_year = 2012
+    assert Category.where(year: target_year).exists?
+
+    assert_no_difference('Category.where(year: target_year).count') do
+      post copy_from_previous_year_categories_path, params: { year: target_year }
+    end
+    assert_redirected_to categories_path(year: target_year)
+    assert_match(/już istnieje/, flash[:alert])
+  end
 end
