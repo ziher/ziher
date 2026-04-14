@@ -1,0 +1,14 @@
+Cześć!
+
+Superadmin przypisał Twojej jednostce nową fakturę KSeF do wyjaśnienia:
+
+Numer KSeF: <%= @invoice.ksef_number %>
+Numer faktury: <%= @invoice.invoice_number %>
+Sprzedawca: <%= @invoice.seller_name %>
+Brutto: <%= @invoice.gross_amount %> <%= @invoice.currency %>
+
+<% if @invoice.note.present? %>
+Notatka: <%= @invoice.note %>
+<% end %>
+
+Otwórz w ZiHeRze: <%= ksef_invoice_url(@invoice) %>
