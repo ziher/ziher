@@ -22,6 +22,14 @@ services:
       retries: 20
     restart: unless-stopped
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: ziher-dev-mailhog
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI — http://localhost:8025
+    restart: unless-stopped
+
   ziher:
     build:
       context: .
@@ -33,6 +41,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      mailhog:
+        condition: service_started
     environment:
       RAILS_ENV: development
       ZIHER_APP_NAME: dev environment
@@ -46,6 +56,8 @@ services:
       ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: epZ21hJzkcLkwoCuPow81NQbFB7WHABj
       ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: V99Fa3bj1s4KefrAqHMvvOe6ujA8dEQu
       ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: wKu71XQjyJPqN4rq7p6DkOjEJUuppQzi
+      SMTP_HOST: mailhog
+      SMTP_PORT: "1025"
     ports:
       - "3000:3000"
     volumes:
@@ -79,6 +91,8 @@ services:
       ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: epZ21hJzkcLkwoCuPow81NQbFB7WHABj
       ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: V99Fa3bj1s4KefrAqHMvvOe6ujA8dEQu
       ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: wKu71XQjyJPqN4rq7p6DkOjEJUuppQzi
+      SMTP_HOST: mailhog
+      SMTP_PORT: "1025"
     volumes:
       - .:/ziher
     entrypoint: ["/bin/bash", "-lc", "cd /ziher && bundle exec bin/jobs"]
