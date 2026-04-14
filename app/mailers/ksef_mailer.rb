@@ -10,7 +10,7 @@ class KsefMailer < ApplicationMailer
 
     mail(
       to: recipients,
-      subject: "[ZiHeR] Nowa faktura KSeF do wyjaśnienia: #{invoice.invoice_number.presence || invoice.ksef_number}"
+      subject: "[ZiHeR] Nowa faktura KSeF przypisana do jednostki: #{invoice.invoice_number.presence || invoice.ksef_number}"
     )
   end
 

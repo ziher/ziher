@@ -1,0 +1,10 @@
+<p>
+  Certyfikat KSeF wygasa za <strong><%= @days_left %> <%= @days_left == 1 ? "dzień" : "dni" %></strong>.
+</p>
+
+<p>Zaktualizuj certyfikat w konfiguracji KSeF przed jego wygaśnięciem, aby uniknąć przerwy w synchronizacji faktur.</p>
+
+<p>
+  <%= link_to "Zaktualizuj certyfikat →", edit_ksef_setting_url,
+              style: "display:inline-block; padding:10px 20px; background:#f0ad4e; color:#fff; text-decoration:none; border-radius:3px; font-size:14px;" %>
+</p>

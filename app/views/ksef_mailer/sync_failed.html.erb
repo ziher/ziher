@@ -1,0 +1,19 @@
+<p>Synchronizacja KSeF <strong>nie powiodła się</strong> po wyczerpaniu wszystkich prób automatycznych ponowień.</p>
+
+<table style="border-collapse:collapse; font-size:14px; margin:16px 0;">
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777; white-space:nowrap; vertical-align:top;">Błąd</td>
+    <td style="padding:4px 0; font-family:monospace;"><%= @error_class %></td>
+  </tr>
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777; vertical-align:top;">Komunikat</td>
+    <td style="padding:4px 0;"><%= @error_message %></td>
+  </tr>
+</table>
+
+<p>Sprawdź logi aplikacji, zweryfikuj konfigurację KSeF i w razie potrzeby uruchom synchronizację ręcznie.</p>
+
+<p>
+  <%= link_to "Przejdź do ustawień KSeF →", edit_ksef_setting_url,
+              style: "display:inline-block; padding:10px 20px; background:#d9534f; color:#fff; text-decoration:none; border-radius:3px; font-size:14px;" %>
+</p>

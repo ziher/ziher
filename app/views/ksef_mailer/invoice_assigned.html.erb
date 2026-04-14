@@ -1,12 +1,41 @@
-<p>Cześć!</p>
-<p>Superadmin przypisał Twojej jednostce nową fakturę KSeF do wyjaśnienia:</p>
-<ul>
-  <li>Numer KSeF: <%= @invoice.ksef_number %></li>
-  <li>Numer faktury: <%= @invoice.invoice_number %></li>
-  <li>Sprzedawca: <%= @invoice.seller_name %></li>
-  <li>Brutto: <%= @invoice.gross_amount %> <%= @invoice.currency %></li>
-</ul>
-<% if @invoice.note.present? %>
-  <p>Notatka: <%= @invoice.note %></p>
-<% end %>
-<p><%= link_to "Otwórz fakturę w ZiHeRze", ksef_invoice_url(@invoice) %></p>
+<p>Czuwaj!</p>
+
+<p>Faktura KSeF została <strong>przypisana</strong> do Twojej jednostki i oczekuje na import do książki.</p>
+
+<table style="border-collapse:collapse; font-size:14px; margin:16px 0;">
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777; white-space:nowrap;">Numer KSeF</td>
+    <td style="padding:4px 0; font-family:monospace;"><%= @invoice.ksef_number %></td>
+  </tr>
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777;">Numer faktury</td>
+    <td style="padding:4px 0;"><%= @invoice.invoice_number.presence || "—" %></td>
+  </tr>
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777;">Sprzedawca</td>
+    <td style="padding:4px 0;"><strong><%= @invoice.seller_name %></strong></td>
+  </tr>
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777;">Data wystawienia</td>
+    <td style="padding:4px 0;"><%= @invoice.issue_date %></td>
+  </tr>
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777;">Kwota brutto</td>
+    <td style="padding:4px 0;"><strong><%= @invoice.gross_amount %> <%= @invoice.currency %></strong></td>
+  </tr>
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777;">Jednostka</td>
+    <td style="padding:4px 0;"><%= @invoice.unit&.name %></td>
+  </tr>
+  <% if @invoice.note.present? %>
+  <tr>
+    <td style="padding:4px 16px 4px 0; color:#777; vertical-align:top;">Notatka</td>
+    <td style="padding:4px 0;"><%= @invoice.note %></td>
+  </tr>
+  <% end %>
+</table>
+
+<p>
+  <%= link_to "Przejdź do faktury i importuj →", ksef_invoice_url(@invoice),
+              style: "display:inline-block; padding:10px 20px; background:#337ab7; color:#fff; text-decoration:none; border-radius:3px; font-size:14px;" %>
+</p>

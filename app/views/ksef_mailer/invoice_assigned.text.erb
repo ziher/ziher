@@ -1,14 +1,16 @@
-Cześć!
+Czuwaj!
 
-Superadmin przypisał Twojej jednostce nową fakturę KSeF do wyjaśnienia:
+Faktura KSeF została przypisana do Twojej jednostki i oczekuje na import do książki:
 
-Numer KSeF: <%= @invoice.ksef_number %>
-Numer faktury: <%= @invoice.invoice_number %>
-Sprzedawca: <%= @invoice.seller_name %>
-Brutto: <%= @invoice.gross_amount %> <%= @invoice.currency %>
-
+Numer KSeF:    <%= @invoice.ksef_number %>
+Numer faktury: <%= @invoice.invoice_number.presence || "—" %>
+Sprzedawca:    <%= @invoice.seller_name %>
+Data:          <%= @invoice.issue_date %>
+Brutto:        <%= @invoice.gross_amount %> <%= @invoice.currency %>
+Jednostka:     <%= @invoice.unit&.name %>
 <% if @invoice.note.present? %>
-Notatka: <%= @invoice.note %>
+Notatka:       <%= @invoice.note %>
 <% end %>
 
-Otwórz w ZiHeRze: <%= ksef_invoice_url(@invoice) %>
+Zaloguj się i zaimportuj fakturę do odpowiedniej książki:
+<%= ksef_invoice_url(@invoice) %>
