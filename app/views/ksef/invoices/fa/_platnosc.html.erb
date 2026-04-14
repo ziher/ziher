@@ -6,17 +6,9 @@
   <dl class="ksef-dl ksef-dl--two-col">
     <dt>Informacja o płatności</dt>
     <dd>
-      <% case platnosc.zaplacono
-         when "1" %>
-        Zapłacono
-      <% when "2" %>
-        Brak zapłaty
-      <% else %>
-        <% case platnosc.znacznik_zaplaty_czesciowej
-           when "1" %>Zapłacono w części
-        <% when "2" %>Zapłacono całość w częściach
-        <% else %>—<% end %>
-      <% end %>
+      <%= Ksef::Pdf::Dictionaries.zaplacono(platnosc.zaplacono) ||
+          Ksef::Pdf::Dictionaries.znacznik_zaplaty_czesciowej(platnosc.znacznik_zaplaty_czesciowej) ||
+          "—" %>
     </dd>
 
     <% if platnosc.data_zaplaty.present? %>

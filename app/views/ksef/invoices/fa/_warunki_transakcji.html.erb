@@ -15,6 +15,13 @@
     <% if wt.podmiot_posredniczacy.present? %>
       <dt>Podmiot pośredniczący</dt><dd><%= wt.podmiot_posredniczacy %></dd>
     <% end %>
+    <% if wt.rodzaj_transportu.present? %>
+      <dt>Rodzaj transportu</dt>
+      <dd><%= Ksef::Pdf::Dictionaries.rodzaj_transportu(wt.rodzaj_transportu) %></dd>
+    <% end %>
+    <% if wt.numer_srodka_transportu.present? %>
+      <dt>Numer środka transportu</dt><dd><%= wt.numer_srodka_transportu %></dd>
+    <% end %>
   </dl>
 
   <% if wt.umowy.any? %>

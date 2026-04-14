@@ -4,7 +4,7 @@
     { title: "Nabywca",    podmiot: document.nabywca,    role: :nabywca }
   ]
   document.odbiorcy.each_with_index do |odb, idx|
-    label = Ksef::Pdf::Dictionaries.rola_podmiotu3(odb.rola_podmiotu3) || "Odbiorca"
+    label = Ksef::Pdf::Dictionaries.rola_podmiotu3_short(odb.rola_podmiotu3) || "Odbiorca"
     label = "#{label} #{idx + 1}" if document.odbiorcy.size > 1
     cols << { title: label, podmiot: odb, role: :odbiorca }
   end

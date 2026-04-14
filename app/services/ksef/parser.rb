@@ -136,7 +136,8 @@ module Ksef
       def gln;       text(@node, "f:GLN");      end
 
       def lines
-        [adres_l1, adres_l2, ([kod_kraju].compact.join)].reject(&:blank?)
+        country = Ksef::Pdf::Dictionaries.kraj(kod_kraju) if kod_kraju.present?
+        [adres_l1, adres_l2, country].reject(&:blank?)
       end
     end
 
@@ -574,6 +575,8 @@ module Ksef
       def kurs_umowny;     text(@node, "f:KursUmowny");     end
       def waluta_umowna;   text(@node, "f:WalutaUmowna");   end
       def podmiot_posredniczacy; text(@node, "f:PodmiotPosredniczacy"); end
+      def rodzaj_transportu; text(@node, "f:RodzajTransportu"); end
+      def numer_srodka_transportu; text(@node, "f:NumerSrodkaTransportu"); end
 
       def umowy
         all(@node, "f:Umowy").map do |n|
