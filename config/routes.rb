@@ -77,6 +77,7 @@ Rails.application.routes.draw do
     resources :invoices, only: [:index, :show] do
       member do
         patch :assign
+        patch :release
         patch :dismiss
         get   :import
         post  :import, action: :do_import

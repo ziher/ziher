@@ -1,7 +1,8 @@
+<% units_collection = local_assigns[:units] || Unit.order(:name) %>
 <%= form_with url: assign_ksef_invoice_path(invoice), method: :patch do %>
   <div class="form-group">
     <%= label_tag "ksef_invoice[unit_id]", "Jednostka" %>
-    <%= select_tag "ksef_invoice[unit_id]", options_from_collection_for_select(Unit.order(:name), :id, :name, invoice.unit_id), class: "form-control" %>
+    <%= select_tag "ksef_invoice[unit_id]", options_from_collection_for_select(units_collection, :id, :name, invoice.unit_id), class: "form-control" %>
   </div>
   <div class="form-group">
     <%= label_tag "ksef_invoice[note]", "Notatka" %>

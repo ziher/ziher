@@ -12,7 +12,7 @@ class KsefMailerTest < ActionMailer::TestCase
       seller_name: "Sprzedawca sp. z o.o.",
       gross_amount: 123.45,
       unit: @unit,
-      status: :to_clarify,
+      status: :assigned,
       note: "Do weryfikacji"
     )
   end

@@ -10,7 +10,13 @@
 <% end %>
 
 <% if current_user.is_superadmin %>
-  <p><%= link_to "Konfiguracja KSeF", edit_ksef_setting_path, class: "btn btn-default" %></p>
+  <p>
+    <%= link_to "Konfiguracja KSeF", edit_ksef_setting_path, class: "btn btn-default" %>
+    <%= button_to "Sync", sync_ksef_setting_path, method: :post, class: "btn btn-default", form: { style: "display:inline" } %>
+  </p>
+
+  <h2>Nowe</h2>
+  <%= render "list", invoices: @pending %>
 <% end %>
 
 <h2>Do przejęcia (nieprzypisane)</h2>

@@ -8,15 +8,19 @@ class Ksef::InvoicesControllerTest < ActionDispatch::IntegrationTest
 
     @assigned = KsefInvoice.create!(
       ksef_number: "I-1", issue_date: Date.today, synced_at: Time.current,
-      unit: @unit, status: :to_clarify, gross_amount: 100, seller_name: "S1"
+      unit: @unit, status: :assigned, gross_amount: 100, seller_name: "S1"
     )
     @pool = KsefInvoice.create!(
       ksef_number: "I-2", issue_date: Date.today, synced_at: Time.current,
-      gross_amount: 50, seller_name: "S2"
+      status: :unassigned, gross_amount: 50, seller_name: "S2"
     )
     @other = KsefInvoice.create!(
       ksef_number: "I-3", issue_date: Date.today, synced_at: Time.current,
-      unit: @other_unit, status: :to_clarify, gross_amount: 75, seller_name: "S3"
+      unit: @other_unit, status: :assigned, gross_amount: 75, seller_name: "S3"
+    )
+    @new_one = KsefInvoice.create!(
+      ksef_number: "I-4", issue_date: Date.today, synced_at: Time.current,
+      status: :pending, gross_amount: 200, seller_name: "S4"
     )
   end
 
@@ -27,15 +31,17 @@ class Ksef::InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert_match "I-1", @response.body
     assert_match "I-2", @response.body
     assert_no_match(/I-3/, @response.body)
+    assert_no_match(/I-4/, @response.body)
   end
 
-  test "superadmin sees everything" do
+  test "superadmin sees everything including pending" do
     sign_in users(:admin)
     get ksef_invoices_url
     assert_response :success
     assert_match "I-1", @response.body
     assert_match "I-2", @response.body
     assert_match "I-3", @response.body
+    assert_match "I-4", @response.body
   end
 
   test "superadmin can assign an invoice to a unit" do
@@ -46,8 +52,58 @@ class Ksef::InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to ksef_invoices_url
     @pool.reload
     assert_equal @unit, @pool.unit
-    assert @pool.to_clarify?
+    assert @pool.assigned?
     assert_equal "do wyjasnienia", @pool.note
+  end
+
+  test "superadmin can release a pending invoice to the pool" do
+    sign_in users(:admin)
+    patch release_ksef_invoice_url(@new_one)
+    assert_redirected_to ksef_invoices_url
+    @new_one.reload
+    assert @new_one.unassigned?
+  end
+
+  test "member can claim a pool invoice to one of their units" do
+    sign_in @member
+    patch assign_ksef_invoice_url(@pool), params: {
+      ksef_invoice: { unit_id: @unit.id, note: "biorę" }
+    }
+    assert_redirected_to ksef_invoices_url
+    @pool.reload
+    assert_equal @unit, @pool.unit
+    assert @pool.assigned?
+    assert_equal @member, @pool.assigned_by
+  end
+
+  test "member cannot claim a pool invoice to a unit they do not manage" do
+    sign_in @member
+    patch assign_ksef_invoice_url(@pool), params: {
+      ksef_invoice: { unit_id: @other_unit.id }
+    }
+    assert_redirected_to ksef_invoice_url(@pool)
+    @pool.reload
+    assert @pool.unassigned?
+    assert_nil @pool.unit_id
+  end
+
+  test "member can release an invoice assigned to their unit" do
+    sign_in @member
+    patch release_ksef_invoice_url(@assigned)
+    assert_redirected_to ksef_invoices_url
+    @assigned.reload
+    assert @assigned.unassigned?
+    assert_nil @assigned.unit_id
+    assert_nil @assigned.assigned_by_id
+  end
+
+  test "member cannot release an invoice for another unit" do
+    sign_in @member
+    patch release_ksef_invoice_url(@other)
+    assert_redirected_to root_url
+    @other.reload
+    assert @other.assigned?
+    assert_equal @other_unit, @other.unit
   end
 
   test "superadmin can fetch invoice as PDF" do

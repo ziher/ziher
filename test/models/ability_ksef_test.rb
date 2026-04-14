@@ -30,9 +30,9 @@ class AbilityKsefTest < ActiveSupport::TestCase
   test "member can read invoices unassigned or for their unit, not other units" do
     ability = Ability.new(@member)
 
-    own = KsefInvoice.create!(base_attrs(unit: @member_unit, status: :to_clarify))
-    pool = KsefInvoice.create!(base_attrs(unit_id: nil))
-    other = KsefInvoice.create!(base_attrs(unit: @other_unit, status: :to_clarify))
+    own = KsefInvoice.create!(base_attrs(unit: @member_unit, status: :assigned))
+    pool = KsefInvoice.create!(base_attrs(unit_id: nil, status: :unassigned))
+    other = KsefInvoice.create!(base_attrs(unit: @other_unit, status: :assigned))
 
     assert ability.can?(:read, own)
     assert ability.can?(:read, pool)
@@ -41,7 +41,7 @@ class AbilityKsefTest < ActiveSupport::TestCase
 
   test "member can import an invoice belonging to a unit they manage (assignable)" do
     ability = Ability.new(@member)
-    invoice = KsefInvoice.create!(base_attrs(unit: @member_unit, status: :to_clarify))
+    invoice = KsefInvoice.create!(base_attrs(unit: @member_unit, status: :assigned))
     assert ability.can?(:import, invoice)
   end
 
@@ -53,7 +53,37 @@ class AbilityKsefTest < ActiveSupport::TestCase
 
   test "member cannot import an invoice for a unit they do not manage" do
     ability = Ability.new(@member)
-    invoice = KsefInvoice.create!(base_attrs(unit: @other_unit, status: :to_clarify))
+    invoice = KsefInvoice.create!(base_attrs(unit: @other_unit, status: :assigned))
     assert_not ability.can?(:import, invoice)
+  end
+
+  test "member can claim a pool invoice" do
+    ability = Ability.new(@member)
+    invoice = KsefInvoice.create!(base_attrs(unit_id: nil, status: :unassigned))
+    assert ability.can?(:assign, invoice)
+  end
+
+  test "member cannot claim a pending invoice" do
+    ability = Ability.new(@member)
+    invoice = KsefInvoice.create!(base_attrs(unit_id: nil, status: :pending))
+    assert_not ability.can?(:assign, invoice)
+  end
+
+  test "member can release an invoice assigned to their manageable unit" do
+    ability = Ability.new(@member)
+    invoice = KsefInvoice.create!(base_attrs(unit: @member_unit, status: :assigned))
+    assert ability.can?(:release, invoice)
+  end
+
+  test "member cannot release an invoice for another unit" do
+    ability = Ability.new(@member)
+    invoice = KsefInvoice.create!(base_attrs(unit: @other_unit, status: :assigned))
+    assert_not ability.can?(:release, invoice)
+  end
+
+  test "member cannot release an imported invoice" do
+    ability = Ability.new(@member)
+    invoice = KsefInvoice.create!(base_attrs(unit: @member_unit, status: :imported))
+    assert_not ability.can?(:release, invoice)
   end
 end

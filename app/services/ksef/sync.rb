@@ -66,7 +66,7 @@ module Ksef
         ksef_number: file.ksef_number,
         invoice_xml: file.xml,
         synced_at: Time.current,
-        status: :unassigned
+        status: :pending
       ))
       true
     end

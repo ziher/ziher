@@ -23,39 +23,63 @@ class KsefInvoiceTest < ActiveSupport::TestCase
 
   test "status enum exposes symbolic accessors" do
     inv = KsefInvoice.create!(base_attrs)
+    assert inv.pending?
+    inv.unassigned!
     assert inv.unassigned?
-    inv.to_clarify!
-    assert inv.to_clarify?
+    inv.assigned!
+    assert inv.assigned?
   end
 
-  test "claimable scope returns unassigned non-final invoices" do
+  test "status_label returns Polish label" do
+    inv = KsefInvoice.new(base_attrs.merge(status: :pending))
+    assert_equal "nowa", inv.status_label
+    inv.status = :unassigned
+    assert_equal "nieprzypisana", inv.status_label
+    inv.status = :assigned
+    assert_equal "przypisana", inv.status_label
+  end
+
+  test "claimable scope returns pool invoices in unassigned status" do
     inv = KsefInvoice.create!(base_attrs.merge(unit_id: nil, status: :unassigned))
     assert_includes KsefInvoice.claimable, inv
-    inv.dismissed!
+    inv.pending!
     assert_not_includes KsefInvoice.claimable, inv
   end
 
-  test "for_user returns claimable + invoices on user units" do
+  test "releasable? true for pending and assigned" do
+    inv = KsefInvoice.new(base_attrs.merge(status: :pending))
+    assert inv.releasable?
+    inv.status = :assigned
+    assert inv.releasable?
+    inv.status = :unassigned
+    assert_not inv.releasable?
+    inv.status = :imported
+    assert_not inv.releasable?
+  end
+
+  test "for_user returns pool + invoices on user units" do
     user = users(:master_1zgm)
     own_unit = units(:troop_1zgm)
     other_unit = units(:troop_2zgm)
 
-    own = KsefInvoice.create!(base_attrs.merge(ksef_number: "X-1", unit_id: own_unit.id, status: :to_clarify))
-    pool = KsefInvoice.create!(base_attrs.merge(ksef_number: "X-2", unit_id: nil))
-    other = KsefInvoice.create!(base_attrs.merge(ksef_number: "X-3", unit_id: other_unit.id, status: :to_clarify))
+    own = KsefInvoice.create!(base_attrs.merge(ksef_number: "X-1", unit_id: own_unit.id, status: :assigned))
+    pool = KsefInvoice.create!(base_attrs.merge(ksef_number: "X-2", unit_id: nil, status: :unassigned))
+    other = KsefInvoice.create!(base_attrs.merge(ksef_number: "X-3", unit_id: other_unit.id, status: :assigned))
+    brand_new = KsefInvoice.create!(base_attrs.merge(ksef_number: "X-4", unit_id: nil, status: :pending))
 
     visible = KsefInvoice.for_user(user)
     assert_includes visible, own
     assert_includes visible, pool
     assert_not_includes visible, other
+    assert_not_includes visible, brand_new, "pending invoices should be hidden from regular users"
   end
 
   test "for_user returns only pool invoices when user has no units" do
     user = users(:treasurer_zg)
     assert_empty user.units, "fixture precondition: treasurer_zg should have no units"
 
-    pool = KsefInvoice.create!(base_attrs.merge(ksef_number: "P-1", unit_id: nil))
-    assigned = KsefInvoice.create!(base_attrs.merge(ksef_number: "P-2", unit_id: units(:troop_1zgm).id, status: :to_clarify))
+    pool = KsefInvoice.create!(base_attrs.merge(ksef_number: "P-1", unit_id: nil, status: :unassigned))
+    assigned = KsefInvoice.create!(base_attrs.merge(ksef_number: "P-2", unit_id: units(:troop_1zgm).id, status: :assigned))
 
     visible = KsefInvoice.for_user(user)
     assert_includes visible, pool

@@ -3,7 +3,7 @@
     <h1>Faktura KSeF <%= @invoice.ksef_number %></h1>
     <div class="ksef-show__meta">
       <span>Jednostka: <strong><%= @invoice.unit&.name || "—" %></strong></span>
-      <span>Status: <strong><%= @invoice.status %></strong></span>
+      <span>Status: <strong><%= @invoice.status_label %></strong></span>
       <%= link_to "Pobierz PDF", ksef_invoice_path(@invoice, format: :pdf), class: "btn btn-default" %>
     </div>
   </div>
@@ -16,9 +16,21 @@
     <p>Brak zapisanego XML-a faktury — nie mogę wyrenderować wizualizacji.</p>
   <% end %>
 
-  <% if current_user.is_superadmin && @invoice.assignable? %>
+  <% if can?(:assign, @invoice) || (current_user.is_superadmin && @invoice.assignable?) %>
     <h2>Przypisz do jednostki</h2>
-    <%= render "assign_form", invoice: @invoice %>
+    <% units =
+         if current_user.is_superadmin
+           Unit.order(:name)
+         else
+           current_user.units.select { |u| current_user.can_manage_unit_entries(u) }.sort_by(&:name)
+         end %>
+    <%= render "assign_form", invoice: @invoice, units: units %>
+  <% end %>
+
+  <% if can?(:release, @invoice) || (current_user.is_superadmin && @invoice.releasable?) %>
+    <p>
+      <%= button_to "Oznacz jako nieprzypisaną", release_ksef_invoice_path(@invoice), method: :patch, class: "btn btn-default" %>
+    </p>
   <% end %>
 
   <% if can?(:import, @invoice) %>

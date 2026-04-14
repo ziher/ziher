@@ -92,9 +92,18 @@ class Ability
         user.can_manage_user(uua.user)
       end
 
-# KSeF — unassigned pool visible to all members; assigned invoices visible only to users of that unit
+# KSeF — claim pool (unassigned, no unit) visible to all members; assigned/imported visible to unit users; pending reserved for superadmin
       can :read, KsefInvoice do |invoice|
-        invoice.unit_id.nil? || user.units.include?(invoice.unit)
+        (invoice.unit_id.nil? && invoice.unassigned?) || user.units.include?(invoice.unit)
+      end
+
+      can :assign, KsefInvoice do |invoice|
+        invoice.unit_id.nil? && invoice.unassigned? &&
+          user.units.any? { |u| user.can_manage_unit_entries(u) }
+      end
+
+      can :release, KsefInvoice do |invoice|
+        invoice.assigned? && invoice.unit.present? && user.can_manage_unit_entries(invoice.unit)
       end
 
       can :import, KsefInvoice do |invoice|

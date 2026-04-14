@@ -1,13 +1,14 @@
 class Ksef::InvoicesController < Ksef::BaseController
-  before_action :load_invoice, only: [:show, :assign, :dismiss, :import, :do_import]
+  before_action :load_invoice, only: [:show, :assign, :release, :dismiss, :import, :do_import]
 
   def index
     @show_setup_warning = !@ksef_setting.configured?
     scope = KsefInvoice.for_user(current_user)
                        .includes(:unit, :imported_entry)
                        .order(issue_date: :desc, id: :desc)
-    @claimable = scope.where(unit_id: nil)
-    @assigned  = scope.where.not(unit_id: nil)
+    @pending    = scope.where(status: :pending)
+    @claimable  = scope.where(status: :unassigned)
+    @assigned   = scope.where(status: [:assigned, :imported])
   end
 
   def show
@@ -33,12 +34,16 @@ class Ksef::InvoicesController < Ksef::BaseController
   end
 
   def assign
-    authorize! :manage, @invoice
+    authorize! :assign, @invoice
     permitted = params.require(:ksef_invoice).permit(:unit_id, :note)
+    unit = Unit.find(permitted[:unit_id])
+    unless current_user.is_superadmin || current_user.can_manage_unit_entries(unit)
+      redirect_to ksef_invoice_path(@invoice), alert: "Brak uprawnień do wybranej jednostki." and return
+    end
     @invoice.assign_attributes(
-      unit_id: permitted[:unit_id],
+      unit_id: unit.id,
       note:    permitted[:note],
-      status:  :to_clarify,
+      status:  :assigned,
       assigned_by: current_user,
       assigned_at: Time.current
     )
@@ -48,6 +53,20 @@ class Ksef::InvoicesController < Ksef::BaseController
     else
       redirect_to ksef_invoice_path(@invoice), alert: @invoice.errors.full_messages.join(", ")
     end
+  end
+
+  def release
+    authorize! :release, @invoice
+    unless @invoice.releasable?
+      redirect_to ksef_invoice_path(@invoice), alert: "Nie można zwolnić faktury w tym statusie." and return
+    end
+    @invoice.update!(
+      status: :unassigned,
+      unit_id: nil,
+      assigned_by: nil,
+      assigned_at: nil
+    )
+    redirect_to ksef_invoices_path, notice: "Faktura oznaczona jako nieprzypisana."
   end
 
   def dismiss

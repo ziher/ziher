@@ -9,7 +9,7 @@ class Ksef::ImporterTest < ActiveSupport::TestCase
       seller_name: "Sprzedawca",
       gross_amount: 250.00,
       synced_at: Time.current,
-      status: :to_clarify
+      status: :assigned
     }.merge(overrides)
   end
 
