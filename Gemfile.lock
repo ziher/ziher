@@ -248,6 +248,7 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.4.4)
+    rubyzip (3.2.2)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -329,6 +330,7 @@ DEPENDENCIES
   rails (~> 8.0.0)
   rails-controller-testing
   rails-i18n
+  rubyzip
   sassc-rails
   solid_queue
   sprockets (~> 3.7.2)
