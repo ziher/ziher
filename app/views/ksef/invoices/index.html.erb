@@ -6,7 +6,7 @@
   <% if current_user.is_superadmin %>
     <div class="ksef-index__toolbar">
       <%= link_to "Konfiguracja KSeF", edit_ksef_setting_path, class: "btn btn-default" %>
-      <%= button_to "Sync", sync_ksef_setting_path, method: :post, class: "btn btn-default", form: { style: "display:inline" } %>
+      <%= button_to "Pobierz z KSeF", sync_ksef_setting_path, method: :post, class: "btn btn-default", form: { style: "display:inline" } %>
     </div>
   <% end %>
 </div>
