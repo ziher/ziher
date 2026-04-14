@@ -4,7 +4,7 @@ class Ksef::InvoicesController < Ksef::BaseController
   def index
     @show_setup_warning = !@ksef_setting.configured?
     scope = KsefInvoice.for_user(current_user)
-                       .includes(:unit, :assigned_by, :imported_entry)
+                       .includes(:unit, :imported_entry)
                        .order(issue_date: :desc, id: :desc)
     @claimable = scope.where(unit_id: nil)
     @assigned  = scope.where.not(unit_id: nil)

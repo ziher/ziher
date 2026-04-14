@@ -13,23 +13,33 @@ module Ksef
 
     def call
       return unless @setting.configured?
+      return if @setting.last_sync_status == "running"
 
-      begin
-        mark_running
+      Rails.logger.tagged("KSeF") do
+        started_at = Time.current
+        Rails.logger.info("sync.start hwm_before=#{next_date_from}")
+        begin
+          mark_running
+          token = Ksef::Auth.access_token(@setting)
+          exporter = @exporter_class.new(@setting, access_token: token)
+          result = exporter.run(date_from: next_date_from)
 
-        token = Ksef::Auth.access_token(@setting)
-        exporter = @exporter_class.new(@setting, access_token: token)
-        date_from = next_date_from
-        result = exporter.run(date_from: date_from)
+          received = result.invoices.size
+          persisted = 0
+          ApplicationRecord.transaction do
+            result.invoices.each do |xml|
+              persisted += 1 if persist_invoice(xml)
+            end
+            advance_hwm(result)
+            mark_success
+          end
 
-        ApplicationRecord.transaction do
-          result.invoices.each { |xml| persist_invoice(xml) }
-          advance_hwm(result)
-          mark_success
+          Rails.logger.info("sync.success received=#{received} persisted=#{persisted} duration_ms=#{((Time.current - started_at) * 1000).to_i} hwm_after=#{@setting.last_hwm_date}")
+        rescue StandardError => e
+          Rails.logger.error("sync.error class=#{e.class} message=#{e.message}")
+          mark_error(e)
+          raise
         end
-      rescue StandardError => e
-        mark_error(e)
-        raise
       end
     end
 
@@ -42,7 +52,7 @@ module Ksef
     def persist_invoice(xml)
       attrs = Ksef::Parser.parse(xml)
       ksef_number = derive_ksef_number(attrs, xml)
-      return if KsefInvoice.exists?(ksef_number: ksef_number)
+      return false if KsefInvoice.exists?(ksef_number: ksef_number)
 
       KsefInvoice.create!(attrs.merge(
         ksef_number: ksef_number,
@@ -50,6 +60,7 @@ module Ksef
         synced_at: Time.current,
         status: :unassigned
       ))
+      true
     end
 
     def derive_ksef_number(attrs, xml)
