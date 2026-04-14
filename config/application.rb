@@ -25,5 +25,7 @@ module Ziher
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_record.yaml_column_permitted_classes = [Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone, BigDecimal]
+
+    config.active_job.queue_adapter = :solid_queue
   end
 end

@@ -1,0 +1,8 @@
+production:
+  ksef_sync:
+    class: Ksef::SyncJob
+    schedule: every 30 minutes
+development:
+  ksef_sync:
+    class: Ksef::SyncJob
+    schedule: every 30 minutes
