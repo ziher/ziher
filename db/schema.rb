@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_14_092413) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_14_092921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -160,6 +160,36 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_14_092413) do
     t.index ["unit_id", "year", "journal_type_id"], name: "index_journals_on_unit_year_type", unique: true
     t.index ["unit_id"], name: "index_journals_on_unit_id"
     t.index ["year"], name: "index_journals_on_year"
+  end
+
+  create_table "ksef_invoices", force: :cascade do |t|
+    t.string "ksef_number", null: false
+    t.string "invoice_number"
+    t.date "issue_date", null: false
+    t.string "seller_nip"
+    t.string "seller_name"
+    t.string "buyer_nip"
+    t.decimal "net_amount", precision: 12, scale: 2
+    t.decimal "gross_amount", precision: 12, scale: 2
+    t.string "currency", default: "PLN"
+    t.text "invoice_xml"
+    t.jsonb "metadata", default: {}, null: false
+    t.integer "status", default: 0, null: false
+    t.bigint "unit_id"
+    t.bigint "assigned_by_id"
+    t.datetime "assigned_at"
+    t.text "note"
+    t.bigint "imported_entry_id"
+    t.datetime "synced_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assigned_by_id"], name: "index_ksef_invoices_on_assigned_by_id"
+    t.index ["imported_entry_id"], name: "index_ksef_invoices_on_imported_entry_id"
+    t.index ["issue_date"], name: "index_ksef_invoices_on_issue_date"
+    t.index ["ksef_number"], name: "index_ksef_invoices_on_ksef_number", unique: true
+    t.index ["synced_at"], name: "index_ksef_invoices_on_synced_at"
+    t.index ["unit_id", "status"], name: "index_ksef_invoices_on_unit_id_and_status"
+    t.index ["unit_id"], name: "index_ksef_invoices_on_unit_id"
   end
 
   create_table "ksef_settings", force: :cascade do |t|
@@ -375,6 +405,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_14_092413) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "ksef_invoices", "entries", column: "imported_entry_id", on_delete: :nullify
+  add_foreign_key "ksef_invoices", "units", on_delete: :nullify
+  add_foreign_key "ksef_invoices", "users", column: "assigned_by_id", on_delete: :nullify
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
