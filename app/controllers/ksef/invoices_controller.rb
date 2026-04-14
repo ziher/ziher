@@ -8,7 +8,7 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   PER_PAGE = 50
 
-  STATUS_TABS = %w[pending unassigned assigned imported].freeze
+  STATUS_TABS = %w[pending unassigned assigned imported dismissed].freeze
 
   before_action :load_invoice, only: [:show, :assign, :release, :dismiss, :import, :do_import]
 

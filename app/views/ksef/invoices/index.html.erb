@@ -24,12 +24,14 @@
      "pending"    => "Nowe",
      "unassigned" => "Do przejęcia",
      "assigned"   => "Przypisane",
-     "imported"   => "Zaimportowane"
+     "imported"   => "Zaimportowane",
+     "dismissed"  => "Odrzucone"
    } %>
 
 <ul class="nav nav-tabs ksef-index__tabs">
   <% @status_tabs.each do |status| %>
-    <% next if status == "pending" && !current_user.is_superadmin %>
+    <% next if status == "pending"   && !current_user.is_superadmin %>
+    <% next if status == "dismissed" && !current_user.is_superadmin %>
     <li class="<%= 'active' if @active_status == status %>">
       <%= link_to ksef_invoices_path(status: status) do %>
         <%= tab_labels[status] %>
