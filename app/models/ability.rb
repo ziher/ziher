@@ -92,6 +92,17 @@ class Ability
         user.can_manage_user(uua.user)
       end
 
+# KSeF — unassigned pool visible to all members; assigned invoices visible only to users of that unit
+      can :read, KsefInvoice do |invoice|
+        invoice.unit_id.nil? || user.units.include?(invoice.unit)
+      end
+
+      can :import, KsefInvoice do |invoice|
+        invoice.unit.present? && user.can_manage_unit_entries(invoice.unit) && invoice.assignable?
+      end
+
+      cannot [:update, :destroy, :manage], KsefSetting
+
     end
     # Define abilities for the passed in user here. For example:
     #
