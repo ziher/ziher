@@ -1,5 +1,6 @@
 class Ksef::SettingsController < Ksef::BaseController
   before_action :require_superadmin
+  before_action :throttle_manual_sync, only: :sync
 
   def edit
   end
@@ -23,6 +24,15 @@ class Ksef::SettingsController < Ksef::BaseController
   end
 
   private
+
+  def throttle_manual_sync
+    cache_key = "ksef_manual_sync:#{current_user.id}"
+    last_triggered = Rails.cache.read(cache_key)
+    if last_triggered && last_triggered > 1.minute.ago
+      redirect_to edit_ksef_setting_path, alert: "Synchronizację można uruchomić raz na minutę." and return
+    end
+    Rails.cache.write(cache_key, Time.current, expires_in: 2.minutes)
+  end
 
   def require_superadmin
     return if current_user.is_superadmin

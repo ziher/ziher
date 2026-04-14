@@ -27,6 +27,15 @@ module Ksef
 
       raise InvalidImport, "suma kwot dla wszystkich pozycji wynosi 0" if totals.empty?
 
+      if @invoice.gross_amount.present?
+        submitted_total = totals.values.sum
+        diff = (@invoice.gross_amount - submitted_total).abs
+        if diff > BigDecimal("0.01")
+          raise InvalidImport,
+                "suma pozycji (#{submitted_total.to_f}) nie zgadza się z kwotą brutto faktury (#{@invoice.gross_amount.to_f})"
+        end
+      end
+
       ApplicationRecord.transaction do
         entry = Entry.new(
           journal: @journal,

@@ -2,7 +2,13 @@ production:
   ksef_sync:
     class: Ksef::SyncJob
     schedule: every 30 minutes
+  ksef_check_cert_expiry:
+    class: Ksef::CheckCertExpiryJob
+    schedule: every week
 development:
   ksef_sync:
     class: Ksef::SyncJob
     schedule: every 30 minutes
+  ksef_check_cert_expiry:
+    class: Ksef::CheckCertExpiryJob
+    schedule: every week

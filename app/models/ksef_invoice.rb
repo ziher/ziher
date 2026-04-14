@@ -51,4 +51,8 @@ class KsefInvoice < ApplicationRecord
   def releasable?
     pending? || assigned?
   end
+
+  def dismissable?
+    pending? || unassigned? || assigned?
+  end
 end

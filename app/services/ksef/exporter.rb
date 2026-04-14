@@ -32,10 +32,11 @@ module Ksef
       pkg = status_payload["package"] || {}
       parts = Array(pkg["parts"])
 
-      files = parts.flat_map do |part|
+      files = []
+      parts.each do |part|
         encrypted_zip = @client.get_binary(part.fetch("url"))
         zip_bytes = Ksef::Crypto.decrypt_aes_cbc(encrypted_zip, session.key, session.iv)
-        unzip(zip_bytes)
+        files.concat(unzip(zip_bytes))
       end
 
       Result.new(
@@ -87,9 +88,20 @@ module Ksef
       end
     end
 
+    MAX_ZIP_SIZE    = 100.megabytes
+    MAX_ZIP_ENTRIES = 1_000
+
     def unzip(bytes)
+      if bytes.bytesize > MAX_ZIP_SIZE
+        raise Ksef::Client::Error, "ZIP package too large (#{bytes.bytesize} bytes, limit #{MAX_ZIP_SIZE})"
+      end
+
       files = []
       Zip::File.open_buffer(StringIO.new(bytes)) do |zip|
+        if zip.entries.size > MAX_ZIP_ENTRIES
+          raise Ksef::Client::Error, "ZIP package has too many entries (#{zip.entries.size}, limit #{MAX_ZIP_ENTRIES})"
+        end
+
         zip.each do |entry|
           next if entry.directory?
           next unless entry.name.end_with?(".xml")

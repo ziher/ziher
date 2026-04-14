@@ -88,6 +88,9 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   def dismiss
     authorize! :manage, @invoice
+    unless @invoice.dismissable?
+      redirect_to ksef_invoice_path(@invoice), alert: "Nie można odrzucić faktury w statusie '#{@invoice.status_label}'." and return
+    end
     @invoice.update!(status: :dismissed)
     redirect_to ksef_invoices_path, notice: "Faktura odrzucona."
   end
@@ -106,14 +109,23 @@ class Ksef::InvoicesController < Ksef::BaseController
   def do_import
     authorize! :import, @invoice
     journal = Journal.find(params[:import][:journal_id])
-    lines = submitted_import_lines
-    entry = Ksef::Importer.call(
-      invoice: @invoice,
-      journal: journal,
-      user: current_user,
-      lines: lines,
-      description: params.dig(:import, :description)
-    )
+
+    unless journal.unit_id == @invoice.unit_id
+      redirect_to import_ksef_invoice_path(@invoice), alert: "Wybrana książka nie należy do jednostki faktury." and return
+    end
+
+    entry = @invoice.with_lock do
+      raise Ksef::Importer::InvalidImport, "faktura została już zaimportowana" if @invoice.imported?
+
+      Ksef::Importer.call(
+        invoice: @invoice,
+        journal: journal,
+        user: current_user,
+        lines: submitted_import_lines,
+        description: params.dig(:import, :description)
+      )
+    end
+
     redirect_to journal_path(journal), notice: "Wpis #{entry.id} utworzony z faktury KSeF."
   rescue Ksef::Importer::InvalidImport => e
     redirect_to import_ksef_invoice_path(@invoice), alert: e.message

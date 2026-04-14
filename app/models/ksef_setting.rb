@@ -1,7 +1,10 @@
 class KsefSetting < ApplicationRecord
+  audited except: [:cert_pem, :key_pem, :key_passphrase, :last_sync_error, :last_sync_at, :last_sync_status, :running_since_at]
+
   encrypts :cert_pem
   encrypts :key_pem
   encrypts :key_passphrase
+  encrypts :last_sync_error
 
   validates :nip, format: { with: /\A\d{10}\z/ }, allow_blank: true
   validates :api_url, presence: true

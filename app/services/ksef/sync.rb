@@ -15,9 +15,18 @@ module Ksef
       @exporter_class = exporter_class
     end
 
+    STALE_RUNNING_THRESHOLD = 30.minutes
+
     def call
       return unless @setting.configured?
-      return if @setting.last_sync_status == "running"
+
+      if @setting.last_sync_status == "running"
+        if @setting.running_since_at.present? && @setting.running_since_at < STALE_RUNNING_THRESHOLD.ago
+          Rails.logger.warn("KSeF sync appears stuck (running since #{@setting.running_since_at}), treating as stale and proceeding")
+        else
+          return
+        end
+      end
 
       Rails.logger.tagged("KSeF") do
         started_at = Time.current
@@ -85,15 +94,15 @@ module Ksef
     end
 
     def mark_running
-      @setting.update!(last_sync_status: "running")
+      @setting.update!(last_sync_status: "running", running_since_at: Time.current)
     end
 
     def mark_success
-      @setting.update!(last_sync_status: "success", last_sync_at: Time.current, last_sync_error: nil)
+      @setting.update!(last_sync_status: "success", last_sync_at: Time.current, last_sync_error: nil, running_since_at: nil)
     end
 
     def mark_error(error)
-      @setting.update!(last_sync_status: "error", last_sync_at: Time.current, last_sync_error: "#{error.class}: #{error.message}")
+      @setting.update!(last_sync_status: "error", last_sync_at: Time.current, last_sync_error: "#{error.class}: #{error.message}", running_since_at: nil)
     end
   end
 end

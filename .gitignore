@@ -22,3 +22,7 @@ postgres*dump
 *.swp
 ubuntu-bionic-18.04-cloudimg-console.log
 passenger.*
+
+# local-only workspace
+.claude/
+docs/superpowers/
