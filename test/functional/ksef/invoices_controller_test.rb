@@ -137,6 +137,30 @@ class Ksef::InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert @response.body.start_with?("%PDF"), "expected PDF signature"
   end
 
+  test "destroying the imported entry reverts the invoice back to assigned" do
+    journal = Journal.create!(
+      unit: @unit, year: Date.today.year,
+      journal_type_id: JournalType::FINANCE_TYPE_ID, is_open: true
+    )
+    category = Category.create!(
+      name: "KSeF wydatki", is_expense: true, year: Date.today.year
+    )
+    entry = Entry.new(
+      journal: journal, date: Date.today, name: "Seller", document_number: "FV/1",
+      is_expense: true
+    )
+    entry.items.build(category: category, amount: 50)
+    entry.save!
+
+    @assigned.update!(status: :imported, imported_entry: entry)
+
+    entry.destroy!
+
+    @assigned.reload
+    assert @assigned.assigned?, "expected status to revert to assigned, got #{@assigned.status}"
+    assert_nil @assigned.imported_entry_id
+  end
+
   test "member can import assigned invoice into a journal" do
     journal = Journal.create!(
       unit: @unit, year: Date.today.year,

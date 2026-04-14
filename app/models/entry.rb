@@ -31,6 +31,7 @@ class Entry < ApplicationRecord
 
   after_save :recalculate_initial_balance
   after_destroy :recalculate_initial_balance
+  before_destroy :release_ksef_invoice_if_any
 
   def get_amount_for_category(category)
     category_id = category.is_a?(Category) ? category.id : category
@@ -165,6 +166,13 @@ class Entry < ApplicationRecord
   # recalculates initial balance for next year's journal
   def recalculate_initial_balance
     self.journal.recalculate_next_initial_balances
+  end
+
+  def release_ksef_invoice_if_any
+    invoice = KsefInvoice.find_by(imported_entry_id: id)
+    return unless invoice&.imported?
+
+    invoice.update!(imported_entry_id: nil, status: :assigned)
   end
 
   def verify_entry
