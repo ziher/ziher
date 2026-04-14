@@ -40,7 +40,6 @@ services:
       ZIHER_DB_NAME: ziher_development
       ZIHER_DB_USERNAME: ziher
       ZIHER_DB_PASSWORD: ziher
-      DATABASE_URL: postgresql://ziher:ziher@postgres:5432/ziher_development
       SECRET_KEY_BASE: dev_secret_key_base_do_not_use_in_production
       RAILS_MAX_THREADS: 5
       # DEVELOPMENT-ONLY AR Encryption keys — do NOT use these in production
@@ -75,7 +74,6 @@ services:
       ZIHER_DB_NAME: ziher_development
       ZIHER_DB_USERNAME: ziher
       ZIHER_DB_PASSWORD: ziher
-      DATABASE_URL: postgresql://ziher:ziher@postgres:5432/ziher_development
       SECRET_KEY_BASE: dev_secret_key_base_do_not_use_in_production
       RAILS_MAX_THREADS: 5
       ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: epZ21hJzkcLkwoCuPow81NQbFB7WHABj

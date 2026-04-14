@@ -24,11 +24,9 @@ default: &default
 development:
   <<: *default
   database: ziher_development
-  host: "<%= ENV['ZIHER_DB_HOST'] %>"
-  username: "<%= ENV['ZIHER_DB_USERNAME'] %>"
-  password: "<%= ENV['ZIHER_DB_PASSWORD'] %>"
-  # need to provide 'url' to force tcp/ip connection https://stackoverflow.com/a/63620960
-  url: <%= ENV.fetch('DATABASE_URL', 'postgresql://postgres@localhost:5432') %>
+  host: "<%= ENV.fetch('ZIHER_DB_HOST', 'localhost') %>"
+  username: "<%= ENV.fetch('ZIHER_DB_USERNAME', 'postgres') %>"
+  password: "<%= ENV.fetch('ZIHER_DB_PASSWORD', 'postgres') %>"
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -67,12 +65,10 @@ development:
 test:
   <<: *default
   database: ziher_test
-  host: localhost
-  username: postgres
-  password: postgres
+  host: "<%= ENV.fetch('ZIHER_DB_HOST', 'localhost') %>"
+  username: "<%= ENV.fetch('ZIHER_DB_USERNAME', 'postgres') %>"
+  password: "<%= ENV.fetch('ZIHER_DB_PASSWORD', 'postgres') %>"
   min_messages: warning
-  # need to provide 'url' to force tcp/ip connection https://stackoverflow.com/a/63620960
-  url: <%= ENV.fetch('DATABASE_URL', 'postgresql://postgres@localhost:5432') %>
 
 production:
   <<: *default
