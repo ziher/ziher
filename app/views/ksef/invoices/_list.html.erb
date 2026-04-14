@@ -1,0 +1,30 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Numer KSeF</th>
+      <th>Data</th>
+      <th>Sprzedawca</th>
+      <th>Brutto</th>
+      <th>Jednostka</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% invoices.each do |invoice| %>
+      <tr>
+        <td><%= link_to invoice.ksef_number, ksef_invoice_path(invoice) %></td>
+        <td><%= invoice.issue_date %></td>
+        <td><%= invoice.seller_name %></td>
+        <td><%= number_to_currency invoice.gross_amount, unit: invoice.currency %></td>
+        <td><%= invoice.unit&.name || "—" %></td>
+        <td><%= invoice.status %></td>
+        <td>
+          <% if can?(:import, invoice) %>
+            <%= link_to "Importuj", import_ksef_invoice_path(invoice), class: "btn btn-sm btn-primary" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

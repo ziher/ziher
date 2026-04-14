@@ -1,0 +1,20 @@
+<h1>KSeF — Faktury</h1>
+
+<% if @show_setup_warning %>
+  <div class="alert alert-warning">
+    Konfiguracja KSeF jest niekompletna.
+    <% if current_user.is_superadmin %>
+      <%= link_to "Uzupełnij ustawienia", edit_ksef_setting_path %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if current_user.is_superadmin %>
+  <p><%= link_to "Konfiguracja KSeF", edit_ksef_setting_path, class: "btn btn-default" %></p>
+<% end %>
+
+<h2>Do przejęcia (nieprzypisane)</h2>
+<%= render "list", invoices: @claimable %>
+
+<h2>Przypisane</h2>
+<%= render "list", invoices: @assigned %>

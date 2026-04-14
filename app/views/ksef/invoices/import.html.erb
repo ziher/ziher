@@ -1,0 +1,16 @@
+<h1>Import faktury <%= @invoice.ksef_number %> do księgi</h1>
+
+<%= form_with url: import_ksef_invoice_path(@invoice), method: :post, scope: :import do |f| %>
+  <div class="form-group">
+    <%= f.label :journal_id, "Książka" %>
+    <%= f.select :journal_id, options_from_collection_for_select(@journals, :id, :to_s) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :category_id, "Kategoria" %>
+    <%= f.select :category_id, options_from_collection_for_select(@categories, :id, :name) %>
+  </div>
+
+  <p>Data: <%= @invoice.issue_date %> | Sprzedawca: <%= @invoice.seller_name %> | Brutto: <%= @invoice.gross_amount %></p>
+
+  <%= f.submit "Utwórz wpis", class: "btn btn-primary" %>
+<% end %>
