@@ -12,44 +12,25 @@
   align-items: center;
 }
 
-.ksef-index__section {
-  margin-top: 24px;
+.ksef-index__tabs {
+  margin-top: 16px;
 
-  h2 {
-    font-size: 18px;
-    margin-bottom: 8px;
-
-    .badge {
-      margin-left: 6px;
-      background-color: #999;
-    }
+  .badge {
+    margin-left: 6px;
+    background-color: #999;
   }
 
-  details > summary {
-    cursor: pointer;
-    list-style: none;
-
-    &::-webkit-details-marker { display: none; }
-
-    h2 {
-      display: inline-block;
-      margin: 0;
-
-      &::before {
-        content: "▸ ";
-        color: #777;
-        font-size: 14px;
-      }
-    }
-  }
-
-  details[open] > summary h2::before {
-    content: "▾ ";
+  li.active .badge {
+    background-color: #337ab7;
   }
 }
 
-.ksef-index__collapsible {
-  display: inline-block;
+.ksef-index__body {
+  margin-top: 16px;
+}
+
+.ksef-index__pagination {
+  margin-top: 12px;
 }
 
 .ksef-list {

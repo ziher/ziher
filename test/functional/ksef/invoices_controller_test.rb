@@ -24,23 +24,46 @@ class Ksef::InvoicesControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test "index shows visible invoices for member" do
+  test "member default tab is unassigned pool" do
     sign_in @member
     get ksef_invoices_url
     assert_response :success
-    assert_match "I-1", @response.body
     assert_match "I-2", @response.body
+    assert_no_match(/I-1/, @response.body)
     assert_no_match(/I-3/, @response.body)
     assert_no_match(/I-4/, @response.body)
   end
 
-  test "superadmin sees everything including pending" do
+  test "member can view their assigned tab" do
+    sign_in @member
+    get ksef_invoices_url(status: "assigned")
+    assert_response :success
+    assert_match "I-1", @response.body
+    assert_no_match(/I-2/, @response.body)
+    assert_no_match(/I-3/, @response.body)
+    assert_no_match(/I-4/, @response.body)
+  end
+
+  test "superadmin default tab is pending when there are pending invoices" do
     sign_in users(:admin)
     get ksef_invoices_url
     assert_response :success
-    assert_match "I-1", @response.body
+    assert_match "I-4", @response.body
+    assert_no_match(/I-1/, @response.body)
+  end
+
+  test "superadmin can view each status tab" do
+    admin = users(:admin)
+    sign_in admin
+
+    get ksef_invoices_url(status: "unassigned")
     assert_match "I-2", @response.body
+
+    get ksef_invoices_url(status: "assigned")
+    assert_match "I-1", @response.body
     assert_match "I-3", @response.body
+
+    get ksef_invoices_url(status: "pending")
     assert_match "I-4", @response.body
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_14_145053) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_14_151329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -187,6 +187,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_14_145053) do
     t.index ["imported_entry_id"], name: "index_ksef_invoices_on_imported_entry_id"
     t.index ["issue_date"], name: "index_ksef_invoices_on_issue_date"
     t.index ["ksef_number"], name: "index_ksef_invoices_on_ksef_number", unique: true
+    t.index ["status", "issue_date"], name: "index_ksef_invoices_on_status_and_issue_date"
     t.index ["synced_at"], name: "index_ksef_invoices_on_synced_at"
     t.index ["unit_id", "status"], name: "index_ksef_invoices_on_unit_id_and_status"
     t.index ["unit_id"], name: "index_ksef_invoices_on_unit_id"

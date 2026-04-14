@@ -1,15 +1,31 @@
 class Ksef::InvoicesController < Ksef::BaseController
+  include Pagy::Backend
+
+  LIST_COLUMNS = %i[
+    id ksef_number invoice_number issue_date seller_name gross_amount currency
+    status unit_id assigned_by_id assigned_at note imported_entry_id
+  ].freeze
+
+  PER_PAGE = 50
+
+  STATUS_TABS = %w[pending unassigned assigned imported].freeze
+
   before_action :load_invoice, only: [:show, :assign, :release, :dismiss, :import, :do_import]
 
   def index
     @show_setup_warning = !@ksef_setting.configured?
-    scope = KsefInvoice.for_user(current_user)
-                       .includes(:unit, :imported_entry, :assigned_by)
-                       .order(issue_date: :desc, id: :desc)
-    @pending          = scope.where(status: :pending)
-    @claimable        = scope.where(status: :unassigned)
-    @assigned_open    = scope.where(status: :assigned)
-    @imported_history = scope.where(status: :imported)
+    base = KsefInvoice.for_user(current_user)
+
+    @counts = base.group(:status).count
+    @active_status = resolve_active_status
+    @status_tabs = STATUS_TABS
+
+    scope = base.select(LIST_COLUMNS)
+                .includes(:unit, :imported_entry, :assigned_by)
+                .where(status: @active_status)
+                .order(issue_date: :desc, id: :desc)
+
+    @pagy, @invoices = pagy(scope, items: PER_PAGE)
   end
 
   def show
@@ -96,5 +112,20 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   def load_invoice
     @invoice = KsefInvoice.find(params[:id])
+  end
+
+  def resolve_active_status
+    requested = params[:status].to_s
+    return requested if STATUS_TABS.include?(requested)
+
+    default_status_for(current_user)
+  end
+
+  def default_status_for(user)
+    if user.is_superadmin
+      @counts["pending"].to_i.positive? ? "pending" : "unassigned"
+    else
+      "unassigned"
+    end
   end
 end

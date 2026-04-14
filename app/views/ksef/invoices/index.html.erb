@@ -17,28 +17,31 @@
   </div>
 <% end %>
 
-<% if current_user.is_superadmin %>
-  <section class="ksef-index__section">
-    <h2>Nowe <span class="badge"><%= @pending.size %></span></h2>
-    <%= render "list", invoices: @pending, empty_label: "Brak nowych faktur do przejrzenia." %>
-  </section>
-<% end %>
+<% tab_labels = {
+     "pending"    => "Nowe",
+     "unassigned" => "Do przejęcia",
+     "assigned"   => "Przypisane",
+     "imported"   => "Zaimportowane"
+   } %>
 
-<section class="ksef-index__section">
-  <h2>Do przejęcia (nieprzypisane) <span class="badge"><%= @claimable.size %></span></h2>
-  <%= render "list", invoices: @claimable, empty_label: "Brak faktur w puli." %>
-</section>
+<ul class="nav nav-tabs ksef-index__tabs">
+  <% @status_tabs.each do |status| %>
+    <% next if status == "pending" && !current_user.is_superadmin %>
+    <li class="<%= 'active' if @active_status == status %>">
+      <%= link_to ksef_invoices_path(status: status) do %>
+        <%= tab_labels[status] %>
+        <span class="badge"><%= @counts[status].to_i %></span>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
 
-<section class="ksef-index__section">
-  <h2>Przypisane <span class="badge"><%= @assigned_open.size %></span></h2>
-  <%= render "list", invoices: @assigned_open, empty_label: "Brak przypisanych faktur oczekujących na import." %>
-</section>
+<div class="ksef-index__body">
+  <%= render "list", invoices: @invoices, empty_label: "Brak faktur w tej zakładce." %>
 
-<% if @imported_history.any? %>
-  <section class="ksef-index__section">
-    <details>
-      <summary><h2 class="ksef-index__collapsible">Zaimportowane <span class="badge"><%= @imported_history.size %></span></h2></summary>
-      <%= render "list", invoices: @imported_history %>
-    </details>
-  </section>
-<% end %>
+  <% if @pagy.pages > 1 %>
+    <div class="ksef-index__pagination">
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% end %>
+</div>
