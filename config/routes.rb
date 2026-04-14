@@ -71,7 +71,9 @@ Rails.application.routes.draw do
   get 'audits/index'
 
   namespace :ksef do
-    resource :setting, only: [:edit, :update]
+    resource :setting, only: [:edit, :update] do
+      post :sync
+    end
     resources :invoices, only: [:index, :show] do
       member do
         patch :assign

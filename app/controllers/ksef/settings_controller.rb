@@ -12,6 +12,16 @@ class Ksef::SettingsController < Ksef::BaseController
     end
   end
 
+  def sync
+    unless @ksef_setting.configured?
+      redirect_to edit_ksef_setting_path, alert: "Najpierw uzupełnij NIP, certyfikat i klucz prywatny."
+      return
+    end
+
+    Ksef::SyncJob.perform_later
+    redirect_to edit_ksef_setting_path, notice: "Synchronizacja KSeF została uruchomiona."
+  end
+
   private
 
   def require_superadmin

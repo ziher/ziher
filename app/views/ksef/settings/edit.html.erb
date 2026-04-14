@@ -37,3 +37,15 @@
 
   <%= f.submit "Zapisz", class: "btn btn-primary" %>
 <% end %>
+
+<hr>
+
+<%= button_to "Uruchom synchronizację teraz",
+              sync_ksef_setting_path,
+              method: :post,
+              class: "btn btn-default",
+              disabled: !@ksef_setting.configured?,
+              data: { confirm: "Uruchomić synchronizację KSeF teraz?" } %>
+<p class="help-block">
+  Synchronizacja działa automatycznie co 30 minut. Ten przycisk pozwala uruchomić ją ręcznie.
+</p>
