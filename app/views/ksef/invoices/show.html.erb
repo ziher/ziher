@@ -24,6 +24,8 @@
   </tbody>
 </table>
 
+<p><%= link_to "Pobierz PDF", ksef_invoice_path(@invoice, format: :pdf), class: "btn btn-default" %></p>
+
 <% if current_user.is_superadmin && @invoice.assignable? %>
   <h2>Przypisz do jednostki</h2>
   <%= render "assign_form", invoice: @invoice %>

@@ -12,6 +12,15 @@ class Ksef::InvoicesController < Ksef::BaseController
 
   def show
     authorize! :read, @invoice
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "ksef-#{@invoice.ksef_number}",
+               template: "ksef/invoices/show",
+               formats: [:pdf],
+               layout: false
+      end
+    end
   end
 
   def assign

@@ -50,6 +50,14 @@ class Ksef::InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "do wyjasnienia", @pool.note
   end
 
+  test "superadmin can fetch invoice as PDF" do
+    sign_in users(:admin)
+    get ksef_invoice_url(@assigned, format: :pdf)
+    assert_response :success
+    assert_equal "application/pdf", @response.media_type
+    assert @response.body.start_with?("%PDF"), "expected PDF signature"
+  end
+
   test "member can import assigned invoice into a journal" do
     journal = Journal.create!(
       unit: @unit, year: Date.today.year,
