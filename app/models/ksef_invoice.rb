@@ -17,9 +17,12 @@ class KsefInvoice < ApplicationRecord
     return all if user.is_superadmin
 
     unit_ids = user.units.pluck(:id)
+    open_statuses = [statuses[:unassigned], statuses[:to_clarify]]
+    return where(unit_id: nil, status: open_statuses) if unit_ids.empty?
+
     where(
       "(unit_id IS NULL AND status IN (:open)) OR (unit_id IN (:units) AND status IN (:assigned))",
-      open: [statuses[:unassigned], statuses[:to_clarify]],
+      open: open_statuses,
       units: unit_ids,
       assigned: [statuses[:to_clarify], statuses[:imported]]
     )

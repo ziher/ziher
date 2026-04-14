@@ -50,6 +50,18 @@ class KsefInvoiceTest < ActiveSupport::TestCase
     assert_not_includes visible, other
   end
 
+  test "for_user returns only pool invoices when user has no units" do
+    user = users(:treasurer_zg)
+    assert_empty user.units, "fixture precondition: treasurer_zg should have no units"
+
+    pool = KsefInvoice.create!(base_attrs.merge(ksef_number: "P-1", unit_id: nil))
+    assigned = KsefInvoice.create!(base_attrs.merge(ksef_number: "P-2", unit_id: units(:troop_1zgm).id, status: :to_clarify))
+
+    visible = KsefInvoice.for_user(user)
+    assert_includes visible, pool
+    assert_not_includes visible, assigned
+  end
+
   test "for_user returns all invoices for superadmin" do
     admin = users(:admin)
     assert admin.is_superadmin
