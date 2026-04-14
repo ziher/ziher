@@ -1,7 +1,9 @@
 <%# Actions available on a single KsefInvoice row (member + superadmin). %>
-<% show_assign  = can?(:assign, invoice) || (current_user.is_superadmin && invoice.unit_id.nil? && invoice.assignable?) %>
-<% show_release = can?(:release, invoice) || (current_user.is_superadmin && invoice.releasable?) %>
-<% show_import  = can?(:import, invoice) %>
+<%# Status gates the button set; capability check (can?) filters per-user. %>
+<% is_pool = invoice.unit_id.nil? && (invoice.pending? || invoice.unassigned?) %>
+<% show_assign  = is_pool && (current_user.is_superadmin || can?(:assign, invoice)) %>
+<% show_release = invoice.releasable? && (current_user.is_superadmin || can?(:release, invoice)) %>
+<% show_import  = invoice.assigned? && can?(:import, invoice) %>
 
 <% if show_assign %>
   <% units = ksef_manageable_units_for(current_user) %>
