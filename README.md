@@ -52,6 +52,29 @@ docker compose -f docker-compose.dev.yml down -v
 docker compose -f docker-compose.dev.yml up --build
 ```
 
+### KSeF integration
+
+Ziher pulls cost invoices from the Polish national e-invoice system
+(KSeF 2.0) on a 30-minute schedule via Solid Queue.
+
+1. Log in as superadmin and open **Konfiguracja KSeF** in the menu.
+2. Paste your organization's NIP, KSeF certificate (PEM) and private
+   key (PEM). Certificate and private key are stored encrypted at rest.
+3. Wait for the next scheduled sync, or trigger one manually:
+   ```bash
+   docker compose -f docker-compose.dev.yml exec ziher \
+     bin/rails runner 'Ksef::SyncJob.perform_later'
+   ```
+4. New invoices appear under **Faktury KSeF**:
+   - Superadmin sees every invoice and can assign each to a scout unit
+     (or leave it in the unassigned pool, which any user can claim).
+   - Unit users see invoices assigned to their units plus the unassigned
+     pool, and can import any of them into a finance or bank book as a
+     regular entry.
+
+Background jobs (KSeF sync + any other ActiveJob work) run in the
+`ziher-jobs` container alongside the web service.
+
 ### Vagrant (legacy)
 
 To get ZiHeR up and running on your local machine:
