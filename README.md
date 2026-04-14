@@ -9,6 +9,51 @@ Open source book of account platform used by the scouts teams from [Związek Har
 
 ## Getting started
 
+### Docker (recommended)
+
+The fastest way to run ZiHeR locally — one command, no Ruby/Postgres on the host.
+
+Requirements: [Docker](https://docs.docker.com/get-docker/) with Compose plugin.
+
+```bash
+git clone https://github.com/ziher/ziher.git
+cd ziher
+docker compose -f docker-compose.dev.yml up
+```
+
+The first run builds the image, starts PostgreSQL, creates the database, runs
+migrations and seeds, then boots Rails. Open http://localhost:3000 and log in
+with `admin@dev.zhr.pl` / `admin@dev.zhr.pl` (superadmin seeded by `db/seeds.rb`).
+A regular user `user@dev.zhr.pl` / `user@dev.zhr.pl` is also available.
+
+The repository is bind-mounted into the container, so edits on the host are
+picked up by Rails reload immediately.
+
+#### Common commands
+
+```bash
+# run in the background
+docker compose -f docker-compose.dev.yml up -d
+
+# tail logs
+docker compose -f docker-compose.dev.yml logs -f ziher
+
+# rails console / rake tasks inside the container
+docker compose -f docker-compose.dev.yml exec ziher bundle exec rails console
+docker compose -f docker-compose.dev.yml exec ziher bundle exec rails db:migrate
+
+# stop
+docker compose -f docker-compose.dev.yml down
+
+# full reset (also wipes the Postgres volume)
+docker compose -f docker-compose.dev.yml down -v
+
+# rebuild after Gemfile / Dockerfile changes
+docker compose -f docker-compose.dev.yml up --build
+```
+
+### Vagrant (legacy)
+
 To get ZiHeR up and running on your local machine:
 
 1. Clone the git repo

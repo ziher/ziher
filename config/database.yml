@@ -28,7 +28,7 @@ development:
   username: "<%= ENV['ZIHER_DB_USERNAME'] %>"
   password: "<%= ENV['ZIHER_DB_PASSWORD'] %>"
   # need to provide 'url' to force tcp/ip connection https://stackoverflow.com/a/63620960
-  url: postgresql://postgres@localhost:5432
+  url: <%= ENV.fetch('DATABASE_URL', 'postgresql://postgres@localhost:5432') %>
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -72,7 +72,7 @@ test:
   password: postgres
   min_messages: warning
   # need to provide 'url' to force tcp/ip connection https://stackoverflow.com/a/63620960
-  url: postgresql://postgres@localhost:5432
+  url: <%= ENV.fetch('DATABASE_URL', 'postgresql://postgres@localhost:5432') %>
 
 production:
   <<: *default

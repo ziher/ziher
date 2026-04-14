@@ -1,0 +1,52 @@
+name: ziher-dev
+
+volumes:
+  postgres-data:
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: ziher-dev-postgres
+    environment:
+      POSTGRES_USER: ziher
+      POSTGRES_PASSWORD: ziher
+      POSTGRES_DB: ziher_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ziher -d ziher_development"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  ziher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ziher-dev
+      args:
+        SECRET_KEY_BASE: dev_secret_key_base_do_not_use_in_production
+    container_name: ziher-dev-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      ZIHER_APP_NAME: dev environment
+      ZIHER_DB_HOST: postgres
+      ZIHER_DB_NAME: ziher_development
+      ZIHER_DB_USERNAME: ziher
+      ZIHER_DB_PASSWORD: ziher
+      DATABASE_URL: postgresql://ziher:ziher@postgres:5432/ziher_development
+      SECRET_KEY_BASE: dev_secret_key_base_do_not_use_in_production
+      RAILS_MAX_THREADS: 5
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/ziher
+    entrypoint: ["/bin/bash", "/ziher/docker/entrypoint-dev-auto.sh"]
+    tty: true
+    stdin_open: true
