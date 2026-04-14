@@ -1,7 +1,8 @@
-<% show_assign  = can?(:assign, @invoice) || (current_user.is_superadmin && @invoice.assignable?) %>
-<% show_release = can?(:release, @invoice) || (current_user.is_superadmin && @invoice.releasable?) %>
-<% show_import  = can?(:import, @invoice) && @invoice.unit.present? %>
-<% has_actions  = show_assign || show_release || show_import %>
+<% show_assign   = can?(:assign, @invoice) || (current_user.is_superadmin && @invoice.assignable?) %>
+<% show_release  = can?(:release, @invoice) || (current_user.is_superadmin && @invoice.releasable?) %>
+<% show_import   = can?(:import, @invoice) && @invoice.unit.present? %>
+<% show_dismiss  = current_user.is_superadmin && @invoice.dismissable? %>
+<% has_actions   = show_assign || show_release || show_import || show_dismiss %>
 
 <div class="ksef-show">
   <div class="ksef-show__header">
@@ -73,6 +74,17 @@
                         method: :patch,
                         class: "btn btn-default",
                         form: { style: "display:inline" } %>
+        </div>
+      <% end %>
+
+      <% if show_dismiss %>
+        <div class="ksef-show__action-row">
+          <%= button_to "Odrzuć fakturę",
+                        dismiss_ksef_invoice_path(@invoice),
+                        method: :patch,
+                        class: "btn btn-danger",
+                        form: { style: "display:inline" },
+                        data: { confirm: "Czy na pewno chcesz odrzucić tę fakturę? Operacji nie można cofnąć." } %>
         </div>
       <% end %>
     </div>
