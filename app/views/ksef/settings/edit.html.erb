@@ -1,0 +1,39 @@
+<h1>Konfiguracja KSeF</h1>
+
+<%= form_with model: @ksef_setting, url: ksef_setting_path, method: :patch do |f| %>
+  <% if @ksef_setting.errors.any? %>
+    <div class="alert alert-danger"><%= @ksef_setting.errors.full_messages.join(", ") %></div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :nip, "NIP organizacji" %>
+    <%= f.text_field :nip, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :api_url, "API URL" %>
+    <%= f.text_field :api_url, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :cert_pem, "Certyfikat (PEM)" %>
+    <%= f.text_area :cert_pem, rows: 8, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :key_pem, "Klucz prywatny (PEM)" %>
+    <%= f.text_area :key_pem, rows: 8, class: "form-control" %>
+  </div>
+
+  <div>
+    <strong>Ostatnia synchronizacja:</strong>
+    <%= @ksef_setting.last_sync_at&.strftime("%Y-%m-%d %H:%M") || "—" %>
+    (<%= @ksef_setting.last_sync_status || "—" %>)
+  </div>
+
+  <% if @ksef_setting.last_sync_error.present? %>
+    <pre class="alert alert-warning"><%= @ksef_setting.last_sync_error %></pre>
+  <% end %>
+
+  <%= f.submit "Zapisz", class: "btn btn-primary" %>
+<% end %>
