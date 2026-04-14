@@ -29,6 +29,18 @@
   margin-top: 16px;
 }
 
+.ksef-index__per-page {
+  text-align: right;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #555;
+
+  select {
+    margin-left: 4px;
+    padding: 1px 4px;
+  }
+}
+
 .ksef-index__pagination {
   margin-top: 12px;
 }

@@ -42,11 +42,16 @@
 </ul>
 
 <div class="ksef-index__body">
+  <div class="ksef-index__per-page">
+    <span>Na stronie:</span>
+    <select onchange="window.location.href = '<%= ksef_invoices_path(status: @active_status) %>' + '&items=' + this.value + '&page=1'">
+      <% Ksef::InvoicesController::PER_PAGE_OPTIONS.each do |n| %>
+        <option value="<%= n %>" <%= 'selected' if n == @per_page %>><%= n %></option>
+      <% end %>
+    </select>
+  </div>
+
   <%= render "list", invoices: @invoices, empty_label: "Brak faktur w tej zakładce." %>
 
-  <% if @pagy.pages > 1 %>
-    <div class="ksef-index__pagination">
-      <%== pagy_nav(@pagy) %>
-    </div>
-  <% end %>
+  <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
 </div>

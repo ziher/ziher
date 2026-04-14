@@ -53,7 +53,7 @@ class JournalsController < ApplicationController
       @page = 0
     else
       @items = params[:items].to_i
-      @pagy, @entries = pagy(all_entries, page: params[:page], items: @items)
+      @pagy, @entries = pagy(all_entries, page: params[:page], limit: @items)
       @page = @pagy.page
     end
 

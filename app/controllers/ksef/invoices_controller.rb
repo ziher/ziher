@@ -1,12 +1,8 @@
 class Ksef::InvoicesController < Ksef::BaseController
   include Pagy::Backend
 
-  LIST_COLUMNS = %i[
-    id ksef_number invoice_number issue_date seller_name gross_amount currency
-    status unit_id assigned_by_id assigned_at note imported_entry_id
-  ].freeze
-
-  PER_PAGE = 50
+  DEFAULT_PER_PAGE = 20
+  PER_PAGE_OPTIONS = [10, 20, 50].freeze
 
   STATUS_TABS = %w[pending unassigned assigned imported dismissed].freeze
 
@@ -19,13 +15,13 @@ class Ksef::InvoicesController < Ksef::BaseController
     @counts = base.group(:status).count
     @active_status = resolve_active_status
     @status_tabs = STATUS_TABS
+    @per_page = params[:items].present? ? params[:items].to_i : DEFAULT_PER_PAGE
 
-    scope = base.select(LIST_COLUMNS)
-                .includes(:unit, :imported_entry, :assigned_by)
+    scope = base.includes(:unit, :imported_entry, :assigned_by)
                 .where(status: @active_status)
                 .order(issue_date: :desc, id: :desc)
 
-    @pagy, @invoices = pagy(scope, items: PER_PAGE)
+    @pagy, @invoices = pagy(scope, limit: @per_page)
   end
 
   def show
