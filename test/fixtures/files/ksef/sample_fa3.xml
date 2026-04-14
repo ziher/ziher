@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Faktura xmlns="http://crd.gov.pl/wzor/2023/06/29/12648/">
+  <Podmiot1>
+    <DaneIdentyfikacyjne>
+      <NIP>9876543210</NIP>
+      <Nazwa>Sprzedawca SP. Z O.O.</Nazwa>
+    </DaneIdentyfikacyjne>
+  </Podmiot1>
+  <Podmiot2>
+    <DaneIdentyfikacyjne>
+      <NIP>1234567890</NIP>
+      <Nazwa>ZHR Hufiec Test</Nazwa>
+    </DaneIdentyfikacyjne>
+  </Podmiot2>
+  <Fa>
+    <P_1>2026-03-15</P_1>
+    <P_2>FV/2026/03/0123</P_2>
+    <KodWaluty>PLN</KodWaluty>
+    <P_13_1>100.00</P_13_1>
+    <P_15>123.00</P_15>
+    <FaWiersz>
+      <P_7>Usługa szkoleniowa</P_7>
+      <P_11>100.00</P_11>
+      <P_12>23</P_12>
+    </FaWiersz>
+  </Fa>
+</Faktura>
