@@ -69,4 +69,16 @@ Rails.application.routes.draw do
   get "home/index"
 
   get 'audits/index'
+
+  namespace :ksef do
+    resource :setting, only: [:edit, :update]
+    resources :invoices, only: [:index, :show] do
+      member do
+        patch :assign
+        patch :dismiss
+        get   :import
+        post  :import, action: :do_import
+      end
+    end
+  end
 end
