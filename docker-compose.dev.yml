@@ -54,3 +54,34 @@ services:
     entrypoint: ["/bin/bash", "/ziher/docker/entrypoint-dev-auto.sh"]
     tty: true
     stdin_open: true
+
+  ziher-jobs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ziher-dev
+      args:
+        SECRET_KEY_BASE: dev_secret_key_base_do_not_use_in_production
+    container_name: ziher-dev-jobs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ziher:
+        condition: service_started
+    environment:
+      RAILS_ENV: development
+      ZIHER_APP_NAME: dev environment
+      ZIHER_DB_HOST: postgres
+      ZIHER_DB_NAME: ziher_development
+      ZIHER_DB_USERNAME: ziher
+      ZIHER_DB_PASSWORD: ziher
+      DATABASE_URL: postgresql://ziher:ziher@postgres:5432/ziher_development
+      SECRET_KEY_BASE: dev_secret_key_base_do_not_use_in_production
+      RAILS_MAX_THREADS: 5
+      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: epZ21hJzkcLkwoCuPow81NQbFB7WHABj
+      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: V99Fa3bj1s4KefrAqHMvvOe6ujA8dEQu
+      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: wKu71XQjyJPqN4rq7p6DkOjEJUuppQzi
+    volumes:
+      - .:/ziher
+    entrypoint: ["/bin/bash", "-lc", "cd /ziher && bundle exec bin/jobs"]
+    restart: unless-stopped
