@@ -1,6 +1,6 @@
 class Ksef::SettingsController < Ksef::BaseController
   before_action :require_superadmin
-  before_action :throttle_manual_sync, only: :sync
+  before_action :throttle_manual_sync, only: [:sync, :sync_range]
 
   def edit
   end
@@ -23,7 +23,51 @@ class Ksef::SettingsController < Ksef::BaseController
     redirect_to edit_ksef_setting_path, notice: "Synchronizacja KSeF została uruchomiona."
   end
 
+  def sync_range
+    unless @ksef_setting.configured?
+      redirect_to edit_ksef_setting_path, alert: "Najpierw uzupełnij NIP, certyfikat i klucz prywatny."
+      return
+    end
+
+    date_from, date_to, error = parse_range_params
+    if error
+      redirect_to edit_ksef_setting_path, alert: error
+      return
+    end
+
+    Ksef::SyncRangeJob.perform_later(date_from: date_from.iso8601, date_to: date_to.iso8601)
+    redirect_to edit_ksef_setting_path,
+                notice: "Synchronizacja dla zakresu #{date_from} – #{date_to} została uruchomiona."
+  end
+
   private
+
+  def parse_range_params
+    raw_from = params[:sync_range][:date_from].to_s.strip
+    raw_to   = params[:sync_range][:date_to].to_s.strip
+
+    begin
+      date_from = Date.parse(raw_from)
+    rescue ArgumentError
+      return [nil, nil, "Nieprawidłowa data początkowa."]
+    end
+
+    begin
+      date_to = Date.parse(raw_to)
+    rescue ArgumentError
+      return [nil, nil, "Nieprawidłowa data końcowa."]
+    end
+
+    return [nil, nil, "Data początkowa musi być wcześniejsza lub równa dacie końcowej."] if date_from > date_to
+    return [nil, nil, "Data końcowa nie może być w przyszłości."] if date_to > Date.current
+
+    max_to = date_from + Ksef::Sync::MAX_RANGE
+    if date_to > max_to
+      return [nil, nil, "Zakres nie może przekraczać 3 miesięcy minus 1 dzień (maks. do #{max_to})."]
+    end
+
+    [date_from, date_to, nil]
+  end
 
   def throttle_manual_sync
     cache_key = "ksef_manual_sync:#{current_user.id}"

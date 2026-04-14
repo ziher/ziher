@@ -140,10 +140,96 @@
         <% end %>
       </span>
     </div>
+
+    <div class="ksef-settings__range-sync">
+      <div class="ksef-settings__range-sync-title">Synchronizacja jednorazowa dla zakresu dat</div>
+      <p class="ksef-settings__range-sync-hint">
+        Pobiera faktury dla wskazanego okresu bez zmiany punktu kontrolnego. Maksymalny zakres: 3 miesiące − 1 dzień.
+      </p>
+      <%= form_with url: sync_range_ksef_setting_path, method: :post,
+                    scope: :sync_range, local: true,
+                    html: { id: "ksef-range-form" } do |f| %>
+        <div class="ksef-settings__range-row">
+          <div class="ksef-settings__range-field">
+            <%= f.label :date_from, "Od" %>
+            <%= f.date_field :date_from,
+                             class: "form-control",
+                             id: "ksef-range-from",
+                             max: Date.current.iso8601,
+                             required: true %>
+          </div>
+          <div class="ksef-settings__range-sep">—</div>
+          <div class="ksef-settings__range-field">
+            <%= f.label :date_to, "Do" %>
+            <%= f.date_field :date_to,
+                             class: "form-control",
+                             id: "ksef-range-to",
+                             max: Date.current.iso8601,
+                             required: true %>
+          </div>
+          <div class="ksef-settings__range-submit">
+            <%= f.submit "Uruchom",
+                         class: "btn btn-default",
+                         id: "ksef-range-submit",
+                         disabled: !@ksef_setting.configured? %>
+          </div>
+        </div>
+        <div class="ksef-settings__range-status" id="ksef-range-status"></div>
+      <% end %>
+    </div>
   </div>
 </div>
 
 <script>
+  (function() {
+    var fromEl   = document.getElementById('ksef-range-from');
+    var toEl     = document.getElementById('ksef-range-to');
+    var statusEl = document.getElementById('ksef-range-status');
+    var submitEl = document.getElementById('ksef-range-submit');
+    if (!fromEl || !toEl) return;
+
+    var MAX_DAYS = 89; // 3 months - 1 day (safe upper bound)
+
+    function daysBetween(a, b) {
+      return Math.round((b - a) / 86400000);
+    }
+
+    function validate() {
+      var from = fromEl.value ? new Date(fromEl.value) : null;
+      var to   = toEl.value   ? new Date(toEl.value)   : null;
+      if (!from || !to) { statusEl.textContent = ''; return; }
+
+      var days = daysBetween(from, to);
+
+      if (from > to) {
+        statusEl.className = 'ksef-settings__range-status ksef-settings__range-status--error';
+        statusEl.textContent = 'Data początku musi być wcześniejsza niż data końca.';
+        if (submitEl) submitEl.disabled = true;
+        return;
+      }
+      if (days > MAX_DAYS) {
+        statusEl.className = 'ksef-settings__range-status ksef-settings__range-status--error';
+        statusEl.textContent = 'Zakres ' + (days + 1) + ' dni przekracza limit ' + (MAX_DAYS + 1) + ' dni (3 miesiące − 1 dzień).';
+        if (submitEl) submitEl.disabled = true;
+        return;
+      }
+
+      statusEl.className = 'ksef-settings__range-status ksef-settings__range-status--ok';
+      statusEl.textContent = 'Zakres: ' + (days + 1) + ' ' + (days === 0 ? 'dzień' : days < 4 ? 'dni' : 'dni') + '.';
+      if (submitEl) submitEl.disabled = false;
+    }
+
+    fromEl.addEventListener('change', validate);
+    toEl.addEventListener('change', validate);
+
+    // Set default: last 7 days
+    var today = new Date();
+    var week  = new Date(today); week.setDate(today.getDate() - 7);
+    toEl.value   = today.toISOString().slice(0, 10);
+    fromEl.value = week.toISOString().slice(0, 10);
+    validate();
+  })();
+
   document.querySelectorAll('.ksef-settings__pem-replace-link').forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();

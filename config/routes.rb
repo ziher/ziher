@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   namespace :ksef do
     resource :setting, only: [:edit, :update] do
       post :sync
+      post :sync_range
     end
     resources :invoices, only: [:index, :show] do
       member do
