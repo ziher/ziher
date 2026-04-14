@@ -6,8 +6,7 @@ require "time"
 module Ksef
   # XAdES-BASELINE-B (ENVELOPED) builder for KSeF API v2 /auth/xades-signature.
   #
-  # Ported from the working TypeScript reference at
-  # projects/ksef/apps/web/src/server/ksef/xades.ts. Canonical XML forms are
+  # Canonical XML forms are
   # assembled as strings (not via a DOM) so the byte layout matches the TS
   # implementation exactly — the KSeF verifier uses Inclusive C14N 1.0, and
   # matching byte-for-byte sidesteps canonicalization library differences.

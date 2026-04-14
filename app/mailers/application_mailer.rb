@@ -1,3 +1,3 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "noreply@ziher.example"
+  default from: "ziher@ziher.pl"
 end
