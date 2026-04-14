@@ -1,39 +1,44 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>Numer faktury</th>
-      <th>Data wystawienia</th>
-      <th>Sprzedawca</th>
-      <th>Kwota brutto</th>
-      <th>Jednostka</th>
-      <th>Status</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% invoices.each do |invoice| %>
+<% empty_label = local_assigns[:empty_label] || "Brak faktur." %>
+<% if invoices.empty? %>
+  <p class="ksef-list__empty"><%= empty_label %></p>
+<% else %>
+  <table class="table ksef-list">
+    <thead>
       <tr>
-        <td>
-          <%= link_to invoice.invoice_number.presence || "—", ksef_invoice_path(invoice) %>
-          <div class="ksef-list__ksef-number"><%= invoice.ksef_number %></div>
-        </td>
-        <td><%= invoice.issue_date %></td>
-        <td><%= invoice.seller_name %></td>
-        <td><%= number_to_currency invoice.gross_amount, unit: invoice.currency %></td>
-        <td><%= invoice.unit&.name || "—" %></td>
-        <td><%= invoice.status_label %></td>
-        <td>
-          <% if can?(:release, invoice) || (current_user.is_superadmin && invoice.releasable?) %>
-            <%= button_to "Oznacz jako nieprzypisaną", release_ksef_invoice_path(invoice), method: :patch, class: "btn btn-sm btn-default", form: { style: "display:inline" } %>
-          <% end %>
-          <% if can?(:assign, invoice) || (current_user.is_superadmin && invoice.assignable?) %>
-            <%= link_to "Przypisz", ksef_invoice_path(invoice), class: "btn btn-sm btn-default" %>
-          <% end %>
-          <% if can?(:import, invoice) %>
-            <%= link_to "Importuj", import_ksef_invoice_path(invoice), class: "btn btn-sm btn-primary" %>
-          <% end %>
-        </td>
+        <th>Numer faktury</th>
+        <th>Data wystawienia</th>
+        <th>Sprzedawca</th>
+        <th class="ksef-list__num">Kwota brutto</th>
+        <th>Jednostka</th>
+        <th>Status</th>
+        <th class="ksef-list__actions-col"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% invoices.each do |invoice| %>
+        <tr class="ksef-list__row ksef-list__row--<%= invoice.status %>">
+          <td>
+            <%= link_to invoice.invoice_number.presence || "—", ksef_invoice_path(invoice) %>
+            <div class="ksef-list__ksef-number"><%= invoice.ksef_number %></div>
+          </td>
+          <td><%= invoice.issue_date %></td>
+          <td><%= invoice.seller_name %></td>
+          <td class="ksef-list__num"><%= number_to_currency invoice.gross_amount, unit: invoice.currency %></td>
+          <td>
+            <%= invoice.unit&.name || "—" %>
+            <% if invoice.assigned_by && (invoice.assigned? || invoice.imported?) %>
+              <div class="ksef-list__meta">przez <%= invoice.assigned_by.name %></div>
+            <% end %>
+            <% if invoice.note.present? %>
+              <div class="ksef-list__meta" title="<%= invoice.note %>"><%= truncate(invoice.note, length: 40) %></div>
+            <% end %>
+          </td>
+          <td><%= ksef_status_badge(invoice) %></td>
+          <td class="ksef-list__actions">
+            <%= render "action_cell", invoice: invoice %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

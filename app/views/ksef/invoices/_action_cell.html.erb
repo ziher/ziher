@@ -1,0 +1,36 @@
+<%# Actions available on a single KsefInvoice row (member + superadmin). %>
+<% show_assign  = can?(:assign, invoice) || (current_user.is_superadmin && invoice.unit_id.nil? && invoice.assignable?) %>
+<% show_release = can?(:release, invoice) || (current_user.is_superadmin && invoice.releasable?) %>
+<% show_import  = can?(:import, invoice) %>
+
+<% if show_assign %>
+  <% units = ksef_manageable_units_for(current_user) %>
+  <% if units.size == 1 && !current_user.is_superadmin %>
+    <%= button_to "Przejmij do #{units.first.name}",
+                  assign_ksef_invoice_path(invoice),
+                  method: :patch,
+                  params: { ksef_invoice: { unit_id: units.first.id } },
+                  class: "btn btn-sm btn-primary",
+                  form: { class: "ksef-list__action-form" } %>
+  <% elsif units.any? %>
+    <%= form_with url: assign_ksef_invoice_path(invoice), method: :patch, class: "ksef-list__inline-assign", local: true do %>
+      <%= select_tag "ksef_invoice[unit_id]",
+                     options_from_collection_for_select(units, :id, :name),
+                     class: "form-control input-sm",
+                     prompt: "— jednostka —" %>
+      <%= submit_tag current_user.is_superadmin ? "Przypisz" : "Przejmij", class: "btn btn-sm btn-primary" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if show_release %>
+  <%= button_to "Oznacz jako nieprzypisaną",
+                release_ksef_invoice_path(invoice),
+                method: :patch,
+                class: "btn btn-sm btn-default",
+                form: { class: "ksef-list__action-form" } %>
+<% end %>
+
+<% if show_import %>
+  <%= link_to "Importuj", import_ksef_invoice_path(invoice), class: "btn btn-sm btn-success" %>
+<% end %>

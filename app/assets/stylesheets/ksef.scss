@@ -1,6 +1,117 @@
+.ksef-index__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ksef-index__toolbar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.ksef-index__section {
+  margin-top: 24px;
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+
+    .badge {
+      margin-left: 6px;
+      background-color: #999;
+    }
+  }
+
+  details > summary {
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker { display: none; }
+
+    h2 {
+      display: inline-block;
+      margin: 0;
+
+      &::before {
+        content: "▸ ";
+        color: #777;
+        font-size: 14px;
+      }
+    }
+  }
+
+  details[open] > summary h2::before {
+    content: "▾ ";
+  }
+}
+
+.ksef-index__collapsible {
+  display: inline-block;
+}
+
+.ksef-list {
+  font-size: 13px;
+
+  td, th { vertical-align: middle; }
+}
+
+.ksef-list__empty {
+  color: #777;
+  font-style: italic;
+  margin: 4px 0 16px;
+}
+
 .ksef-list__ksef-number {
   font-size: 11px;
   color: #777;
   margin-top: 2px;
   font-family: monospace;
+}
+
+.ksef-list__meta {
+  font-size: 11px;
+  color: #777;
+  margin-top: 2px;
+}
+
+.ksef-list__num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ksef-list__actions-col {
+  width: 260px;
+}
+
+.ksef-list__actions {
+  white-space: nowrap;
+
+  .ksef-list__action-form,
+  .ksef-list__inline-assign,
+  .btn {
+    display: inline-block;
+    margin: 2px 2px 2px 0;
+    vertical-align: middle;
+  }
+
+  .ksef-list__inline-assign {
+    white-space: nowrap;
+
+    select {
+      display: inline-block;
+      width: auto;
+      max-width: 160px;
+      height: 30px;
+      padding: 2px 6px;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.ksef-list__row--imported {
+  opacity: 0.75;
 }

@@ -1,4 +1,12 @@
-<h1>KSeF — Faktury</h1>
+<div class="ksef-index__header">
+  <h1>KSeF — Faktury</h1>
+  <% if current_user.is_superadmin %>
+    <div class="ksef-index__toolbar">
+      <%= link_to "Konfiguracja KSeF", edit_ksef_setting_path, class: "btn btn-default" %>
+      <%= button_to "Sync", sync_ksef_setting_path, method: :post, class: "btn btn-default", form: { style: "display:inline" } %>
+    </div>
+  <% end %>
+</div>
 
 <% if @show_setup_warning %>
   <div class="alert alert-warning">
@@ -10,17 +18,27 @@
 <% end %>
 
 <% if current_user.is_superadmin %>
-  <p>
-    <%= link_to "Konfiguracja KSeF", edit_ksef_setting_path, class: "btn btn-default" %>
-    <%= button_to "Sync", sync_ksef_setting_path, method: :post, class: "btn btn-default", form: { style: "display:inline" } %>
-  </p>
-
-  <h2>Nowe</h2>
-  <%= render "list", invoices: @pending %>
+  <section class="ksef-index__section">
+    <h2>Nowe <span class="badge"><%= @pending.size %></span></h2>
+    <%= render "list", invoices: @pending, empty_label: "Brak nowych faktur do przejrzenia." %>
+  </section>
 <% end %>
 
-<h2>Do przejęcia (nieprzypisane)</h2>
-<%= render "list", invoices: @claimable %>
+<section class="ksef-index__section">
+  <h2>Do przejęcia (nieprzypisane) <span class="badge"><%= @claimable.size %></span></h2>
+  <%= render "list", invoices: @claimable, empty_label: "Brak faktur w puli." %>
+</section>
 
-<h2>Przypisane</h2>
-<%= render "list", invoices: @assigned %>
+<section class="ksef-index__section">
+  <h2>Przypisane <span class="badge"><%= @assigned_open.size %></span></h2>
+  <%= render "list", invoices: @assigned_open, empty_label: "Brak przypisanych faktur oczekujących na import." %>
+</section>
+
+<% if @imported_history.any? %>
+  <section class="ksef-index__section">
+    <details>
+      <summary><h2 class="ksef-index__collapsible">Zaimportowane <span class="badge"><%= @imported_history.size %></span></h2></summary>
+      <%= render "list", invoices: @imported_history %>
+    </details>
+  </section>
+<% end %>

@@ -4,11 +4,12 @@ class Ksef::InvoicesController < Ksef::BaseController
   def index
     @show_setup_warning = !@ksef_setting.configured?
     scope = KsefInvoice.for_user(current_user)
-                       .includes(:unit, :imported_entry)
+                       .includes(:unit, :imported_entry, :assigned_by)
                        .order(issue_date: :desc, id: :desc)
-    @pending    = scope.where(status: :pending)
-    @claimable  = scope.where(status: :unassigned)
-    @assigned   = scope.where(status: [:assigned, :imported])
+    @pending          = scope.where(status: :pending)
+    @claimable        = scope.where(status: :unassigned)
+    @assigned_open    = scope.where(status: :assigned)
+    @imported_history = scope.where(status: :imported)
   end
 
   def show
