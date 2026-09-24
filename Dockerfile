@@ -1,60 +1,83 @@
-FROM docker.io/ziher/base:2025.06.19-1513ccf AS ziher-prod
+# syntax=docker/dockerfile:1
 
-SHELL ["/bin/bash", "-c"]
+# Debian 13.
+FROM ruby:3.4.11-slim-trixie AS os
 
-ENV RAILS_RELATIVE_URL_ROOT=/
-ENV RAILS_ENV=production
+RUN rm -f /etc/apt/apt.conf.d/docker-clean \
+ && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
 
-COPY Gemfile /ziher/Gemfile
-COPY Gemfile.lock /ziher/Gemfile.lock
-COPY config/initializers/version.rb /ziher/config/initializers/version.rb
-COPY . /ziher
-
-RUN set -x \
- && apt-get update \
- && apt-get upgrade --yes \
- && apt-get install --yes \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update \
+ && apt-get install --yes --no-install-recommends \
       nodejs \
       build-essential \
       libpq-dev \
       wget \
       libjpeg62-turbo \
-      libpng16-16 \
+      libpng16-16t64 \
       libxrender1 \
       libfontconfig1 \
       libfreetype6 \
       libx11-6 \
       libyaml-dev \
-      procps \
-      \
- && apt-get --yes --purge autoremove \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+      procps
 
-RUN set -x \
-  && bundle config set --local without 'development test' \
-  && bundle install --no-cache \
-  && rm -rf /usr/local/bundle/cache/* \
-  && gunzip /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/wkhtmltopdf_debian_11_amd64.gz || true \
-  && rm -rf /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin/*.gz \
-  && chmod 100 /usr/local/bundle/gems/wkhtmltopdf-binary-0.12.6.9/bin/wkhtmltopdf_debian_11_amd64
+WORKDIR /ziher
 
-ARG SECRET_KEY_BASE
-ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
+FROM os AS gems
 
-RUN set -x \
- && rake assets:precompile --trace
+COPY Gemfile Gemfile.lock ./
 
-ENTRYPOINT ["passenger", "start", "-p", "3000", "-a", "0.0.0.0"]
+RUN gem install bundler --version 2.6.7 --no-document
 
-# ##########################
-# ##########################
-FROM ziher-prod AS ziher-dev
+# Shared gems only. Dev and prod add their own groups so a local build
+# does not compile Passenger, and a prod build does not install test gems.
+ENV BUNDLE_WITHOUT="development:test:production"
+
+# The wkhtmltopdf-binary wrapper picks a binary from /etc/os-release and has
+# no entry for Debian 13, so name the one to use. The Debian 12 builds link
+# against libssl3, which Trixie ships, and exist for amd64 and arm64.
+ARG TARGETARCH
+ENV WKHTMLTOPDF_HOST_SUFFIX=debian_12_${TARGETARCH}
+
+# Unpack the wkhtmltopdf binary once (the container may run read-only) and
+# drop the other ~430 MB of archives in the same layer they were installed.
+RUN --mount=type=cache,target=/usr/local/bundle/cache \
+    set -eu; \
+    bundle install; \
+    for bindir in /usr/local/bundle/gems/wkhtmltopdf-binary-*/bin; do \
+      gunzip "$bindir/wkhtmltopdf_${WKHTMLTOPDF_HOST_SUFFIX}.gz"; \
+      chmod 755 "$bindir/wkhtmltopdf_${WKHTMLTOPDF_HOST_SUFFIX}"; \
+      rm -f "$bindir"/*.gz; \
+    done; \
+    wkhtmltopdf --version
+
+FROM gems AS dev
 
 ENV RAILS_ENV=development
+ENV BUNDLE_WITHOUT=production
 
-RUN set -x \
-  && bundle config unset --local without \
-  && bundle install
+RUN --mount=type=cache,target=/usr/local/bundle/cache \
+    bundle install
 
-ENTRYPOINT ["/bin/bash", "-c"]
+COPY . /ziher
+
+ENTRYPOINT ["/bin/bash", "/ziher/docker/entrypoint-dev.sh"]
+
+FROM gems AS prod
+
+ENV RAILS_ENV=production \
+    RAILS_RELATIVE_URL_ROOT=/ \
+    BUNDLE_WITHOUT="development:test"
+
+RUN --mount=type=cache,target=/usr/local/bundle/cache \
+    bundle install
+
+COPY . /ziher
+
+# No SECRET_KEY_BASE is baked into the image. The runtime must provide it,
+# otherwise Rails refuses to boot in production.
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rake assets:precompile --trace
+
+ENTRYPOINT ["passenger", "start", "-p", "3000", "-a", "0.0.0.0"]

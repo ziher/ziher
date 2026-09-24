@@ -1,46 +1,45 @@
-.PHONY: clean
+.PHONY: up down restart logs shell db-setup db-reset test clean build build-dev build-prod
+
+COMPOSE := docker compose
+
+CACHE_FROM ?=
+CACHE_TO ?=
+CACHE_FROM_FLAG := $(if $(CACHE_FROM),--cache-from=$(CACHE_FROM))
+CACHE_TO_FLAG := $(if $(CACHE_TO),--cache-to=$(CACHE_TO))
+
+build: build-dev
+
+build-dev:
+	docker buildx build --load --target dev --tag ziher/app:dev $(CACHE_FROM_FLAG) $(CACHE_TO_FLAG) .
+
+build-prod:
+	./update-version.sh
+	docker buildx build --load --target prod --tag ziher/app:latest $(CACHE_FROM_FLAG) $(CACHE_TO_FLAG) .
+
+up: build-dev
+	$(COMPOSE) up --detach --wait --no-build
+
+down:
+	$(COMPOSE) down
+
+restart: down up
+
+logs:
+	$(COMPOSE) logs --follow --tail=100
+
+shell:
+	$(COMPOSE) exec web bash
+
+db-setup:
+	$(COMPOSE) exec -T web bundle exec rails db:prepare
+	$(COMPOSE) exec -T web bundle exec rails runner "Rails.application.load_seed unless User.exists?"
+
+db-reset:
+	$(COMPOSE) exec -T web bundle exec rails db:drop db:create db:migrate db:seed
+
+test:
+	$(COMPOSE) exec -T -e RAILS_ENV=test web bundle exec rails db:test:prepare
+	$(COMPOSE) exec -T -e RAILS_ENV=test web bundle exec rails test
+
 clean:
-	@docker compose --project-directory docker/ --project-name ziher down
-
-.PHONY: stop
-stop:
-	@docker compose --project-directory docker/ --project-name ziher stop
-
-.PHONY: pull
-pull:
-	@docker compose --project-directory docker/ --project-name ziher pull
-
-.PHONY: reset
-reset: clean pull setup-db
-
-.PHONY: restart
-restart: stop run
-
-.PHONY: setup-db
-setup-db: run-db run-dev-shell run-db-create-migrate-seed stop-dev-shell stop-db
-
-.PHONY: run-db-create-migrate-seed
-run-db-create-migrate-seed:
-	@./docker/recreate-db.sh
-	@docker compose --project-directory docker/ exec ziher-dev-shell rake db:migrate
-	@docker compose --project-directory docker/ exec ziher-dev-shell rake db:seed
-
-.PHONY: run-db
-run-db:
-	@docker compose --project-directory docker/ up postgres --detach --force-recreate
-
-.PHONY: stop-db
-stop-db:
-	@docker compose --project-directory docker/ stop postgres
-
-.PHONY: run
-run: run-db
-	@docker compose --project-directory docker/ up ziher-dev --detach --force-recreate
-
-.PHONY: run-dev-shell
-run-dev-shell: run-db
-	@docker compose --project-directory docker/ up ziher-dev-shell --detach --force-recreate
-
-.PHONY: stop-dev-shell
-stop-dev-shell:
-	@docker compose --project-directory docker/ stop ziher-dev-shell
+	$(COMPOSE) down --volumes --remove-orphans

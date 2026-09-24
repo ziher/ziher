@@ -24,42 +24,11 @@ default: &default
 development:
   <<: *default
   database: ziher_development
-  host: "<%= ENV['ZIHER_DB_HOST'] %>"
-  username: "<%= ENV['ZIHER_DB_USERNAME'] %>"
-  password: "<%= ENV['ZIHER_DB_PASSWORD'] %>"
-  # need to provide 'url' to force tcp/ip connection https://stackoverflow.com/a/63620960
-  url: postgresql://postgres@localhost:5432
-
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
-  #host: localhost
-  #port: 5432
-
-  # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
-
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
-  #   log, notice, warning, error, fatal, and panic
-  # The server defaults to notice.
-  #min_messages: warning
-
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
-  #host: localhost
-  #port: 5432
-
-  # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
-
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
-  #   log, notice, warning, error, fatal, and panic
-  # The server defaults to notice.
-  #min_messages: warning
-
+  # 127.0.0.1 forces TCP. Compose sets ZIHER_DB_HOST to the postgres service.
+  host: <%= ENV.fetch("ZIHER_DB_HOST", "127.0.0.1") %>
+  port: <%= ENV.fetch("ZIHER_DB_PORT", 5432) %>
+  username: <%= ENV.fetch("ZIHER_DB_USERNAME", "ziher") %>
+  password: <%= ENV.fetch("ZIHER_DB_PASSWORD", "ziher") %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -67,12 +36,11 @@ development:
 test:
   <<: *default
   database: ziher_test
-  host: localhost
-  username: postgres
-  password: postgres
+  host: <%= ENV.fetch("ZIHER_DB_HOST", "127.0.0.1") %>
+  port: <%= ENV.fetch("ZIHER_DB_PORT", 5432) %>
+  username: <%= ENV.fetch("ZIHER_DB_USERNAME", "ziher") %>
+  password: <%= ENV.fetch("ZIHER_DB_PASSWORD", "ziher") %>
   min_messages: warning
-  # need to provide 'url' to force tcp/ip connection https://stackoverflow.com/a/63620960
-  url: postgresql://postgres@localhost:5432
 
 production:
   <<: *default

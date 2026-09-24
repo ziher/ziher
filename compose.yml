@@ -1,0 +1,48 @@
+name: ziher
+
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ziher
+      POSTGRES_PASSWORD: ziher
+      POSTGRES_DB: ziher_development
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ziher -d ziher_development"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    image: ziher/app:dev
+    volumes:
+      - .:/ziher
+    ports:
+      - "3000:3000"
+    environment:
+      ZIHER_APP_NAME: dev environment
+      RAILS_ENV: development
+      ZIHER_DB_HOST: postgres
+      ZIHER_DB_USERNAME: ziher
+      ZIHER_DB_PASSWORD: ziher
+      BUNDLE_WITHOUT: production
+      SECRET_KEY_BASE: 99999999999999998888888877777776666665555544443332211aafb49eb0b8f5b780806cee250dc486ca8e4dde901fd8a96543471d8d2e7f6afcb303e1ed4e
+    depends_on:
+      postgres:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

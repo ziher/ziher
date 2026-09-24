@@ -9,17 +9,18 @@ Open source book of account platform used by the scouts teams from [Związek Har
 
 ## Getting started
 
-To get ZiHeR up and running on your local machine:
+ZiHeR runs locally in Docker on macOS, Windows, and Linux.
 
-1. Clone the git repo
-1. Install [Vagrant](http://www.vagrantup.com/)
-1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-1. Cd to where you cloned ZiHeR
-1. `vagrant up`
-1. `vagrant ssh`
-1. `cd /ziher`
-1. `rails server -u webrick -b 0.0.0.0`
-1. Go to http://192.168.33.10:3000 in your browser
+1. Install [Docker](https://docs.docker.com/get-docker/) with Compose.
+1. On Windows, also install GNU Make (`winget install ezwinports.make`, Chocolatey, or MSYS2).
+1. Clone the git repo and `cd` into it.
+1. `make up`
+1. Open http://localhost:3000 once the log shows the Rails server. The first start creates the database and seed data.
+1. Sign in as `admin@dev.zhr.pl` / `admin@dev.zhr.pl`.
+
+`make up` rebuilds the dev image when needed. Gem and apt downloads stay in the Docker build cache, so later builds skip packages that have not changed.
+
+Other targets: `make logs`, `make shell`, `make test`, `make db-reset`, `make down`, `make clean`.
 
 ## Copyright / License
 

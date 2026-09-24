@@ -46,8 +46,8 @@ sudo -H -u vagrant -i bash -c "git clone https://github.com/rbenv/ruby-build.git
 sudo -H -u vagrant -i echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/vagrant/.bash_profile
 sudo -H -u vagrant -i echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bash_profile
 
-sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv install 3.4.4"
-sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv global 3.4.4"
+sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv install 3.4.11"
+sudo -H -u vagrant -i bash -c "/home/vagrant/.rbenv/bin/rbenv global 3.4.11"
 
 sudo -H -u vagrant -i echo "force_color_prompt=yes" >> /home/vagrant/.bashrc
 
@@ -56,9 +56,8 @@ sudo -H -u vagrant -i echo "source ~/.bashrc" >> /home/vagrant/.bash_profile
 sudo -H -u vagrant -i echo "cd /ziher" >> /home/vagrant/.bash_profile
 
 echo ====================== Instaluje PostgreSQL
-docker compose -f /ziher/docker/docker-compose.yml up -d postgres
+docker compose -f /ziher/compose.yml up -d --wait postgres
 apt-get install --yes libpq-dev
-docker exec -u postgres postgres bash -c "psql postgres -c \"create role ziher with CREATEDB SUPERUSER login password 'ziher'\""
 
 sudo -H -u vagrant -i bash -c "git config --global color.ui true"
 

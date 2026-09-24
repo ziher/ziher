@@ -6,6 +6,10 @@ Rails.application.configure do
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
 
+  # The dev container bind-mounts this directory. Docker Desktop does not
+  # deliver filesystem events from that mount, so check timestamps instead.
+  config.file_watcher = ActiveSupport::FileUpdateChecker
+
   # Do not eager load code on boot.
   config.eager_load = false
 
