@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class EntriesControllerTest < ActionDispatch::IntegrationTest
+  include ActionView::Helpers::NumberHelper
+
   setup do
     sign_in users(:master_1zgm)
     @entry = entries(:expense_one)
@@ -30,7 +32,16 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
       post entries_url, params: {entry: new_hash}
     end
 
-    assert_redirected_to journal_path(@entry.journal)
+    # po dodaniu wpisu nie wracamy do (wolno ładującej się) książki,
+    # tylko pokazujemy stronę potwierdzenia z opcjami kolejnych akcji
+    assert_redirected_to entry_path(Entry.last)
+    assert_equal 'Wpis dodany', flash[:notice]
+
+    follow_redirect!
+    assert_response :success
+    assert_select "a[href=?]", new_entry_path(journal_id: @entry.journal_id, is_expense: false), text: /Dodaj nowy wpływ/
+    assert_select "a[href=?]", new_entry_path(journal_id: @entry.journal_id, is_expense: true), text: /Dodaj nowy wydatek/
+    assert_select "a[href=?]", journal_path(@entry.journal), text: /Wyświetl książkę/
   end
 
   test "should show all possible categories when editing existing expense entry" do
@@ -79,6 +90,37 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should show one percent and grant amounts for expense entry" do
+    grant = grants(:one)
+    grant.create_income_category_for_year(@entry.journal.year)
+
+    get entry_path(@entry)
+    assert_response :success
+
+    assert_select "label", text: "w tym 1,5%"
+    assert_select "label", text: "w tym #{grant.name}"
+
+    Category.where(:year => @entry.journal.year, :is_expense => true).each do |category|
+      assert_select "label", text: category.name
+    end
+
+    # expense_one: dwie pozycje po 9.99 z 1,5% = 9.99 każda
+    one_percent_sum = @entry.items.sum { |item| item.amount_one_percent || 0 }
+    assert_select "input#total-sum[value=?]", number_with_precision(@entry.sum, precision: 2)
+    assert_select "input#total-sum-one-percent[value=?]", number_with_precision(one_percent_sum, precision: 2)
+    assert_select "input#total-sum-grant-#{grant.id}[value=?]", number_with_precision(@entry.get_sum_for_grant(grant), precision: 2)
+  end
+
+  test "should not show one percent and grant columns for income entry" do
+    grants(:one).create_income_category_for_year(@entry_income.journal.year)
+
+    get entry_path(@entry_income)
+    assert_response :success
+
+    assert_select "label", text: /^w tym /, count: 0
+    assert_select "input#total-sum-one-percent", count: 0
+  end
+
   test "should get edit" do
     get edit_entry_path(@entry)
     assert_response :success
@@ -91,7 +133,14 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should update entry" do
     put entry_url(@entry), params: {entry: {name: "updated"}}
-    assert_redirected_to journal_path(assigns(:journal))
+    assert_redirected_to entry_path(@entry)
+    assert_equal 'Zmiany zapisane', flash[:notice]
+
+    follow_redirect!
+    assert_response :success
+    assert_select "a[href=?]", new_entry_path(journal_id: @entry.journal_id, is_expense: false), text: /Dodaj nowy wpływ/
+    assert_select "a[href=?]", new_entry_path(journal_id: @entry.journal_id, is_expense: true), text: /Dodaj nowy wydatek/
+    assert_select "a[href=?]", journal_path(@entry.journal), text: /Wyświetl książkę/
   end
 
   test "should destroy entry" do

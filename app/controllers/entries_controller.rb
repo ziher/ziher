@@ -5,6 +5,7 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
     authorize! :read, @entry
     @categories = Category.where(:year => @entry.journal.year, :is_expense => @entry.is_expense)
+    @grants = @entry.is_expense ? Grant.get_by_year(@entry.journal.year) : []
 
     respond_to do |format|
       format.html # show.html.erb
@@ -23,7 +24,6 @@ class EntriesController < ApplicationController
     create_empty_items(@entry, @journal.year)
     
     @linked_entry = create_empty_items_in_linked_entry(@entry)
-    @referer = request.referer
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,7 +35,6 @@ class EntriesController < ApplicationController
   # POST /entries.json
   # creates Entry and related Items
   def create
-    @referer = params[:entry][:referer]
     @entry = Entry.new(entry_params)
    
     if params[:is_linked]
@@ -48,13 +47,9 @@ class EntriesController < ApplicationController
 
     respond_to do |format|
       if @entry.save
-        format.html do
-          if params[:entry][:referer]
-            redirect_to params[:entry][:referer], notice: 'Wpis utworzony'
-          else
-            redirect_to @entry.journal, notice: 'Wpis utworzony'
-          end
-        end
+        # Celowo nie wracamy do książki (jej ładowanie jest wolne) - pokazujemy
+        # stronę potwierdzenia z opcjami dodania kolejnego wpisu lub wyświetlenia książki.
+        format.html { redirect_to @entry, notice: 'Wpis dodany' }
         format.json { render json: @entry, status: :created, location: @entry }
       else
         @journal = @entry.journal
@@ -77,13 +72,11 @@ class EntriesController < ApplicationController
     @linked_entry = create_empty_items_in_linked_entry(@entry)
 
     @sorted_items = @entry.items.sort_by {|item| item.category.position.to_s}
-    @referer = request.referer
   end
 
   # PUT /entries/1
   # PUT /entries/1.json
   def update
-    @referer = params[:entry][:referer]
     @entry = Entry.find(params[:id])
     authorize! :update, @entry
     @journal = @entry.journal
@@ -102,13 +95,8 @@ class EntriesController < ApplicationController
 
     respond_to do |format|
       if @entry.update(entry_params)
-        format.html do
-          if params[:entry][:referer]
-            redirect_to params[:entry][:referer], notice: 'Zmiany zapisane'
-          else
-            redirect_to @journal, notice: 'Zmiany zapisane'
-          end
-        end
+        # Tak jak przy tworzeniu - nie wracamy do książki, tylko na stronę wpisu.
+        format.html { redirect_to @entry, notice: 'Zmiany zapisane' }
         format.json { head :ok }
       else
         create_empty_items(@entry, @journal.year)
