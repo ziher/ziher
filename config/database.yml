@@ -25,10 +25,11 @@ development:
   <<: *default
   database: ziher_development
   # 127.0.0.1 forces TCP. Compose sets ZIHER_DB_HOST to the postgres service.
-  host: <%= ENV.fetch("ZIHER_DB_HOST", "127.0.0.1") %>
+  # .inspect quotes the value so passwords that contain special characters stay valid YAML.
+  host: <%= ENV.fetch("ZIHER_DB_HOST", "127.0.0.1").inspect %>
   port: <%= ENV.fetch("ZIHER_DB_PORT", 5432) %>
-  username: <%= ENV.fetch("ZIHER_DB_USERNAME", "ziher") %>
-  password: <%= ENV.fetch("ZIHER_DB_PASSWORD", "ziher") %>
+  username: <%= ENV.fetch("ZIHER_DB_USERNAME", "ziher").inspect %>
+  password: <%= ENV.fetch("ZIHER_DB_PASSWORD", "ziher").inspect %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -36,15 +37,15 @@ development:
 test:
   <<: *default
   database: ziher_test
-  host: <%= ENV.fetch("ZIHER_DB_HOST", "127.0.0.1") %>
+  host: <%= ENV.fetch("ZIHER_DB_HOST", "127.0.0.1").inspect %>
   port: <%= ENV.fetch("ZIHER_DB_PORT", 5432) %>
-  username: <%= ENV.fetch("ZIHER_DB_USERNAME", "ziher") %>
-  password: <%= ENV.fetch("ZIHER_DB_PASSWORD", "ziher") %>
+  username: <%= ENV.fetch("ZIHER_DB_USERNAME", "ziher").inspect %>
+  password: <%= ENV.fetch("ZIHER_DB_PASSWORD", "ziher").inspect %>
   min_messages: warning
 
 production:
   <<: *default
-  database: "<%= ENV['ZIHER_DB_NAME'] %>"
-  host: "<%= ENV['ZIHER_DB_HOST'] %>"
-  username: "<%= ENV['ZIHER_DB_USERNAME'] %>"
-  password: "<%= ENV['ZIHER_DB_PASSWORD'] %>"
+  database: <%= ENV.fetch("ZIHER_DB_NAME", "").inspect %>
+  host: <%= ENV.fetch("ZIHER_DB_HOST", "").inspect %>
+  username: <%= ENV.fetch("ZIHER_DB_USERNAME", "").inspect %>
+  password: <%= ENV.fetch("ZIHER_DB_PASSWORD", "").inspect %>
