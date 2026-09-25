@@ -122,39 +122,39 @@ class ItemTest < ActiveSupport::TestCase
 
 
   test 'should not allow more than one item grant amount for same grant' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should not allow for grants with diferent amount sign than self amount' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should not allow absolute value of grants amounts sum bigger than abs of self sum' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should allow positive value for income category' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should allow negative value for income category' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should allow positive value for expense category' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should allow negative values for expense categry' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should allow positive value for grant amount in expense category' do
-    # TODO implement me
+    skip "not implemented"
   end
 
   test 'should allow negative value for grant amount in expense category' do
-    # TODO implement me
+    skip "not implemented"
   end
 
 end

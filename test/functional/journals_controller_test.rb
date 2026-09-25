@@ -68,7 +68,7 @@ class JournalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show journal with sorted by date entries" do
-    # TODO
+    skip "not implemented"
   end
 
 end
