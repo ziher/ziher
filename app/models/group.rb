@@ -14,7 +14,7 @@ class Group < ApplicationRecord
       groups = Group.order("name")
     else
       
-      privileges_string = ""
+      privileges_string = String.new
       privileges.each { |key, value| privileges_string.concat(" and #{key} = #{value}") } 
 
       groups = Group.find_by_sql(["with recursive G as (
