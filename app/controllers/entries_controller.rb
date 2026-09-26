@@ -22,7 +22,8 @@ class EntriesController < ApplicationController
     authorize! :create, @entry
     @entry.items = []
     create_empty_items(@entry, @journal.year)
-    
+    @sorted_items = sort_items_by_category(@entry)
+
     @linked_entry = create_empty_items_in_linked_entry(@entry)
 
     respond_to do |format|
@@ -53,8 +54,11 @@ class EntriesController < ApplicationController
         format.json { render json: @entry, status: :created, location: @entry }
       else
         @journal = @entry.journal
+        # re-render the form in the same shape as `new`: all categories, in the same order
+        create_empty_items(@entry, @journal.year)
+        @sorted_items = sort_items_by_category(@entry)
 
-        format.html { render action: "new" }
+        format.html { render action: "new", status: :unprocessable_entity }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
     end
@@ -71,7 +75,7 @@ class EntriesController < ApplicationController
 
     @linked_entry = create_empty_items_in_linked_entry(@entry)
 
-    @sorted_items = @entry.items.sort_by {|item| item.category.position.to_s}
+    @sorted_items = sort_items_by_category(@entry)
   end
 
   # PUT /entries/1
@@ -100,9 +104,9 @@ class EntriesController < ApplicationController
         format.json { head :ok }
       else
         create_empty_items(@entry, @journal.year)
-        @sorted_items = @entry.items.sort_by {|item| item.category.position.to_s}
+        @sorted_items = sort_items_by_category(@entry)
 
-        format.html { render action: "edit" }
+        format.html { render action: "edit", status: :unprocessable_entity }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
     end
@@ -152,6 +156,16 @@ class EntriesController < ApplicationController
   end
 
   private
+
+  # Items in the order the categories are shown everywhere else (Category default scope:
+  # position ASC, no position last). Used for the first render of the form and for its
+  # re-render after a failed validation, so the rows never change places.
+  def sort_items_by_category(entry)
+    entry.items.sort_by do |item|
+      position = item.category&.position
+      [position.nil? ? 1 : 0, position || 0, item.category_id || 0]
+    end
+  end
 
   def entry_params
     if params[:entry]

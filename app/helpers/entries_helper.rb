@@ -8,9 +8,20 @@ module EntriesHelper
 
       grant = Grant.find(category.grant_id)
 
-      itemGrant = ItemGrant.where(grant_id: grant.id, item_id: item_fields.object.id).first
-      item_grant_amount = itemGrant.blank? ? "" : itemGrant.amount
-      item_grant_id = itemGrant.blank? ? "" : itemGrant.id
+      # Take the grant from the in-memory association, not from the database: after a failed
+      # validation the association holds the values the user has just submitted (for a new entry
+      # there is nothing in the database yet, for an existing one the database has the old values).
+      # A grant emptied or set to 0 in the form is destroyed by Item#remove_*_amount_grants but
+      # stays in the association - keep its id so a resubmit updates the row instead of duplicating it,
+      # but do not show its amount.
+      item_grant = item_fields.object.item_grants.find { |ig| ig.grant_id == grant.id }
+      item_grant_id = item_grant.nil? ? "" : item_grant.id.to_s
+      if item_grant.nil? || item_grant.destroyed? || item_grant.amount.blank? || item_grant.amount == 0
+        item_grant_amount = ""
+      else
+        # like FormBuilder#text_field: show what was typed (or stored), not the type-cast BigDecimal
+        item_grant_amount = ERB::Util.html_escape(item_grant.amount_before_type_cast.to_s)
+      end
 
       entry_name_key_prefix = "entry[items_attributes][#{item_fields.index}][item_grants_attributes][#{index}]"
       entry_id_key_prefix = "entry_items_attributes_#{item_fields.index}_item_grants_attributes_#{index}"

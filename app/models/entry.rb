@@ -51,12 +51,18 @@ class Entry < ApplicationRecord
   def get_amount_for_category_and_grant(category, grant)
     category_id = category.is_a?(Category) ? category.id : category
     grant_id = grant.is_a?(Grant) ? grant.id : grant
-    items.map{ |i| i.item_grants }.flatten.select{ |ig| ig.grant_id == grant_id && ig.item.category_id == category_id }.sum(&:amount)
+    live_item_grants.select{ |ig| ig.grant_id == grant_id && ig.item.category_id == category_id }.sum { |ig| ig.amount || 0 }
   end
 
   def get_sum_for_grant(grant)
     grant_id = grant.is_a?(Grant) ? grant.id : grant
-    items.map{ |i| i.item_grants }.flatten.select{ |ig| ig.grant_id == grant_id }.sum(&:amount)
+    live_item_grants.select{ |ig| ig.grant_id == grant_id }.sum { |ig| ig.amount || 0 }
+  end
+
+  # Grants of all items, without the ones removed by Item#remove_*_amount_grants during validation.
+  # An unsaved entry (e.g. a form that failed validation) still holds those destroyed grants in memory.
+  def live_item_grants
+    items.flat_map(&:item_grants).reject(&:destroyed?)
   end
 
   def has_category(category)
