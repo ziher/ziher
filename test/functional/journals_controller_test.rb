@@ -56,14 +56,16 @@ class JournalsControllerTest < ActionDispatch::IntegrationTest
     entry = entries(:expense_one)
     entry.items = [Item.create(:category => categories(:five), :amount => 200)]
     entry.save!
-    sum_one_percent = @journal.get_final_balance_one_percent
+    # "środki z wszystkich dotacji" = saldo 1,5% + salda wszystkich dotacji (fixtures journal_grants)
+    sum_one_percent_and_grants = @journal.get_final_balance_one_percent + Grant.all.sum { |grant| @journal.get_final_balance_for_grant(grant) }
     sum = @journal.get_final_balance
+    assert_operator sum, :<, 0
 
     #when
     get journal_path(@journal)
 
     #then
-    expected_message = "Saldo końcowe (#{sum}) jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie #{sum_one_percent})"
+    expected_message = "Saldo końcowe (#{sum}) jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie #{sum_one_percent_and_grants})"
     assert_equal expected_message, flash[:alert]
   end
 
