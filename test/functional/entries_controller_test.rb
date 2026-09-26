@@ -104,7 +104,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
       assert_select "label", text: category.name
     end
 
-    # expense_one: dwie pozycje po 9.99 z 1,5% = 9.99 każda
+    # expense_one: dwie pozycje po 30 z 1,5% = 9.99 każda
     one_percent_sum = @entry.items.sum { |item| item.amount_one_percent || 0 }
     assert_select "input#total-sum[value=?]", number_with_precision(@entry.sum, precision: 2)
     assert_select "input#total-sum-one-percent[value=?]", number_with_precision(one_percent_sum, precision: 2)

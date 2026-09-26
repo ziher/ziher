@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
+# items :one and :two each carry 9.99 of 1,5% and 2 x 9.99 of grants (see item_grants.yml);
+# the amount has to hold all of it (Item#cannot_have_bigger_grants_and_one_percent_amounts_sum_than_item_amount)
 one:
-  amount: 9.99
+  amount: 30
   amount_one_percent: 9.99
   entry: expense_one
   category: five
 
 two:
-  amount: 9.99
+  amount: 30
   amount_one_percent: 9.99
   entry: expense_one
   category: six
