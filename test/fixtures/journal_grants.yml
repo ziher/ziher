@@ -1,11 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+#
+# JournalGrant allows only one row per (journal, grant) - Journal#initial_balance_for_grant returns 0
+# when it finds anything else than exactly one row. Journal finance_2012 spends 19.98 from each grant
+# (see item_grants.yml), so with 25.00 of initial balance every grant ends the year with 5.02.
 
-one:
-  journal_id: 1
-  grant_id: 1
-  initial_grant_balance: 9.99
+finance_2012_grant_one:
+  journal: finance_2012
+  grant: one
+  initial_grant_balance: 25.00
 
-two:
-  journal_id: 1
-  grant_id: 1
-  initial_grant_balance: 9.99
+finance_2012_grant_two:
+  journal: finance_2012
+  grant: two
+  initial_grant_balance: 25.00
