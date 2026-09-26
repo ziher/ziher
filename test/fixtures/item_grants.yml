@@ -1,4 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+#
+# ItemGrant allows only one row per (item, grant) - keep that invariant here.
+# Items :one (category :five) and :two (category :six) both belong to entry expense_one in journal
+# finance_2012, so every grant has 9.99 spent in each of these categories and 19.98 in the journal.
 
 one:
   item: one
@@ -6,7 +10,7 @@ one:
   amount: 9.99
 
 two:
-  item: one
+  item: two
   grant: one
   amount: 9.99
 
@@ -16,6 +20,6 @@ three:
   amount: 9.99
 
 four:
-  item: one
+  item: two
   grant: two
   amount: 9.99
