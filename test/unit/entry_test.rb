@@ -224,4 +224,16 @@ class EntryTest < ActiveSupport::TestCase
     assert_equal expected_amount, entry.sum_one_percent
   end
 
+  test "should count expense sum one percent for all items" do
+    #given
+    entry = entries(:expense_one)
+
+    #when
+    expected_amount = entry.items.sum { |item| item.amount_one_percent || 0 }
+
+    #then
+    assert_not_equal 0, expected_amount
+    assert_equal expected_amount, entry.sum_one_percent
+  end
+
 end

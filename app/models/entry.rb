@@ -156,10 +156,13 @@ class Entry < ApplicationRecord
     @sum ||= items.sum { |item| item.amount ? item.amount : 0 }
   end
 
+  # 1,5% part of the entry: for an expense every item may spend 1,5% money, for an income only
+  # the items in 1,5% categories count.
   def sum_one_percent
-    return 0 if is_expense
-
-    @sum_one_percent ||= items.select { |item| item.category.is_one_percent }.sum { |item| item.amount_one_percent ? item.amount_one_percent : 0 }
+    @sum_one_percent ||= begin
+      one_percent_items = is_expense ? items : items.select { |item| item.category.is_one_percent }
+      one_percent_items.sum { |item| item.amount_one_percent ? item.amount_one_percent : 0 }
+    end
   end
 
   # recalculates initial balance for next year's journal
