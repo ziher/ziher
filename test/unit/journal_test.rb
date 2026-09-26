@@ -334,11 +334,14 @@ class JournalTest < ActiveSupport::TestCase
 
   test "#get_sum_for_grant_in_category" do
     grant = grants(:one)
-    category = categories(:five)
     journal = journals(:finance_2012)
 
-    result = journal.get_sum_for_grant_in_category(grant, category)
-    assert_equal result, 19.98
+    # item_grants fixtures: grant :one has 9.99 on items(:one) (category :five)
+    # and 9.99 on items(:two) (category :six), both in expense_one
+    assert_equal 9.99, journal.get_sum_for_grant_in_category(grant, categories(:five))
+    assert_equal 9.99, journal.get_sum_for_grant_in_category(grant, categories(:six))
+    assert_equal 0, journal.get_sum_for_grant_in_category(grant, categories(:seven))
+    assert_equal 19.98, journal.get_expense_sum_for_grant(grant)
   end
 
   private
