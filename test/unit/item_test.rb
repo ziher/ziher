@@ -1,6 +1,12 @@
 require 'test_helper'
 
 class ItemTest < ActiveSupport::TestCase
+  test 'fixtures should be valid' do
+    Item.all.each do |item|
+      assert item.valid?, "item #{item.id} (#{item.category&.name}): #{item.errors.full_messages.join(', ')}"
+    end
+  end
+
   test 'should not save item when amount one percent is greater than amount and category is not one percent' do
     #given
     item = items(:one)
