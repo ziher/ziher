@@ -173,6 +173,106 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should create expense entry with grant amounts" do
+    grant = grants(:one)
+    grant.create_income_category_for_year(@entry.journal.year)
+
+    assert_difference(['Entry.count', 'ItemGrant.count'], 1) do
+      post entries_url, params: {entry: new_expense_params(grant, date: @entry.date.to_s)}
+    end
+
+    entry = Entry.last
+    assert_redirected_to entry_path(entry)
+    assert_equal 3, entry.get_sum_for_grant(grant)
+    assert_equal 3, entry.get_amount_for_category_and_grant(categories(:five), grant)
+  end
+
+  test "should keep typed grant amounts when creating expense entry fails validation" do
+    grant = grants(:one)
+    grant.create_income_category_for_year(@entry.journal.year)
+
+    get new_entry_path, params: {journal_id: @entry.journal_id, is_expense: true}
+    assert_response :success
+    categories_order_on_new = css_select("input.category_id").map { |input| input["value"] }
+
+    assert_no_difference(['Entry.count', 'ItemGrant.count']) do
+      # brak daty -> walidacja nie przechodzi, formularz jest wyświetlany ponownie
+      post entries_url, params: {entry: new_expense_params(grant, date: "")}
+    end
+    assert_response :unprocessable_entity
+
+    # kwota, 1,5% oraz kwota dotacji wpisane przez użytkownika są nadal w formularzu
+    assert_select "input.amount-input[value='10']"
+    assert_select "input.amount-input-one-percent[value='2']"
+    assert_select "input.amount-input-grants.grant-#{grant.id}[value='3']"
+    # dotacja wpisana jako 0 nie jest pokazywana (0 = usunięcie dotacji)
+    assert_select "input.amount-input-grants.grant-#{grant.id}[value='0']", count: 0
+    assert_select "input.amount-input-grants.grant-#{grant.id}[value='0.0']", count: 0
+    # nowy wpis - żadna z dotacji nie ma jeszcze id
+    assert_select "input[name$='[item_grants_attributes][0][id]'][value='']", css_select("input.amount-input-grants").size
+
+    # wszystkie kategorie, w tej samej kolejności co na stronie nowego wpisu
+    assert_equal categories_order_on_new, css_select("input.category_id").map { |input| input["value"] }
+  end
+
+  test "should keep typed grant amounts when updating expense entry fails validation" do
+    grant = grants(:one)
+    grant.create_income_category_for_year(@entry.journal.year)
+
+    # fixtures mają zduplikowane dotacje dla pozycji :one - zostawiamy po jednej na dotację
+    item_grants(:two).destroy
+    item_grants(:four).destroy
+    item = items(:one)
+    item_grant = item_grants(:one)
+    stored_amount = item_grant.amount
+
+    # pusty opis -> walidacja nie przechodzi, formularz jest wyświetlany ponownie
+    put entry_url(@entry), params: {entry: {name: "", items_attributes: {
+      "0" => {id: item.id, amount: 100, amount_one_percent: 10,
+              item_grants_attributes: {"0" => {id: item_grant.id, grant_id: grant.id, amount: 4}}}}}}
+    assert_response :unprocessable_entity
+
+    # formularz pokazuje właśnie wpisaną kwotę dotacji, a nie tę z bazy
+    assert_select "input.amount-input-grants.grant-#{grant.id}[value='4']"
+    assert_select "input.amount-input-grants.grant-#{grant.id}[value='#{stored_amount}']", count: 0
+    # ... i nadal wskazuje na istniejący rekord dotacji, żeby ponowny zapis go zaktualizował
+    assert_select "input[name$='[item_grants_attributes][0][id]'][value='#{item_grant.id}']"
+
+    # w bazie nic się nie zmieniło
+    assert_equal stored_amount, item_grant.reload.amount
+    assert_equal "EntryOne", @entry.reload.name
+  end
+
+  test "should not show removed grant amount when updating expense entry fails validation" do
+    grant = grants(:one)
+    grant.create_income_category_for_year(@entry.journal.year)
+
+    item_grants(:two).destroy
+    item_grants(:four).destroy
+    item = items(:one)
+    item_grant = item_grants(:one)
+
+    # dotacja wyzerowana w formularzu (= do usunięcia) + pusty opis
+    put entry_url(@entry), params: {entry: {name: "", items_attributes: {
+      "0" => {id: item.id, amount: 100, amount_one_percent: 10,
+              item_grants_attributes: {"0" => {id: item_grant.id, grant_id: grant.id, amount: 0}}}}}}
+    assert_response :unprocessable_entity
+
+    assert_select "input.amount-input-grants.grant-#{grant.id}[value='']", css_select("input.amount-input-grants.grant-#{grant.id}").size
+    assert_select "input[name$='[item_grants_attributes][0][id]'][value='#{item_grant.id}']"
+    assert ItemGrant.exists?(item_grant.id), "failed update must not remove the grant from the database"
+  end
+
+  # Wydatek z dwiema pozycjami: 10 (w tym 1,5%: 2, dotacja: 3) i 5 (dotacja wpisana jako 0)
+  def new_expense_params(grant, date:)
+    {date: date, name: "Wydatek z dotacją", document_number: "FV 1/2012", journal_id: @entry.journal_id, is_expense: true,
+     items_attributes: {
+       "0" => {category_id: categories(:five).id, amount: 10, amount_one_percent: 2,
+               item_grants_attributes: {"0" => {grant_id: grant.id, amount: 3}}},
+       "1" => {category_id: categories(:six).id, amount: 5,
+               item_grants_attributes: {"0" => {grant_id: grant.id, amount: 0}}}}}
+  end
+
   def copy_to_new_hash(entry)
     new_hash = entry.attributes
     items_hash = Hash.new
