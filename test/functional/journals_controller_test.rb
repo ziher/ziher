@@ -56,19 +56,58 @@ class JournalsControllerTest < ActionDispatch::IntegrationTest
     entry = entries(:expense_one)
     entry.items = [Item.create(:category => categories(:five), :amount => 200)]
     entry.save!
-    sum_one_percent = @journal.get_final_balance_one_percent
+    # "środki z wszystkich dotacji" = saldo 1,5% + salda wszystkich dotacji (fixtures journal_grants)
+    sum_one_percent_and_grants = @journal.get_final_balance_one_percent + Grant.all.sum { |grant| @journal.get_final_balance_for_grant(grant) }
     sum = @journal.get_final_balance
+    assert_operator sum, :<, 0
 
     #when
     get journal_path(@journal)
 
     #then
-    expected_message = "Saldo końcowe (#{sum}) jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie #{sum_one_percent})"
+    expected_message = "Saldo końcowe (#{sum}) jest ujemne - proszę rozliczyć do zera środki z wszystkich dotacji (aktualnie #{sum_one_percent_and_grants})"
     assert_equal expected_message, flash[:alert]
   end
 
   test "should show journal with sorted by date entries" do
     skip "not implemented"
+  end
+
+  test "should show one percent part of an expense entry in the expense sum column" do
+    #given
+    entry = entries(:expense_one)
+    expected_sum = number_with_precision(entry.sum, :precision => 2)
+    expected_one_percent = number_with_precision(entry.items.sum { |item| item.amount_one_percent || 0 }, :precision => 2)
+    assert_not_equal "0.00", expected_one_percent
+
+    #when
+    get journal_path(@journal)
+
+    #then
+    assert_response :success
+    # the cell of the entry row (not the "Suma" row) - it starts with the entry sum and lists its 1,5% part
+    assert_select "td.expense_all", text: /\A#{Regexp.escape(expected_sum)}\s*1,5%:\s*#{Regexp.escape(expected_one_percent)}/
+  end
+
+  test "should export one percent part of an expense entry in csv" do
+    #given
+    entry = entries(:expense_one)
+    expected_one_percent = number_with_precision(entry.items.sum { |item| item.amount_one_percent || 0 }, :precision => 2)
+    assert_not_equal "0.00", expected_one_percent
+
+    #when
+    get journal_path(@journal, :format => :csv)
+
+    #then
+    assert_response :success
+    rows = response.body.split("\n").map { |line| line.split("\t") }
+    header = rows.first
+    one_percent_column = header.index("Wydatki razem 1,5%")
+    assert_not_nil one_percent_column, "csv header should contain 'Wydatki razem 1,5%' column: #{header.inspect}"
+
+    entry_row = rows.find { |row| row[header.index("Opis")] == entry.name }
+    assert_not_nil entry_row, "csv should contain a row for entry #{entry.name}"
+    assert_equal expected_one_percent, entry_row[one_percent_column]
   end
 
 end

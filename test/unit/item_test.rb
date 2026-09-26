@@ -1,6 +1,12 @@
 require 'test_helper'
 
 class ItemTest < ActiveSupport::TestCase
+  test 'fixtures should be valid' do
+    Item.all.each do |item|
+      assert item.valid?, "item #{item.id} (#{item.category&.name}): #{item.errors.full_messages.join(', ')}"
+    end
+  end
+
   test 'should not save item when amount one percent is greater than amount and category is not one percent' do
     #given
     item = items(:one)
@@ -15,13 +21,15 @@ class ItemTest < ActiveSupport::TestCase
     }
   end
 
+  # items(:three): an expense item (category :five) without grants, so only the amount vs 1,5% rule
+  # is exercised here - items(:one) carries grants that take part in the sum validation
   test 'should save item when amount one percent is lesser than amount' do
     #given
-    item = items(:one)
-    item.amount = 38
+    item = items(:three)
+    item.amount = 2
 
     #when
-    item.amount_one_percent = 2
+    item.amount_one_percent = 1
 
     #then
     assert item.save!
@@ -29,11 +37,11 @@ class ItemTest < ActiveSupport::TestCase
 
   test 'should save item when amount one percent is equal amount' do
     #given
-    item = items(:five)
-    item.amount = 40
+    item = items(:three)
+    item.amount = 2
 
     #when
-    item.amount_one_percent = 40
+    item.amount_one_percent = 2
 
     #then
     assert item.save!
@@ -81,8 +89,8 @@ class ItemTest < ActiveSupport::TestCase
 
   test 'should not update amount one percent if category type is not one percent' do
     #given
-    item = items(:one)
-    amount = 37
+    item = items(:three)
+    amount = 2
     one_percent = 1
 
     #when

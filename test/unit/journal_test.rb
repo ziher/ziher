@@ -59,12 +59,14 @@ class JournalTest < ActiveSupport::TestCase
     journal = journals(:finance_2012)
     journal.initial_balance = 0
     journal.entries = []
+    # an empty journal has no grant money either (fixtures give finance_2012 an initial balance for every grant)
+    journal.journal_grants.each { |journal_grant| journal_grant.update!(:initial_grant_balance => 0) }
 
     #when
     journal.initial_balance_one_percent = 0
 
     #then
-    assert journal.close
+    assert journal.close, journal.errors.full_messages.join(", ")
   end
 
   test "should prevent closing when final sum one percent is bigger than final sum" do
@@ -197,6 +199,40 @@ class JournalTest < ActiveSupport::TestCase
 
     #then
     assert_equal balance, new_journal.initial_balance
+  end
+
+  test "should count balance for grant from initial balance and grant expenses" do
+    #given
+    journal = journals(:finance_2012)
+    grant = grants(:one)
+    initial = journal_grants(:finance_2012_grant_one).initial_grant_balance
+
+    #then
+    assert_equal initial, journal.initial_balance_for_grant(grant)
+    assert_equal initial - journal.get_expense_sum_for_grant(grant), journal.get_final_balance_for_grant(grant)
+    assert_operator journal.get_final_balance_for_grant(grant), :>, 0
+  end
+
+  test "should return zero initial balance for grant without journal grant" do
+    #given
+    journal = journals(:finance_2011)
+
+    #then
+    assert_equal 0, journal.initial_balance_for_grant(grants(:one))
+  end
+
+  test "should count initial balance for grants from previous journal" do
+    #given
+    previous = journals(:finance_2012)
+
+    #when
+    new_journal = Journal.create!(:year => 2013, :journal_type => journal_types(:finance), :unit => units(:troop_1zgm))
+
+    #then
+    Grant.all.each do |grant|
+      assert_equal previous.get_final_balance_for_grant(grant), new_journal.initial_balance_for_grant(grant), grant.name
+    end
+    assert_equal Grant.count, new_journal.journal_grants.count
   end
 
   test "should set initial balance to zero when there is no previous journal" do
@@ -334,11 +370,14 @@ class JournalTest < ActiveSupport::TestCase
 
   test "#get_sum_for_grant_in_category" do
     grant = grants(:one)
-    category = categories(:five)
     journal = journals(:finance_2012)
 
-    result = journal.get_sum_for_grant_in_category(grant, category)
-    assert_equal result, 19.98
+    # item_grants fixtures: grant :one has 9.99 on items(:one) (category :five)
+    # and 9.99 on items(:two) (category :six), both in expense_one
+    assert_equal 9.99, journal.get_sum_for_grant_in_category(grant, categories(:five))
+    assert_equal 9.99, journal.get_sum_for_grant_in_category(grant, categories(:six))
+    assert_equal 0, journal.get_sum_for_grant_in_category(grant, categories(:seven))
+    assert_equal 19.98, journal.get_expense_sum_for_grant(grant)
   end
 
   private
