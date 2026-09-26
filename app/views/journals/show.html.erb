@@ -144,7 +144,7 @@
           <small>
             <span style="display: block;"><%= position+=1 %>.</span>
             <% if @journal.is_not_blocked(entry.date) %>
-              <% if can? :update, entry %><%= link_to edit_entry_path(entry) do%><span class="glyphicon glyphicon-pencil" title="Edytuj"></span><%end%><% end %>
+              <% if can? :update, entry %><%= link_to edit_entry_path(entry), onclick: "saveScrollPosition()" do%><span class="glyphicon glyphicon-pencil" title="Edytuj"></span><%end%><% end %>
               <% if can? :destroy, entry %><%= link_to entry, data: { confirm: 'Na pewno usunąć wpis?'}, method: :delete do%><span class="glyphicon glyphicon-trash" title="Usuń"></span><%end%><% end %>
             <% else %>
               <% if can? :update, entry %><span class="glyphicon glyphicon-pencil text-muted" title="Nie można edytować wpisów zamkniętej książki"></span><% end %>
@@ -290,3 +290,33 @@
     <%= render "shared/entries_number_select" %>
   </div>
 </div>
+
+<script>
+  function saveScrollPosition() {
+    sessionStorage.setItem('journalScrollPosition', window.scrollY);
+  }
+  
+  // Restore scroll position when returning from edit
+  document.addEventListener('DOMContentLoaded', function() {
+    const scrollPosition = sessionStorage.getItem('journalScrollPosition');
+    if (scrollPosition) {
+      window.scrollTo(0, parseInt(scrollPosition));
+      sessionStorage.removeItem('journalScrollPosition');
+    }
+  });
+</script>
+
+<script>
+  function saveScrollPosition() {
+    sessionStorage.setItem('journalScrollPosition', window.scrollY);
+  }
+  
+  // Restore scroll position when returning from edit
+  document.addEventListener('DOMContentLoaded', function() {
+    const scrollPosition = sessionStorage.getItem('journalScrollPosition');
+    if (scrollPosition) {
+      window.scrollTo(0, parseInt(scrollPosition));
+      sessionStorage.removeItem('journalScrollPosition');
+    }
+  });
+</script>
