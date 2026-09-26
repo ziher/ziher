@@ -144,7 +144,15 @@ class InventoryEntriesController < ApplicationController
   # GET /inventory_entries/new
   # GET /inventory_entries/new.json
   def new
-    @unit = Unit.find_by_id(params[:unit_id] || session[:current_unit_id])
+    @unit = find_unit_for_new_entry
+
+    # no unit in the url, in the session nor assigned to the user - let index handle it
+    # (it redirects to the "no units" page); the form and the authorization need a unit
+    if @unit.nil?
+      redirect_to inventory_entries_path
+      return
+    end
+
     @inventory_entry = InventoryEntry.new(:is_expense => params[:is_expense])
 
     @inventory_entry.unit = @unit
@@ -168,8 +176,9 @@ class InventoryEntriesController < ApplicationController
   # POST /inventory_entries
   # POST /inventory_entries.json
   def create
-    @unit = Unit.find_by_id(session[:current_unit_id])
     @inventory_entry = InventoryEntry.new(inventory_entries_params)
+    # the form (rendered again when validation fails) needs the unit of the entry
+    @unit = @inventory_entry.unit || find_unit_for_new_entry
     authorize! :create, @inventory_entry
 
     respond_to do |format|
@@ -240,6 +249,20 @@ class InventoryEntriesController < ApplicationController
   end
 
   private
+
+  # Unit for a new inventory entry, resolved like index does: the one from the url, then the one
+  # remembered in the session (set by index / journals), then the first unit of the user (remembered
+  # in the session from now on). nil when the user has no units at all.
+  def find_unit_for_new_entry
+    unit = Unit.find_by_id(params[:unit_id] || session[:current_unit_id])
+
+    if unit.nil?
+      unit = Unit.find_by_user(current_user).first
+      session[:current_unit_id] = unit.id unless unit.nil?
+    end
+
+    unit
+  end
 
   def inventory_entries_params
     if params[:inventory_entry]
