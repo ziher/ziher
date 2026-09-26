@@ -155,7 +155,7 @@ class EntriesController < ApplicationController
 
   def entry_params
     if params[:entry]
-      params.require(:entry).permit(:date, :name, :document_number, :journal_id, :is_expense, :linked_entry,
+      params.require(:entry).permit(:date, :name, :document_number, :journal_id, :is_expense, :linked_entry, :color,
                                     :items_attributes => [:id, :amount, :amount_one_percent, :category_id, :grant_id,
                                       :item_grants_attributes => [:id, :amount, :grant_id, :item_id]])
     end

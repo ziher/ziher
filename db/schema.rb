@@ -59,6 +59,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_12_115944) do
     t.integer "journal_id"
     t.boolean "is_expense"
     t.integer "linked_entry_id"
+    t.string "color"
     t.index ["journal_id"], name: "index_entries_on_journal_id"
   end
 

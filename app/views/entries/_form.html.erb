@@ -27,11 +27,100 @@
           </div>
         </div>
         <div class="row top-buffer-20">
-          <div class="col-md-12">
+          <div class="col-md-9">
             <%= f.label :Opis %>
             <%= f.text_field :name, class: "form-control" %>
           </div>
+          <div class="col-md-3">
+            <%= f.label :Kolor %>
+            <%= f.hidden_field :color, id: "entry_color_field", value: @entry.color || "#ffffff" %>
+            <div style="position: relative;">
+              <button type="button" class="btn btn-sm btn-default" onclick="toggleColorPicker()" id="color-picker-toggle" style="width: 100%; height: 34px; text-align: left; display: flex; align-items: center; justify-content: center; padding: 6px; outline: none;">
+                <span id="color-preview" style="display: inline-block; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 3px;"></span>
+              </button>
+              <div class="color-picker-container" id="color-picker-container" style="display: none; position: absolute; grid-template-columns: repeat(3, 1fr); top: 100%; left: 0; z-index: 1000; flex-wrap: wrap; gap: 8px; margin-top: 2px; padding: 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; box-shadow: 0 6px 12px rgba(0,0,0,.175);">
+                <% colors = [
+                  { name: 'Brak', value: '#ffffff' },
+                  { name: 'Czerwony', value: '#ffcccc' },
+                  { name: 'Pomarańczowy', value: '#ffe5cc' },
+                  { name: 'Żółty', value: '#ffffcc' },
+                  { name: 'Zielony', value: '#ccffcc' },
+                  { name: 'Niebieski', value: '#cce5ff' },
+                  { name: 'Fioletowy', value: '#e6ccff' },
+                  { name: 'Różowy', value: '#ffcce6' },
+                  { name: 'Szary', value: '#e6e6e6' }
+                ] %>
+                <% colors.each do |color| %>
+                  <div class="color-option" 
+                       onclick="selectColor('<%= color[:value] %>', '<%= color[:name] %>')" 
+                       title="<%= color[:name] %>"
+                       style="width: 24px; height: 24px; background-color: <%= color[:value] %>; border: 2px solid #ccc; border-radius: 4px; cursor: pointer; transition: all 0.1s;"
+                       data-color="<%= color[:value] %>"
+                       onmouseover="this.style.boxShadow='0 2px 4px rgba(0,0,0,0.2)'" 
+                       onmouseout="this.style.boxShadow='none'">
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
         </div>
+        <script>
+          function toggleColorPicker() {
+            const container = document.getElementById('color-picker-container');
+            if (container.style.display === 'none') {
+              container.style.display = 'grid';
+            } else {
+              container.style.display = 'none';
+            }
+          }
+          
+          // Close picker when clicking outside
+          document.addEventListener('click', function(event) {
+            const container = document.getElementById('color-picker-container');
+            const toggle = document.getElementById('color-picker-toggle');
+            if (container && toggle && !container.contains(event.target) && !toggle.contains(event.target)) {
+              container.style.display = 'none';
+            }
+          });
+          
+          function selectColor(color, name) {
+            document.getElementById('entry_color_field').value = color;
+            document.getElementById('color-preview').style.backgroundColor = color;
+            
+            // Update visual selection
+            document.querySelectorAll('.color-option').forEach(el => {
+              if (el.dataset.color === color) {
+                el.style.borderColor = '#333';
+                el.style.borderWidth = '3px';
+              } else {
+                el.style.borderColor = '#ccc';
+                el.style.borderWidth = '2px';
+              }
+            });
+            
+            // Hide picker after selection
+            document.getElementById('color-picker-container').style.display = 'none';
+          }
+          
+          // Set initial selection
+          document.addEventListener('DOMContentLoaded', function() {
+            const currentColor = document.getElementById('entry_color_field').value;
+            const colorNames = {
+              '#ffffff': 'Brak',
+              '#ffcccc': 'Czerwony',
+              '#ffe5cc': 'Pomarańczowy',
+              '#ffffcc': 'Żółty',
+              '#ccffcc': 'Zielony',
+              '#cce5ff': 'Niebieski',
+              '#e6ccff': 'Fioletowy',
+              '#ffcce6': 'Różowy',
+              '#e6e6e6': 'Szary'
+            };
+            if (currentColor) {
+              selectColor(currentColor, colorNames[currentColor]);
+            }
+          });
+        </script>
       </div>
     </div>
 

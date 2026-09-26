@@ -31,10 +31,17 @@
         </div>
       </div>
       <div class="row top-buffer-20">
-        <div class="col-md-12">
+        <div class="col-md-9">
             <strong>Nazwa:</strong>
             <%= @entry.name %>
         </div>
+        <% if @entry.color.present? %>
+          <div class="col-md-3">
+            <strong>Kolor:</strong>
+            <span style="display: inline-block; width: 30px; height: 20px; background-color: <%= @entry.color %>; border: 1px solid #ccc; border-radius: 3px; vertical-align: middle;"></span>
+            <%= @entry.color %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

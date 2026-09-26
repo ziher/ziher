@@ -139,7 +139,7 @@
     <tbody class="border-top-bold">
     <% position = @start_position %>
     <% @entries.each do |entry| %>
-      <tr>
+      <tr style="<%= entry.color.present? && entry.color != '#ffffff' ? "border-left: 4px solid #{entry.color};" : '' %>">
         <td>
           <small>
             <span style="display: block;"><%= position+=1 %>.</span>
