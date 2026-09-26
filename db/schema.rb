@@ -59,6 +59,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_12_115944) do
     t.integer "journal_id"
     t.boolean "is_expense"
     t.integer "linked_entry_id"
+    t.string "color"
+    t.index ["date"], name: "index_entries_on_date"
+    t.index ["journal_id", "date", "id"], name: "index_entries_on_journal_date_id"
     t.index ["journal_id"], name: "index_entries_on_journal_id"
   end
 
@@ -157,6 +160,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_12_115944) do
     t.decimal "initial_balance_one_percent", precision: 9, scale: 2, default: "0.0", null: false
     t.date "blocked_to"
     t.index ["journal_type_id"], name: "index_journals_on_journal_type_id"
+    t.index ["unit_id", "journal_type_id", "year"], name: "index_journals_on_unit_type_year"
     t.index ["unit_id", "year", "journal_type_id"], name: "index_journals_on_unit_year_type", unique: true
     t.index ["unit_id"], name: "index_journals_on_unit_id"
     t.index ["year"], name: "index_journals_on_year"

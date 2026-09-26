@@ -58,6 +58,16 @@ class JournalsController < ApplicationController
     end
 
     @start_position = @page < 1 ? 0 : (@page - 1) * @items.to_i
+    
+    # Pre-calculate balances for all entries to avoid N+1 queries
+    @entry_balances = {}
+    current_balance = @journal.initial_balance.to_d
+    all_entries.each do |entry|
+      income_sum = entry.items.select { |i| !i.category.is_expense }.map { |i| i.amount.to_d }.sum
+      expense_sum = entry.items.select { |i| i.category.is_expense }.map { |i| i.amount.to_d }.sum
+      current_balance = current_balance + income_sum - expense_sum
+      @entry_balances[entry.id] = current_balance
+    end
     @user_units = Unit.find_by_user(current_user)
     @years = @journal.unit.find_journal_years(@journal.journal_type)
     @grants_by_journal_year = Grant.get_by_year(@journal.year)

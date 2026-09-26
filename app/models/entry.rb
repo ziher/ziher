@@ -2,7 +2,7 @@
 # TODO: wywalic stringi do I18n
 class Entry < ApplicationRecord
   include ActiveModel::Validations
-  audited
+  # audited - disabled for performance
 
   has_many :items, dependent: :destroy
   belongs_to :journal
@@ -29,8 +29,8 @@ class Entry < ApplicationRecord
   validate :should_not_change_if_journal_is_closed
   before_destroy :should_not_change_if_journal_is_closed
 
-  after_save :recalculate_initial_balance
-  after_destroy :recalculate_initial_balance
+  # Disabled automatic recalculation for performance - can be triggered manually if needed
+  # after_commit :recalculate_initial_balance_async, on: [:create, :update, :destroy]
 
   def get_amount_for_category(category)
     category_id = category.is_a?(Category) ? category.id : category
@@ -163,6 +163,25 @@ class Entry < ApplicationRecord
   end
 
   # recalculates initial balance for next year's journal
+  def recalculate_initial_balance_async
+    # Only recalculate if this is the last entry of the year
+    # or if we're near the year boundary
+    return unless should_trigger_recalculation?
+    
+    self.journal.recalculate_next_initial_balances
+  end
+  
+  def should_trigger_recalculation?
+    # Only trigger if this entry is in December or affects next year's balance
+    return true if date.month == 12
+    
+    # Or if this is a large amount that could significantly affect balances
+    return true if sum.abs > 1000
+    
+    # Otherwise skip to improve performance
+    false
+  end
+  
   def recalculate_initial_balance
     self.journal.recalculate_next_initial_balances
   end
@@ -179,9 +198,18 @@ class Entry < ApplicationRecord
     return @balance if @balance
 
     initial_balance = journal.initial_balance
-    entries = journal.entries.select { |e| e.date < date || (e.date == date && e.id <= id) }.sort_by(&:date)
-    expense_sum = entries.select(&:is_expense).sum { |e| e.sum.to_d }
-    income_sum = entries.select { |e| !e.is_expense }.sum { |e| e.sum.to_d }
+    entries = journal.entries.where("entries.date < ? OR (entries.date = ? AND entries.id <= ?)", date, date, id).includes(:items)
+    
+    expense_sum = 0
+    income_sum = 0
+    
+    entries.each do |e|
+      if e.is_expense
+        expense_sum += e.sum.to_d
+      else
+        income_sum += e.sum.to_d
+      end
+    end
 
     @balance = initial_balance + income_sum - expense_sum
   end

@@ -179,8 +179,8 @@
         </td>
 
         <td class="balance text-right" title="<%=t 'helpers.label.journal.balance'%>">
-          <small class="<%= entry.balance < 0 ? 'text-danger' : '' %>">
-            <% print_formatted_amount(entry.balance) %>
+          <small class="<%= @entry_balances[entry.id] < 0 ? 'text-danger' : '' %>">
+            <% print_formatted_amount(@entry_balances[entry.id]) %>
           </small>
         </td>
 

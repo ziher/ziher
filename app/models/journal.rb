@@ -462,12 +462,34 @@ class Journal < ApplicationRecord
 
   def recalculate_next_initial_balances
     next_journal = self.find_next_journal
-    while next_journal
-      next_journal.set_initial_balance
-      next_journal.set_initial_balance_for_grants
-      next_journal.save!
-
-      next_journal = next_journal.find_next_journal
+    return unless next_journal
+    
+    # Collect all journals that need updating
+    journals_to_update = []
+    current = next_journal
+    
+    while current
+      journals_to_update << current
+      current = current.find_next_journal
+    end
+    
+    # Update all journals in one transaction without triggering callbacks
+    Journal.transaction do
+      journals_to_update.each do |journal|
+        journal.set_initial_balance
+        journal.set_initial_balance_for_grants
+        # Use update_columns to skip callbacks and validations for performance
+        journal.update_columns(
+          initial_balance: journal.initial_balance,
+          initial_balance_one_percent: journal.initial_balance_one_percent,
+          updated_at: Time.current
+        )
+        
+        # Update grant balances
+        journal.journal_grants.each do |jg|
+          jg.save! if jg.changed?
+        end
+      end
     end
   end
 
