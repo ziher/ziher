@@ -9,7 +9,7 @@ class ItemTest < ActiveSupport::TestCase
 
   test 'should not save item when amount one percent is greater than amount and category is not one percent' do
     #given
-    item = items(:one)
+    item = items(:three)
     item.amount = 1
 
     #when
@@ -19,10 +19,9 @@ class ItemTest < ActiveSupport::TestCase
     assert_raise(ActiveRecord::RecordInvalid) {
       item.save!
     }
+    assert_includes item.errors.full_messages.join(", "), "wartość dla 1,5% (2.0) musi być mniejsza niż wartość główna (1.0)"
   end
 
-  # items(:three): an expense item (category :five) without grants, so only the amount vs 1,5% rule
-  # is exercised here - items(:one) carries grants that take part in the sum validation
   test 'should save item when amount one percent is lesser than amount' do
     #given
     item = items(:three)
