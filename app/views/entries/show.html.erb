@@ -81,7 +81,7 @@
   <% if @entry.is_expense %>
     <div class="col-md-2">
       <label for="total-sum-one-percent">Suma 1,5%</label>
-      <input type="text" class="form-control" id="total-sum-one-percent" readonly value="<%= get_formatted_amount(@entry.items.sum { |item| item.amount_one_percent || 0 }, "") %>">
+      <input type="text" class="form-control" id="total-sum-one-percent" readonly value="<%= get_formatted_amount(@entry.sum_one_percent, "") %>">
     </div>
     <% @grants.each do |grant| %>
       <div class="col-md-2">
